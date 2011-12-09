@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDesktopWidget>
 #include <QSettings>
+#include <QMessageBox>
 
 #include "src/widgets/knowncheckbox.h"
 #include "src/widgets/pageframe.h"
@@ -35,9 +36,12 @@ private:
     inline void loadState();
 
 private slots:
+    void pageMoved(int from, int to);
     void page_nameChanged(PageFrame *parentPage);
     void page_useToggled(PageFrame *parentPage);
     void contentCheckBoxToggled(KnownCheckBox *aCheckBox, bool checked);
+
+    void on_pagesTabWidget_tabCloseRequested(int index);
 
     void on_actionNew_triggered();
     void on_actionOpen_triggered();

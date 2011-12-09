@@ -19,7 +19,7 @@
      <number>4</number>
     </property>
     <item>
-     <widget class="QTabWidget" name="pagesTabWidget">
+     <widget class="MovableTabWidget" name="pagesTabWidget">
       <property name="movable">
        <bool>true</bool>
       </property>
@@ -123,6 +123,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>MovableTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>src/widgets/movabletabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     frect.moveCenter(QDesktopWidget().availableGeometry().center());
     move(frect.topLeft());
 
+    connect(ui->pagesTabWidget->tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(pageMoved(int,int)));
+
     loadState();
 
     on_actionNew_triggered();
@@ -84,6 +86,15 @@ void MainWindow::on_actionAddPage_triggered()
     addPage("Новый раздел", "");
 }
 
+void MainWindow::pageMoved(int from, int to)
+{
+    QLayoutItem* aItem=contentPage->ui->pageLayout->takeAt(from);
+
+    contentPage->ui->pageLayout->insertWidget(to, aItem->widget());
+
+    delete aItem;
+}
+
 void MainWindow::page_nameChanged(PageFrame *parentPage)
 {
     int pageIndex=ui->pagesTabWidget->indexOf(parentPage);
@@ -119,6 +130,19 @@ void MainWindow::contentCheckBoxToggled(KnownCheckBox *aCheckBox, bool checked)
     }
 
     ((PageFrame *)ui->pagesTabWidget->widget(pageIndex))->ui->useCheckBox->setChecked(checked);
+}
+
+void MainWindow::on_pagesTabWidget_tabCloseRequested(int index)
+{
+    if (ui->pagesTabWidget->widget(index)!=contentPage)
+    {
+        if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить раздел \""+ui->pagesTabWidget->tabText(index)+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
+        {
+            delete contentPage->ui->pageLayout->itemAt(index)->widget();
+            delete contentPage->ui->pageLayout->takeAt(index);
+            delete ui->pagesTabWidget->widget(index);
+        }
+    }
 }
 
 void MainWindow::addPage(QString aName, QString aVarName)
@@ -162,6 +186,8 @@ void MainWindow::updateAdmin()
     {
         ((PageFrame*)ui->pagesTabWidget->widget(i))->updateAdmin();
     }
+
+    ui->pagesTabWidget->setTabsClosable(isAdmin);
 
     if (isAdmin)
     {
