@@ -8,6 +8,7 @@
 #include "src/other/encoder.h"
 #include "src/other/utils.h"
 
+#include "src/widgets/knowncheckbox.h"
 #include "src/widgets/pageframe.h"
 
 #include "src/word/word.h"

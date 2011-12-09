@@ -30,7 +30,8 @@ SOURCES += src/main.cpp\
     src/word/wordtablecell.cpp \
     src/other/utils.cpp \
     src/other/encoder.cpp \
-    src/widgets/pageframe.cpp
+    src/widgets/pageframe.cpp \
+    src/widgets/knowncheckbox.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -47,7 +48,8 @@ HEADERS  += src/main/mainwindow.h \
     src/word/wordtablecell.h \
     src/other/utils.h \
     src/other/encoder.h \
-    src/widgets/pageframe.h
+    src/widgets/pageframe.h \
+    src/widgets/knowncheckbox.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui

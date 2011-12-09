@@ -55,6 +55,10 @@
     <property name="title">
      <string>Администрирование</string>
     </property>
+    <addaction name="actionLogin"/>
+    <addaction name="actionSetDocPass"/>
+    <addaction name="actionSetAdminPass"/>
+    <addaction name="actionAddPage"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuProtocol"/>
@@ -95,6 +99,26 @@
   <action name="actionExit">
    <property name="text">
     <string>Выход</string>
+   </property>
+  </action>
+  <action name="actionLogin">
+   <property name="text">
+    <string>Войти под администратором</string>
+   </property>
+  </action>
+  <action name="actionSetDocPass">
+   <property name="text">
+    <string>Установить пароль на документ</string>
+   </property>
+  </action>
+  <action name="actionSetAdminPass">
+   <property name="text">
+    <string>Установить пароль на администратора</string>
+   </property>
+  </action>
+  <action name="actionAddPage">
+   <property name="text">
+    <string>Добавить раздел</string>
    </property>
   </action>
  </widget>

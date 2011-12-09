@@ -14,11 +14,20 @@ class PageFrame : public QWidget
     Q_OBJECT
 
 public:
+    Ui::PageFrame *ui;
+
     explicit PageFrame(QWidget *parent = 0);
     ~PageFrame();
 
-private:
-    Ui::PageFrame *ui;
+    void updateAdmin();
+
+private slots:
+    void on_nameEdit_textChanged(const QString &aNewText);
+    void on_useCheckBox_toggled(bool checked);
+
+signals:
+    void nameChanged(PageFrame* parentPage);
+    void useToggled(PageFrame* parentPage);
 };
 
 #endif // PAGEFRAME_H
