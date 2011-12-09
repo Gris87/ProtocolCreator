@@ -29,7 +29,8 @@ SOURCES += src/main.cpp\
     src/word/wordtable.cpp \
     src/word/wordtablecell.cpp \
     src/other/utils.cpp \
-    src/other/encoder.cpp
+    src/other/encoder.cpp \
+    src/widgets/pageframe.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -45,6 +46,8 @@ HEADERS  += src/main/mainwindow.h \
     src/word/wordtable.h \
     src/word/wordtablecell.h \
     src/other/utils.h \
-    src/other/encoder.h
+    src/other/encoder.h \
+    src/widgets/pageframe.h
 
-FORMS    += src/main/mainwindow.ui
+FORMS    += src/main/mainwindow.ui \
+    src/widgets/pageframe.ui

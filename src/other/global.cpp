@@ -3,6 +3,12 @@
 // FORMS
 MainWindow                *mainWindow=0;
 
+// GENERAL
+bool                       isAdmin=true;
+QString                    currentName="";
+QString                    docPass="";
+QString                    adminPass="";
+
 // OTHERS
 QString                    dir="";
 
