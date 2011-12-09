@@ -11,8 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     move(frect.topLeft());
 
     setWindowTitle(protocolCreatorVersion);
-
-    DecryptString("HELLOW", "sdf");
 }
 
 MainWindow::~MainWindow()
