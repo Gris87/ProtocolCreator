@@ -83,7 +83,10 @@ void MainWindow::on_actionSetAdminPass_triggered()
 
 void MainWindow::on_actionAddPage_triggered()
 {
-    addPage("Новый раздел", "");
+    if (isAdmin)
+    {
+        addPage("Новый раздел", "");
+    }
 }
 
 void MainWindow::pageMoved(int from, int to)
@@ -188,6 +191,7 @@ void MainWindow::updateAdmin()
     }
 
     ui->pagesTabWidget->setTabsClosable(isAdmin);
+    ui->pagesTabWidget->setMovable(isAdmin);
 
     if (isAdmin)
     {
