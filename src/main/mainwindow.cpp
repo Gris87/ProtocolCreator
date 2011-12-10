@@ -35,7 +35,9 @@ void MainWindow::on_actionNew_triggered()
 
     while (ui->pagesTabWidget->count()>0)
     {
-        delete ui->pagesTabWidget->widget(0);
+        QWidget *aWidget=ui->pagesTabWidget->widget(0);
+        ui->pagesTabWidget->removeTab(0);
+        delete aWidget;
     }
 
     contentPage=0;
@@ -197,11 +199,10 @@ void MainWindow::on_actionAddPage_triggered()
 
 void MainWindow::pageMoved(int from, int to)
 {
-    QLayoutItem* aItem=contentPage->ui->pageLayout->takeAt(from);
+    QWidget* aWidget=contentPage->ui->pageLayout->itemAt(from)->widget();
 
-    contentPage->ui->pageLayout->insertWidget(to, aItem->widget());
-
-    delete aItem;
+    contentPage->ui->pageLayout->removeWidget(aWidget);
+    contentPage->ui->pageLayout->insertWidget(to, aWidget);
 }
 
 void MainWindow::page_nameChanged(PageFrame *parentPage)
@@ -247,9 +248,13 @@ void MainWindow::on_pagesTabWidget_tabCloseRequested(int index)
     {
         if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить раздел \""+ui->pagesTabWidget->tabText(index)+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
         {
-            delete contentPage->ui->pageLayout->itemAt(index)->widget();
-            delete contentPage->ui->pageLayout->takeAt(index);
-            delete ui->pagesTabWidget->widget(index);
+            QWidget* aWidget=contentPage->ui->pageLayout->itemAt(index)->widget();
+            contentPage->ui->pageLayout->removeWidget(aWidget);
+            delete aWidget;
+
+            aWidget=ui->pagesTabWidget->widget(index);
+            ui->pagesTabWidget->removeTab(index);
+            delete aWidget;
         }
     }
 }
