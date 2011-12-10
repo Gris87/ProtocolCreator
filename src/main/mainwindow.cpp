@@ -52,11 +52,114 @@ void MainWindow::on_actionOpen_triggered()
 
     if (dialog.exec())
     {
-        on_actionNew_triggered();
+        QByteArray aArray;
+
+        QFile aFile(dialog.selectedFiles().at(0));
+        aFile.open(QIODevice::ReadOnly);
+        aArray=aFile.readAll();
+        aFile.close();
+
+        //DecryptStream(aArray, "Thunderbolt");
+
+        QDataStream aStream(&aArray, QIODevice::ReadOnly);
+
+        QString aMagicWord;
+        aStream >> aMagicWord;
+
+        if (aMagicWord!="ProtocolCreator")
+        {
+            QMessageBox::warning(this, "Openning file", "Incorrect format");
+            return;
+        }
+
+        aStream >> aMagicWord;
+
+        if (aMagicWord!="DocumentPassword")
+        {
+            QMessageBox::warning(this, "Openning file", "Incorrect format");
+            return;
+        }
+
+        QString oldDocPass=docPass;
+
+        aStream >> docPass;
+
+        if (docPass.length()>4)
+        {
+            PasswordDialog dialog(this);
+            dialog.ui->titleLabel->setText("Введите пароль на документ");
+
+            if (dialog.exec())
+            {
+                if (EncryptString(dialog.ui->passwordEdit->text(), "Earthquake")!=docPass)
+                {
+                    QMessageBox::information(this, "Ввод пароля", "Неверный пароль");
+
+                    docPass=oldDocPass;
+
+                    return;
+                }
+            }
+        }
+        else
+        {
+            docPass="";
+        }
 
         currentName=dialog.selectedFiles().at(0);
+        isAdmin=false;
+        adminPass="";
+
+        while (ui->pagesTabWidget->count()>0)
+        {
+            QWidget *aWidget=ui->pagesTabWidget->widget(0);
+            ui->pagesTabWidget->removeTab(0);
+            delete aWidget;
+        }
+
+        contentPage=0;
+
+        while (!aStream.atEnd())
+        {
+            aStream >> aMagicWord;
+
+            if (aMagicWord!="AdminPassword")
+            {
+                aStream >> adminPass;
+            }
+            else
+            if (aMagicWord!="Pages")
+            {
+                while (!aStream.atEnd())
+                {
+                    addPage("", "");
+
+                    aStream >> aMagicWord;
+
+                    if (aMagicWord=="Stop")
+                    {
+                        break;
+                    }
+
+                    ((PageFrame*)ui->pagesTabWidget->widget(ui->pagesTabWidget->count()-1))->loadFromStream(aStream);
+                }
+            }
+            else
+            if (aMagicWord!="Pages")
+            {
+                int pageIndex;
+
+                aStream >> pageIndex;
+
+                if (pageIndex>0)
+                {
+                    ui->pagesTabWidget->tabBar()->moveTab(0, pageIndex);
+                }
+            }
+        }
 
         updateHeader();
+        updateAdmin();
     }
 }
 
@@ -79,10 +182,26 @@ void MainWindow::on_actionSave_triggered()
         aStream << QString("AdminPassword");
         aStream << adminPass;
 
+        aStream << QString("Pages");
+
+        contentPage->saveToStream(aStream);
+        int pageIndex=ui->pagesTabWidget->indexOf(contentPage);
+
         for (int i=0; i<ui->pagesTabWidget->count(); i++)
         {
-            ((PageFrame*)ui->pagesTabWidget->widget(i))->saveToStream(aStream);
+            if (i!=pageIndex)
+            {
+                aStream << QString("Page");
+                ((PageFrame*)ui->pagesTabWidget->widget(i))->saveToStream(aStream);
+            }
         }
+
+        aStream << QString("Stop");
+
+        aStream << QString("ContentIndex");
+        aStream << pageIndex;
+
+        //EncryptStream(aArray, "Thunderbolt");
 
         // Save result
         QFile aFile(currentName);
@@ -290,7 +409,7 @@ void MainWindow::updateHeader()
     }
     else
     {
-        setWindowTitle(protocolCreatorVersion+"["+currentName.mid(currentName.lastIndexOf("/")+1)+"]");
+        setWindowTitle(protocolCreatorVersion+" ["+currentName.mid(currentName.lastIndexOf("/")+1)+"]");
     }
 }
 

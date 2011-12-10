@@ -26,12 +26,40 @@ void PageFrame::on_useCheckBox_toggled(bool checked)
 
 void PageFrame::saveToStream(QDataStream &aStream)
 {
+    aStream << QString("Name");
+    aStream << ui->nameEdit->text();
 
+    aStream << QString("VarName");
+    aStream << ui->varNameEdit->text();
+
+    aStream << QString("PageEnd");
 }
 
 void PageFrame::loadFromStream(QDataStream &aStream)
 {
+    QString aMagicWord;
 
+    while (!aStream.atEnd())
+    {
+        aStream << aMagicWord;
+
+        if (aMagicWord=="Name")
+        {
+            aStream << aMagicWord;
+            ui->nameEdit->setText(aMagicWord);
+        }
+        else
+        if (aMagicWord=="VarName")
+        {
+            aStream << aMagicWord;
+            ui->varNameEdit->setText(aMagicWord);
+        }
+        else
+        if (aMagicWord=="PageEnd")
+        {
+            break;
+        }
+    }
 }
 
 void PageFrame::updateAdmin()

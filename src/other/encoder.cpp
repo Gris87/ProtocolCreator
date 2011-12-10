@@ -153,11 +153,6 @@ void Encrypt(QByteArray &aStream, const QByteArray &aKeyArray1)
     RandomExchange(aKeyArray3, aKeyArray2, true, true, 2);
     RandomExchange(aKeyArray4, aKeyArray3, true, true, 3);
 
-    qDebug()<<aKeyArray1;
-    qDebug()<<aKeyArray2;
-    qDebug()<<aKeyArray3;
-    qDebug()<<aKeyArray4;
-
     Xoring(aStream, aKeyArray1);
     RandomExchange(aStream, aKeyArray1, false, true, 1);
 
