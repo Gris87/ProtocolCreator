@@ -46,17 +46,82 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
+    QFileDialog dialog(this, protocolCreatorVersion, currentName, "*.pcr");
 
+    if (dialog.exec())
+    {
+        on_actionNew_triggered();
+
+        currentName=dialog.selectedFiles().at(0);
+
+        updateHeader();
+    }
 }
 
 void MainWindow::on_actionSave_triggered()
 {
+    if (currentName=="")
+    {
+        on_actionSaveAs_triggered();
+    }
+    else
+    {
+        QByteArray aArray;
+        QDataStream aStream(&aArray, QIODevice::WriteOnly);
 
+        aStream << QString("ProtocolCreator");
+
+        aStream << QString("DocumentPassword");
+        aStream << docPass;
+
+        aStream << QString("AdminPassword");
+        aStream << adminPass;
+
+        for (int i=0; i<ui->pagesTabWidget->count(); i++)
+        {
+            ((PageFrame*)ui->pagesTabWidget->widget(i))->saveToStream(aStream);
+        }
+
+        // Save result
+        QFile aFile(currentName);
+
+        // Backup existing file
+        if (aFile.exists())
+        {
+            QDir(dir).mkpath(dir+"backup");
+
+            QString baseName=currentName.mid(currentName.lastIndexOf("/")+1);
+            baseName=baseName.left(baseName.lastIndexOf("."));
+
+            QString backupName=dir+"backup/"+baseName+QFileInfo(aFile).lastModified().toString("yyyy_MM_dd_hh_mm_ss_zzz")+".pcr";
+
+            if (QFile::exists(backupName))
+            {
+                QFile::remove(backupName);
+            }
+
+            aFile.copy(backupName);
+        }
+
+        aFile.open(QIODevice::WriteOnly);
+        aFile.write(aArray);
+        aFile.close();
+    }
 }
 
 void MainWindow::on_actionSaveAs_triggered()
 {
+    QFileDialog dialog(this, protocolCreatorVersion, currentName, "*.pcr");
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setDefaultSuffix("pcr");
 
+    if (dialog.exec())
+    {
+        currentName=dialog.selectedFiles().at(0);
+        on_actionSave_triggered();
+
+        updateHeader();
+    }
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -66,26 +131,67 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionLogin_triggered()
 {
-    isAdmin=!isAdmin;
+    if (isAdmin)
+    {
+        isAdmin=false;
+        updateAdmin();
+    }
+    else
+    {
+        if (adminPass.length()<5)
+        {
+            isAdmin=true;
+            updateAdmin();
+        }
+        else
+        {
+            PasswordDialog dialog(this);
+            dialog.ui->titleLabel->setText("Введите пароль администратора");
+            dialog.ui->okButton->setText("Вход");
 
-    updateAdmin();
+            if (dialog.exec())
+            {
+                if (EncryptString(dialog.ui->passwordEdit->text(), "Superman")==adminPass)
+                {
+                    isAdmin=true;
+                    updateAdmin();
+                }
+                else
+                {
+                    QMessageBox::information(this, "Ввод пароля", "Неверный пароль");
+                }
+            }
+        }
+    }
 }
 
 void MainWindow::on_actionSetDocPass_triggered()
 {
+    PasswordDialog dialog(this);
+    dialog.ui->titleLabel->setText("Введите пароль на документ");
 
+    if (dialog.exec())
+    {
+        docPass=EncryptString(dialog.ui->passwordEdit->text(), "Earthquake");
+    }
 }
 
 void MainWindow::on_actionSetAdminPass_triggered()
 {
+    PasswordDialog dialog(this);
+    dialog.ui->titleLabel->setText("Введите пароль администратора");
 
+    if (dialog.exec())
+    {
+        adminPass=EncryptString(dialog.ui->passwordEdit->text(), "Superman");
+    }
 }
 
 void MainWindow::on_actionAddPage_triggered()
 {
     if (isAdmin)
     {
-        addPage("Новый раздел", "");
+        addPage("Новый раздел", "Section"+QString::number(ui->pagesTabWidget->count()+1));
     }
 }
 

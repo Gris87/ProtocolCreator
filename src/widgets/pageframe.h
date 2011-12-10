@@ -19,6 +19,9 @@ public:
     explicit PageFrame(QWidget *parent = 0);
     ~PageFrame();
 
+    void saveToStream(QDataStream &aStream);
+    void loadFromStream(QDataStream &aStream);
+
     void updateAdmin();
 
 private slots:

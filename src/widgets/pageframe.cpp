@@ -24,6 +24,16 @@ void PageFrame::on_useCheckBox_toggled(bool checked)
     emit useToggled(this);
 }
 
+void PageFrame::saveToStream(QDataStream &aStream)
+{
+
+}
+
+void PageFrame::loadFromStream(QDataStream &aStream)
+{
+
+}
+
 void PageFrame::updateAdmin()
 {
     ui->adminVarNameWidget->setVisible(isAdmin);

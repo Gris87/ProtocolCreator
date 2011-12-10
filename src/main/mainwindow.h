@@ -5,6 +5,9 @@
 #include <QDesktopWidget>
 #include <QSettings>
 #include <QMessageBox>
+#include <QInputDialog>
+#include <QFileDialog>
+#include <QDateTime>
 
 #include "src/widgets/knowncheckbox.h"
 #include "src/widgets/pageframe.h"
