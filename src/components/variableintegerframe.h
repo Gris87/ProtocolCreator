@@ -19,6 +19,9 @@ public:
     explicit VariableIntegerFrame(QWidget *parent = 0);
     ~VariableIntegerFrame();
 
+    void saveToStream(QDataStream &aStream);
+    void loadFromStream(QDataStream &aStream);
+
     void updateAdmin();
 
 private slots:

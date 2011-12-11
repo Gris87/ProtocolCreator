@@ -44,6 +44,30 @@ void PageFrame::saveToStream(QDataStream &aStream)
     aStream << QString("VarName");
     aStream << ui->varNameEdit->text();
 
+    if (variables.length()>0)
+    {
+        aStream << QString("Variables");
+
+        for (int i=0; i<variables.length(); i++)
+        {
+            variables.at(i)->saveToStream(aStream);
+        }
+
+        aStream << QString("Stop");
+    }
+
+    if (components.length()>0)
+    {
+        aStream << QString("Components");
+
+        for (int i=0; i<components.length(); i++)
+        {
+            components.at(i)->saveToStream(aStream);
+        }
+
+        aStream << QString("Stop");
+    }
+
     aStream << QString("PageEnd");
 }
 
@@ -65,6 +89,53 @@ void PageFrame::loadFromStream(QDataStream &aStream)
         {
             aStream >> aMagicWord;
             ui->varNameEdit->setText(aMagicWord);
+        }
+        else
+        if (aMagicWord=="Variables")
+        {
+            while (!aStream.atEnd())
+            {
+                aStream >> aMagicWord;
+
+                if (aMagicWord=="Stop")
+                {
+                    break;
+                }
+
+                PageComponent *aVariable=0;
+
+                if (aMagicWord=="VarInteger")
+                {
+                    aVariable=new VariableIntegerFrame(this);
+                }
+
+                if (aVariable)
+                {
+                    addVariable(aVariable);
+                    aVariable->loadFromStream(aStream);
+                }
+            }
+        }
+        else
+        if (aMagicWord=="Components")
+        {
+            while (!aStream.atEnd())
+            {
+                aStream >> aMagicWord;
+
+                if (aMagicWord=="Stop")
+                {
+                    break;
+                }
+
+                PageComponent *aComponent=0;
+
+                if (aComponent)
+                {
+                    addComponent(aComponent);
+                    aComponent->loadFromStream(aStream);
+                }
+            }
         }
         else
         if (aMagicWord=="PageEnd")
