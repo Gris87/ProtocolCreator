@@ -41,17 +41,17 @@ void PageFrame::loadFromStream(QDataStream &aStream)
 
     while (!aStream.atEnd())
     {
-        aStream << aMagicWord;
+        aStream >> aMagicWord;
 
         if (aMagicWord=="Name")
         {
-            aStream << aMagicWord;
+            aStream >> aMagicWord;
             ui->nameEdit->setText(aMagicWord);
         }
         else
         if (aMagicWord=="VarName")
         {
-            aStream << aMagicWord;
+            aStream >> aMagicWord;
             ui->varNameEdit->setText(aMagicWord);
         }
         else

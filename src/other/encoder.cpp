@@ -343,7 +343,7 @@ QString EncryptString(const QString aText, const QString aKey)
 
 QString DecryptString(const QString aText, const QString aKey)
 {
-    if (aText.length()<4)
+    if (aText.length()<=2)
     {
         return "";
     }

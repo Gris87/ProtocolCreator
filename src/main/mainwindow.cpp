@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     frect.moveCenter(QDesktopWidget().availableGeometry().center());
     move(frect.topLeft());
 
+    ui->progressBar->setValue(0);
+
     connect(ui->pagesTabWidget->tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(pageMoved(int,int)));
 
     loadState();
@@ -33,12 +35,18 @@ void MainWindow::on_actionNew_triggered()
 
     updateHeader();
 
+    ui->progressBar->setMaximum(ui->pagesTabWidget->count());
+
     while (ui->pagesTabWidget->count()>0)
     {
+        ui->progressBar->setValue(ui->progressBar->maximum()-ui->pagesTabWidget->count());
+
         QWidget *aWidget=ui->pagesTabWidget->widget(0);
         ui->pagesTabWidget->removeTab(0);
         delete aWidget;
     }
+
+    ui->progressBar->setValue(0);
 
     contentPage=0;
     addPage("Содержание", "Section_Content");
@@ -84,7 +92,7 @@ void MainWindow::on_actionOpen_triggered()
 
         aStream >> docPass;
 
-        if (docPass.length()>4)
+        if (docPass.length()>2)
         {
             PasswordDialog dialog(this);
             dialog.ui->titleLabel->setText("Введите пароль на документ");
@@ -110,29 +118,39 @@ void MainWindow::on_actionOpen_triggered()
         isAdmin=false;
         adminPass="";
 
+        ui->progressBar->setMaximum(ui->pagesTabWidget->count());
+
         while (ui->pagesTabWidget->count()>0)
         {
+            ui->progressBar->setValue(ui->progressBar->maximum()-ui->pagesTabWidget->count());
+
             QWidget *aWidget=ui->pagesTabWidget->widget(0);
             ui->pagesTabWidget->removeTab(0);
             delete aWidget;
         }
 
+        ui->progressBar->setValue(0);
+
+        ui->progressBar->setMaximum(aArray.length());
+
         contentPage=0;
 
         while (!aStream.atEnd())
         {
+            ui->progressBar->setValue(aStream.device()->pos());
+
             aStream >> aMagicWord;
 
-            if (aMagicWord!="AdminPassword")
+            if (aMagicWord=="AdminPassword")
             {
                 aStream >> adminPass;
             }
             else
-            if (aMagicWord!="Pages")
+            if (aMagicWord=="Pages")
             {
                 while (!aStream.atEnd())
                 {
-                    addPage("", "");
+                    ui->progressBar->setValue(aStream.device()->pos());
 
                     aStream >> aMagicWord;
 
@@ -141,11 +159,13 @@ void MainWindow::on_actionOpen_triggered()
                         break;
                     }
 
+                    addPage("", "");
+
                     ((PageFrame*)ui->pagesTabWidget->widget(ui->pagesTabWidget->count()-1))->loadFromStream(aStream);
                 }
             }
             else
-            if (aMagicWord!="Pages")
+            if (aMagicWord=="ContentIndex")
             {
                 int pageIndex;
 
@@ -154,9 +174,13 @@ void MainWindow::on_actionOpen_triggered()
                 if (pageIndex>0)
                 {
                     ui->pagesTabWidget->tabBar()->moveTab(0, pageIndex);
+                    ui->pagesTabWidget->setCurrentIndex(0);
+                    ui->pagesTabWidget->setCurrentIndex(pageIndex);
                 }
             }
         }
+
+        ui->progressBar->setValue(0);
 
         updateHeader();
         updateAdmin();
@@ -184,17 +208,25 @@ void MainWindow::on_actionSave_triggered()
 
         aStream << QString("Pages");
 
+        aStream << QString("Page");
         contentPage->saveToStream(aStream);
+
         int pageIndex=ui->pagesTabWidget->indexOf(contentPage);
+
+        ui->progressBar->setMaximum(ui->pagesTabWidget->count());
 
         for (int i=0; i<ui->pagesTabWidget->count(); i++)
         {
+            ui->progressBar->setValue(i);
+
             if (i!=pageIndex)
             {
                 aStream << QString("Page");
                 ((PageFrame*)ui->pagesTabWidget->widget(i))->saveToStream(aStream);
             }
         }
+
+        ui->progressBar->setValue(0);
 
         aStream << QString("Stop");
 
@@ -259,7 +291,7 @@ void MainWindow::on_actionLogin_triggered()
     }
     else
     {
-        if (adminPass.length()<5)
+        if (adminPass.length()<3)
         {
             isAdmin=true;
             updateAdmin();
