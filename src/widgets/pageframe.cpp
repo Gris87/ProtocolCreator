@@ -24,6 +24,18 @@ void PageFrame::on_useCheckBox_toggled(bool checked)
     emit useToggled(this);
 }
 
+void PageFrame::addVariable(PageComponent* aComponent)
+{
+    variables.append(aComponent);
+    ui->variableLayout->addWidget(aComponent);
+}
+
+void PageFrame::addComponent(PageComponent* aComponent)
+{
+    components.append(aComponent);
+    ui->componentLayout->addWidget(aComponent);
+}
+
 void PageFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("Name");
@@ -65,4 +77,14 @@ void PageFrame::loadFromStream(QDataStream &aStream)
 void PageFrame::updateAdmin()
 {
     ui->adminVarNameWidget->setVisible(isAdmin);
+
+    for (int i=0; i<variables.length(); i++)
+    {
+        variables.at(i)->updateAdmin();
+    }
+
+    for (int i=0; i<components.length(); i++)
+    {
+        components.at(i)->updateAdmin();
+    }
 }

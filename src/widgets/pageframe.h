@@ -5,6 +5,8 @@
 
 #include "ui_pageframe.h"
 
+#include "src/components/pagecomponent.h"
+
 namespace Ui {
     class PageFrame;
 }
@@ -15,9 +17,14 @@ class PageFrame : public QWidget
 
 public:
     Ui::PageFrame *ui;
+    QList<PageComponent*> variables;
+    QList<PageComponent*> components;
 
     explicit PageFrame(QWidget *parent = 0);
     ~PageFrame();
+
+    void addVariable(PageComponent* aComponent);
+    void addComponent(PageComponent* aComponent);
 
     void saveToStream(QDataStream &aStream);
     void loadFromStream(QDataStream &aStream);

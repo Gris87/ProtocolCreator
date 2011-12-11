@@ -58,10 +58,38 @@
     <property name="title">
      <string>Администрирование</string>
     </property>
+    <widget class="QMenu" name="menuSection">
+     <property name="title">
+      <string>Раздел</string>
+     </property>
+     <widget class="QMenu" name="menuVariable">
+      <property name="title">
+       <string>Добавить переменную</string>
+      </property>
+      <addaction name="actionVariableInteger"/>
+      <addaction name="actionVariableString"/>
+      <addaction name="actionVariableBool"/>
+      <addaction name="actionVariableDate"/>
+      <addaction name="actionVariableTime"/>
+      <addaction name="actionVariableList"/>
+      <addaction name="actionVariableExtendedList"/>
+      <addaction name="actionVariableExpression"/>
+     </widget>
+     <widget class="QMenu" name="menu">
+      <property name="title">
+       <string>Добавить компонент</string>
+      </property>
+      <addaction name="actionComponentText"/>
+      <addaction name="actionComponentTable"/>
+     </widget>
+     <addaction name="actionAddPage"/>
+     <addaction name="menuVariable"/>
+     <addaction name="menu"/>
+    </widget>
     <addaction name="actionLogin"/>
     <addaction name="actionSetDocPass"/>
     <addaction name="actionSetAdminPass"/>
-    <addaction name="actionAddPage"/>
+    <addaction name="menuSection"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuProtocol"/>
@@ -125,6 +153,86 @@
    </property>
    <property name="shortcut">
     <string>F8</string>
+   </property>
+  </action>
+  <action name="actionVariableInteger">
+   <property name="text">
+    <string>Число</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actionVariableString">
+   <property name="text">
+    <string>Строка</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
+   </property>
+  </action>
+  <action name="actionVariableBool">
+   <property name="text">
+    <string>Логическое значение</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="actionVariableDate">
+   <property name="text">
+    <string>Дата</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
+   </property>
+  </action>
+  <action name="actionVariableTime">
+   <property name="text">
+    <string>Время</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+5</string>
+   </property>
+  </action>
+  <action name="actionVariableList">
+   <property name="text">
+    <string>Список</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+6</string>
+   </property>
+  </action>
+  <action name="actionVariableExtendedList">
+   <property name="text">
+    <string>Расширенный список</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+7</string>
+   </property>
+  </action>
+  <action name="actionVariableExpression">
+   <property name="text">
+    <string>Выражение</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+8</string>
+   </property>
+  </action>
+  <action name="actionComponentText">
+   <property name="text">
+    <string>Текст</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionComponentTable">
+   <property name="text">
+    <string>Таблица</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
    </property>
   </action>
  </widget>

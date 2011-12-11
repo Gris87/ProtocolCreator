@@ -33,7 +33,9 @@ SOURCES += src/main.cpp\
     src/widgets/pageframe.cpp \
     src/widgets/knowncheckbox.cpp \
     src/widgets/movabletabwidget.cpp \
-    src/main/passworddialog.cpp
+    src/main/passworddialog.cpp \
+    src/components/pagecomponent.cpp \
+    src/components/variableintegerframe.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -53,8 +55,11 @@ HEADERS  += src/main/mainwindow.h \
     src/widgets/pageframe.h \
     src/widgets/knowncheckbox.h \
     src/widgets/movabletabwidget.h \
-    src/main/passworddialog.h
+    src/main/passworddialog.h \
+    src/components/pagecomponent.h \
+    src/components/variableintegerframe.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
-    src/main/passworddialog.ui
+    src/main/passworddialog.ui \
+    src/components/variableintegerframe.ui

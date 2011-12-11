@@ -67,7 +67,7 @@ void MainWindow::on_actionOpen_triggered()
         aArray=aFile.readAll();
         aFile.close();
 
-        //DecryptStream(aArray, "Thunderbolt");
+        DecryptStream(aArray, "Thunderbolt");
 
         QDataStream aStream(&aArray, QIODevice::ReadOnly);
 
@@ -233,7 +233,7 @@ void MainWindow::on_actionSave_triggered()
         aStream << QString("ContentIndex");
         aStream << pageIndex;
 
-        //EncryptStream(aArray, "Thunderbolt");
+        EncryptStream(aArray, "Thunderbolt");
 
         // Save result
         QFile aFile(currentName);
@@ -320,6 +320,11 @@ void MainWindow::on_actionLogin_triggered()
 
 void MainWindow::on_actionSetDocPass_triggered()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     PasswordDialog dialog(this);
     dialog.ui->titleLabel->setText("Введите пароль на документ");
 
@@ -331,6 +336,11 @@ void MainWindow::on_actionSetDocPass_triggered()
 
 void MainWindow::on_actionSetAdminPass_triggered()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     PasswordDialog dialog(this);
     dialog.ui->titleLabel->setText("Введите пароль администратора");
 
@@ -342,18 +352,75 @@ void MainWindow::on_actionSetAdminPass_triggered()
 
 void MainWindow::on_actionAddPage_triggered()
 {
-    if (isAdmin)
+    if (!isAdmin)
     {
-        addPage("Новый раздел", "Section"+QString::number(ui->pagesTabWidget->count()+1));
+        return;
     }
+
+    addPage("Новый раздел", "Section"+QString::number(ui->pagesTabWidget->count()+1));
+}
+
+void MainWindow::on_actionVariableInteger_triggered()
+{
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
+
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableIntegerFrame(this));
+}
+
+void MainWindow::on_actionVariableString_triggered()
+{
+
+}
+
+void MainWindow::on_actionVariableBool_triggered()
+{
+
+}
+
+void MainWindow::on_actionVariableDate_triggered()
+{
+
+}
+
+void MainWindow::on_actionVariableTime_triggered()
+{
+
+}
+
+void MainWindow::on_actionVariableList_triggered()
+{
+
+}
+
+void MainWindow::on_actionVariableExtendedList_triggered()
+{
+
+}
+
+void MainWindow::on_actionVariableExpression_triggered()
+{
+
+}
+
+void MainWindow::on_actionComponentText_triggered()
+{
+
+}
+
+void MainWindow::on_actionComponentTable_triggered()
+{
+
 }
 
 void MainWindow::pageMoved(int from, int to)
 {
-    QWidget* aWidget=contentPage->ui->pageLayout->itemAt(from)->widget();
+    QWidget* aWidget=contentPage->ui->variableLayout->itemAt(from)->widget();
 
-    contentPage->ui->pageLayout->removeWidget(aWidget);
-    contentPage->ui->pageLayout->insertWidget(to, aWidget);
+    contentPage->ui->variableLayout->removeWidget(aWidget);
+    contentPage->ui->variableLayout->insertWidget(to, aWidget);
 }
 
 void MainWindow::page_nameChanged(PageFrame *parentPage)
@@ -366,7 +433,7 @@ void MainWindow::page_nameChanged(PageFrame *parentPage)
     }
 
     ui->pagesTabWidget->setTabText(pageIndex, parentPage->ui->nameEdit->text());
-    ((KnownCheckBox*)contentPage->ui->pageLayout->itemAt(pageIndex)->widget())->setText(parentPage->ui->nameEdit->text());
+    ((KnownCheckBox*)contentPage->ui->variableLayout->itemAt(pageIndex)->widget())->setText(parentPage->ui->nameEdit->text());
 }
 
 void MainWindow::page_useToggled(PageFrame *parentPage)
@@ -378,12 +445,12 @@ void MainWindow::page_useToggled(PageFrame *parentPage)
         return;
     }
 
-    ((KnownCheckBox*)contentPage->ui->pageLayout->itemAt(pageIndex)->widget())->setChecked(parentPage->ui->useCheckBox->isChecked());
+    ((KnownCheckBox*)contentPage->ui->variableLayout->itemAt(pageIndex)->widget())->setChecked(parentPage->ui->useCheckBox->isChecked());
 }
 
 void MainWindow::contentCheckBoxToggled(KnownCheckBox *aCheckBox, bool checked)
 {
-    int pageIndex=contentPage->ui->pageLayout->indexOf(aCheckBox);
+    int pageIndex=contentPage->ui->variableLayout->indexOf(aCheckBox);
 
     if (pageIndex<0)
     {
@@ -399,8 +466,8 @@ void MainWindow::on_pagesTabWidget_tabCloseRequested(int index)
     {
         if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить раздел \""+ui->pagesTabWidget->tabText(index)+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
         {
-            QWidget* aWidget=contentPage->ui->pageLayout->itemAt(index)->widget();
-            contentPage->ui->pageLayout->removeWidget(aWidget);
+            QWidget* aWidget=contentPage->ui->variableLayout->itemAt(index)->widget();
+            contentPage->ui->variableLayout->removeWidget(aWidget);
             delete aWidget;
 
             aWidget=ui->pagesTabWidget->widget(index);
@@ -423,7 +490,7 @@ void MainWindow::addPage(QString aName, QString aVarName)
     KnownCheckBox *aCheckBox=new KnownCheckBox(contentPage);
     aCheckBox->setText(aName);
     aCheckBox->setChecked(true);
-    contentPage->ui->pageLayout->addWidget(aCheckBox);
+    contentPage->ui->variableLayout->addWidget(aCheckBox);
 
     aNewPage->ui->nameEdit->setText(aName);
     aNewPage->ui->varNameEdit->setText(aVarName);
@@ -466,7 +533,7 @@ void MainWindow::updateAdmin()
 
     ui->actionSetDocPass->setVisible(isAdmin);
     ui->actionSetAdminPass->setVisible(isAdmin);
-    ui->actionAddPage->setVisible(isAdmin);
+    ui->menuSection->setEnabled(isAdmin);
 }
 
 void MainWindow::saveState()

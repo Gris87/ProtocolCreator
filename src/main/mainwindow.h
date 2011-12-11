@@ -55,6 +55,16 @@ private slots:
     void on_actionSetDocPass_triggered();
     void on_actionSetAdminPass_triggered();
     void on_actionAddPage_triggered();
+    void on_actionVariableInteger_triggered();
+    void on_actionVariableString_triggered();
+    void on_actionVariableBool_triggered();
+    void on_actionVariableDate_triggered();
+    void on_actionVariableTime_triggered();
+    void on_actionVariableList_triggered();
+    void on_actionVariableExtendedList_triggered();
+    void on_actionVariableExpression_triggered();
+    void on_actionComponentText_triggered();
+    void on_actionComponentTable_triggered();
 };
 
 #endif // MAINWINDOW_H
