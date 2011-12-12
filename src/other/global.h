@@ -9,6 +9,7 @@
 #include "src/components/variableboolframe.h"
 #include "src/components/variabledateframe.h"
 #include "src/components/variabletimeframe.h"
+#include "src/components/variablelistframe.h"
 
 #include "src/main/mainwindow.h"
 #include "src/main/passworddialog.h"

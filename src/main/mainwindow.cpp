@@ -413,7 +413,12 @@ void MainWindow::on_actionVariableTime_triggered()
 
 void MainWindow::on_actionVariableList_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableListFrame(this));
 }
 
 void MainWindow::on_actionVariableExtendedList_triggered()
