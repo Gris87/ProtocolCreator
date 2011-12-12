@@ -393,12 +393,22 @@ void MainWindow::on_actionVariableBool_triggered()
 
 void MainWindow::on_actionVariableDate_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableDateFrame(this));
 }
 
 void MainWindow::on_actionVariableTime_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableTimeFrame(this));
 }
 
 void MainWindow::on_actionVariableList_triggered()

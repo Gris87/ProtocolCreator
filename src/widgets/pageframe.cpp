@@ -132,6 +132,16 @@ void PageFrame::loadFromStream(QDataStream &aStream)
                 {
                     aVariable=new VariableBoolFrame(this);
                 }
+                else
+                if (aMagicWord=="VarDate")
+                {
+                    aVariable=new VariableDateFrame(this);
+                }
+                else
+                if (aMagicWord=="VarTime")
+                {
+                    aVariable=new VariableTimeFrame(this);
+                }
 
                 if (aVariable)
                 {

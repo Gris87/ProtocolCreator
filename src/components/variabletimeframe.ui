@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>VariableIntegerFrame</class>
- <widget class="QWidget" name="VariableIntegerFrame">
+ <class>VariableTimeFrame</class>
+ <widget class="QWidget" name="VariableTimeFrame">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>115</height>
+    <width>400</width>
+    <height>91</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,19 +61,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="decimalsLabel">
-        <property name="font">
-         <font>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Знаков после запятой</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="varNameLabel">
         <property name="font">
@@ -94,19 +81,6 @@
           <weight>50</weight>
           <bold>false</bold>
          </font>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="decimalsSpinBox">
-        <property name="font">
-         <font>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="maximum">
-         <number>100</number>
         </property>
        </widget>
       </item>
@@ -136,14 +110,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="valueSpinBox">
-        <property name="prefix">
-         <string/>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-       </widget>
+       <widget class="QTimeEdit" name="valueEdit"/>
       </item>
      </layout>
     </widget>
