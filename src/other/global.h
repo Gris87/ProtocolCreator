@@ -6,6 +6,7 @@
 #include "src/components/pagecomponent.h"
 #include "src/components/variableintegerframe.h"
 #include "src/components/variablestringframe.h"
+#include "src/components/variableboolframe.h"
 
 #include "src/main/mainwindow.h"
 #include "src/main/passworddialog.h"

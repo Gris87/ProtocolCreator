@@ -10,13 +10,14 @@ MainWindow::MainWindow(QWidget *parent) :
     frect.moveCenter(QDesktopWidget().availableGeometry().center());
     move(frect.topLeft());
 
-    ui->progressBar->setValue(0);
-
     connect(ui->pagesTabWidget->tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(pageMoved(int,int)));
 
     loadState();
 
     on_actionNew_triggered();
+
+    ui->progressBar->setMaximum(1);
+    ui->progressBar->setValue(0);
 }
 
 MainWindow::~MainWindow()
@@ -382,7 +383,12 @@ void MainWindow::on_actionVariableString_triggered()
 
 void MainWindow::on_actionVariableBool_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableBoolFrame(this));
 }
 
 void MainWindow::on_actionVariableDate_triggered()
@@ -422,10 +428,10 @@ void MainWindow::on_actionComponentTable_triggered()
 
 void MainWindow::pageMoved(int from, int to)
 {
-    QWidget* aWidget=contentPage->ui->variableLayout->itemAt(from)->widget();
+    QWidget* aWidget=contentPage->ui->componentLayout->itemAt(from)->widget();
 
-    contentPage->ui->variableLayout->removeWidget(aWidget);
-    contentPage->ui->variableLayout->insertWidget(to, aWidget);
+    contentPage->ui->componentLayout->removeWidget(aWidget);
+    contentPage->ui->componentLayout->insertWidget(to, aWidget);
 }
 
 void MainWindow::page_nameChanged(PageFrame *parentPage)
@@ -438,7 +444,7 @@ void MainWindow::page_nameChanged(PageFrame *parentPage)
     }
 
     ui->pagesTabWidget->setTabText(pageIndex, parentPage->ui->nameEdit->text());
-    ((KnownCheckBox*)contentPage->ui->variableLayout->itemAt(pageIndex)->widget())->setText(parentPage->ui->nameEdit->text());
+    ((KnownCheckBox*)contentPage->ui->componentLayout->itemAt(pageIndex)->widget())->setText(parentPage->ui->nameEdit->text());
 }
 
 void MainWindow::page_useToggled(PageFrame *parentPage)
@@ -450,12 +456,12 @@ void MainWindow::page_useToggled(PageFrame *parentPage)
         return;
     }
 
-    ((KnownCheckBox*)contentPage->ui->variableLayout->itemAt(pageIndex)->widget())->setChecked(parentPage->ui->useCheckBox->isChecked());
+    ((KnownCheckBox*)contentPage->ui->componentLayout->itemAt(pageIndex)->widget())->setChecked(parentPage->ui->useCheckBox->isChecked());
 }
 
 void MainWindow::contentCheckBoxToggled(KnownCheckBox *aCheckBox, bool checked)
 {
-    int pageIndex=contentPage->ui->variableLayout->indexOf(aCheckBox);
+    int pageIndex=contentPage->ui->componentLayout->indexOf(aCheckBox);
 
     if (pageIndex<0)
     {
@@ -471,8 +477,8 @@ void MainWindow::on_pagesTabWidget_tabCloseRequested(int index)
     {
         if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить раздел \""+ui->pagesTabWidget->tabText(index)+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
         {
-            QWidget* aWidget=contentPage->ui->variableLayout->itemAt(index)->widget();
-            contentPage->ui->variableLayout->removeWidget(aWidget);
+            QWidget* aWidget=contentPage->ui->componentLayout->itemAt(index)->widget();
+            contentPage->ui->componentLayout->removeWidget(aWidget);
             delete aWidget;
 
             aWidget=ui->pagesTabWidget->widget(index);
@@ -495,7 +501,7 @@ void MainWindow::addPage(QString aName, QString aVarName)
     KnownCheckBox *aCheckBox=new KnownCheckBox(contentPage);
     aCheckBox->setText(aName);
     aCheckBox->setChecked(true);
-    contentPage->ui->variableLayout->addWidget(aCheckBox);
+    contentPage->ui->componentLayout->addWidget(aCheckBox);
 
     aNewPage->ui->nameEdit->setText(aName);
     aNewPage->ui->varNameEdit->setText(aVarName);
@@ -523,6 +529,8 @@ void MainWindow::updateAdmin()
     {
         ((PageFrame*)ui->pagesTabWidget->widget(i))->updateAdmin();
     }
+
+    contentPage->ui->hideButton->setVisible(false);
 
     ui->pagesTabWidget->setTabsClosable(isAdmin);
     ui->pagesTabWidget->setMovable(isAdmin);

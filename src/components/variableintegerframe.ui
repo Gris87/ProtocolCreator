@@ -18,10 +18,16 @@
     <number>4</number>
    </property>
    <property name="margin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QGroupBox" name="adminGroupBox">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="title">
       <string>NAME</string>
      </property>
@@ -34,16 +40,35 @@
       </property>
       <item row="0" column="0">
        <widget class="QLabel" name="nameLabel">
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Имя</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="nameEdit"/>
+       <widget class="QLineEdit" name="nameEdit">
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="decimalsLabel">
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Знаков после запятой</string>
         </property>
@@ -51,16 +76,35 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="varNameLabel">
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Имя переменной</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="varNameEdit"/>
+       <widget class="QLineEdit" name="varNameEdit">
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="2" column="1">
        <widget class="QSpinBox" name="decimalsSpinBox">
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="maximum">
          <number>100</number>
         </property>

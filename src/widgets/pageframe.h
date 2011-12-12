@@ -34,6 +34,7 @@ public:
 private slots:
     void on_nameEdit_textChanged(const QString &aNewText);
     void on_useCheckBox_toggled(bool checked);
+    void on_hideButton_clicked();
 
 signals:
     void nameChanged(PageFrame* parentPage);

@@ -24,6 +24,20 @@ void PageFrame::on_useCheckBox_toggled(bool checked)
     emit useToggled(this);
 }
 
+void PageFrame::on_hideButton_clicked()
+{
+    ui->variableWidget->setVisible(!ui->variableWidget->isVisible());
+
+    if (ui->variableWidget->isVisible())
+    {
+        ui->hideButton->setIcon(QIcon(":/images/up.png"));
+    }
+    else
+    {
+        ui->hideButton->setIcon(QIcon(":/images/down.png"));
+    }
+}
+
 void PageFrame::addVariable(PageComponent* aComponent)
 {
     variables.append(aComponent);
@@ -113,6 +127,11 @@ void PageFrame::loadFromStream(QDataStream &aStream)
                 {
                     aVariable=new VariableStringFrame(this);
                 }
+                else
+                if (aMagicWord=="VarBoolean")
+                {
+                    aVariable=new VariableBoolFrame(this);
+                }
 
                 if (aVariable)
                 {
@@ -153,6 +172,19 @@ void PageFrame::loadFromStream(QDataStream &aStream)
 void PageFrame::updateAdmin()
 {
     ui->adminVarNameWidget->setVisible(isAdmin);
+
+    ui->hideButton->setVisible(isAdmin);
+
+    if (!isAdmin)
+    {
+        for (int i=0; i<variables.length(); i++)
+        {
+            if (!variables.at(i)->inherits("VariableExpressionFrame"))
+            {
+                ui->hideButton->setVisible(true);
+            }
+        }
+    }
 
     for (int i=0; i<variables.length(); i++)
     {

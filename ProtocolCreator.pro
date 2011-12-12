@@ -36,7 +36,8 @@ SOURCES += src/main.cpp\
     src/main/passworddialog.cpp \
     src/components/pagecomponent.cpp \
     src/components/variableintegerframe.cpp \
-    src/components/variablestringframe.cpp
+    src/components/variablestringframe.cpp \
+    src/components/variableboolframe.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -59,10 +60,12 @@ HEADERS  += src/main/mainwindow.h \
     src/main/passworddialog.h \
     src/components/pagecomponent.h \
     src/components/variableintegerframe.h \
-    src/components/variablestringframe.h
+    src/components/variablestringframe.h \
+    src/components/variableboolframe.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
     src/main/passworddialog.ui \
     src/components/variableintegerframe.ui \
-    src/components/variablestringframe.ui
+    src/components/variablestringframe.ui \
+    src/components/variableboolframe.ui
