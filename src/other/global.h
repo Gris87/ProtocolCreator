@@ -11,6 +11,8 @@
 #include "src/components/variabletimeframe.h"
 #include "src/components/variablelistframe.h"
 
+#include "src/components/componenttextframe.h"
+
 #include "src/main/mainwindow.h"
 #include "src/main/passworddialog.h"
 

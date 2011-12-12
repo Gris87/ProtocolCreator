@@ -433,7 +433,12 @@ void MainWindow::on_actionVariableExpression_triggered()
 
 void MainWindow::on_actionComponentText_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addComponent(new ComponentTextFrame(this));
 }
 
 void MainWindow::on_actionComponentTable_triggered()
@@ -545,7 +550,7 @@ void MainWindow::updateAdmin()
         ((PageFrame*)ui->pagesTabWidget->widget(i))->updateAdmin();
     }
 
-    contentPage->ui->hideButton->setVisible(false);
+    contentPage->ui->hideWidget->setVisible(false);
 
     ui->pagesTabWidget->setTabsClosable(isAdmin);
     ui->pagesTabWidget->setMovable(isAdmin);

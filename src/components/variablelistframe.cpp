@@ -117,8 +117,13 @@ void VariableListFrame::on_linesTextEdit_textChanged()
 {
     QString aValue=ui->valueComboBox->currentText();
 
+    QStringList aItems=ui->linesTextEdit->toPlainText().split("\n");
+
+    aItems.removeDuplicates();
+    aItems.removeOne("");
+
     ui->valueComboBox->clear();
-    ui->valueComboBox->addItems(ui->linesTextEdit->toPlainText().split("\n"));
+    ui->valueComboBox->addItems(aItems);
 
     int index=ui->valueComboBox->findText(aValue);
 

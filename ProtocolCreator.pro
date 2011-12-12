@@ -40,7 +40,9 @@ SOURCES += src/main.cpp\
     src/components/variableboolframe.cpp \
     src/components/variabledateframe.cpp \
     src/components/variabletimeframe.cpp \
-    src/components/variablelistframe.cpp
+    src/components/variablelistframe.cpp \
+    src/components/componenttextframe.cpp \
+    src/widgets/colorpanel.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -67,7 +69,9 @@ HEADERS  += src/main/mainwindow.h \
     src/components/variableboolframe.h \
     src/components/variabledateframe.h \
     src/components/variabletimeframe.h \
-    src/components/variablelistframe.h
+    src/components/variablelistframe.h \
+    src/components/componenttextframe.h \
+    src/widgets/colorpanel.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -77,4 +81,8 @@ FORMS    += src/main/mainwindow.ui \
     src/components/variableboolframe.ui \
     src/components/variabledateframe.ui \
     src/components/variabletimeframe.ui \
-    src/components/variablelistframe.ui
+    src/components/variablelistframe.ui \
+    src/components/componenttextframe.ui
+
+OTHER_FILES += \
+    TODO.txt

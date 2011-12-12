@@ -169,6 +169,11 @@ void PageFrame::loadFromStream(QDataStream &aStream)
 
                 PageComponent *aComponent=0;
 
+                if (aMagicWord=="ComponentText")
+                {
+                    aComponent=new ComponentTextFrame(this);
+                }
+
                 if (aComponent)
                 {
                     addComponent(aComponent);
@@ -188,7 +193,7 @@ void PageFrame::updateAdmin()
 {
     ui->adminVarNameWidget->setVisible(isAdmin);
 
-    ui->hideButton->setVisible(isAdmin);
+    ui->hideWidget->setVisible(isAdmin);
 
     if (!isAdmin)
     {
@@ -196,7 +201,7 @@ void PageFrame::updateAdmin()
         {
             if (!variables.at(i)->inherits("VariableExpressionFrame"))
             {
-                ui->hideButton->setVisible(true);
+                ui->hideWidget->setVisible(true);
             }
         }
     }

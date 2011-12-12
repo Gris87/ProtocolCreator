@@ -2,5 +2,19 @@
     <qresource prefix="/">
         <file>images/up.png</file>
         <file>images/down.png</file>
+        <file>images/Bold.png</file>
+        <file>images/Bullet.png</file>
+        <file>images/Center.png</file>
+        <file>images/Copy.png</file>
+        <file>images/Cut.png</file>
+        <file>images/Font.png</file>
+        <file>images/Italic.png</file>
+        <file>images/Left.png</file>
+        <file>images/Paste.png</file>
+        <file>images/Right.png</file>
+        <file>images/Underline.png</file>
+        <file>images/Undo.png</file>
+        <file>images/Redo.png</file>
+        <file>images/Whole.png</file>
     </qresource>
 </RCC>
