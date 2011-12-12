@@ -372,7 +372,12 @@ void MainWindow::on_actionVariableInteger_triggered()
 
 void MainWindow::on_actionVariableString_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableStringFrame(this));
 }
 
 void MainWindow::on_actionVariableBool_triggered()

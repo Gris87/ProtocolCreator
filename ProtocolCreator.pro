@@ -35,7 +35,8 @@ SOURCES += src/main.cpp\
     src/widgets/movabletabwidget.cpp \
     src/main/passworddialog.cpp \
     src/components/pagecomponent.cpp \
-    src/components/variableintegerframe.cpp
+    src/components/variableintegerframe.cpp \
+    src/components/variablestringframe.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -57,9 +58,11 @@ HEADERS  += src/main/mainwindow.h \
     src/widgets/movabletabwidget.h \
     src/main/passworddialog.h \
     src/components/pagecomponent.h \
-    src/components/variableintegerframe.h
+    src/components/variableintegerframe.h \
+    src/components/variablestringframe.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
     src/main/passworddialog.ui \
-    src/components/variableintegerframe.ui
+    src/components/variableintegerframe.ui \
+    src/components/variablestringframe.ui

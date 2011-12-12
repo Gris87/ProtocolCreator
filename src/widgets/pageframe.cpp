@@ -108,6 +108,11 @@ void PageFrame::loadFromStream(QDataStream &aStream)
                 {
                     aVariable=new VariableIntegerFrame(this);
                 }
+                else
+                if (aMagicWord=="VarString")
+                {
+                    aVariable=new VariableStringFrame(this);
+                }
 
                 if (aVariable)
                 {
