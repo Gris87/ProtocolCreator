@@ -1,5 +1,4 @@
-#include "headerfooterdialog.h"
-#include "ui_headerfooterdialog.h"
+#include "src/other/global.h"
 
 HeaderFooterDialog::HeaderFooterDialog(QWidget *parent) :
     QDialog(parent),

@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+#include "ui_headerfooterdialog.h"
+
 namespace Ui {
     class HeaderFooterDialog;
 }

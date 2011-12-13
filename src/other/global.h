@@ -16,6 +16,7 @@
 #include "src/main/headerfooterdialog.h"
 #include "src/main/mainwindow.h"
 #include "src/main/passworddialog.h"
+#include "src/main/sectioncontroldialog.h"
 
 #include "src/other/encoder.h"
 #include "src/other/utils.h"
