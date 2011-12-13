@@ -5,6 +5,14 @@ PageFrame::PageFrame(QWidget *parent) :
     ui(new Ui::PageFrame)
 {
     ui->setupUi(this);
+
+    headerText="";
+    footerText="";
+    isPortaitOrientation=true;
+    leftLimit=3;
+    topLimit=2;
+    rightLimit=1;
+    bottomLimit=2;
 }
 
 PageFrame::~PageFrame()
@@ -58,6 +66,21 @@ void PageFrame::saveToStream(QDataStream &aStream)
     aStream << QString("VarName");
     aStream << ui->varNameEdit->text();
 
+    aStream << QString("Header");
+    aStream << headerText;
+
+    aStream << QString("Footer");
+    aStream << footerText;
+
+    aStream << QString("Portait");
+    aStream << isPortaitOrientation;
+
+    aStream << QString("Limits");
+    aStream << leftLimit;
+    aStream << topLimit;
+    aStream << rightLimit;
+    aStream << bottomLimit;
+
     if (variables.length()>0)
     {
         aStream << QString("Variables");
@@ -103,6 +126,29 @@ void PageFrame::loadFromStream(QDataStream &aStream)
         {
             aStream >> aMagicWord;
             ui->varNameEdit->setText(aMagicWord);
+        }
+        else
+        if (aMagicWord=="Header")
+        {
+            aStream >> headerText;
+        }
+        else
+        if (aMagicWord=="Footer")
+        {
+            aStream >> footerText;
+        }
+        else
+        if (aMagicWord=="Portait")
+        {
+            aStream >> isPortaitOrientation;
+        }
+        else
+        if (aMagicWord=="Limits")
+        {
+            aStream >> leftLimit;
+            aStream >> topLimit;
+            aStream >> rightLimit;
+            aStream >> bottomLimit;
         }
         else
         if (aMagicWord=="Variables")

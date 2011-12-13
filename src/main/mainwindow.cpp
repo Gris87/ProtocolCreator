@@ -403,7 +403,8 @@ void MainWindow::on_actionCheckDocument_triggered()
 
 void MainWindow::on_actionSectionControl_triggered()
 {
-
+    SectionControlDialog dialog(this);
+    dialog.exec();
 }
 
 void MainWindow::on_actionExport_triggered()

@@ -19,6 +19,13 @@ public:
     Ui::PageFrame *ui;
     QList<PageComponent*> variables;
     QList<PageComponent*> components;
+    QString headerText;
+    QString footerText;
+    bool isPortaitOrientation;
+    double leftLimit;
+    double topLimit;
+    double rightLimit;
+    double bottomLimit;
 
     explicit PageFrame(QWidget *parent = 0);
     ~PageFrame();

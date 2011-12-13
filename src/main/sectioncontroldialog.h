@@ -5,6 +5,8 @@
 
 #include "ui_sectioncontroldialog.h"
 
+#include "src/widgets/wordeditframe.h"
+
 namespace Ui {
     class SectionControlDialog;
 }
@@ -15,9 +17,13 @@ class SectionControlDialog : public QDialog
 
 public:
     Ui::SectionControlDialog *ui;
+    WordEditFrame *headerWordEdit;
+    WordEditFrame *footerWordEdit;
 
     explicit SectionControlDialog(QWidget *parent = 0);
     ~SectionControlDialog();
+private slots:
+    void on_pagesListWidget_itemSelectionChanged();
 };
 
 #endif // SECTIONCONTROLDIALOG_H
