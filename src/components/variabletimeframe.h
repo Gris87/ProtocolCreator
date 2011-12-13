@@ -19,6 +19,9 @@ public:
     explicit VariableTimeFrame(QWidget *parent = 0);
     ~VariableTimeFrame();
 
+    QString name();
+    QString variableName();
+
     void saveToStream(QDataStream &aStream);
     void loadFromStream(QDataStream &aStream);
 

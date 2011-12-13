@@ -19,11 +19,21 @@
      <number>4</number>
     </property>
     <item>
-     <widget class="MovableTabWidget" name="pagesTabWidget">
-      <property name="movable">
-       <bool>true</bool>
+     <layout class="QVBoxLayout" name="dividerLayout">
+      <property name="spacing">
+       <number>4</number>
       </property>
-     </widget>
+      <item>
+       <widget class="MovableTabWidget" name="pagesTabWidget">
+        <property name="movable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="logListWidget"/>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QProgressBar" name="progressBar"/>
@@ -36,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>640</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -53,6 +63,7 @@
     <property name="title">
      <string>Протокол</string>
     </property>
+    <addaction name="actionCheckDocument"/>
    </widget>
    <widget class="QMenu" name="menuAdmin">
     <property name="title">
@@ -233,6 +244,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionCheckDocument">
+   <property name="text">
+    <string>Проверить документ</string>
    </property>
   </action>
  </widget>

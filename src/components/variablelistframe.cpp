@@ -15,6 +15,16 @@ VariableListFrame::~VariableListFrame()
     delete ui;
 }
 
+QString VariableListFrame::name()
+{
+    return ui->nameEdit->text();
+}
+
+QString VariableListFrame::variableName()
+{
+    return ui->varNameEdit->text();
+}
+
 void VariableListFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarList");

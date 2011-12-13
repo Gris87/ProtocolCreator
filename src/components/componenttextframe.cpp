@@ -8,11 +8,23 @@ ComponentTextFrame::ComponentTextFrame(QWidget *parent) :
 
     ui->nameEdit->setText("Текст");
     ui->varNameEdit->setText("Text");
+
+    ui->colorArea->setColor(QColor(0, 0, 0));
 }
 
 ComponentTextFrame::~ComponentTextFrame()
 {
     delete ui;
+}
+
+QString ComponentTextFrame::name()
+{
+    return ui->nameEdit->text();
+}
+
+QString ComponentTextFrame::variableName()
+{
+    return ui->varNameEdit->text();
 }
 
 void ComponentTextFrame::saveToStream(QDataStream &aStream)

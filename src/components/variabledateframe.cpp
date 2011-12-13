@@ -15,6 +15,16 @@ VariableDateFrame::~VariableDateFrame()
     delete ui;
 }
 
+QString VariableDateFrame::name()
+{
+    return ui->nameEdit->text();
+}
+
+QString VariableDateFrame::variableName()
+{
+    return ui->varNameEdit->text();
+}
+
 void VariableDateFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarDate");

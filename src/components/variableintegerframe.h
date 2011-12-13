@@ -19,6 +19,9 @@ public:
     explicit VariableIntegerFrame(QWidget *parent = 0);
     ~VariableIntegerFrame();
 
+    QString name();
+    QString variableName();
+
     void saveToStream(QDataStream &aStream);
     void loadFromStream(QDataStream &aStream);
 

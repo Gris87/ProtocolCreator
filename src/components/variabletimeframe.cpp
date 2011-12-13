@@ -15,6 +15,16 @@ VariableTimeFrame::~VariableTimeFrame()
     delete ui;
 }
 
+QString VariableTimeFrame::name()
+{
+    return ui->nameEdit->text();
+}
+
+QString VariableTimeFrame::variableName()
+{
+    return ui->varNameEdit->text();
+}
+
 void VariableTimeFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarTime");

@@ -19,6 +19,9 @@ public:
     explicit VariableListFrame(QWidget *parent = 0);
     ~VariableListFrame();
 
+    QString name();
+    QString variableName();
+
     void saveToStream(QDataStream &aStream);
     void loadFromStream(QDataStream &aStream);
 

@@ -15,6 +15,16 @@ VariableIntegerFrame::~VariableIntegerFrame()
     delete ui;
 }
 
+QString VariableIntegerFrame::name()
+{
+    return ui->nameEdit->text();
+}
+
+QString VariableIntegerFrame::variableName()
+{
+    return ui->varNameEdit->text();
+}
+
 void VariableIntegerFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarInteger");

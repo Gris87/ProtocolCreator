@@ -16,5 +16,7 @@
         <file>images/Undo.png</file>
         <file>images/Redo.png</file>
         <file>images/Whole.png</file>
+        <file>images/Error.png</file>
+        <file>images/Hint.png</file>
     </qresource>
 </RCC>

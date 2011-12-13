@@ -15,6 +15,16 @@ VariableStringFrame::~VariableStringFrame()
     delete ui;
 }
 
+QString VariableStringFrame::name()
+{
+    return ui->nameEdit->text();
+}
+
+QString VariableStringFrame::variableName()
+{
+    return ui->varNameEdit->text();
+}
+
 void VariableStringFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarString");

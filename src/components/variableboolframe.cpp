@@ -15,6 +15,16 @@ VariableBoolFrame::~VariableBoolFrame()
     delete ui;
 }
 
+QString VariableBoolFrame::name()
+{
+    return ui->nameEdit->text();
+}
+
+QString VariableBoolFrame::variableName()
+{
+    return ui->varNameEdit->text();
+}
+
 void VariableBoolFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarBoolean");

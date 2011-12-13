@@ -19,6 +19,9 @@ public:
     explicit VariableBoolFrame(QWidget *parent = 0);
     ~VariableBoolFrame();
 
+    QString name();
+    QString variableName();
+
     void saveToStream(QDataStream &aStream);
     void loadFromStream(QDataStream &aStream);
 

@@ -33,6 +33,7 @@ SOURCES += src/main.cpp\
     src/widgets/pageframe.cpp \
     src/widgets/knowncheckbox.cpp \
     src/widgets/movabletabwidget.cpp \
+    src/widgets/colorarea.cpp \
     src/main/passworddialog.cpp \
     src/components/pagecomponent.cpp \
     src/components/variableintegerframe.cpp \
@@ -41,8 +42,7 @@ SOURCES += src/main.cpp\
     src/components/variabledateframe.cpp \
     src/components/variabletimeframe.cpp \
     src/components/variablelistframe.cpp \
-    src/components/componenttextframe.cpp \
-    src/widgets/colorpanel.cpp
+    src/components/componenttextframe.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -62,6 +62,7 @@ HEADERS  += src/main/mainwindow.h \
     src/widgets/pageframe.h \
     src/widgets/knowncheckbox.h \
     src/widgets/movabletabwidget.h \
+    src/widgets/colorarea.h \
     src/main/passworddialog.h \
     src/components/pagecomponent.h \
     src/components/variableintegerframe.h \
@@ -70,8 +71,7 @@ HEADERS  += src/main/mainwindow.h \
     src/components/variabledateframe.h \
     src/components/variabletimeframe.h \
     src/components/variablelistframe.h \
-    src/components/componenttextframe.h \
-    src/widgets/colorpanel.h
+    src/components/componenttextframe.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

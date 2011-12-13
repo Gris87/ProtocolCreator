@@ -8,6 +8,7 @@
 #include <QInputDialog>
 #include <QFileDialog>
 #include <QDateTime>
+#include <QSplitter>
 
 #include "src/widgets/knowncheckbox.h"
 #include "src/widgets/pageframe.h"
@@ -24,6 +25,7 @@ class MainWindow : public QMainWindow
 
 public:
     Ui::MainWindow *ui;
+    QSplitter *dividerSplitter;
     PageFrame *contentPage;
 
     explicit MainWindow(QWidget *parent = 0);
@@ -31,6 +33,9 @@ public:
 
 private:
     void addPage(QString aName, QString aVarName);
+
+    void addError(QString aText);
+    void addHint(QString aText);
 
     void updateHeader();
     void updateAdmin();
@@ -51,6 +56,7 @@ private slots:
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
     void on_actionExit_triggered();
+    void on_actionCheckDocument_triggered();
     void on_actionLogin_triggered();
     void on_actionSetDocPass_triggered();
     void on_actionSetAdminPass_triggered();

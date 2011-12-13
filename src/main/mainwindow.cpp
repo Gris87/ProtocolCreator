@@ -10,6 +10,15 @@ MainWindow::MainWindow(QWidget *parent) :
     frect.moveCenter(QDesktopWidget().availableGeometry().center());
     move(frect.topLeft());
 
+    dividerSplitter = new QSplitter(Qt::Vertical, this);
+    ui->dividerLayout->removeWidget(ui->pagesTabWidget);
+    ui->dividerLayout->removeWidget(ui->logListWidget);
+
+    dividerSplitter->addWidget(ui->pagesTabWidget);
+    dividerSplitter->addWidget(ui->logListWidget);
+
+    ui->dividerLayout->addWidget(dividerSplitter);
+
     connect(ui->pagesTabWidget->tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(pageMoved(int,int)));
 
     loadState();
@@ -283,6 +292,115 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
+void MainWindow::on_actionCheckDocument_triggered()
+{
+    ui->logListWidget->clear();
+
+    for (int i=0; i<ui->pagesTabWidget->count(); i++)
+    {
+        PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+        if (aPage->ui->nameEdit->text().trimmed()=="")
+        {
+            addHint("Нет имени у раздела");
+        }
+
+        if (aPage->ui->varNameEdit->text().trimmed()=="")
+        {
+            addError("Нет имени переменной у раздела \""+aPage->ui->nameEdit->text()+"\"");
+        }
+    }
+
+    for (int i=0; i<ui->pagesTabWidget->count()-1; i++)
+    {
+        PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+        for (int j=i+1; j<ui->pagesTabWidget->count(); j++)
+        {
+            PageFrame* aPage2=((PageFrame*)ui->pagesTabWidget->widget(j));
+
+            if (aPage->ui->varNameEdit->text()==aPage2->ui->varNameEdit->text())
+            {
+                addError("Одинаковые имена переменных раздела у \""+aPage->ui->nameEdit->text()+"\" и \""+aPage2->ui->nameEdit->text()+"\"");
+            }
+        }
+    }
+
+    for (int i=0; i<ui->pagesTabWidget->count(); i++)
+    {
+        PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+        for (int j=0; j<aPage->variables.length(); j++)
+        {
+            if (aPage->variables.at(j)->name()=="")
+            {
+                addHint("Нет имени у переменной в разделе \""+aPage->ui->nameEdit->text()+"\"");
+            }
+
+            if (aPage->variables.at(j)->variableName()=="")
+            {
+                addError("Нет имени переменной для \""+aPage->variables.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
+            }
+        }
+
+        for (int j=0; j<aPage->components.length(); j++)
+        {
+            if (aPage->components.at(j)->name()=="")
+            {
+                addHint("Нет имени у компонента в разделе \""+aPage->ui->nameEdit->text()+"\"");
+            }
+
+            if (aPage->components.at(j)->variableName()=="")
+            {
+                addError("Нет имени переменной для компонента \""+aPage->components.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
+            }
+        }
+    }
+
+    for (int i=0; i<ui->pagesTabWidget->count(); i++)
+    {
+        PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+        for (int j=0; j<aPage->variables.length(); j++)
+        {
+            for (int k=j+1; k<aPage->variables.length(); k++)
+            {
+                if (aPage->variables.at(j)->variableName()==aPage->variables.at(k)->variableName())
+                {
+                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" и \""+aPage->variables.at(k)->name()+"\"");
+                }
+            }
+        }
+
+        for (int j=0; j<aPage->components.length(); j++)
+        {
+            for (int k=j+1; k<aPage->components.length(); k++)
+            {
+                if (aPage->components.at(j)->variableName()==aPage->components.at(k)->variableName())
+                {
+                    addError("Одинаковые имена переменных у \""+aPage->components.at(j)->name()+"\" и \""+aPage->components.at(k)->name()+"\"");
+                }
+            }
+        }
+
+        for (int j=0; j<aPage->variables.length(); j++)
+        {
+            for (int k=0; k<aPage->components.length(); k++)
+            {
+                if (aPage->variables.at(j)->variableName()==aPage->components.at(k)->variableName())
+                {
+                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" и \""+aPage->components.at(k)->name()+"\"");
+                }
+            }
+        }
+    }
+
+    if (ui->logListWidget->count()>0)
+    {
+        QMessageBox::warning(this, protocolCreatorVersion, "Возникли проблемы при обработке документа.\nПожалуйста, проверьте логи");
+    }
+}
+
 void MainWindow::on_actionLogin_triggered()
 {
     if (isAdmin)
@@ -531,6 +649,16 @@ void MainWindow::addPage(QString aName, QString aVarName)
     connect(aNewPage, SIGNAL(useToggled(PageFrame*)), this, SLOT(page_useToggled(PageFrame*)));
 }
 
+void MainWindow::addError(QString aText)
+{
+    ui->logListWidget->addItem(new QListWidgetItem(QIcon(":/images/Error.png"), aText));
+}
+
+void MainWindow::addHint(QString aText)
+{
+    ui->logListWidget->addItem(new QListWidgetItem(QIcon(":/images/Hint.png"), aText));
+}
+
 void MainWindow::updateHeader()
 {
     if (currentName=="")
@@ -578,6 +706,7 @@ void MainWindow::saveState()
     aSettings.beginGroup("States");
 
     aSettings.setValue("Geometry",saveGeometry());
+    aSettings.setValue("Divider_state",dividerSplitter->saveState());
 
     aSettings.endGroup();
 }
@@ -588,6 +717,7 @@ void MainWindow::loadState()
     aSettings.beginGroup("States");
 
     restoreGeometry(aSettings.value("Geometry").toByteArray());
+    dividerSplitter->restoreState(aSettings.value("Divider_state").toByteArray());
 
     aSettings.endGroup();
 }

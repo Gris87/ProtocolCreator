@@ -9,6 +9,9 @@ class PageComponent : public QWidget
 public:
     explicit PageComponent(QWidget *parent = 0);
 
+    virtual QString name();
+    virtual QString variableName();
+
     virtual void saveToStream(QDataStream &aStream);
     virtual void loadFromStream(QDataStream &aStream);
 

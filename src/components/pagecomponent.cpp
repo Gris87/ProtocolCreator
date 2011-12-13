@@ -5,6 +5,16 @@ PageComponent::PageComponent(QWidget *parent) :
 {
 }
 
+QString PageComponent::name()
+{
+    return "";
+}
+
+QString PageComponent::variableName()
+{
+    return "";
+}
+
 void PageComponent::saveToStream(QDataStream &aStream)
 {
     // Nothing
