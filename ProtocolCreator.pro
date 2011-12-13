@@ -45,7 +45,8 @@ SOURCES += src/main.cpp\
     src/components/componenttextframe.cpp \
     src/widgets/wordeditframe.cpp \
     src/main/sectioncontroldialog.cpp \
-    src/widgets/wordtextedit.cpp
+    src/widgets/wordtextedit.cpp \
+    src/main/globaldialog.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -77,7 +78,8 @@ HEADERS  += src/main/mainwindow.h \
     src/components/componenttextframe.h \
     src/widgets/wordeditframe.h \
     src/main/sectioncontroldialog.h \
-    src/widgets/wordtextedit.h
+    src/widgets/wordtextedit.h \
+    src/main/globaldialog.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -90,7 +92,8 @@ FORMS    += src/main/mainwindow.ui \
     src/components/variablelistframe.ui \
     src/components/componenttextframe.ui \
     src/widgets/wordeditframe.ui \
-    src/main/sectioncontroldialog.ui
+    src/main/sectioncontroldialog.ui \
+    src/main/globaldialog.ui
 
 OTHER_FILES += \
     TODO.txt

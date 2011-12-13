@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 
     // INITIALIZATION
     mainWindow=new MainWindow();
+    globalDialog=new GlobalDialog(mainWindow);
     mainWindow->show();
 
     // RUNNING

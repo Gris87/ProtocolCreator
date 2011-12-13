@@ -45,6 +45,16 @@ void MainWindow::on_actionNew_triggered()
 
     updateHeader();
 
+    if (globalDialog)
+    {
+        while (globalDialog->ui->variableLayout->count()>0)
+        {
+            QWidget* aWidget=globalDialog->ui->variableLayout->itemAt(0)->widget();
+            globalDialog->ui->variableLayout->removeWidget(aWidget);
+            delete aWidget;
+        }
+    }
+
     ui->progressBar->setMaximum(ui->pagesTabWidget->count());
 
     while (ui->pagesTabWidget->count()>0)
@@ -127,6 +137,13 @@ void MainWindow::on_actionOpen_triggered()
         currentName=dialog.selectedFiles().at(0);
         isAdmin=false;
         adminPass="";
+
+        while (globalDialog->ui->variableLayout->count()>0)
+        {
+            QWidget* aWidget=globalDialog->ui->variableLayout->itemAt(0)->widget();
+            globalDialog->ui->variableLayout->removeWidget(aWidget);
+            delete aWidget;
+        }
 
         ui->progressBar->setMaximum(ui->pagesTabWidget->count());
 
@@ -399,6 +416,11 @@ void MainWindow::on_actionCheckDocument_triggered()
     {
         QMessageBox::warning(this, protocolCreatorVersion, "Возникли проблемы при обработке документа.\nПожалуйста, проверьте логи");
     }
+}
+
+void MainWindow::on_actionGlobalVars_triggered()
+{
+    globalDialog->exec();
 }
 
 void MainWindow::on_actionSectionControl_triggered()
@@ -701,6 +723,11 @@ void MainWindow::updateHeader()
 
 void MainWindow::updateAdmin()
 {
+    if (globalDialog)
+    {
+        globalDialog->updateAdmin();
+    }
+
     for (int i=0; i<ui->pagesTabWidget->count(); i++)
     {
         ((PageFrame*)ui->pagesTabWidget->widget(i))->updateAdmin();

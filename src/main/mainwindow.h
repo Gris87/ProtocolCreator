@@ -56,6 +56,7 @@ private slots:
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
     void on_actionExit_triggered();
+    void on_actionGlobalVars_triggered();
     void on_actionSectionControl_triggered();
     void on_actionCheckDocument_triggered();
     void on_actionExport_triggered();

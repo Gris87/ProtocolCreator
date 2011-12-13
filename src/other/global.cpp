@@ -2,6 +2,7 @@
 
 // FORMS
 MainWindow                *mainWindow=0;
+GlobalDialog              *globalDialog=0;
 
 // GENERAL
 bool                       isAdmin=true;

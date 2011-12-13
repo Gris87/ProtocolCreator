@@ -63,6 +63,7 @@
     <property name="title">
      <string>Протокол</string>
     </property>
+    <addaction name="actionGlobalVars"/>
     <addaction name="actionSectionControl"/>
     <addaction name="actionCheckDocument"/>
     <addaction name="separator"/>
@@ -280,6 +281,14 @@
    </property>
    <property name="shortcut">
     <string>F7</string>
+   </property>
+  </action>
+  <action name="actionGlobalVars">
+   <property name="text">
+    <string>Глобальные переменные</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
    </property>
   </action>
  </widget>

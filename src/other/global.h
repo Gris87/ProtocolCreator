@@ -13,6 +13,7 @@
 
 #include "src/components/componenttextframe.h"
 
+#include "src/main/globaldialog.h"
 #include "src/main/mainwindow.h"
 #include "src/main/passworddialog.h"
 #include "src/main/sectioncontroldialog.h"
@@ -30,6 +31,7 @@
 
 // FORMS
 extern MainWindow                *mainWindow;
+extern GlobalDialog              *globalDialog;
 
 // GENERAL
 extern bool                       isAdmin;

@@ -11,7 +11,7 @@ PageFrame::PageFrame(QWidget *parent) :
     isPortaitOrientation=true;
     leftLimit=3;
     topLimit=2;
-    rightLimit=1;
+    rightLimit=1.5;
     bottomLimit=2;
 }
 
