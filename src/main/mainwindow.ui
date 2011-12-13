@@ -64,6 +64,8 @@
      <string>Протокол</string>
     </property>
     <addaction name="actionCheckDocument"/>
+    <addaction name="actionExport"/>
+    <addaction name="actionGenerateWord"/>
    </widget>
    <widget class="QMenu" name="menuAdmin">
     <property name="title">
@@ -249,6 +251,16 @@
   <action name="actionCheckDocument">
    <property name="text">
     <string>Проверить документ</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Экспортировать раздел</string>
+   </property>
+  </action>
+  <action name="actionGenerateWord">
+   <property name="text">
+    <string>Создать документ Word</string>
    </property>
   </action>
  </widget>

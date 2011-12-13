@@ -57,6 +57,8 @@ private slots:
     void on_actionSaveAs_triggered();
     void on_actionExit_triggered();
     void on_actionCheckDocument_triggered();
+    void on_actionExport_triggered();
+    void on_actionGenerateWord_triggered();
     void on_actionLogin_triggered();
     void on_actionSetDocPass_triggered();
     void on_actionSetAdminPass_triggered();

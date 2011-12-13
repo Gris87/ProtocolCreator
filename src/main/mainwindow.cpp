@@ -401,6 +401,26 @@ void MainWindow::on_actionCheckDocument_triggered()
     }
 }
 
+void MainWindow::on_actionExport_triggered()
+{
+    on_actionCheckDocument_triggered();
+
+    if (ui->logListWidget->count()>0)
+    {
+        return;
+    }
+}
+
+void MainWindow::on_actionGenerateWord_triggered()
+{
+    on_actionCheckDocument_triggered();
+
+    if (ui->logListWidget->count()>0)
+    {
+        return;
+    }
+}
+
 void MainWindow::on_actionLogin_triggered()
 {
     if (isAdmin)
@@ -477,6 +497,8 @@ void MainWindow::on_actionAddPage_triggered()
     }
 
     addPage("Новый раздел", "Section"+QString::number(ui->pagesTabWidget->count()+1));
+
+    ui->pagesTabWidget->setCurrentIndex(ui->pagesTabWidget->count()-1);
 }
 
 void MainWindow::on_actionVariableInteger_triggered()

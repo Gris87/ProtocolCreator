@@ -13,6 +13,7 @@
 
 #include "src/components/componenttextframe.h"
 
+#include "src/main/headerfooterdialog.h"
 #include "src/main/mainwindow.h"
 #include "src/main/passworddialog.h"
 
@@ -23,6 +24,7 @@
 #include "src/widgets/knowncheckbox.h"
 #include "src/widgets/movabletabwidget.h"
 #include "src/widgets/pageframe.h"
+#include "src/widgets/wordeditframe.h"
 
 #include "src/word/word.h"
 
