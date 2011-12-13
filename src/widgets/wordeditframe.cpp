@@ -7,6 +7,10 @@ WordEditFrame::WordEditFrame(QWidget *parent) :
     ui->setupUi(this);
 
     ui->colorArea->setColor(QColor(0, 0, 0));
+
+    connect(ui->valueEdit, SIGNAL(boldCombination()), this, SLOT(on_boldButton_clicked()));
+    connect(ui->valueEdit, SIGNAL(italicCombination()), this, SLOT(on_italicButton_clicked()));
+    connect(ui->valueEdit, SIGNAL(underlineCombination()), this, SLOT(on_underlineButton_clicked()));
 }
 
 WordEditFrame::~WordEditFrame()

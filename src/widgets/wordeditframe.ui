@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>446</width>
     <height>300</height>
    </rect>
   </property>
@@ -452,7 +452,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="valueEdit"/>
+    <widget class="WordTextEdit" name="valueEdit"/>
    </item>
   </layout>
  </widget>
@@ -465,6 +465,11 @@
    <slots>
     <signal>colorChanged(QColor)</signal>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>WordTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header>src/widgets/wordtextedit.h</header>
   </customwidget>
  </customwidgets>
  <resources>
