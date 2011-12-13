@@ -44,7 +44,6 @@ SOURCES += src/main.cpp\
     src/components/variablelistframe.cpp \
     src/components/componenttextframe.cpp \
     src/widgets/wordeditframe.cpp \
-    src/main/headerfooterdialog.cpp \
     src/main/sectioncontroldialog.cpp
 
 HEADERS  += src/main/mainwindow.h \
@@ -76,7 +75,6 @@ HEADERS  += src/main/mainwindow.h \
     src/components/variablelistframe.h \
     src/components/componenttextframe.h \
     src/widgets/wordeditframe.h \
-    src/main/headerfooterdialog.h \
     src/main/sectioncontroldialog.h
 
 FORMS    += src/main/mainwindow.ui \
@@ -90,7 +88,6 @@ FORMS    += src/main/mainwindow.ui \
     src/components/variablelistframe.ui \
     src/components/componenttextframe.ui \
     src/widgets/wordeditframe.ui \
-    src/main/headerfooterdialog.ui \
     src/main/sectioncontroldialog.ui
 
 OTHER_FILES += \
