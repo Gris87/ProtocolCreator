@@ -63,7 +63,13 @@ void GlobalDialog::variableCopy(PageComponent* aComponent)
 
 void GlobalDialog::variableDelete(PageComponent* aComponent)
 {
+    if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить переменную \""+aComponent->name()+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
+    {
+        variables.removeOne(aComponent);
 
+        ui->variableLayout->removeWidget(aComponent);
+        delete aComponent;
+    }
 }
 
 void GlobalDialog::on_numberButton_clicked()

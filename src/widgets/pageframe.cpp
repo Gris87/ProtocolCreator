@@ -69,7 +69,13 @@ void PageFrame::variableCopy(PageComponent* aComponent)
 
 void PageFrame::variableDelete(PageComponent* aComponent)
 {
+    if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить переменную \""+aComponent->name()+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
+    {
+        variables.removeOne(aComponent);
 
+        ui->variableLayout->removeWidget(aComponent);
+        delete aComponent;
+    }
 }
 
 void PageFrame::componentUp(PageComponent* aComponent)
@@ -163,7 +169,13 @@ void PageFrame::componentCopy(PageComponent* aComponent)
 
 void PageFrame::componentDelete(PageComponent* aComponent)
 {
+    if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить компонент \""+aComponent->name()+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
+    {
+        components.removeOne(aComponent);
 
+        ui->componentLayout->removeWidget(aComponent);
+        delete aComponent;
+    }
 }
 
 void PageFrame::on_nameEdit_textChanged(const QString &aNewText)
