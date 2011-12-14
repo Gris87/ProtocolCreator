@@ -318,8 +318,36 @@ void MainWindow::on_actionCheckDocument_triggered()
 {
     ui->logListWidget->clear();
 
-    ui->progressBar->setMaximum(4);
+    ui->progressBar->setMaximum(9);
     ui->progressBar->setValue(0);
+
+    for (int i=0; i<globalDialog->variables.length(); i++)
+    {
+        if (globalDialog->variables.at(i)->name().trimmed()=="")
+        {
+            addHint("Нет имени у глобальной переменной");
+        }
+
+        if (globalDialog->variables.at(i)->variableName().trimmed()=="")
+        {
+            addError("Нет имени переменной у глобальной переменной \""+globalDialog->variables.at(i)->name()+"\"");
+        }
+    }
+
+    ui->progressBar->setValue(ui->progressBar->value()+1);
+
+    for (int i=0; i<globalDialog->variables.length()-1; i++)
+    {
+        for (int j=i+1; j<globalDialog->variables.length(); j++)
+        {
+            if (globalDialog->variables.at(i)->variableName()==globalDialog->variables.at(j)->variableName())
+            {
+                addError("Одинаковые имена глобальных переменных у \""+globalDialog->variables.at(i)->name()+"\" и у \""+globalDialog->variables.at(j)->name()+"\"");
+            }
+        }
+    }
+
+    ui->progressBar->setValue(ui->progressBar->value()+1);
 
     for (int i=0; i<ui->pagesTabWidget->count(); i++)
     {
@@ -349,6 +377,21 @@ void MainWindow::on_actionCheckDocument_triggered()
             if (aPage->ui->varNameEdit->text()==aPage2->ui->varNameEdit->text())
             {
                 addError("Одинаковые имена переменных раздела у \""+aPage->ui->nameEdit->text()+"\" и \""+aPage2->ui->nameEdit->text()+"\"");
+            }
+        }
+    }
+
+    ui->progressBar->setValue(ui->progressBar->value()+1);
+
+    for (int i=0; i<globalDialog->variables.length(); i++)
+    {
+        for (int j=0; j<ui->pagesTabWidget->count(); j++)
+        {
+            PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(j));
+
+            if (globalDialog->variables.at(i)->variableName()==aPage->ui->varNameEdit->text())
+            {
+                addError("Одинаковые имена переменных у глобальной переменной \""+globalDialog->variables.at(i)->name()+"\" и у раздела \""+aPage->ui->nameEdit->text()+"\"");
             }
         }
     }
@@ -398,7 +441,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->variables.at(j)->variableName()==aPage->variables.at(k)->variableName())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" и \""+aPage->variables.at(k)->name()+"\"");
+                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" и \""+aPage->variables.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
                 }
             }
         }
@@ -409,7 +452,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->components.at(j)->variableName()==aPage->components.at(k)->variableName())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->components.at(j)->name()+"\" и \""+aPage->components.at(k)->name()+"\"");
+                    addError("Одинаковые имена переменных у \""+aPage->components.at(j)->name()+"\" и \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
                 }
             }
         }
@@ -420,7 +463,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->variables.at(j)->variableName()==aPage->components.at(k)->variableName())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" и \""+aPage->components.at(k)->name()+"\"");
+                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" и \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
                 }
             }
         }
@@ -428,8 +471,77 @@ void MainWindow::on_actionCheckDocument_triggered()
 
     ui->progressBar->setValue(ui->progressBar->value()+1);
 
+    for (int i=0; i<ui->pagesTabWidget->count(); i++)
+    {
+        PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+        for (int j=0; j<aPage->variables.length(); j++)
+        {
+            for (int k=0; k<globalDialog->variables.length(); k++)
+            {
+                if (aPage->variables.at(j)->variableName()==globalDialog->variables.at(k)->variableName())
+                {
+                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и \""+globalDialog->variables.at(k)->name()+"\"");
+                }
+            }
+        }
+
+        for (int j=0; j<aPage->components.length(); j++)
+        {
+            for (int k=0; k<globalDialog->variables.length(); k++)
+            {
+                if (aPage->components.at(j)->variableName()==globalDialog->variables.at(k)->variableName())
+                {
+                    addError("Одинаковые имена переменных у \""+aPage->components.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и \""+globalDialog->variables.at(k)->name()+"\"");
+                }
+            }
+        }
+    }
+
+    ui->progressBar->setValue(ui->progressBar->value()+1);
+
+    for (int i=0; i<ui->pagesTabWidget->count(); i++)
+    {
+        PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+        for (int j=0; j<ui->pagesTabWidget->count(); j++)
+        {
+            PageFrame* aPage2=((PageFrame*)ui->pagesTabWidget->widget(j));
+
+            for (int k=0; k<aPage->variables.length(); k++)
+            {
+                if (aPage->variables.at(k)->variableName()==aPage2->ui->varNameEdit->text())
+                {
+                    addError("Одинаковые имена переменных у \""+aPage->variables.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и у раздела \""+aPage2->ui->nameEdit->text()+"\"");
+                }
+            }
+
+            for (int k=0; k<aPage->components.length(); k++)
+            {
+                if (aPage->components.at(k)->variableName()==aPage2->ui->varNameEdit->text())
+                {
+                    addError("Одинаковые имена переменных у \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и у раздела \""+aPage2->ui->nameEdit->text()+"\"");
+                }
+            }
+        }
+    }
+
+    ui->progressBar->setValue(ui->progressBar->value()+1);
+
+    ui->progressBar->setValue(0);
+
     if (ui->logListWidget->count()>0)
     {
+        if (ui->logListWidget->height()==0)
+        {
+            QList<int> aSizes;
+
+            aSizes.append(ui->pagesTabWidget->height()*0.9);
+            aSizes.append(ui->pagesTabWidget->height()*0.1);
+
+            dividerSplitter->setSizes(aSizes);
+        }
+
         QMessageBox::warning(this, protocolCreatorVersion, "Возникли проблемы при обработке документа.\nПожалуйста, проверьте логи");
     }
 }
