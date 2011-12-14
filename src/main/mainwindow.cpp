@@ -325,12 +325,12 @@ void MainWindow::on_actionCheckDocument_triggered()
     {
         if (globalDialog->variables.at(i)->name().trimmed()=="")
         {
-            addHint("Нет имени у глобальной переменной");
+            addHint("Нет заголовка у глобальной переменной");
         }
 
         if (globalDialog->variables.at(i)->variableName().trimmed()=="")
         {
-            addError("Нет имени переменной у глобальной переменной \""+globalDialog->variables.at(i)->name()+"\"");
+            addError("Нет имени у глобальной переменной \""+globalDialog->variables.at(i)->name()+"\"");
         }
     }
 
@@ -342,7 +342,7 @@ void MainWindow::on_actionCheckDocument_triggered()
         {
             if (globalDialog->variables.at(i)->variableName()==globalDialog->variables.at(j)->variableName())
             {
-                addError("Одинаковые имена глобальных переменных у \""+globalDialog->variables.at(i)->name()+"\" и у \""+globalDialog->variables.at(j)->name()+"\"");
+                addError("Одинаковые имена у глобальной переменной \""+globalDialog->variables.at(i)->name()+"\" и у глобальной переменной \""+globalDialog->variables.at(j)->name()+"\"");
             }
         }
     }
@@ -355,12 +355,12 @@ void MainWindow::on_actionCheckDocument_triggered()
 
         if (aPage->ui->nameEdit->text().trimmed()=="")
         {
-            addHint("Нет имени у раздела");
+            addHint("Нет заголовка у раздела");
         }
 
         if (aPage->ui->varNameEdit->text().trimmed()=="")
         {
-            addError("Нет имени переменной у раздела \""+aPage->ui->nameEdit->text()+"\"");
+            addError("Нет имени у раздела \""+aPage->ui->nameEdit->text()+"\"");
         }
     }
 
@@ -376,22 +376,22 @@ void MainWindow::on_actionCheckDocument_triggered()
 
             if (aPage->ui->varNameEdit->text()==aPage2->ui->varNameEdit->text())
             {
-                addError("Одинаковые имена переменных раздела у \""+aPage->ui->nameEdit->text()+"\" и \""+aPage2->ui->nameEdit->text()+"\"");
+                addError("Одинаковые имена у раздела \""+aPage->ui->nameEdit->text()+"\" и у раздела \""+aPage2->ui->nameEdit->text()+"\"");
             }
         }
     }
 
     ui->progressBar->setValue(ui->progressBar->value()+1);
 
-    for (int i=0; i<globalDialog->variables.length(); i++)
+    for (int i=0; i<ui->pagesTabWidget->count(); i++)
     {
-        for (int j=0; j<ui->pagesTabWidget->count(); j++)
-        {
-            PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(j));
+        PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
 
-            if (globalDialog->variables.at(i)->variableName()==aPage->ui->varNameEdit->text())
+        for (int j=0; j<globalDialog->variables.length(); j++)
+        {
+            if (globalDialog->variables.at(j)->variableName()==aPage->ui->varNameEdit->text())
             {
-                addError("Одинаковые имена переменных у глобальной переменной \""+globalDialog->variables.at(i)->name()+"\" и у раздела \""+aPage->ui->nameEdit->text()+"\"");
+                addError("Одинаковые имена у глобальной переменной \""+globalDialog->variables.at(j)->name()+"\" и у раздела \""+aPage->ui->nameEdit->text()+"\"");
             }
         }
     }
@@ -406,12 +406,12 @@ void MainWindow::on_actionCheckDocument_triggered()
         {
             if (aPage->variables.at(j)->name()=="")
             {
-                addHint("Нет имени у переменной в разделе \""+aPage->ui->nameEdit->text()+"\"");
+                addHint("Нет заголовка у переменной в разделе \""+aPage->ui->nameEdit->text()+"\"");
             }
 
             if (aPage->variables.at(j)->variableName()=="")
             {
-                addError("Нет имени переменной для \""+aPage->variables.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
+                addError("Нет имени у переменной \""+aPage->variables.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
             }
         }
 
@@ -419,12 +419,12 @@ void MainWindow::on_actionCheckDocument_triggered()
         {
             if (aPage->components.at(j)->name()=="")
             {
-                addHint("Нет имени у компонента в разделе \""+aPage->ui->nameEdit->text()+"\"");
+                addHint("Нет заголовка у компонента в разделе \""+aPage->ui->nameEdit->text()+"\"");
             }
 
             if (aPage->components.at(j)->variableName()=="")
             {
-                addError("Нет имени переменной для компонента \""+aPage->components.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
+                addError("Нет имени у компонента \""+aPage->components.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
             }
         }
     }
@@ -441,7 +441,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->variables.at(j)->variableName()==aPage->variables.at(k)->variableName())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" и \""+aPage->variables.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
+                    addError("Одинаковые имена у переменной \""+aPage->variables.at(j)->name()+"\" и у переменной \""+aPage->variables.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
                 }
             }
         }
@@ -452,7 +452,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->components.at(j)->variableName()==aPage->components.at(k)->variableName())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->components.at(j)->name()+"\" и \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
+                    addError("Одинаковые имена у компоненты \""+aPage->components.at(j)->name()+"\" и у компоненты \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
                 }
             }
         }
@@ -463,7 +463,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->variables.at(j)->variableName()==aPage->components.at(k)->variableName())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" и \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
+                    addError("Одинаковые имена у переменной \""+aPage->variables.at(j)->name()+"\" и у компоненты \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
                 }
             }
         }
@@ -481,7 +481,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->variables.at(j)->variableName()==globalDialog->variables.at(k)->variableName())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->variables.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и \""+globalDialog->variables.at(k)->name()+"\"");
+                    addError("Одинаковые имена у глобальной переменной \""+globalDialog->variables.at(k)->name()+"\" и у переменной \""+aPage->variables.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
                 }
             }
         }
@@ -492,7 +492,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->components.at(j)->variableName()==globalDialog->variables.at(k)->variableName())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->components.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и \""+globalDialog->variables.at(k)->name()+"\"");
+                    addError("Одинаковые имена у глобальной переменной \""+globalDialog->variables.at(k)->name()+"\" и у компоненты \""+aPage->components.at(j)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\"");
                 }
             }
         }
@@ -512,7 +512,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->variables.at(k)->variableName()==aPage2->ui->varNameEdit->text())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->variables.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и у раздела \""+aPage2->ui->nameEdit->text()+"\"");
+                    addError("Одинаковые имена у переменной \""+aPage->variables.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и у раздела \""+aPage2->ui->nameEdit->text()+"\"");
                 }
             }
 
@@ -520,7 +520,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 if (aPage->components.at(k)->variableName()==aPage2->ui->varNameEdit->text())
                 {
-                    addError("Одинаковые имена переменных у \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и у раздела \""+aPage2->ui->nameEdit->text()+"\"");
+                    addError("Одинаковые имена у компоненты \""+aPage->components.at(k)->name()+"\" в разделе \""+aPage->ui->nameEdit->text()+"\" и у раздела \""+aPage2->ui->nameEdit->text()+"\"");
                 }
             }
         }
