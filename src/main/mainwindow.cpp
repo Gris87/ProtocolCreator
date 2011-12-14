@@ -47,9 +47,9 @@ void MainWindow::on_actionNew_triggered()
 
     if (globalDialog)
     {
-        while (globalDialog->ui->variableLayout->count()>0)
+        while (globalDialog->variables.length()>0)
         {
-            QWidget* aWidget=globalDialog->ui->variableLayout->itemAt(0)->widget();
+            QWidget* aWidget=globalDialog->variables.takeFirst();
             globalDialog->ui->variableLayout->removeWidget(aWidget);
             delete aWidget;
         }
@@ -138,9 +138,9 @@ void MainWindow::on_actionOpen_triggered()
         isAdmin=false;
         adminPass="";
 
-        while (globalDialog->ui->variableLayout->count()>0)
+        while (globalDialog->variables.length()>0)
         {
-            QWidget* aWidget=globalDialog->ui->variableLayout->itemAt(0)->widget();
+            QWidget* aWidget=globalDialog->variables.takeFirst();
             globalDialog->ui->variableLayout->removeWidget(aWidget);
             delete aWidget;
         }
