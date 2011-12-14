@@ -43,6 +43,11 @@ void ComponentTextFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Used");
     aStream << aUsed;
 
+    bool aLock=ui->userWidget->isEnabled();
+
+    aStream << QString("Lock");
+    aStream << aLock;
+
     QString aValue=wordEdit->ui->valueEdit->toHtml();
 
     aStream << QString("Value");
@@ -77,6 +82,16 @@ void ComponentTextFrame::loadFromStream(QDataStream &aStream)
 
             aStream >> aUsed;
             ui->useCheckBox->setChecked(aUsed);
+        }
+        else
+        if (aMagicWord=="Lock")
+        {
+            bool aLock;
+
+            aStream >> aLock;
+            ui->userWidget->setEnabled(aLock);
+
+            updateLock();
         }
         else
         if (aMagicWord=="Value")
@@ -134,4 +149,23 @@ void ComponentTextFrame::on_nameEdit_textChanged(const QString &aName)
 void ComponentTextFrame::on_useCheckBox_toggled(bool checked)
 {
     ui->userWidget->setVisible(checked);
+}
+
+void ComponentTextFrame::on_lockButton_clicked()
+{
+    ui->userWidget->setEnabled(!ui->userWidget->isEnabled());
+
+    updateLock();
+}
+
+void ComponentTextFrame::updateLock()
+{
+    if (ui->userWidget->isEnabled())
+    {
+        ui->lockButton->setIcon(QIcon(":/images/Unlock.png"));
+    }
+    else
+    {
+        ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
+    }
 }

@@ -29,6 +29,8 @@ public:
 
     void setUpDownEnabled(bool aUpEnabled, bool aDownEnabled);
 
+    void updateLock();
+
 private slots:
     void on_upButton_clicked();
     void on_downButton_clicked();
@@ -36,6 +38,7 @@ private slots:
     void on_deleteButton_clicked();
     void on_nameEdit_textChanged(const QString &aName);
     void on_decimalsSpinBox_valueChanged(int aValue);
+    void on_lockButton_clicked();
 };
 
 #endif // VARIABLEINTEGERFRAME_H

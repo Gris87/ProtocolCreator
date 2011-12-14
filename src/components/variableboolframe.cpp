@@ -35,6 +35,11 @@ void VariableBoolFrame::saveToStream(QDataStream &aStream)
     aStream << QString("VarName");
     aStream << ui->varNameEdit->text();
 
+    bool aLock=ui->valueCheckBox->isEnabled();
+
+    aStream << QString("Lock");
+    aStream << aLock;
+
     bool aValue=ui->valueCheckBox->isChecked();
 
     aStream << QString("Value");
@@ -61,6 +66,16 @@ void VariableBoolFrame::loadFromStream(QDataStream &aStream)
         {
             aStream >> aMagicWord;
             ui->varNameEdit->setText(aMagicWord);
+        }
+        else
+        if (aMagicWord=="Lock")
+        {
+            bool aLock;
+
+            aStream >> aLock;
+            ui->valueCheckBox->setEnabled(aLock);
+
+            updateLock();
         }
         else
         if (aMagicWord=="Value")
@@ -113,4 +128,23 @@ void VariableBoolFrame::on_nameEdit_textChanged(const QString &aName)
 {
     ui->adminGroupBox->setTitle(aName);
     ui->valueCheckBox->setText(aName);
+}
+
+void VariableBoolFrame::on_lockButton_clicked()
+{
+    ui->valueCheckBox->setEnabled(!ui->valueCheckBox->isEnabled());
+
+    updateLock();
+}
+
+void VariableBoolFrame::updateLock()
+{
+    if (ui->valueCheckBox->isEnabled())
+    {
+        ui->lockButton->setIcon(QIcon(":/images/Unlock.png"));
+    }
+    else
+    {
+        ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
+    }
 }

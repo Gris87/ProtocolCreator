@@ -295,6 +295,32 @@
       <item>
        <widget class="QTimeEdit" name="valueEdit"/>
       </item>
+      <item>
+       <widget class="QPushButton" name="lockButton">
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../Resources.qrc">
+          <normaloff>:/images/Unlock.png</normaloff>:/images/Unlock.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

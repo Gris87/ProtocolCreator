@@ -50,6 +50,11 @@ void VariableListFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Items");
     aStream << aItems;
 
+    bool aLock=ui->valueComboBox->isEnabled();
+
+    aStream << QString("Lock");
+    aStream << aLock;
+
     QString aValue=ui->valueComboBox->currentText();
 
     aStream << QString("Value");
@@ -85,6 +90,16 @@ void VariableListFrame::loadFromStream(QDataStream &aStream)
             aStream >> aItems;
 
             ui->linesTextEdit->setPlainText(aItems);
+        }
+        else
+        if (aMagicWord=="Lock")
+        {
+            bool aLock;
+
+            aStream >> aLock;
+            ui->valueComboBox->setEnabled(aLock);
+
+            updateLock();
         }
         else
         if (aMagicWord=="Value")
@@ -171,5 +186,24 @@ void VariableListFrame::on_linesTextEdit_textChanged()
     else
     {
         ui->valueComboBox->setCurrentIndex(index);
+    }
+}
+
+void VariableListFrame::on_lockButton_clicked()
+{
+    ui->valueComboBox->setEnabled(!ui->valueComboBox->isEnabled());
+
+    updateLock();
+}
+
+void VariableListFrame::updateLock()
+{
+    if (ui->valueComboBox->isEnabled())
+    {
+        ui->lockButton->setIcon(QIcon(":/images/Unlock.png"));
+    }
+    else
+    {
+        ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
 }

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>361</width>
+    <width>400</width>
     <height>113</height>
    </rect>
   </property>
@@ -294,6 +294,32 @@
       </item>
       <item>
        <widget class="QLineEdit" name="valueEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="lockButton">
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../Resources.qrc">
+          <normaloff>:/images/Unlock.png</normaloff>:/images/Unlock.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -40,6 +40,11 @@ void VariableIntegerFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Decimals");
     aStream << aDecimals;
 
+    bool aLock=ui->valueSpinBox->isEnabled();
+
+    aStream << QString("Lock");
+    aStream << aLock;
+
     double aValue=ui->valueSpinBox->value();
 
     aStream << QString("Value");
@@ -74,6 +79,16 @@ void VariableIntegerFrame::loadFromStream(QDataStream &aStream)
 
             aStream >> aDecimals;
             ui->decimalsSpinBox->setValue(aDecimals);
+        }
+        else
+        if (aMagicWord=="Lock")
+        {
+            bool aLock;
+
+            aStream >> aLock;
+            ui->valueSpinBox->setEnabled(aLock);
+
+            updateLock();
         }
         else
         if (aMagicWord=="Value")
@@ -131,4 +146,23 @@ void VariableIntegerFrame::on_nameEdit_textChanged(const QString &aName)
 void VariableIntegerFrame::on_decimalsSpinBox_valueChanged(int aValue)
 {
     ui->valueSpinBox->setDecimals(aValue);
+}
+
+void VariableIntegerFrame::on_lockButton_clicked()
+{
+    ui->valueSpinBox->setEnabled(!ui->valueSpinBox->isEnabled());
+
+    updateLock();
+}
+
+void VariableIntegerFrame::updateLock()
+{
+    if (ui->valueSpinBox->isEnabled())
+    {
+        ui->lockButton->setIcon(QIcon(":/images/Unlock.png"));
+    }
+    else
+    {
+        ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
+    }
 }
