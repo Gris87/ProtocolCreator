@@ -50,14 +50,34 @@
         <item>
          <widget class="QPushButton" name="bookButton">
           <property name="text">
-           <string>Книжная</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../Resources.qrc">
+            <normaloff>:/images/Portrait.png</normaloff>:/images/Portrait.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="albumButton">
           <property name="text">
-           <string>Альбомная</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../Resources.qrc">
+            <normaloff>:/images/Landscape.png</normaloff>:/images/Landscape.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -281,6 +301,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../Resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

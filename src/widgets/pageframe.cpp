@@ -20,6 +20,46 @@ PageFrame::~PageFrame()
     delete ui;
 }
 
+void PageFrame::variableUp(PageComponent* aComponent)
+{
+
+}
+
+void PageFrame::variableDown(PageComponent* aComponent)
+{
+
+}
+
+void PageFrame::variableCopy(PageComponent* aComponent)
+{
+
+}
+
+void PageFrame::variableDelete(PageComponent* aComponent)
+{
+
+}
+
+void PageFrame::componentUp(PageComponent* aComponent)
+{
+
+}
+
+void PageFrame::componentDown(PageComponent* aComponent)
+{
+
+}
+
+void PageFrame::componentCopy(PageComponent* aComponent)
+{
+
+}
+
+void PageFrame::componentDelete(PageComponent* aComponent)
+{
+
+}
+
 void PageFrame::on_nameEdit_textChanged(const QString &aNewText)
 {
     emit nameChanged(this);
@@ -50,12 +90,30 @@ void PageFrame::addVariable(PageComponent* aComponent)
 {
     variables.append(aComponent);
     ui->variableLayout->addWidget(aComponent);
+
+    aComponent->setUpDownEnabled(variables.length()>1, false);
+
+    if (variables.length()>1)
+    {
+        variables.at(variables.length()-2)->setUpDownEnabled(variables.length()>2, true);
+    }
+
+    aComponent->createConnections(this, SLOT(variableUp(PageComponent*)), SLOT(variableDown(PageComponent*)), SLOT(variableCopy(PageComponent*)), SLOT(variableDelete(PageComponent*)));
 }
 
 void PageFrame::addComponent(PageComponent* aComponent)
 {
     components.append(aComponent);
     ui->componentLayout->addWidget(aComponent);
+
+    aComponent->setUpDownEnabled(components.length()>1, false);
+
+    if (components.length()>1)
+    {
+        components.at(components.length()-2)->setUpDownEnabled(components.length()>2, true);
+    }
+
+    aComponent->createConnections(this, SLOT(componentUp(PageComponent*)), SLOT(componentDown(PageComponent*)), SLOT(componentCopy(PageComponent*)), SLOT(componentDelete(PageComponent*)));
 }
 
 void PageFrame::saveToStream(QDataStream &aStream)

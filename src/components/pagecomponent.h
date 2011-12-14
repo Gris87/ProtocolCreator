@@ -16,6 +16,16 @@ public:
     virtual void loadFromStream(QDataStream &aStream);
 
     virtual void updateAdmin();
+
+    virtual void setUpDownEnabled(bool aUpEnabled, bool aDownEnabled);
+
+    void createConnections(const QObject *receiver, const char *memberUp, const char *memberDown, const char *memberCopy, const char *memberDelete);
+
+signals:
+    void upPressed(PageComponent *aComponent);
+    void downPressed(PageComponent *aComponent);
+    void copyPressed(PageComponent *aComponent);
+    void deletePressed(PageComponent *aComponent);
 };
 
 #endif // PAGECOMPONENT_H

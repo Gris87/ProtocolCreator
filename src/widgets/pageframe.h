@@ -39,6 +39,15 @@ public:
     void updateAdmin();
 
 private slots:
+    void variableUp(PageComponent* aComponent);
+    void variableDown(PageComponent* aComponent);
+    void variableCopy(PageComponent* aComponent);
+    void variableDelete(PageComponent* aComponent);
+    void componentUp(PageComponent* aComponent);
+    void componentDown(PageComponent* aComponent);
+    void componentCopy(PageComponent* aComponent);
+    void componentDelete(PageComponent* aComponent);
+
     void on_nameEdit_textChanged(const QString &aNewText);
     void on_useCheckBox_toggled(bool checked);
     void on_hideButton_clicked();
