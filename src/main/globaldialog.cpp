@@ -14,6 +14,26 @@ GlobalDialog::~GlobalDialog()
     delete ui;
 }
 
+void GlobalDialog::variableUp(PageComponent* aComponent)
+{
+
+}
+
+void GlobalDialog::variableDown(PageComponent* aComponent)
+{
+
+}
+
+void GlobalDialog::variableCopy(PageComponent* aComponent)
+{
+    copyVariable(aComponent);
+}
+
+void GlobalDialog::variableDelete(PageComponent* aComponent)
+{
+
+}
+
 void GlobalDialog::on_numberButton_clicked()
 {
     addVariable(new VariableIntegerFrame(this));
@@ -58,6 +78,15 @@ void GlobalDialog::addVariable(PageComponent* aComponent)
 {
     variables.append(aComponent);
     ui->variableLayout->addWidget(aComponent);
+
+    aComponent->setUpDownEnabled(variables.length()>1, false);
+
+    if (variables.length()>1)
+    {
+        variables.at(variables.length()-2)->setUpDownEnabled(variables.length()>2, true);
+    }
+
+    aComponent->createConnections(this, SLOT(variableUp(PageComponent*)), SLOT(variableDown(PageComponent*)), SLOT(variableCopy(PageComponent*)), SLOT(variableDelete(PageComponent*)));
 }
 
 void GlobalDialog::saveToStream(QDataStream &aStream)

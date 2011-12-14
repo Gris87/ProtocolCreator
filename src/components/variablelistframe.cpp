@@ -157,6 +157,7 @@ void VariableListFrame::on_linesTextEdit_textChanged()
 
     aItems.removeDuplicates();
     aItems.removeOne("");
+    aItems.sort();
 
     ui->valueComboBox->clear();
     ui->valueComboBox->addItems(aItems);

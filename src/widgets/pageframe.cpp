@@ -32,66 +32,7 @@ void PageFrame::variableDown(PageComponent* aComponent)
 
 void PageFrame::variableCopy(PageComponent* aComponent)
 {
-    PageSelectionDialog dialog(this);
-
-    dialog.ui->titleLabel->setText("Выберите раздел, в который будет скопирована переменная:");
-
-    if (dialog.exec())
-    {
-        if (mainWindow->ui->pagesTabWidget->widget(dialog.ui->pagesListWidget->currentRow())==mainWindow->contentPage)
-        {
-            QMessageBox::information(this, protocolCreatorVersion, "Нельзя вставлять переменную в содержание");
-            return;
-        }
-
-        QByteArray aBuffer;
-        QDataStream aStream(&aBuffer, QIODevice::ReadWrite);
-
-        aComponent->saveToStream(aStream);
-
-        aStream.device()->seek(0);
-
-        QString aMagicWord;
-        aStream >> aMagicWord;
-
-        PageComponent *aVariable=0;
-
-        if (aMagicWord=="VarInteger")
-        {
-            aVariable=new VariableIntegerFrame(this);
-        }
-        else
-        if (aMagicWord=="VarString")
-        {
-            aVariable=new VariableStringFrame(this);
-        }
-        else
-        if (aMagicWord=="VarBoolean")
-        {
-            aVariable=new VariableBoolFrame(this);
-        }
-        else
-        if (aMagicWord=="VarDate")
-        {
-            aVariable=new VariableDateFrame(this);
-        }
-        else
-        if (aMagicWord=="VarTime")
-        {
-            aVariable=new VariableTimeFrame(this);
-        }
-        else
-        if (aMagicWord=="VarList")
-        {
-            aVariable=new VariableListFrame(this);
-        }
-
-        if (aVariable)
-        {
-            ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(dialog.ui->pagesListWidget->currentRow()))->addVariable(aVariable);
-            aVariable->loadFromStream(aStream);
-        }
-    }
+    copyVariable(aComponent);
 }
 
 void PageFrame::variableDelete(PageComponent* aComponent)
@@ -117,7 +58,15 @@ void PageFrame::componentCopy(PageComponent* aComponent)
 
     if (dialog.exec())
     {
-        if (mainWindow->ui->pagesTabWidget->widget(dialog.ui->pagesListWidget->currentRow())==mainWindow->contentPage)
+        int aRow=dialog.ui->pagesListWidget->currentRow();
+
+        if (aRow==0)
+        {
+            QMessageBox::information(this, protocolCreatorVersion, "Нельзя вставлять компонент в глобальные переменные");
+            return;
+        }
+
+        if (mainWindow->ui->pagesTabWidget->widget(aRow-1)==mainWindow->contentPage)
         {
             QMessageBox::information(this, protocolCreatorVersion, "Нельзя вставлять компонент в содержание");
             return;
@@ -142,7 +91,7 @@ void PageFrame::componentCopy(PageComponent* aComponent)
 
         if (aComponent)
         {
-            addComponent(aComponent);
+            ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(aRow-1))->addComponent(aComponent);
             aComponent->loadFromStream(aStream);
         }
     }

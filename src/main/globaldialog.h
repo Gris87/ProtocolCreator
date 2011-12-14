@@ -28,7 +28,13 @@ public:
     void loadFromStream(QDataStream &aStream);
 
     void updateAdmin();
+
 private slots:
+    void variableUp(PageComponent* aComponent);
+    void variableDown(PageComponent* aComponent);
+    void variableCopy(PageComponent* aComponent);
+    void variableDelete(PageComponent* aComponent);
+
     void on_numberButton_clicked();
     void on_stringButton_clicked();
     void on_boolButton_clicked();

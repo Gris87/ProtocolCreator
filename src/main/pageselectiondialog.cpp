@@ -6,6 +6,8 @@ PageSelectionDialog::PageSelectionDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->pagesListWidget->addItem("Глобальные переменные");
+
     for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
     {
         ui->pagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->nameEdit->text());
