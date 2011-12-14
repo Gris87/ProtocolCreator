@@ -83,6 +83,32 @@ void VariableStringFrame::updateAdmin()
     ui->adminGroupBox->setVisible(isAdmin);
 }
 
+void VariableStringFrame::setUpDownEnabled(bool aUpEnabled, bool aDownEnabled)
+{
+    ui->upButton->setEnabled(aUpEnabled);
+    ui->downButton->setEnabled(aDownEnabled);
+}
+
+void VariableStringFrame::on_upButton_clicked()
+{
+    emit upPressed(this);
+}
+
+void VariableStringFrame::on_downButton_clicked()
+{
+    emit downPressed(this);
+}
+
+void VariableStringFrame::on_copyButton_clicked()
+{
+    emit copyPressed(this);
+}
+
+void VariableStringFrame::on_deleteButton_clicked()
+{
+    emit deletePressed(this);
+}
+
 void VariableStringFrame::on_nameEdit_textChanged(const QString &aName)
 {
     ui->adminGroupBox->setTitle(aName);

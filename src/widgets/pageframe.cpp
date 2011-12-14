@@ -32,7 +32,66 @@ void PageFrame::variableDown(PageComponent* aComponent)
 
 void PageFrame::variableCopy(PageComponent* aComponent)
 {
+    PageSelectionDialog dialog(this);
 
+    dialog.ui->titleLabel->setText("Выберите раздел, в который будет скопирована переменная:");
+
+    if (dialog.exec())
+    {
+        if (mainWindow->ui->pagesTabWidget->widget(dialog.ui->pagesListWidget->currentRow())==mainWindow->contentPage)
+        {
+            QMessageBox::information(this, protocolCreatorVersion, "Нельзя вставлять переменную в содержание");
+            return;
+        }
+
+        QByteArray aBuffer;
+        QDataStream aStream(&aBuffer, QIODevice::ReadWrite);
+
+        aComponent->saveToStream(aStream);
+
+        aStream.device()->seek(0);
+
+        QString aMagicWord;
+        aStream >> aMagicWord;
+
+        PageComponent *aVariable=0;
+
+        if (aMagicWord=="VarInteger")
+        {
+            aVariable=new VariableIntegerFrame(this);
+        }
+        else
+        if (aMagicWord=="VarString")
+        {
+            aVariable=new VariableStringFrame(this);
+        }
+        else
+        if (aMagicWord=="VarBoolean")
+        {
+            aVariable=new VariableBoolFrame(this);
+        }
+        else
+        if (aMagicWord=="VarDate")
+        {
+            aVariable=new VariableDateFrame(this);
+        }
+        else
+        if (aMagicWord=="VarTime")
+        {
+            aVariable=new VariableTimeFrame(this);
+        }
+        else
+        if (aMagicWord=="VarList")
+        {
+            aVariable=new VariableListFrame(this);
+        }
+
+        if (aVariable)
+        {
+            ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(dialog.ui->pagesListWidget->currentRow()))->addVariable(aVariable);
+            aVariable->loadFromStream(aStream);
+        }
+    }
 }
 
 void PageFrame::variableDelete(PageComponent* aComponent)
@@ -52,7 +111,41 @@ void PageFrame::componentDown(PageComponent* aComponent)
 
 void PageFrame::componentCopy(PageComponent* aComponent)
 {
+    PageSelectionDialog dialog(this);
 
+    dialog.ui->titleLabel->setText("Выберите раздел, в который будет скопирован компонент:");
+
+    if (dialog.exec())
+    {
+        if (mainWindow->ui->pagesTabWidget->widget(dialog.ui->pagesListWidget->currentRow())==mainWindow->contentPage)
+        {
+            QMessageBox::information(this, protocolCreatorVersion, "Нельзя вставлять компонент в содержание");
+            return;
+        }
+
+        QByteArray aBuffer;
+        QDataStream aStream(&aBuffer, QIODevice::ReadWrite);
+
+        aComponent->saveToStream(aStream);
+
+        aStream.device()->seek(0);
+
+        QString aMagicWord;
+        aStream >> aMagicWord;
+
+        PageComponent *aComponent=0;
+
+        if (aMagicWord=="ComponentText")
+        {
+            aComponent=new ComponentTextFrame(this);
+        }
+
+        if (aComponent)
+        {
+            addComponent(aComponent);
+            aComponent->loadFromStream(aStream);
+        }
+    }
 }
 
 void PageFrame::componentDelete(PageComponent* aComponent)
@@ -78,11 +171,11 @@ void PageFrame::on_hideButton_clicked()
 
     if (ui->variableWidget->isVisible())
     {
-        ui->hideButton->setIcon(QIcon(":/images/up.png"));
+        ui->hideButton->setIcon(QIcon(":/images/Up.png"));
     }
     else
     {
-        ui->hideButton->setIcon(QIcon(":/images/down.png"));
+        ui->hideButton->setIcon(QIcon(":/images/Down.png"));
     }
 }
 

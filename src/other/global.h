@@ -15,6 +15,7 @@
 
 #include "src/main/globaldialog.h"
 #include "src/main/mainwindow.h"
+#include "src/main/pageselectiondialog.h"
 #include "src/main/passworddialog.h"
 #include "src/main/sectioncontroldialog.h"
 

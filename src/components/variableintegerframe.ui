@@ -224,7 +224,7 @@
           </property>
           <property name="icon">
            <iconset resource="../../Resources.qrc">
-            <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
+            <normaloff>:/images/Up.png</normaloff>:/images/Up.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -259,7 +259,7 @@
           </property>
           <property name="icon">
            <iconset resource="../../Resources.qrc">
-            <normaloff>:/images/down.png</normaloff>:/images/down.png</iconset>
+            <normaloff>:/images/Down.png</normaloff>:/images/Down.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -274,9 +274,12 @@
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>0</width>
+            <width>74</width>
             <height>0</height>
            </size>
           </property>
