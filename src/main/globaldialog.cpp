@@ -62,12 +62,87 @@ void GlobalDialog::addVariable(PageComponent* aComponent)
 
 void GlobalDialog::saveToStream(QDataStream &aStream)
 {
+    aStream << QString("Global");
 
+    if (variables.length()>0)
+    {
+        aStream << QString("Variables");
+
+        for (int i=0; i<variables.length(); i++)
+        {
+            variables.at(i)->saveToStream(aStream);
+        }
+
+        aStream << QString("Stop");
+    }
+
+    aStream << QString("GlobalEnd");
 }
 
 void GlobalDialog::loadFromStream(QDataStream &aStream)
 {
+    QString aMagicWord;
 
+    while (!aStream.atEnd())
+    {
+        aStream >> aMagicWord;
+
+        if (aMagicWord=="Variables")
+        {
+            while (!aStream.atEnd())
+            {
+                aStream >> aMagicWord;
+
+                if (aMagicWord=="Stop")
+                {
+                    break;
+                }
+
+                PageComponent *aVariable=0;
+
+                if (aMagicWord=="VarInteger")
+                {
+                    aVariable=new VariableIntegerFrame(this);
+                }
+                else
+                if (aMagicWord=="VarString")
+                {
+                    aVariable=new VariableStringFrame(this);
+                }
+                else
+                if (aMagicWord=="VarBoolean")
+                {
+                    aVariable=new VariableBoolFrame(this);
+                }
+                else
+                if (aMagicWord=="VarDate")
+                {
+                    aVariable=new VariableDateFrame(this);
+                }
+                else
+                if (aMagicWord=="VarTime")
+                {
+                    aVariable=new VariableTimeFrame(this);
+                }
+                else
+                if (aMagicWord=="VarList")
+                {
+                    aVariable=new VariableListFrame(this);
+                }
+
+                if (aVariable)
+                {
+                    addVariable(aVariable);
+                    aVariable->loadFromStream(aStream);
+                }
+            }
+        }
+        else
+        if (aMagicWord=="GlobalEnd")
+        {
+            break;
+        }
+    }
 }
 
 void GlobalDialog::updateAdmin()

@@ -173,6 +173,11 @@ void MainWindow::on_actionOpen_triggered()
                 aStream >> adminPass;
             }
             else
+            if (aMagicWord=="Global")
+            {
+                globalDialog->loadFromStream(aStream);
+            }
+            else
             if (aMagicWord=="Pages")
             {
                 while (!aStream.atEnd())
@@ -233,9 +238,10 @@ void MainWindow::on_actionSave_triggered()
         aStream << QString("AdminPassword");
         aStream << adminPass;
 
+        globalDialog->saveToStream(aStream);
+
         aStream << QString("Pages");
 
-        aStream << QString("Page");
         contentPage->saveToStream(aStream);
 
         int pageIndex=ui->pagesTabWidget->indexOf(contentPage);
@@ -248,7 +254,6 @@ void MainWindow::on_actionSave_triggered()
 
             if (i!=pageIndex)
             {
-                aStream << QString("Page");
                 ((PageFrame*)ui->pagesTabWidget->widget(i))->saveToStream(aStream);
             }
         }
@@ -313,6 +318,9 @@ void MainWindow::on_actionCheckDocument_triggered()
 {
     ui->logListWidget->clear();
 
+    ui->progressBar->setMaximum(4);
+    ui->progressBar->setValue(0);
+
     for (int i=0; i<ui->pagesTabWidget->count(); i++)
     {
         PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
@@ -328,6 +336,8 @@ void MainWindow::on_actionCheckDocument_triggered()
         }
     }
 
+    ui->progressBar->setValue(ui->progressBar->value()+1);
+
     for (int i=0; i<ui->pagesTabWidget->count()-1; i++)
     {
         PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
@@ -342,6 +352,8 @@ void MainWindow::on_actionCheckDocument_triggered()
             }
         }
     }
+
+    ui->progressBar->setValue(ui->progressBar->value()+1);
 
     for (int i=0; i<ui->pagesTabWidget->count(); i++)
     {
@@ -373,6 +385,8 @@ void MainWindow::on_actionCheckDocument_triggered()
             }
         }
     }
+
+    ui->progressBar->setValue(ui->progressBar->value()+1);
 
     for (int i=0; i<ui->pagesTabWidget->count(); i++)
     {
@@ -411,6 +425,8 @@ void MainWindow::on_actionCheckDocument_triggered()
             }
         }
     }
+
+    ui->progressBar->setValue(ui->progressBar->value()+1);
 
     if (ui->logListWidget->count()>0)
     {

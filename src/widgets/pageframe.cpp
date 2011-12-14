@@ -60,6 +60,8 @@ void PageFrame::addComponent(PageComponent* aComponent)
 
 void PageFrame::saveToStream(QDataStream &aStream)
 {
+    aStream << QString("Page");
+
     aStream << QString("Name");
     aStream << ui->nameEdit->text();
 
