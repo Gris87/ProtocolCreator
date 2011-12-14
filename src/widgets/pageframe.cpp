@@ -22,12 +22,44 @@ PageFrame::~PageFrame()
 
 void PageFrame::variableUp(PageComponent* aComponent)
 {
+    int index=variables.indexOf(aComponent);
 
+    if (index==0)
+    {
+        return;
+    }
+
+    variables.swap(index, index-1);
+
+    ui->variableLayout->removeWidget(aComponent);
+    ui->variableLayout->insertWidget(index-1, aComponent);
+
+    if (index==variables.length()-1 || index==1)
+    {
+        aComponent->setUpDownEnabled(index>1, true);
+        variables.at(index)->setUpDownEnabled(true, index<variables.length()-1);
+    }
 }
 
 void PageFrame::variableDown(PageComponent* aComponent)
 {
+    int index=variables.indexOf(aComponent);
 
+    if (index==variables.length()-1)
+    {
+        return;
+    }
+
+    variables.swap(index, index+1);
+
+    ui->variableLayout->removeWidget(aComponent);
+    ui->variableLayout->insertWidget(index+1, aComponent);
+
+    if (index==variables.length()-2 || index==0)
+    {
+        aComponent->setUpDownEnabled(true, index<variables.length()-2);
+        variables.at(index)->setUpDownEnabled(index>0,true);
+    }
 }
 
 void PageFrame::variableCopy(PageComponent* aComponent)
@@ -42,12 +74,44 @@ void PageFrame::variableDelete(PageComponent* aComponent)
 
 void PageFrame::componentUp(PageComponent* aComponent)
 {
+    int index=components.indexOf(aComponent);
 
+    if (index==0)
+    {
+        return;
+    }
+
+    components.swap(index, index-1);
+
+    ui->componentLayout->removeWidget(aComponent);
+    ui->componentLayout->insertWidget(index-1, aComponent);
+
+    if (index==components.length()-1 || index==1)
+    {
+        aComponent->setUpDownEnabled(index>1, true);
+        components.at(index)->setUpDownEnabled(true, index<components.length()-1);
+    }
 }
 
 void PageFrame::componentDown(PageComponent* aComponent)
 {
+    int index=components.indexOf(aComponent);
 
+    if (index==components.length()-1)
+    {
+        return;
+    }
+
+    components.swap(index, index+1);
+
+    ui->componentLayout->removeWidget(aComponent);
+    ui->componentLayout->insertWidget(index+1, aComponent);
+
+    if (index==components.length()-2 || index==0)
+    {
+        aComponent->setUpDownEnabled(true, index<components.length()-2);
+        components.at(index)->setUpDownEnabled(index>0,true);
+    }
 }
 
 void PageFrame::componentCopy(PageComponent* aComponent)
