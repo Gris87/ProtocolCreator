@@ -35,7 +35,7 @@ void VariableDateFrame::saveToStream(QDataStream &aStream)
     aStream << QString("VarName");
     aStream << ui->varNameEdit->text();
 
-    bool aLock=ui->valueEdit->isEnabled();
+    bool aLock=!ui->valueEdit->isEnabled();
 
     aStream << QString("Lock");
     aStream << aLock;
@@ -73,7 +73,7 @@ void VariableDateFrame::loadFromStream(QDataStream &aStream)
             bool aLock;
 
             aStream >> aLock;
-            ui->valueEdit->setEnabled(aLock);
+            ui->valueEdit->setEnabled(!aLock);
 
             updateLock();
         }

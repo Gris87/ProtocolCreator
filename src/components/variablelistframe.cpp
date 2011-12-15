@@ -50,7 +50,7 @@ void VariableListFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Items");
     aStream << aItems;
 
-    bool aLock=ui->valueComboBox->isEnabled();
+    bool aLock=!ui->valueComboBox->isEnabled();
 
     aStream << QString("Lock");
     aStream << aLock;
@@ -97,7 +97,7 @@ void VariableListFrame::loadFromStream(QDataStream &aStream)
             bool aLock;
 
             aStream >> aLock;
-            ui->valueComboBox->setEnabled(aLock);
+            ui->valueComboBox->setEnabled(!aLock);
 
             updateLock();
         }

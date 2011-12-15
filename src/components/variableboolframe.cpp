@@ -35,7 +35,7 @@ void VariableBoolFrame::saveToStream(QDataStream &aStream)
     aStream << QString("VarName");
     aStream << ui->varNameEdit->text();
 
-    bool aLock=ui->valueCheckBox->isEnabled();
+    bool aLock=!ui->valueCheckBox->isEnabled();
 
     aStream << QString("Lock");
     aStream << aLock;
@@ -73,7 +73,7 @@ void VariableBoolFrame::loadFromStream(QDataStream &aStream)
             bool aLock;
 
             aStream >> aLock;
-            ui->valueCheckBox->setEnabled(aLock);
+            ui->valueCheckBox->setEnabled(!aLock);
 
             updateLock();
         }

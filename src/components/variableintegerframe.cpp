@@ -40,7 +40,7 @@ void VariableIntegerFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Decimals");
     aStream << aDecimals;
 
-    bool aLock=ui->valueSpinBox->isEnabled();
+    bool aLock=!ui->valueSpinBox->isEnabled();
 
     aStream << QString("Lock");
     aStream << aLock;
@@ -86,7 +86,7 @@ void VariableIntegerFrame::loadFromStream(QDataStream &aStream)
             bool aLock;
 
             aStream >> aLock;
-            ui->valueSpinBox->setEnabled(aLock);
+            ui->valueSpinBox->setEnabled(!aLock);
 
             updateLock();
         }

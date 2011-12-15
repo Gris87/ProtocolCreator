@@ -43,7 +43,7 @@ void ComponentTextFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Used");
     aStream << aUsed;
 
-    bool aLock=ui->userWidget->isEnabled();
+    bool aLock=!ui->userWidget->isEnabled();
 
     aStream << QString("Lock");
     aStream << aLock;
@@ -89,7 +89,7 @@ void ComponentTextFrame::loadFromStream(QDataStream &aStream)
             bool aLock;
 
             aStream >> aLock;
-            ui->userWidget->setEnabled(aLock);
+            ui->userWidget->setEnabled(!aLock);
 
             updateLock();
         }
