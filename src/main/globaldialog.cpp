@@ -219,5 +219,6 @@ void GlobalDialog::updateAdmin()
     for (int i=0; i<variables.length(); i++)
     {
         variables.at(i)->updateAdmin();
+        variables.at(i)->setVisible(isAdmin || variables.at(i)->isEditable());
     }
 }
