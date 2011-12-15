@@ -637,11 +637,11 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 try
                 {
-                    aPage->variables.at(i)->calculate();
+                    aPage->variables.at(j)->calculate();
                 }
                 catch(...)
                 {
-                    addError(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(i)->variableName()+": "+aPage->variables.at(i)->calculationError);
+                    addError(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(j)->variableName()+": "+aPage->variables.at(j)->calculationError);
                 }
 
                 ui->progressBar->setValue(ui->progressBar->value()+1);
@@ -651,11 +651,11 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 try
                 {
-                    aPage->components.at(i)->calculate();
+                    aPage->components.at(j)->calculate();
                 }
                 catch(...)
                 {
-                    addError(aPage->ui->varNameEdit->text()+"."+aPage->components.at(i)->variableName()+": "+aPage->components.at(i)->calculationError);
+                    addError(aPage->ui->varNameEdit->text()+"."+aPage->components.at(j)->variableName()+": "+aPage->components.at(j)->calculationError);
                 }
 
                 ui->progressBar->setValue(ui->progressBar->value()+1);
