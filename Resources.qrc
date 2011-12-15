@@ -25,5 +25,6 @@
         <file>images/Unlock.png</file>
         <file>images/Lock.png</file>
         <file>images/Pencil.png</file>
+        <file>images/Function.png</file>
     </qresource>
 </RCC>

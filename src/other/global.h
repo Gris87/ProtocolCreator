@@ -15,6 +15,7 @@
 
 #include "src/components/componenttextframe.h"
 
+#include "src/main/functiondialog.h"
 #include "src/main/globaldialog.h"
 #include "src/main/mainwindow.h"
 #include "src/main/pageselectiondialog.h"

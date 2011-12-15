@@ -43,6 +43,7 @@ private slots:
     void on_nameEdit_textChanged(const QString &aName);
     void on_lockButton_clicked();
     void on_editButton_clicked();
+    void on_functionButton_clicked();
 };
 
 #endif // VARIABLEEXPRESSIONFRAME_H

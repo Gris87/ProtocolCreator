@@ -172,6 +172,17 @@ bool VariableExpressionFrame::isEditable()
     return !ui->editButton->isFlat();
 }
 
+void VariableExpressionFrame::on_functionButton_clicked()
+{
+    FunctionDialog dialog(this);
+    dialog.ui->expressionEdit->setText(ui->valueEdit->text());
+
+    if (dialog.exec())
+    {
+        ui->valueEdit->setText(dialog.ui->expressionEdit->text());
+    }
+}
+
 QVariant VariableExpressionFrame::calculate()
 {
     if (isWasCalculated)
