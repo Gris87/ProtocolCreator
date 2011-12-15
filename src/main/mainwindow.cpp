@@ -377,7 +377,7 @@ void MainWindow::on_actionCheckDocument_triggered()
 
             for (int j=0; j<aErrors.length(); j++)
             {
-                addLog("Раздел \""+aPage->ui->varNameEdit->text()+"\"", aErrors.at(i));
+                addLog("Раздел \""+aPage->ui->varNameEdit->text()+"\"", aErrors.at(j));
             }
         }
     }
@@ -570,7 +570,7 @@ void MainWindow::on_actionCheckDocument_triggered()
 
             for (int j=0; j<aErrors.length(); j++)
             {
-                addLog("Global."+globalDialog->variables.at(i)->variableName(), aErrors.at(i));
+                addLog("Global."+globalDialog->variables.at(i)->variableName(), aErrors.at(j));
             }
 
             aErrors.clear();
@@ -589,7 +589,7 @@ void MainWindow::on_actionCheckDocument_triggered()
 
                 for (int j=0; j<aErrors.length(); j++)
                 {
-                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(i)->variableName(), aErrors.at(i));
+                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(i)->variableName(), aErrors.at(j));
                 }
 
                 aErrors.clear();
@@ -604,7 +604,7 @@ void MainWindow::on_actionCheckDocument_triggered()
 
                 for (int j=0; j<aErrors.length(); j++)
                 {
-                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->components.at(i)->variableName(), aErrors.at(i));
+                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->components.at(i)->variableName(), aErrors.at(j));
                 }
 
                 aErrors.clear();
