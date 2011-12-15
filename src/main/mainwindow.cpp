@@ -584,12 +584,12 @@ void MainWindow::on_actionCheckDocument_triggered()
 
             for (int j=0; j<aPage->variables.length(); j++)
             {
-                aPage->variables.at(i)->resetCalculation();
-                aPage->variables.at(i)->checkForErrors(aErrors);
+                aPage->variables.at(j)->resetCalculation();
+                aPage->variables.at(j)->checkForErrors(aErrors);
 
-                for (int j=0; j<aErrors.length(); j++)
+                for (int k=0; k<aErrors.length(); k++)
                 {
-                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(i)->variableName(), aErrors.at(j));
+                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(j)->variableName(), aErrors.at(k));
                 }
 
                 aErrors.clear();
@@ -599,12 +599,12 @@ void MainWindow::on_actionCheckDocument_triggered()
 
             for (int j=0; j<aPage->components.length(); j++)
             {
-                aPage->components.at(i)->resetCalculation();
-                aPage->components.at(i)->checkForErrors(aErrors);
+                aPage->components.at(j)->resetCalculation();
+                aPage->components.at(j)->checkForErrors(aErrors);
 
-                for (int j=0; j<aErrors.length(); j++)
+                for (int k=0; k<aErrors.length(); k++)
                 {
-                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->components.at(i)->variableName(), aErrors.at(j));
+                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->components.at(j)->variableName(), aErrors.at(k));
                 }
 
                 aErrors.clear();
