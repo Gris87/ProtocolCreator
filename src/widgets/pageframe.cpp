@@ -166,6 +166,7 @@ void PageFrame::componentCopy(PageComponent* aComponent)
             ((VariableExtendedListFrame*)aComponent)->ui->titleLabel->setVisible(false);
             ((VariableExtendedListFrame*)aComponent)->ui->nameEdit->setText("Таблица");
             ((VariableExtendedListFrame*)aComponent)->ui->varNameEdit->setText("Table");
+            ((VariableExtendedListFrame*)aComponent)->ui->editButton->setFlat(false);
         }
 
         if (aComponent)
@@ -387,6 +388,11 @@ void PageFrame::loadFromStream(QDataStream &aStream)
 
                     ((VariableExtendedListFrame*)aVariable)->ui->useCheckBox->setVisible(false);
                 }
+                else
+                if (aMagicWord=="VarExpression")
+                {
+                    aVariable=new VariableExpressionFrame(this);
+                }
 
                 if (aVariable)
                 {
@@ -421,6 +427,7 @@ void PageFrame::loadFromStream(QDataStream &aStream)
                     ((VariableExtendedListFrame*)aComponent)->ui->titleLabel->setVisible(false);
                     ((VariableExtendedListFrame*)aComponent)->ui->nameEdit->setText("Таблица");
                     ((VariableExtendedListFrame*)aComponent)->ui->varNameEdit->setText("Table");
+                    ((VariableExtendedListFrame*)aComponent)->ui->editButton->setFlat(false);
                 }
 
                 if (aComponent)

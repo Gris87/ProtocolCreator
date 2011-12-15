@@ -868,7 +868,12 @@ void MainWindow::on_actionVariableExtendedList_triggered()
 
 void MainWindow::on_actionVariableExpression_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableExpressionFrame(this));
 }
 
 void MainWindow::on_actionComponentText_triggered()
@@ -893,8 +898,9 @@ void MainWindow::on_actionComponentTable_triggered()
     aVar->ui->titleLabel->setVisible(false);
     aVar->ui->nameEdit->setText("Таблица");
     aVar->ui->varNameEdit->setText("Table");
+    aVar->ui->editButton->setFlat(false);
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(aVar);
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addComponent(aVar);
 }
 
 void MainWindow::pageMoved(int from, int to)

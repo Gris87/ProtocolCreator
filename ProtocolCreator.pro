@@ -48,7 +48,8 @@ SOURCES += src/main.cpp\
     src/widgets/wordtextedit.cpp \
     src/main/globaldialog.cpp \
     src/main/pageselectiondialog.cpp \
-    src/components/variableextendedlistframe.cpp
+    src/components/variableextendedlistframe.cpp \
+    src/components/variableexpressionframe.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -83,7 +84,8 @@ HEADERS  += src/main/mainwindow.h \
     src/widgets/wordtextedit.h \
     src/main/globaldialog.h \
     src/main/pageselectiondialog.h \
-    src/components/variableextendedlistframe.h
+    src/components/variableextendedlistframe.h \
+    src/components/variableexpressionframe.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -99,7 +101,8 @@ FORMS    += src/main/mainwindow.ui \
     src/main/sectioncontroldialog.ui \
     src/main/globaldialog.ui \
     src/main/pageselectiondialog.ui \
-    src/components/variableextendedlistframe.ui
+    src/components/variableextendedlistframe.ui \
+    src/components/variableexpressionframe.ui
 
 OTHER_FILES += \
     TODO.txt
