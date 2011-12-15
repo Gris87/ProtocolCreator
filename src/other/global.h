@@ -10,6 +10,7 @@
 #include "src/components/variabledateframe.h"
 #include "src/components/variabletimeframe.h"
 #include "src/components/variablelistframe.h"
+#include "src/components/variableextendedlistframe.h"
 
 #include "src/components/componenttextframe.h"
 

@@ -854,7 +854,16 @@ void MainWindow::on_actionVariableList_triggered()
 
 void MainWindow::on_actionVariableExtendedList_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    VariableExtendedListFrame *aVar=new VariableExtendedListFrame(this);
+
+    aVar->ui->useCheckBox->setVisible(false);
+
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(aVar);
 }
 
 void MainWindow::on_actionVariableExpression_triggered()
@@ -874,7 +883,18 @@ void MainWindow::on_actionComponentText_triggered()
 
 void MainWindow::on_actionComponentTable_triggered()
 {
+    if (!isAdmin || ui->pagesTabWidget->currentWidget()==contentPage)
+    {
+        return;
+    }
 
+    VariableExtendedListFrame *aVar=new VariableExtendedListFrame(this);
+
+    aVar->ui->titleLabel->setVisible(false);
+    aVar->ui->nameEdit->setText("Таблица");
+    aVar->ui->varNameEdit->setText("Table");
+
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(aVar);
 }
 
 void MainWindow::pageMoved(int from, int to)

@@ -57,6 +57,13 @@ void copyVariable(PageComponent *aComponent)
         {
             aVariable=new VariableListFrame(mainWindow);
         }
+        else
+        if (aMagicWord=="VarExtendedList")
+        {
+            aVariable=new VariableExtendedListFrame(this);
+
+            ((VariableExtendedListFrame*)aVariable)->ui->useCheckBox->setVisible(false);
+        }
 
         if (aVariable)
         {
