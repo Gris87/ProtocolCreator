@@ -230,3 +230,8 @@ bool VariableListFrame::isEditable()
 {
     return !ui->editButton->isFlat();
 }
+
+QVariant VariableListFrame::calculate()
+{
+    PageComponent::calculate();
+}

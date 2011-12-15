@@ -7,6 +7,10 @@ class PageComponent : public QWidget
 {
     Q_OBJECT
 public:
+    bool isWasCalculated;
+    bool isInCalculation;
+    QVariant calculationResult;
+
     explicit PageComponent(QWidget *parent = 0);
 
     virtual QString name();
@@ -22,6 +26,10 @@ public:
     void createConnections(const QObject *receiver, const char *memberUp, const char *memberDown, const char *memberCopy, const char *memberDelete);
 
     virtual bool isEditable();
+
+    virtual void checkForErrors(QStringList &aErrorList);
+    void resetCalculation();
+    virtual QVariant calculate();
 
 signals:
     void upPressed(PageComponent *aComponent);

@@ -171,3 +171,8 @@ bool VariableStringFrame::isEditable()
 {
     return !ui->editButton->isFlat();
 }
+
+QVariant VariableStringFrame::calculate()
+{
+    PageComponent::calculate();
+}

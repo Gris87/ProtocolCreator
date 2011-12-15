@@ -193,3 +193,13 @@ bool ComponentTextFrame::isEditable()
 {
     return !ui->editButton->isFlat();
 }
+
+void ComponentTextFrame::checkForErrors(QStringList &aErrorList)
+{
+    PageComponent::checkForErrors(aErrorList);
+}
+
+QVariant ComponentTextFrame::calculate()
+{
+    PageComponent::calculate();
+}

@@ -33,6 +33,8 @@ public:
 
     bool isEditable();
 
+    QVariant calculate();
+
 private slots:
     void on_upButton_clicked();
     void on_downButton_clicked();

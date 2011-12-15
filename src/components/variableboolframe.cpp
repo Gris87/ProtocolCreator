@@ -172,3 +172,7 @@ bool VariableBoolFrame::isEditable()
     return !ui->editButton->isFlat();
 }
 
+QVariant VariableBoolFrame::calculate()
+{
+    PageComponent::calculate();
+}

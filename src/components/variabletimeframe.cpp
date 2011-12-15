@@ -171,3 +171,8 @@ bool VariableTimeFrame::isEditable()
 {
     return !ui->editButton->isFlat();
 }
+
+QVariant VariableTimeFrame::calculate()
+{
+    PageComponent::calculate();
+}

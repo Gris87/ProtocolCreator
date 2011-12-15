@@ -36,6 +36,9 @@ public:
 
     bool isEditable();
 
+    void checkForErrors(QStringList &aErrorList);
+    QVariant calculate();
+
 private slots:
     void on_upButton_clicked();
     void on_downButton_clicked();

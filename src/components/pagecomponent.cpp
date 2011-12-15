@@ -3,6 +3,7 @@
 PageComponent::PageComponent(QWidget *parent) :
     QWidget(parent)
 {
+    resetCalculation();
 }
 
 QString PageComponent::name()
@@ -46,4 +47,52 @@ void PageComponent::createConnections(const QObject *receiver, const char *membe
 bool PageComponent::isEditable()
 {
     return true;
+}
+
+void PageComponent::checkForErrors(QStringList &aErrorList)
+{
+    QString aName=variableName();
+
+    for (int i=0; i<aName.length(); i++)
+    {
+        if (
+            !(aName.at(i)>='a' && aName.at(i)<='z')
+            &&
+            !(aName.at(i)>='A' && aName.at(i)<='Z')
+            &&
+            !(aName.at(i)>='0' && aName.at(i)<='9')
+            &&
+            aName.at(i)!='_'
+           )
+        {
+            aErrorList.append("Error: Недопустимый символ \""+aName.at(i)+"\" в имени");
+        }
+    }
+
+    if (aName.length()>0 && aName.at(0)>='0' && aName.at(0)<='9')
+    {
+        aErrorList.append("Error: Имя не может начинаться с цифры");
+    }
+}
+
+void PageComponent::resetCalculation()
+{
+    isWasCalculated=false;
+    isInCalculation=false;
+    calculationResult=0;
+}
+
+QVariant PageComponent::calculate()
+{
+    if (isWasCalculated)
+    {
+        return calculationResult;
+    }
+
+    if (isInCalculation)
+    {
+        throw "This component already in calculation process";
+    }
+
+    isInCalculation=true;
 }
