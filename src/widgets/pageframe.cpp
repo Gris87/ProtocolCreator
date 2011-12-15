@@ -204,6 +204,11 @@ void PageFrame::on_hideButton_clicked()
 {
     ui->variableWidget->setVisible(!ui->variableWidget->isVisible());
 
+    updateHideButton();
+}
+
+void PageFrame::updateHideButton()
+{
     if (ui->variableWidget->isVisible())
     {
         ui->hideButton->setIcon(QIcon(":/images/Up.png"));
@@ -268,6 +273,11 @@ void PageFrame::saveToStream(QDataStream &aStream)
     aStream << topLimit;
     aStream << rightLimit;
     aStream << bottomLimit;
+
+    bool aHideVars=!ui->variableWidget->isVisible();
+
+    aStream << QString("HideVars");
+    aStream << aHideVars;
 
     if (variables.length()>0)
     {
@@ -337,6 +347,16 @@ void PageFrame::loadFromStream(QDataStream &aStream)
             aStream >> topLimit;
             aStream >> rightLimit;
             aStream >> bottomLimit;
+        }
+        else
+        if (aMagicWord=="HideVars")
+        {
+            bool aHideVars;
+
+            aStream >> aHideVars;
+            ui->variableWidget->setVisible(!aHideVars);
+
+            updateHideButton();
         }
         else
         if (aMagicWord=="Variables")

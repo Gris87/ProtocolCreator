@@ -37,6 +37,7 @@ public:
     void loadFromStream(QDataStream &aStream);
 
     void updateAdmin();
+    void updateHideButton();
 
 private slots:
     void variableUp(PageComponent* aComponent);
