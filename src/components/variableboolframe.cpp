@@ -181,5 +181,10 @@ QVariant VariableBoolFrame::calculate()
 
     PageComponent::calculate();
 
+    calculationResult=ui->valueCheckBox->isChecked();
+
+    isWasCalculated=true;
+    isInCalculation=false;
+
     return calculationResult;
 }

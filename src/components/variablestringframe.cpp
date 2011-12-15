@@ -181,5 +181,10 @@ QVariant VariableStringFrame::calculate()
 
     PageComponent::calculate();
 
+    calculationResult=ui->valueEdit->text();
+
+    isWasCalculated=true;
+    isInCalculation=false;
+
     return calculationResult;
 }

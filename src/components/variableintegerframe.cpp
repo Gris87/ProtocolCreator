@@ -199,5 +199,10 @@ QVariant VariableIntegerFrame::calculate()
 
     PageComponent::calculate();
 
+    calculationResult=ui->valueSpinBox->value();
+
+    isWasCalculated=true;
+    isInCalculation=false;
+
     return calculationResult;
 }

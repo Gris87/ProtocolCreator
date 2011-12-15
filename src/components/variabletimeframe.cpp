@@ -181,5 +181,10 @@ QVariant VariableTimeFrame::calculate()
 
     PageComponent::calculate();
 
+    calculationResult=ui->valueEdit->time();
+
+    isWasCalculated=true;
+    isInCalculation=false;
+
     return calculationResult;
 }

@@ -181,5 +181,10 @@ QVariant VariableDateFrame::calculate()
 
     PageComponent::calculate();
 
+    calculationResult=ui->valueEdit->date();
+
+    isWasCalculated=true;
+    isInCalculation=false;
+
     return calculationResult;
 }

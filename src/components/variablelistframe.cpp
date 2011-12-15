@@ -240,5 +240,10 @@ QVariant VariableListFrame::calculate()
 
     PageComponent::calculate();
 
+    calculationResult=ui->valueComboBox->currentText();
+
+    isWasCalculated=true;
+    isInCalculation=false;
+
     return calculationResult;
 }
