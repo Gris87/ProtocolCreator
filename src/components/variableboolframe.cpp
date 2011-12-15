@@ -35,6 +35,11 @@ void VariableBoolFrame::saveToStream(QDataStream &aStream)
     aStream << QString("VarName");
     aStream << ui->varNameEdit->text();
 
+    bool aEdit=isEditable();
+
+    aStream << QString("Edit");
+    aStream << aEdit;
+
     bool aLock=!ui->valueCheckBox->isEnabled();
 
     aStream << QString("Lock");
@@ -66,6 +71,14 @@ void VariableBoolFrame::loadFromStream(QDataStream &aStream)
         {
             aStream >> aMagicWord;
             ui->varNameEdit->setText(aMagicWord);
+        }
+        else
+        if (aMagicWord=="Edit")
+        {
+            bool aEdit;
+
+            aStream >> aEdit;
+            ui->editButton->setFlat(!aEdit);
         }
         else
         if (aMagicWord=="Lock")
@@ -148,3 +161,14 @@ void VariableBoolFrame::updateLock()
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
 }
+
+void VariableBoolFrame::on_editButton_clicked()
+{
+    ui->editButton->setFlat(!ui->editButton->isFlat());
+}
+
+bool VariableBoolFrame::isEditable()
+{
+    return !ui->editButton->isFlat();
+}
+

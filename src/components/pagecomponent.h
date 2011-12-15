@@ -21,6 +21,8 @@ public:
 
     void createConnections(const QObject *receiver, const char *memberUp, const char *memberDown, const char *memberCopy, const char *memberDelete);
 
+    virtual bool isEditable();
+
 signals:
     void upPressed(PageComponent *aComponent);
     void downPressed(PageComponent *aComponent);

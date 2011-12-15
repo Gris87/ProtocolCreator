@@ -40,6 +40,11 @@ void VariableIntegerFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Decimals");
     aStream << aDecimals;
 
+    bool aEdit=isEditable();
+
+    aStream << QString("Edit");
+    aStream << aEdit;
+
     bool aLock=!ui->valueSpinBox->isEnabled();
 
     aStream << QString("Lock");
@@ -79,6 +84,14 @@ void VariableIntegerFrame::loadFromStream(QDataStream &aStream)
 
             aStream >> aDecimals;
             ui->decimalsSpinBox->setValue(aDecimals);
+        }
+        else
+        if (aMagicWord=="Edit")
+        {
+            bool aEdit;
+
+            aStream >> aEdit;
+            ui->editButton->setFlat(!aEdit);
         }
         else
         if (aMagicWord=="Lock")
@@ -165,4 +178,14 @@ void VariableIntegerFrame::updateLock()
     {
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
+}
+
+void VariableIntegerFrame::on_editButton_clicked()
+{
+    ui->editButton->setFlat(!ui->editButton->isFlat());
+}
+
+bool VariableIntegerFrame::isEditable()
+{
+    return !ui->editButton->isFlat();
 }

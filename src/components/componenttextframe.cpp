@@ -43,6 +43,11 @@ void ComponentTextFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Used");
     aStream << aUsed;
 
+    bool aEdit=isEditable();
+
+    aStream << QString("Edit");
+    aStream << aEdit;
+
     bool aLock=!ui->userWidget->isEnabled();
 
     aStream << QString("Lock");
@@ -84,6 +89,14 @@ void ComponentTextFrame::loadFromStream(QDataStream &aStream)
             ui->useCheckBox->setChecked(aUsed);
         }
         else
+        if (aMagicWord=="Edit")
+        {
+            bool aEdit;
+
+            aStream >> aEdit;
+            ui->editButton->setFlat(!aEdit);
+        }
+        else
         if (aMagicWord=="Lock")
         {
             bool aLock;
@@ -112,6 +125,7 @@ void ComponentTextFrame::loadFromStream(QDataStream &aStream)
 void ComponentTextFrame::updateAdmin()
 {
     ui->adminGroupBox->setVisible(isAdmin);
+    on_useCheckBox_toggled(ui->useCheckBox->isChecked());
 }
 
 void ComponentTextFrame::setUpDownEnabled(bool aUpEnabled, bool aDownEnabled)
@@ -148,7 +162,7 @@ void ComponentTextFrame::on_nameEdit_textChanged(const QString &aName)
 
 void ComponentTextFrame::on_useCheckBox_toggled(bool checked)
 {
-    ui->userWidget->setVisible(checked);
+    ui->userWidget->setVisible(checked && (isAdmin || isEditable()));
 }
 
 void ComponentTextFrame::on_lockButton_clicked()
@@ -168,4 +182,14 @@ void ComponentTextFrame::updateLock()
     {
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
+}
+
+void ComponentTextFrame::on_editButton_clicked()
+{
+    ui->editButton->setFlat(!ui->editButton->isFlat());
+}
+
+bool ComponentTextFrame::isEditable()
+{
+    return !ui->editButton->isFlat();
 }

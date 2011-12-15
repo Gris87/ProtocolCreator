@@ -31,6 +31,8 @@ public:
 
     void updateLock();
 
+    bool isEditable();
+
 private slots:
     void on_upButton_clicked();
     void on_downButton_clicked();
@@ -38,6 +40,7 @@ private slots:
     void on_deleteButton_clicked();
     void on_nameEdit_textChanged(const QString &aName);
     void on_lockButton_clicked();
+    void on_editButton_clicked();
 };
 
 #endif // VARIABLEDATEFRAME_H

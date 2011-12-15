@@ -35,6 +35,11 @@ void VariableTimeFrame::saveToStream(QDataStream &aStream)
     aStream << QString("VarName");
     aStream << ui->varNameEdit->text();
 
+    bool aEdit=isEditable();
+
+    aStream << QString("Edit");
+    aStream << aEdit;
+
     bool aLock=!ui->valueEdit->isEnabled();
 
     aStream << QString("Lock");
@@ -66,6 +71,14 @@ void VariableTimeFrame::loadFromStream(QDataStream &aStream)
         {
             aStream >> aMagicWord;
             ui->varNameEdit->setText(aMagicWord);
+        }
+        else
+        if (aMagicWord=="Edit")
+        {
+            bool aEdit;
+
+            aStream >> aEdit;
+            ui->editButton->setFlat(!aEdit);
         }
         else
         if (aMagicWord=="Lock")
@@ -147,4 +160,14 @@ void VariableTimeFrame::updateLock()
     {
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
+}
+
+void VariableTimeFrame::on_editButton_clicked()
+{
+    ui->editButton->setFlat(!ui->editButton->isFlat());
+}
+
+bool VariableTimeFrame::isEditable()
+{
+    return !ui->editButton->isFlat();
 }

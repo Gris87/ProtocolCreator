@@ -423,7 +423,7 @@ void PageFrame::updateAdmin()
     {
         for (int i=0; i<variables.length(); i++)
         {
-            if (!variables.at(i)->inherits("VariableExpressionFrame"))
+            if (variables.at(i)->isEditable())
             {
                 ui->hideWidget->setVisible(true);
             }
@@ -433,6 +433,7 @@ void PageFrame::updateAdmin()
     for (int i=0; i<variables.length(); i++)
     {
         variables.at(i)->updateAdmin();
+        variables.at(i)->setVisible(isAdmin || variables.at(i)->isEditable());
     }
 
     for (int i=0; i<components.length(); i++)

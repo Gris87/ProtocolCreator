@@ -42,3 +42,8 @@ void PageComponent::createConnections(const QObject *receiver, const char *membe
     connect(this, SIGNAL(copyPressed(PageComponent*)),   receiver, memberCopy);
     connect(this, SIGNAL(deletePressed(PageComponent*)), receiver, memberDelete);
 }
+
+bool PageComponent::isEditable()
+{
+    return true;
+}

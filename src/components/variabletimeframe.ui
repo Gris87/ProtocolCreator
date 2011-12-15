@@ -103,6 +103,35 @@
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="editButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../Resources.qrc">
+            <normaloff>:/images/Pencil.png</normaloff>:/images/Pencil.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="copyButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

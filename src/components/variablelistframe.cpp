@@ -50,6 +50,11 @@ void VariableListFrame::saveToStream(QDataStream &aStream)
     aStream << QString("Items");
     aStream << aItems;
 
+    bool aEdit=isEditable();
+
+    aStream << QString("Edit");
+    aStream << aEdit;
+
     bool aLock=!ui->valueComboBox->isEnabled();
 
     aStream << QString("Lock");
@@ -90,6 +95,14 @@ void VariableListFrame::loadFromStream(QDataStream &aStream)
             aStream >> aItems;
 
             ui->linesTextEdit->setPlainText(aItems);
+        }
+        else
+        if (aMagicWord=="Edit")
+        {
+            bool aEdit;
+
+            aStream >> aEdit;
+            ui->editButton->setFlat(!aEdit);
         }
         else
         if (aMagicWord=="Lock")
@@ -206,4 +219,14 @@ void VariableListFrame::updateLock()
     {
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
+}
+
+void VariableListFrame::on_editButton_clicked()
+{
+    ui->editButton->setFlat(!ui->editButton->isFlat());
+}
+
+bool VariableListFrame::isEditable()
+{
+    return !ui->editButton->isFlat();
 }
