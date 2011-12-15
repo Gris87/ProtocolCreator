@@ -73,3 +73,27 @@ void copyVariable(PageComponent *aComponent)
         }
     }
 }
+
+void checkVarName(QString aName, QStringList &aErrorList)
+{
+    for (int i=0; i<aName.length(); i++)
+    {
+        if (
+            !(aName.at(i)>='a' && aName.at(i)<='z')
+            &&
+            !(aName.at(i)>='A' && aName.at(i)<='Z')
+            &&
+            !(aName.at(i)>='0' && aName.at(i)<='9')
+            &&
+            aName.at(i)!='_'
+           )
+        {
+            aErrorList.append("Error: Недопустимый символ \""+QString(aName.at(i))+"\" в имени");
+        }
+    }
+
+    if (aName.length()>0 && aName.at(0)>='0' && aName.at(0)<='9')
+    {
+        aErrorList.append("Error: Имя не может начинаться с цифры");
+    }
+}

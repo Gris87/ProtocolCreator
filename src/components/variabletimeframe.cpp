@@ -174,5 +174,12 @@ bool VariableTimeFrame::isEditable()
 
 QVariant VariableTimeFrame::calculate()
 {
+    if (isWasCalculated)
+    {
+        return calculationResult;
+    }
+
     PageComponent::calculate();
+
+    return calculationResult;
 }

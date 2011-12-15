@@ -201,5 +201,12 @@ void ComponentTextFrame::checkForErrors(QStringList &aErrorList)
 
 QVariant ComponentTextFrame::calculate()
 {
+    if (isWasCalculated)
+    {
+        return calculationResult;
+    }
+
     PageComponent::calculate();
+
+    return calculationResult;
 }

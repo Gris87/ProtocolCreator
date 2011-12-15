@@ -174,5 +174,12 @@ bool VariableStringFrame::isEditable()
 
 QVariant VariableStringFrame::calculate()
 {
+    if (isWasCalculated)
+    {
+        return calculationResult;
+    }
+
     PageComponent::calculate();
+
+    return calculationResult;
 }

@@ -27,6 +27,7 @@ public:
     Ui::MainWindow *ui;
     QSplitter *dividerSplitter;
     PageFrame *contentPage;
+    bool errorHappened;
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -36,6 +37,7 @@ private:
 
     void addError(QString aText);
     void addHint(QString aText);
+    void addLog(QString aFullVarName, QString aText);
 
     void updateHeader();
     void updateAdmin();

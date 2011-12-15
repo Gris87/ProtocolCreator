@@ -3,12 +3,15 @@
 
 #include <QWidget>
 
+#include <QVariant>
+
 class PageComponent : public QWidget
 {
     Q_OBJECT
 public:
     bool isWasCalculated;
     bool isInCalculation;
+    QString calculationError;
     QVariant calculationResult;
 
     explicit PageComponent(QWidget *parent = 0);

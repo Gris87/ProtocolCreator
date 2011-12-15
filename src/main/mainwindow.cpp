@@ -316,6 +316,8 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionCheckDocument_triggered()
 {
+    errorHappened=false;
+
     ui->logListWidget->clear();
 
     ui->progressBar->setMaximum(9);
@@ -361,6 +363,22 @@ void MainWindow::on_actionCheckDocument_triggered()
         if (aPage->ui->varNameEdit->text().trimmed()=="")
         {
             addError("Нет имени у раздела \""+aPage->ui->nameEdit->text()+"\"");
+        }
+        else
+        if (aPage->ui->varNameEdit->text().trimmed()=="Global")
+        {
+            addError("Имя раздела \""+aPage->ui->nameEdit->text()+"\" совпадает с Global");
+        }
+        else
+        {
+            QStringList aErrors;
+
+            checkVarName(aPage->ui->varNameEdit->text(), aErrors);
+
+            for (int j=0; j<aErrors.length(); j++)
+            {
+                addLog("Раздел \""+aPage->ui->varNameEdit->text()+"\"", aErrors.at(i));
+            }
         }
     }
 
@@ -528,6 +546,123 @@ void MainWindow::on_actionCheckDocument_triggered()
 
     ui->progressBar->setValue(ui->progressBar->value()+1);
 
+    int progressMax=globalDialog->variables.length();
+
+    for (int i=0; i<ui->pagesTabWidget->count(); i++)
+    {
+        PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+        progressMax+=aPage->variables.length();
+        progressMax+=aPage->components.length();
+    }
+
+    if (progressMax>0)
+    {
+        ui->progressBar->setMaximum(progressMax);
+        ui->progressBar->setValue(0);
+
+        QStringList aErrors;
+
+        for (int i=0; i<globalDialog->variables.length(); i++)
+        {
+            globalDialog->variables.at(i)->resetCalculation();
+            globalDialog->variables.at(i)->checkForErrors(aErrors);
+
+            for (int j=0; j<aErrors.length(); j++)
+            {
+                addLog("Global."+globalDialog->variables.at(i)->variableName(), aErrors.at(i));
+            }
+
+            aErrors.clear();
+
+            ui->progressBar->setValue(ui->progressBar->value()+1);
+        }
+
+        for (int i=0; i<ui->pagesTabWidget->count(); i++)
+        {
+            PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+            for (int j=0; j<aPage->variables.length(); j++)
+            {
+                aPage->variables.at(i)->resetCalculation();
+                aPage->variables.at(i)->checkForErrors(aErrors);
+
+                for (int j=0; j<aErrors.length(); j++)
+                {
+                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(i)->variableName(), aErrors.at(i));
+                }
+
+                aErrors.clear();
+
+                ui->progressBar->setValue(ui->progressBar->value()+1);
+            }
+
+            for (int j=0; j<aPage->components.length(); j++)
+            {
+                aPage->components.at(i)->resetCalculation();
+                aPage->components.at(i)->checkForErrors(aErrors);
+
+                for (int j=0; j<aErrors.length(); j++)
+                {
+                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->components.at(i)->variableName(), aErrors.at(i));
+                }
+
+                aErrors.clear();
+
+                ui->progressBar->setValue(ui->progressBar->value()+1);
+            }
+        }
+
+        ui->progressBar->setValue(0);
+
+        for (int i=0; i<globalDialog->variables.length(); i++)
+        {
+            try
+            {
+                globalDialog->variables.at(i)->calculate();
+            }
+            catch(...)
+            {
+                addError("Global."+globalDialog->variables.at(i)->variableName()+": "+globalDialog->variables.at(i)->calculationError);
+            }
+
+            ui->progressBar->setValue(ui->progressBar->value()+1);
+        }
+
+        for (int i=0; i<ui->pagesTabWidget->count(); i++)
+        {
+            PageFrame* aPage=((PageFrame*)ui->pagesTabWidget->widget(i));
+
+            for (int j=0; j<aPage->variables.length(); j++)
+            {
+                try
+                {
+                    aPage->variables.at(i)->calculate();
+                }
+                catch(...)
+                {
+                    addError(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(i)->variableName()+": "+aPage->variables.at(i)->calculationError);
+                }
+
+                ui->progressBar->setValue(ui->progressBar->value()+1);
+            }
+
+            for (int j=0; j<aPage->components.length(); j++)
+            {
+                try
+                {
+                    aPage->components.at(i)->calculate();
+                }
+                catch(...)
+                {
+                    addError(aPage->ui->varNameEdit->text()+"."+aPage->components.at(i)->variableName()+": "+aPage->components.at(i)->calculationError);
+                }
+
+                ui->progressBar->setValue(ui->progressBar->value()+1);
+            }
+        }
+    }
+
     ui->progressBar->setValue(0);
 
     if (ui->logListWidget->count()>0)
@@ -561,7 +696,7 @@ void MainWindow::on_actionExport_triggered()
 {
     on_actionCheckDocument_triggered();
 
-    if (ui->logListWidget->count()>0)
+    if (!errorHappened)
     {
         return;
     }
@@ -571,7 +706,7 @@ void MainWindow::on_actionGenerateWord_triggered()
 {
     on_actionCheckDocument_triggered();
 
-    if (ui->logListWidget->count()>0)
+    if (!errorHappened)
     {
         return;
     }
@@ -830,11 +965,38 @@ void MainWindow::addPage(QString aName, QString aVarName)
 void MainWindow::addError(QString aText)
 {
     ui->logListWidget->addItem(new QListWidgetItem(QIcon(":/images/Error.png"), aText));
+
+    errorHappened=true;
 }
 
 void MainWindow::addHint(QString aText)
 {
     ui->logListWidget->addItem(new QListWidgetItem(QIcon(":/images/Hint.png"), aText));
+}
+
+void MainWindow::addLog(QString aFullVarName, QString aText)
+{
+    bool isError=false;
+
+    if (aText.startsWith("Error: "))
+    {
+        aText.remove(0, 7);
+        isError=true;
+    }
+    else
+    if (aText.startsWith("Hint: "))
+    {
+        aText.remove(0, 6);
+    }
+
+    if (isError)
+    {
+        addError(aFullVarName+": "+aText);
+    }
+    else
+    {
+        addHint(aFullVarName+": "+aText);
+    }
 }
 
 void MainWindow::updateHeader()

@@ -233,5 +233,12 @@ bool VariableListFrame::isEditable()
 
 QVariant VariableListFrame::calculate()
 {
+    if (isWasCalculated)
+    {
+        return calculationResult;
+    }
+
     PageComponent::calculate();
+
+    return calculationResult;
 }

@@ -192,5 +192,12 @@ bool VariableIntegerFrame::isEditable()
 
 QVariant VariableIntegerFrame::calculate()
 {
+    if (isWasCalculated)
+    {
+        return calculationResult;
+    }
+
     PageComponent::calculate();
+
+    return calculationResult;
 }

@@ -174,5 +174,12 @@ bool VariableDateFrame::isEditable()
 
 QVariant VariableDateFrame::calculate()
 {
+    if (isWasCalculated)
+    {
+        return calculationResult;
+    }
+
     PageComponent::calculate();
+
+    return calculationResult;
 }
