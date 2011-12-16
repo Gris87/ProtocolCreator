@@ -1108,6 +1108,132 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent)
                 aComponent->calculationError="Невозможно преобразовать строку \""+aResults.at(0).toString()+"\"во время";
                 throw "Impossible to convert";
             }
+            else
+            if (aFunction=="Строка_в_Список")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                QStringList aList=aResults.at(0).toString().split(aResults.at(1).toString());
+
+                return aList;
+            }
+            else
+            if (aFunction=="Дата_в_Строку")
+            {
+                if (aResults.at(0).type()!=QVariant::Date)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть дата";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toDate().toString(aResults.at(1).toString());
+            }
+            else
+            if (aFunction=="Время_в_Строку")
+            {
+                if (aResults.at(0).type()!=QVariant::Time)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть время";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toTime().toString(aResults.at(1).toString());
+            }
+            else
+            if (aFunction=="Список_в_Строку")
+            {
+                if (aResults.at(0).type()!=QVariant::StringList)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должен быть список";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toStringList().join(aResults.at(1).toString());
+            }
+            else
+            if (aFunction=="Случайный")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return (double)(aArg1+((double)qrand())/RAND_MAX*(aArg2-aArg1));
+            }
+            else
+            if (aFunction=="Округление")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                for (int i=0; i<aArg2; i++)
+                {
+                    aArg1*=10;
+                }
+
+                aArg1=floor(aArg1);
+
+                for (int i=0; i<aArg2; i++)
+                {
+                    aArg1/=10;
+                }
+
+                return aArg1;
+            }
         }
     }
     else

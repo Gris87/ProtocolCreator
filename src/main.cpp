@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
 
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Windows-1251"));
 
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+
     // INITIALIZATION
     functionsList.append("Сумма_чисел_2");
     functionsList.append("Разность_чисел_2");
