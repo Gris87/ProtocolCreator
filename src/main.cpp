@@ -49,11 +49,11 @@ int main(int argc, char *argv[])
     functionsList.append("Логика_в_строку_1");
     functionsList.append("Строка_в_Число_1");
     functionsList.append("Строка_в_Логику_1");
-    functionsList.append("Строка_в_Дату_1");
-    functionsList.append("Строка_во_Время_1");
+    functionsList.append("Строка_в_Дату_2");
+    functionsList.append("Строка_во_Время_2");
     functionsList.append("Строка_в_Список_2");
-    functionsList.append("Дата_в_Строку_1");
-    functionsList.append("Время_в_Строку_1");
+    functionsList.append("Дата_в_Строку_2");
+    functionsList.append("Время_в_Строку_2");
     functionsList.append("Список_в_Строку_2");
     functionsList.append("Случайный_2");
     functionsList.append("Округление_2");
