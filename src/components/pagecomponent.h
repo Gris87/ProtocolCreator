@@ -9,6 +9,7 @@ class PageComponent : public QWidget
 {
     Q_OBJECT
 public:
+    QWidget *superParent;
     bool isWasCalculated;
     bool isInCalculation;
     QString calculationError;

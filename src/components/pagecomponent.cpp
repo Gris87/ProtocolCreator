@@ -3,6 +3,8 @@
 PageComponent::PageComponent(QWidget *parent) :
     QWidget(parent)
 {
+    superParent=parent;
+
     resetCalculation();
 }
 

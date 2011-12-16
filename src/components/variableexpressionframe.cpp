@@ -152,6 +152,8 @@ void VariableExpressionFrame::on_lockButton_clicked()
 
 void VariableExpressionFrame::updateLock()
 {
+    ui->functionButton->setEnabled(ui->valueEdit->isEnabled());
+
     if (ui->valueEdit->isEnabled())
     {
         ui->lockButton->setIcon(QIcon(":/images/Unlock.png"));
@@ -183,6 +185,350 @@ void VariableExpressionFrame::on_functionButton_clicked()
     }
 }
 
+QVariant VariableExpressionFrame::calculatePart(QString aExpression)
+{
+    qDebug()<<aExpression;
+
+    aExpression=aExpression.trimmed();
+
+    QChar quote='0';
+    int bracketCount=0;
+    int firstBracket=-1;
+
+    for (int i=0; i<aExpression.length(); i++)
+    {
+        if (aExpression.at(i)=='\"')
+        {
+            if (quote=='\"')
+            {
+                quote='0';
+            }
+            else
+            if (quote=='0')
+            {
+                quote='\"';
+            }
+        }
+        else
+        if (aExpression.at(i)=='\'')
+        {
+            if (quote=='\'')
+            {
+                quote='0';
+            }
+            else
+            if (quote=='0')
+            {
+                quote='\'';
+            }
+        }
+        else
+        if (aExpression.at(i)=='\\')
+        {
+            if (quote!='0')
+            {
+                i++;
+            }
+            else
+            {
+                if (i<aExpression.length()-1)
+                {
+                    calculationError="Специальный символ \\"+QString(aExpression.at(i+1))+" обнаружен вне строки";
+                    throw "Special symbol outside of string";
+                }
+                else
+                {
+                    calculationError="Не достаточно символов";
+                    throw "Not enough symbols";
+                }
+            }
+        }
+        else
+        if (aExpression.at(i).isSpace())
+        {
+            if (quote=='0')
+            {
+                aExpression.remove(i, 1);
+                i--;
+            }
+        }
+        else
+        if (aExpression.at(i)=='(')
+        {
+            if (quote=='0')
+            {
+                bracketCount++;
+
+                if (firstBracket<0)
+                {
+                    firstBracket=i;
+                }
+            }
+        }
+        else
+        if (aExpression.at(i)==')')
+        {
+            if (quote=='0')
+            {
+                bracketCount--;
+
+                if (bracketCount<0)
+                {
+                    calculationError="Не обнаружена открывающаяся скобка \"(\" для закрывающейся \")\"";
+                    throw "No open bracket";
+                }
+
+                if (bracketCount==0 && i<aExpression.length()-1)
+                {
+                    calculationError="Выражение должно было окончиться закрывающейся скобкой \")\"";
+                    throw "Wrong end";
+                }
+            }
+        }
+    }
+
+    if (bracketCount>0)
+    {
+        calculationError="Не обнаружена закрывающаяся скобка \")\" для открывающейся \"(\"";
+        throw "No close bracket";
+    }
+
+    if (quote!='0')
+    {
+        calculationError="Не найдена закрывающаяся ковычка "+QString(quote);
+        throw "Quote not found";
+    }
+
+    if (aExpression=="")
+    {
+        return "";
+    }
+
+    if (firstBracket>=0)
+    {
+        QString aFunction=aExpression.left(firstBracket);
+
+        if (aFunction=="")
+        {
+            calculationError="Перед открывающейся скобкой \"(\" должна быть указана функция";
+            throw "Function not found";
+        }
+
+        aExpression=aExpression.mid(firstBracket+1);
+        aExpression.remove(aExpression.length()-1, 1);
+
+    }
+    else
+    {
+        if (aExpression=="true")
+        {
+            return true;
+        }
+        else
+        if (aExpression=="false")
+        {
+            return false;
+        }
+        else
+        if (aExpression.startsWith("\"") || aExpression.startsWith("\'"))
+        {
+            quote=aExpression.at(0);
+
+            for (int i=1; i<aExpression.length(); i++)
+            {
+                if (aExpression.at(i)==quote)
+                {
+                    if (i<aExpression.length()-1)
+                    {
+                        break;
+                    }
+
+                    aExpression.remove(i, 1);
+                    aExpression.remove(0, 1);
+
+                    aExpression.replace("\\\"", "\"");
+                    aExpression.replace("\\\'", "\'");
+                    aExpression.replace("\\n", "\n");
+                    aExpression.replace("\\r", "\r");
+                    aExpression.replace("\\t", "\t");
+                    aExpression.replace("\\\\", "\\");
+
+                    return aExpression;
+                }
+                else
+                if (aExpression.at(i)=='\\')
+                {
+                    i++;
+                }
+            }
+
+            calculationError="Строка \""+aExpression+"\" должна была закончиться кавычкой "+QString(quote);
+            throw "Wrong end";
+        }
+        else
+        if (aExpression.at(0).isNumber())
+        {
+            bool ok;
+            double aDoubleValue=aExpression.toDouble(&ok);
+
+            if (ok)
+            {
+                return aDoubleValue;
+            }
+
+            QDate aDateValue=QDate::fromString(aExpression, "dd.MM.yyyy");
+
+            if (aDateValue.isValid())
+            {
+                return aDateValue;
+            }
+
+            QTime aTimeValue=QTime::fromString(aExpression, "hh:mm:ss");
+
+            if (aTimeValue.isValid())
+            {
+                return aTimeValue;
+            }
+
+            calculationError="Невозможно преобразовать строку \""+aExpression+"\" в число";
+            throw "Impossible to convert";
+        }
+        else
+        {
+            PageComponent *aVariable=0;
+            int dopIndex=aExpression.indexOf(".");
+
+            if (dopIndex>=0)
+            {
+                QString aSection=aExpression.left(dopIndex);
+                aExpression.remove(0, dopIndex+1);
+
+                if (aSection=="Global")
+                {
+                    for (int i=0; i<globalDialog->variables.length(); i++)
+                    {
+                        if (globalDialog->variables.at(i)->variableName()==aExpression)
+                        {
+                            aVariable=globalDialog->variables.at(i);
+                            break;
+                        }
+                    }
+
+                    if (aVariable==0)
+                    {
+                        calculationError="Не найдена глобальная переменная \""+aExpression+"\"";
+                        throw "Variable not found";
+                    }
+                }
+                else
+                {
+                    PageFrame *aPage=0;
+
+                    for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
+                    {
+                        if (((PageFrame *)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text()==aSection)
+                        {
+                            aPage=(PageFrame *)mainWindow->ui->pagesTabWidget->widget(i);
+                            break;
+                        }
+                    }
+
+                    if (aPage==0)
+                    {
+                        calculationError="Не найден раздел \""+aSection+"\"";
+                        throw "Page not found";
+                    }
+
+                    for (int i=0; i<aPage->variables.length(); i++)
+                    {
+                        if (aPage->variables.at(i)->variableName()==aExpression)
+                        {
+                            aVariable=aPage->variables.at(i);
+                            break;
+                        }
+                    }
+
+                    if (aVariable==0)
+                    {
+                        for (int i=0; i<aPage->components.length(); i++)
+                        {
+                            if (aPage->components.at(i)->variableName()==aExpression)
+                            {
+                                aVariable=aPage->components.at(i);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (aVariable==0)
+                    {
+                        calculationError="Не найдена переменная \""+aExpression+"\" в разделе \""+aSection+"\"";
+                        throw "Variable not found";
+                    }
+                }
+            }
+            else
+            {
+                if (superParent!=globalDialog)
+                {
+                    PageFrame *aPage=(PageFrame*)superParent;
+
+                    for (int i=0; i<aPage->variables.length(); i++)
+                    {
+                        if (aPage->variables.at(i)->variableName()==aExpression)
+                        {
+                            aVariable=aPage->variables.at(i);
+                            break;
+                        }
+                    }
+
+                    if (aVariable==0)
+                    {
+                        for (int i=0; i<aPage->components.length(); i++)
+                        {
+                            if (aPage->components.at(i)->variableName()==aExpression)
+                            {
+                                aVariable=aPage->components.at(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (aVariable==0)
+                {
+                    for (int i=0; i<globalDialog->variables.length(); i++)
+                    {
+                        if (globalDialog->variables.at(i)->variableName()==aExpression)
+                        {
+                            aVariable=globalDialog->variables.at(i);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (aVariable==0)
+            {
+                calculationError="Не найдена переменная \""+aExpression+"\"";
+                throw "Variable not found";
+            }
+
+            try
+            {
+                return aVariable->calculate();
+            }
+            catch (...)
+            {
+                calculationError=aVariable->calculationError;
+                throw "Recursive throw";
+            }
+        }
+    }
+
+    return 0;
+}
+
 QVariant VariableExpressionFrame::calculate()
 {
     if (isWasCalculated)
@@ -191,6 +537,11 @@ QVariant VariableExpressionFrame::calculate()
     }
 
     PageComponent::calculate();
+
+    calculationResult=calculatePart(ui->valueEdit->text());
+
+    isWasCalculated=true;
+    isInCalculation=false;
 
     return calculationResult;
 }

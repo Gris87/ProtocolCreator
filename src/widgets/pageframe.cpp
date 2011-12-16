@@ -156,12 +156,12 @@ void PageFrame::componentCopy(PageComponent* aComponent)
 
         if (aMagicWord=="ComponentText")
         {
-            aComponent=new ComponentTextFrame(this);
+            aComponent=new ComponentTextFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
         else
         if (aMagicWord=="VarExtendedList")
         {
-            aComponent=new VariableExtendedListFrame(this);
+            aComponent=new VariableExtendedListFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
 
             ((VariableExtendedListFrame*)aComponent)->ui->titleLabel->setVisible(false);
             ((VariableExtendedListFrame*)aComponent)->ui->nameEdit->setText("Таблица");

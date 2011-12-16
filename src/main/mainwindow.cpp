@@ -799,7 +799,7 @@ void MainWindow::on_actionVariableInteger_triggered()
         return;
     }
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableIntegerFrame(this));
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableIntegerFrame(ui->pagesTabWidget->currentWidget()));
 }
 
 void MainWindow::on_actionVariableString_triggered()
@@ -809,7 +809,7 @@ void MainWindow::on_actionVariableString_triggered()
         return;
     }
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableStringFrame(this));
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableStringFrame(ui->pagesTabWidget->currentWidget()));
 }
 
 void MainWindow::on_actionVariableBool_triggered()
@@ -819,7 +819,7 @@ void MainWindow::on_actionVariableBool_triggered()
         return;
     }
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableBoolFrame(this));
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableBoolFrame(ui->pagesTabWidget->currentWidget()));
 }
 
 void MainWindow::on_actionVariableDate_triggered()
@@ -829,7 +829,7 @@ void MainWindow::on_actionVariableDate_triggered()
         return;
     }
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableDateFrame(this));
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableDateFrame(ui->pagesTabWidget->currentWidget()));
 }
 
 void MainWindow::on_actionVariableTime_triggered()
@@ -839,7 +839,7 @@ void MainWindow::on_actionVariableTime_triggered()
         return;
     }
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableTimeFrame(this));
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableTimeFrame(ui->pagesTabWidget->currentWidget()));
 }
 
 void MainWindow::on_actionVariableList_triggered()
@@ -849,7 +849,7 @@ void MainWindow::on_actionVariableList_triggered()
         return;
     }
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableListFrame(this));
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableListFrame(ui->pagesTabWidget->currentWidget()));
 }
 
 void MainWindow::on_actionVariableExtendedList_triggered()
@@ -859,7 +859,7 @@ void MainWindow::on_actionVariableExtendedList_triggered()
         return;
     }
 
-    VariableExtendedListFrame *aVar=new VariableExtendedListFrame(this);
+    VariableExtendedListFrame *aVar=new VariableExtendedListFrame(ui->pagesTabWidget->currentWidget());
 
     aVar->ui->useCheckBox->setVisible(false);
 
@@ -873,7 +873,7 @@ void MainWindow::on_actionVariableExpression_triggered()
         return;
     }
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableExpressionFrame(this));
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(new VariableExpressionFrame(ui->pagesTabWidget->currentWidget()));
 }
 
 void MainWindow::on_actionComponentText_triggered()
@@ -883,7 +883,7 @@ void MainWindow::on_actionComponentText_triggered()
         return;
     }
 
-    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addComponent(new ComponentTextFrame(this));
+    ((PageFrame*)ui->pagesTabWidget->currentWidget())->addComponent(new ComponentTextFrame(ui->pagesTabWidget->currentWidget()));
 }
 
 void MainWindow::on_actionComponentTable_triggered()
@@ -893,7 +893,7 @@ void MainWindow::on_actionComponentTable_triggered()
         return;
     }
 
-    VariableExtendedListFrame *aVar=new VariableExtendedListFrame(this);
+    VariableExtendedListFrame *aVar=new VariableExtendedListFrame(ui->pagesTabWidget->currentWidget());
 
     aVar->ui->titleLabel->setVisible(false);
     aVar->ui->nameEdit->setText("Таблица");

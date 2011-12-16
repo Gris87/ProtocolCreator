@@ -33,6 +33,7 @@ public:
 
     bool isEditable();
 
+    QVariant calculatePart(QString aExpression);
     QVariant calculate();
 
 private slots:

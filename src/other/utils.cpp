@@ -30,44 +30,44 @@ void copyVariable(PageComponent *aComponent)
 
         if (aMagicWord=="VarInteger")
         {
-            aVariable=new VariableIntegerFrame(mainWindow);
+            aVariable=new VariableIntegerFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
         else
         if (aMagicWord=="VarString")
         {
-            aVariable=new VariableStringFrame(mainWindow);
+            aVariable=new VariableStringFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
         else
         if (aMagicWord=="VarBoolean")
         {
-            aVariable=new VariableBoolFrame(mainWindow);
+            aVariable=new VariableBoolFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
         else
         if (aMagicWord=="VarDate")
         {
-            aVariable=new VariableDateFrame(mainWindow);
+            aVariable=new VariableDateFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
         else
         if (aMagicWord=="VarTime")
         {
-            aVariable=new VariableTimeFrame(mainWindow);
+            aVariable=new VariableTimeFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
         else
         if (aMagicWord=="VarList")
         {
-            aVariable=new VariableListFrame(mainWindow);
+            aVariable=new VariableListFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
         else
         if (aMagicWord=="VarExtendedList")
         {
-            aVariable=new VariableExtendedListFrame(mainWindow);
+            aVariable=new VariableExtendedListFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
 
             ((VariableExtendedListFrame*)aVariable)->ui->useCheckBox->setVisible(false);
         }
         else
         if (aMagicWord=="VarExpression")
         {
-            aVariable=new VariableExpressionFrame(mainWindow);
+            aVariable=new VariableExpressionFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
 
         if (aVariable)
@@ -94,6 +94,10 @@ void checkVarName(QString aName, QStringList &aErrorList)
             !(aName.at(i)>='a' && aName.at(i)<='z')
             &&
             !(aName.at(i)>='A' && aName.at(i)<='Z')
+            &&
+            !(aName.at(i)>='à' && aName.at(i)<='ÿ')
+            &&
+            !(aName.at(i)>='À' && aName.at(i)<='ß')
             &&
             !(aName.at(i)>='0' && aName.at(i)<='9')
             &&
