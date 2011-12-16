@@ -489,6 +489,290 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent)
 
                 return aArg1/aArg2;
             }
+            else
+            if (aFunction=="Степень")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return pow(aArg1, aArg2);
+            }
+            else
+            if (aFunction=="Число_Больше")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1>aArg2;
+            }
+            else
+            if (aFunction=="Число_Меньше")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1<aArg2;
+            }
+            else
+            if (aFunction=="Число_Равно")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1==aArg2;
+            }
+            else
+            if (aFunction=="Число_Не_Равно")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1!=aArg2;
+            }
+            else
+            if (aFunction=="Число_Больше_Равно")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1>=aArg2;
+            }
+            else
+            if (aFunction=="Число_Меньше_Равно")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1<=aArg2;
+            }
+            else
+            if (aFunction=="Сумма_строк")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toString()+aResults.at(1).toString();
+            }
+            else
+            if (aFunction=="Строки_Равны")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toString()==aResults.at(1).toString();
+            }
+            else
+            if (aFunction=="Строки_Не_Равны")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toString()!=aResults.at(1).toString();
+            }
+            else
+            if (aFunction=="Логика_И")
+            {
+                if (aResults.at(0).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toBool() && aResults.at(1).toBool();
+            }
+            else
+            if (aFunction=="Логика_ИЛИ")
+            {
+                if (aResults.at(0).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toBool() || aResults.at(1).toBool();
+            }
+            else
+            if (aFunction=="Логика_НЕ")
+            {
+                if (aResults.at(0).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                return !aResults.at(0).toBool();
+            }
+            else
+            if (aFunction=="Логика_Равна")
+            {
+                if (aResults.at(0).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toBool() == aResults.at(1).toBool();
+            }
+            else
+            if (aFunction=="Логика_Не_Равна")
+            {
+                if (aResults.at(0).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::Bool)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toBool() != aResults.at(1).toBool();
+            }
         }
     }
     else
