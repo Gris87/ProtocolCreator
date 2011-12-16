@@ -12,5 +12,6 @@ QString                    adminPass="";
 
 // OTHERS
 QString                    dir="";
+QStringList                functionsList;
 
 QString                    protocolCreatorVersion="Protocol Creator v 1.0";

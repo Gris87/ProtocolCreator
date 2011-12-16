@@ -317,6 +317,250 @@ QVariant VariableExpressionFrame::calculatePart(QString aExpression)
         aExpression=aExpression.mid(firstBracket+1);
         aExpression.remove(aExpression.length()-1, 1);
 
+        QStringList aParameters;
+
+        quote='0';
+        bracketCount=0;
+
+        for (int i=0; i<aExpression.length(); i++)
+        {
+            if (aExpression.at(i)=='\"')
+            {
+                if (quote=='\"')
+                {
+                    quote='0';
+                }
+                else
+                if (quote=='0')
+                {
+                    quote='\"';
+                }
+            }
+            else
+            if (aExpression.at(i)=='\'')
+            {
+                if (quote=='\'')
+                {
+                    quote='0';
+                }
+                else
+                if (quote=='0')
+                {
+                    quote='\'';
+                }
+            }
+            else
+            if (aExpression.at(i)=='\\')
+            {
+                if (quote!='0')
+                {
+                    i++;
+                }
+            }
+            else
+            if (aExpression.at(i)==';')
+            {
+                if (quote=='0' && bracketCount==0)
+                {
+                    aParameters.append(aExpression.left(i));
+
+                    aExpression.remove(0, i+1);
+                    i=0;
+                }
+            }
+            else
+            if (aExpression.at(i)=='(')
+            {
+                if (quote=='0')
+                {
+                    bracketCount++;
+                }
+            }
+            else
+            if (aExpression.at(i)==')')
+            {
+                if (quote=='0')
+                {
+                    bracketCount--;
+                }
+            }
+        }
+
+        if (aExpression!="")
+        {
+            aParameters.append(aExpression);
+        }
+
+        bool good=false;
+
+        for (int i=0; i<functionsList.length(); i++)
+        {
+            if (functionsList.at(i).startsWith(aFunction+"_"))
+            {
+                bool ok;
+                int paramCount=functionsList.at(i).mid(aFunction.length()+1).toInt(&ok);
+
+                if (ok)
+                {
+                    good=true;
+
+                    if (aParameters.length()!=paramCount)
+                    {
+                        if (paramCount==0)
+                        {
+                            calculationError="Функция \""+aFunction+"\" не должна содержать параметров";
+                        }
+                        else
+                        if (paramCount==1)
+                        {
+                            calculationError="Функция \""+aFunction+"\" должна содержать 1 параметр";
+                        }
+                        else
+                        if (paramCount<5)
+                        {
+                            calculationError="Функция \""+aFunction+"\" должна содержать "+QString::number(paramCount)+" параметрa";
+                        }
+                        else
+                        {
+                            calculationError="Функция \""+aFunction+"\" должна содержать "+QString::number(paramCount)+" параметров";
+                        }
+
+                        throw "Wrong parameters count";
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        if (!good)
+        {
+            calculationError="Неизвестная функция \""+aFunction+"\"";
+            throw "Unknown function";
+        }
+
+        if (aFunction=="Если")
+        {
+            QVariant aCondition=calculatePart(aParameters.at(0));
+
+            if (aCondition.type()!=QVariant::Bool)
+            {
+                calculationError="Первым параметром функции \""+aFunction+"\" должно быть логическое значение";
+                throw "Wrong parameter";
+            }
+
+            if (aCondition.toBool())
+            {
+                return calculatePart(aParameters.at(1));
+            }
+            else
+            {
+                return calculatePart(aParameters.at(2));
+            }
+        }
+        else
+        {
+            QList<QVariant> aResults;
+
+            for (int i=0; i<aParameters.length(); i++)
+            {
+                aResults.append(calculatePart(aParameters.at(i)));
+            }
+
+            if (aFunction=="Сумма_чисел")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1+aArg2;
+            }
+            else
+            if (aFunction=="Разность_чисел")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1-aArg2;
+            }
+            else
+            if (aFunction=="Умножение")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aArg1*aArg2;
+            }
+            else
+            if (aFunction=="Деление")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                if (aArg2==0)
+                {
+                    calculationError="Деление на ноль";
+                    throw "Zero division";
+                }
+
+                return aArg1/aArg2;
+            }
+        }
     }
     else
     {
@@ -388,6 +632,20 @@ QVariant VariableExpressionFrame::calculatePart(QString aExpression)
             if (aTimeValue.isValid())
             {
                 return aTimeValue;
+            }
+
+            calculationError="Невозможно преобразовать строку \""+aExpression+"\" в число";
+            throw "Impossible to convert";
+        }
+        else
+        if (aExpression.length()>1 && aExpression.at(0)=='-' && aExpression.at(1).isNumber())
+        {
+            bool ok;
+            double aDoubleValue=aExpression.toDouble(&ok);
+
+            if (ok)
+            {
+                return aDoubleValue;
             }
 
             calculationError="Невозможно преобразовать строку \""+aExpression+"\" в число";

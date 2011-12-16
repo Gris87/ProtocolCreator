@@ -637,7 +637,7 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 try
                 {
-                    aPage->variables.at(j)->calculate();
+                    qDebug()<<aPage->variables.at(j)->calculate();
                 }
                 catch(...)
                 {

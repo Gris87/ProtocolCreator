@@ -45,6 +45,7 @@ extern QString                    adminPass;
 
 // OTHERS
 extern QString                    dir;
+extern QStringList                functionsList;
 
 extern QString                    protocolCreatorVersion;
 
