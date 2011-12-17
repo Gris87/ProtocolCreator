@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>119</height>
+    <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -408,6 +408,35 @@
       <property name="margin">
        <number>0</number>
       </property>
+      <item>
+       <widget class="QTableWidget" name="tableWidget">
+        <row>
+         <property name="text">
+          <string>Новая строка</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Новая строка</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Новая строка</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

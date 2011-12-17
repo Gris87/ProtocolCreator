@@ -8,6 +8,8 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
 
     ui->nameEdit->setText("Расширенный список");
     ui->varNameEdit->setText("ExtendedList");
+
+    ui->tableWidget->setItemDelegateForColumn(0, new DoubleDelegate(this));
 }
 
 VariableExtendedListFrame::~VariableExtendedListFrame()

@@ -15,6 +15,8 @@
 
 #include "src/components/componenttextframe.h"
 
+#include "src/delegates/doubledelegate.h"
+
 #include "src/main/functiondialog.h"
 #include "src/main/globaldialog.h"
 #include "src/main/mainwindow.h"

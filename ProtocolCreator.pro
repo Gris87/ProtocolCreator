@@ -50,7 +50,8 @@ SOURCES += src/main.cpp\
     src/main/pageselectiondialog.cpp \
     src/components/variableextendedlistframe.cpp \
     src/components/variableexpressionframe.cpp \
-    src/main/functiondialog.cpp
+    src/main/functiondialog.cpp \
+    src/delegates/doubledelegate.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -87,7 +88,8 @@ HEADERS  += src/main/mainwindow.h \
     src/main/pageselectiondialog.h \
     src/components/variableextendedlistframe.h \
     src/components/variableexpressionframe.h \
-    src/main/functiondialog.h
+    src/main/functiondialog.h \
+    src/delegates/doubledelegate.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -109,3 +111,5 @@ FORMS    += src/main/mainwindow.ui \
 
 OTHER_FILES += \
     TODO.txt
+
+
