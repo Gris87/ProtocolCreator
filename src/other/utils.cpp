@@ -114,6 +114,143 @@ void checkVarName(QString aName, QStringList &aErrorList)
     }
 }
 
+PageComponent* variableByName(QString aVariableName, PageComponent *aComponent)
+{
+    PageComponent *aVariable=0;
+
+    int dopIndex=aVariableName.indexOf(".");
+
+    if (dopIndex>=0)
+    {
+        QString aSection=aVariableName.left(dopIndex);
+        aVariableName.remove(0, dopIndex+1);
+
+        if (aSection=="Global")
+        {
+            for (int i=0; i<globalDialog->variables.length(); i++)
+            {
+                if (globalDialog->variables.at(i)->variableName()==aVariableName)
+                {
+                    aVariable=globalDialog->variables.at(i);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            PageFrame *aPage=0;
+
+            for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
+            {
+                if (((PageFrame *)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text()==aSection)
+                {
+                    aPage=(PageFrame *)mainWindow->ui->pagesTabWidget->widget(i);
+                    break;
+                }
+            }
+
+            if (aPage)
+            {
+                for (int i=0; i<aPage->variables.length(); i++)
+                {
+                    if (aPage->variables.at(i)->variableName()==aVariableName)
+                    {
+                        aVariable=aPage->variables.at(i);
+                        break;
+                    }
+                }
+
+                if (aVariable==0)
+                {
+                    for (int i=0; i<aPage->components.length(); i++)
+                    {
+                        if (aPage->components.at(i)->variableName()==aVariableName)
+                        {
+                            aVariable=aPage->components.at(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        if (aComponent->superParent!=globalDialog)
+        {
+            PageFrame *aPage=(PageFrame*)aComponent->superParent;
+
+            for (int i=0; i<aPage->variables.length(); i++)
+            {
+                if (aPage->variables.at(i)->variableName()==aVariableName)
+                {
+                    aVariable=aPage->variables.at(i);
+                    break;
+                }
+            }
+
+            if (aVariable==0)
+            {
+                for (int i=0; i<aPage->components.length(); i++)
+                {
+                    if (aPage->components.at(i)->variableName()==aVariableName)
+                    {
+                        aVariable=aPage->components.at(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (aVariable==0)
+        {
+            for (int i=0; i<globalDialog->variables.length(); i++)
+            {
+                if (globalDialog->variables.at(i)->variableName()==aVariableName)
+                {
+                    aVariable=globalDialog->variables.at(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    return aVariable;
+}
+
+PageComponent* getVariableOrThrow(QString aVariableName, PageComponent *aComponent)
+{
+    PageComponent *aVariable=variableByName(aVariableName, aComponent);
+
+    if (aVariable==0)
+    {
+        int dopIndex=aVariableName.indexOf(".");
+
+        if (dopIndex>=0)
+        {
+            QString aSection=aVariableName.left(dopIndex);
+            aVariableName.remove(0, dopIndex+1);
+
+            if (aSection=="Global")
+            {
+                aComponent->calculationError="Не найдена глобальная переменная \""+aVariableName+"\"";
+            }
+            else
+            {
+                aComponent->calculationError="Не найдена переменная \""+aVariableName+"\" в разделе \""+aSection+"\"";
+            }
+        }
+        else
+        {
+            aComponent->calculationError="Не найдена переменная \""+aVariableName+"\"";
+        }
+
+        throw "Variable not found";
+    }
+
+    return aVariable;
+}
+
 QVariant calculatePart(QString aExpression, PageComponent *aComponent)
 {
     qDebug()<<aExpression;
@@ -1234,6 +1371,201 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent)
 
                 return aArg1;
             }
+            else
+            if (aFunction=="Sin")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return sin(aArg1);
+            }
+            else
+            if (aFunction=="Cos")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return cos(aArg1);
+            }
+            else
+            if (aFunction=="Tan")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aSinus=sin(aArg1);
+                double aCosinus=cos(aArg1);
+
+                if (aCosinus==0)
+                {
+                    aComponent->calculationError="Тангенс не может быть определен";
+                    throw "Division by zero";
+                }
+
+                return aSinus/aCosinus;
+            }
+            else
+            if (aFunction=="CoTan")
+            {
+                bool ok;
+                double aArg1=aResults.at(0).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aSinus=sin(aArg1);
+                double aCosinus=cos(aArg1);
+
+                if (aSinus==0)
+                {
+                    aComponent->calculationError="Котангенс не может быть определен";
+                    throw "Division by zero";
+                }
+
+                return aCosinus/aSinus;
+            }
+            else
+            if (aFunction=="ПИ")
+            {
+                return M_PI;
+            }
+            else
+            if (aFunction=="Подстрока")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                bool ok;
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg3=aResults.at(2).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Третьим параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                return aResults.at(0).toString().mid((int)aArg2, (int)aArg3);
+            }
+            else
+            if (aFunction=="Длина_текста")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                return ((double)aResults.at(0).toString().length());
+            }
+            else
+            if (aFunction=="Удалить_текст")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                bool ok;
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                double aArg3=aResults.at(2).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Третьим параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                QString aValue=aResults.at(0).toString();
+                aValue.remove((int)aArg2, (int)aArg3);
+
+                return aValue;
+            }
+            else
+            if (aFunction=="Вставить_текст")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                bool ok;
+                double aArg3=aResults.at(2).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Третьим параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                QString aValue=aResults.at(1).toString();
+                aValue.insert((int)aArg3, aResults.at(0).toString());
+
+                return aValue;
+            }
+            else
+            if (aFunction=="Позиция_в_тексте")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                return ((double)aResults.at(1).toString().indexOf(aResults.at(0).toString()));
+            }
         }
     }
     else
@@ -1327,124 +1659,7 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent)
         }
         else
         {
-            PageComponent *aVariable=0;
-            int dopIndex=aExpression.indexOf(".");
-
-            if (dopIndex>=0)
-            {
-                QString aSection=aExpression.left(dopIndex);
-                aExpression.remove(0, dopIndex+1);
-
-                if (aSection=="Global")
-                {
-                    for (int i=0; i<globalDialog->variables.length(); i++)
-                    {
-                        if (globalDialog->variables.at(i)->variableName()==aExpression)
-                        {
-                            aVariable=globalDialog->variables.at(i);
-                            break;
-                        }
-                    }
-
-                    if (aVariable==0)
-                    {
-                        aComponent->calculationError="Не найдена глобальная переменная \""+aExpression+"\"";
-                        throw "Variable not found";
-                    }
-                }
-                else
-                {
-                    PageFrame *aPage=0;
-
-                    for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
-                    {
-                        if (((PageFrame *)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text()==aSection)
-                        {
-                            aPage=(PageFrame *)mainWindow->ui->pagesTabWidget->widget(i);
-                            break;
-                        }
-                    }
-
-                    if (aPage==0)
-                    {
-                        aComponent->calculationError="Не найден раздел \""+aSection+"\"";
-                        throw "Page not found";
-                    }
-
-                    for (int i=0; i<aPage->variables.length(); i++)
-                    {
-                        if (aPage->variables.at(i)->variableName()==aExpression)
-                        {
-                            aVariable=aPage->variables.at(i);
-                            break;
-                        }
-                    }
-
-                    if (aVariable==0)
-                    {
-                        for (int i=0; i<aPage->components.length(); i++)
-                        {
-                            if (aPage->components.at(i)->variableName()==aExpression)
-                            {
-                                aVariable=aPage->components.at(i);
-                                break;
-                            }
-                        }
-                    }
-
-                    if (aVariable==0)
-                    {
-                        aComponent->calculationError="Не найдена переменная \""+aExpression+"\" в разделе \""+aSection+"\"";
-                        throw "Variable not found";
-                    }
-                }
-            }
-            else
-            {
-                if (aComponent->superParent!=globalDialog)
-                {
-                    PageFrame *aPage=(PageFrame*)aComponent->superParent;
-
-                    for (int i=0; i<aPage->variables.length(); i++)
-                    {
-                        if (aPage->variables.at(i)->variableName()==aExpression)
-                        {
-                            aVariable=aPage->variables.at(i);
-                            break;
-                        }
-                    }
-
-                    if (aVariable==0)
-                    {
-                        for (int i=0; i<aPage->components.length(); i++)
-                        {
-                            if (aPage->components.at(i)->variableName()==aExpression)
-                            {
-                                aVariable=aPage->components.at(i);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (aVariable==0)
-                {
-                    for (int i=0; i<globalDialog->variables.length(); i++)
-                    {
-                        if (globalDialog->variables.at(i)->variableName()==aExpression)
-                        {
-                            aVariable=globalDialog->variables.at(i);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (aVariable==0)
-            {
-                aComponent->calculationError="Не найдена переменная \""+aExpression+"\"";
-                throw "Variable not found";
-            }
+            PageComponent *aVariable=getVariableOrThrow(aExpression, aComponent);
 
             try
             {

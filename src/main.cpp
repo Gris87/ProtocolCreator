@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     functionsList.append("Tan_1");
     functionsList.append("CoTan_1");
     functionsList.append("ПИ_0");
-    functionsList.append("Выделить_текст_3");
+    functionsList.append("Подстрока_3");
     functionsList.append("Длина_текста_1");
     functionsList.append("Удалить_текст_3");
     functionsList.append("Вставить_текст_3");
@@ -74,6 +74,10 @@ int main(int argc, char *argv[])
     functionsList.append("День_1");
     functionsList.append("Месяц_1");
     functionsList.append("Год_1");
+    functionsList.append("Сейчас_0");
+    functionsList.append("Секунда_1");
+    functionsList.append("Минута_1");
+    functionsList.append("Час_1");
     functionsList.append("Срок_Годности_Пришел_2");
     functionsList.append("Используемые_ГОСТы_2");
     functionsList.append("Найдена_строка_3");
