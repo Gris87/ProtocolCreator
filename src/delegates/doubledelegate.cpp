@@ -25,8 +25,7 @@ void DoubleDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
 
     spinBox->interpretText();
 
-    double value = spinBox->value();
-    model->setData(index, value, Qt::EditRole);
+    model->setData(index, spinBox->value(), Qt::EditRole);
 }
 
 void DoubleDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const

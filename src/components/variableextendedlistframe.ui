@@ -435,6 +435,41 @@
           <string>Новый столбец</string>
          </property>
         </column>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Новый столбец</string>
+         </property>
+        </column>
        </widget>
       </item>
      </layout>

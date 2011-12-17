@@ -10,6 +10,12 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     ui->varNameEdit->setText("ExtendedList");
 
     ui->tableWidget->setItemDelegateForColumn(0, new DoubleDelegate(this));
+    ui->tableWidget->setItem(0, 2, new QTableWidgetItem());
+    ui->tableWidget->item(0,2)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+    ui->tableWidget->item(0,2)->setCheckState(Qt::Checked);
+    ui->tableWidget->setItemDelegateForColumn(3, new DateDelegate(this));
+    ui->tableWidget->setItemDelegateForColumn(4, new TimeDelegate(this));
+    ui->tableWidget->setItemDelegateForColumn(5, new ListDelegate(this));
 }
 
 VariableExtendedListFrame::~VariableExtendedListFrame()

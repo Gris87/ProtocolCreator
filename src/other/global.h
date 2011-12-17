@@ -15,7 +15,10 @@
 
 #include "src/components/componenttextframe.h"
 
+#include "src/delegates/datedelegate.h"
 #include "src/delegates/doubledelegate.h"
+#include "src/delegates/listdelegate.h"
+#include "src/delegates/timedelegate.h"
 
 #include "src/main/functiondialog.h"
 #include "src/main/globaldialog.h"

@@ -51,7 +51,10 @@ SOURCES += src/main.cpp\
     src/components/variableextendedlistframe.cpp \
     src/components/variableexpressionframe.cpp \
     src/main/functiondialog.cpp \
-    src/delegates/doubledelegate.cpp
+    src/delegates/doubledelegate.cpp \
+    src/delegates/datedelegate.cpp \
+    src/delegates/timedelegate.cpp \
+    src/delegates/listdelegate.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -89,7 +92,10 @@ HEADERS  += src/main/mainwindow.h \
     src/components/variableextendedlistframe.h \
     src/components/variableexpressionframe.h \
     src/main/functiondialog.h \
-    src/delegates/doubledelegate.h
+    src/delegates/doubledelegate.h \
+    src/delegates/datedelegate.h \
+    src/delegates/timedelegate.h \
+    src/delegates/listdelegate.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -111,5 +117,3 @@ FORMS    += src/main/mainwindow.ui \
 
 OTHER_FILES += \
     TODO.txt
-
-
