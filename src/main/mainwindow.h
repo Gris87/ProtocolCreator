@@ -32,7 +32,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private:
+    void closeEvent(QCloseEvent *event);
+
     void addPage(QString aName, QString aVarName);
 
     void addError(QString aText);

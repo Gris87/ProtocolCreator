@@ -36,6 +36,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    int aAnswer=QMessageBox::question(this, protocolCreatorVersion, "¬ы хотите сохранить работу перед выходом?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No, QMessageBox::Cancel | QMessageBox::Escape);
+
+    if (aAnswer==QMessageBox::Yes)
+    {
+        on_actionSave_triggered();
+        event->accept();
+    }
+    else
+    if (aAnswer==QMessageBox::No)
+    {
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+
 void MainWindow::on_actionNew_triggered()
 {
     currentName="";
