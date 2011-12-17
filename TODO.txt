@@ -1,1 +1,2 @@
 button to swith location for a extList
+Special functions needs to add
