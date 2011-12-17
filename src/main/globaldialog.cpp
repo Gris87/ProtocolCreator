@@ -107,6 +107,7 @@ void GlobalDialog::on_extendedListButton_clicked()
     VariableExtendedListFrame *aVar=new VariableExtendedListFrame(this);
 
     aVar->ui->useCheckBox->setVisible(false);
+    aVar->ui->switchButton->setVisible(false);
 
     addVariable(aVar);
 }
@@ -206,6 +207,7 @@ void GlobalDialog::loadFromStream(QDataStream &aStream)
                     aVariable=new VariableExtendedListFrame(this);
 
                     ((VariableExtendedListFrame*)aVariable)->ui->useCheckBox->setVisible(false);
+                    ((VariableExtendedListFrame*)aVariable)->ui->switchButton->setVisible(false);
                 }
                 else
                 if (aMagicWord=="VarExpression")

@@ -6,6 +6,7 @@
 #include "ui_pageframe.h"
 
 #include "src/components/pagecomponent.h"
+#include "src/components/variableextendedlistframe.h"
 
 namespace Ui {
     class PageFrame;
@@ -30,6 +31,9 @@ public:
     explicit PageFrame(QWidget *parent = 0);
     ~PageFrame();
 
+    void removeVariable(PageComponent* aComponent);
+    void removeComponent(PageComponent* aComponent);
+
     void addVariable(PageComponent* aComponent);
     void addComponent(PageComponent* aComponent);
 
@@ -40,10 +44,12 @@ public:
     void updateHideButton();
 
 private slots:
+    void variableSwitch(VariableExtendedListFrame* aComponent);
     void variableUp(PageComponent* aComponent);
     void variableDown(PageComponent* aComponent);
     void variableCopy(PageComponent* aComponent);
     void variableDelete(PageComponent* aComponent);
+    void componentSwitch(VariableExtendedListFrame* aComponent);
     void componentUp(PageComponent* aComponent);
     void componentDown(PageComponent* aComponent);
     void componentCopy(PageComponent* aComponent);

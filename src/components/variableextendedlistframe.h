@@ -37,6 +37,7 @@ public:
     QVariant calculate();
 
 private slots:
+    void on_switchButton_clicked();
     void on_upButton_clicked();
     void on_downButton_clicked();
     void on_copyButton_clicked();
@@ -45,6 +46,9 @@ private slots:
     void on_useCheckBox_toggled(bool checked);
     void on_lockButton_clicked();
     void on_editButton_clicked();
+
+signals:
+    void switchPressed(VariableExtendedListFrame*  aComponent);
 };
 
 #endif // VARIABLEEXTENDEDLISTFRAME_H

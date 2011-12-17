@@ -118,6 +118,11 @@ void VariableExtendedListFrame::setUpDownEnabled(bool aUpEnabled, bool aDownEnab
     ui->downButton->setEnabled(aDownEnabled);
 }
 
+void VariableExtendedListFrame::on_switchButton_clicked()
+{
+    emit switchPressed(this);
+}
+
 void VariableExtendedListFrame::on_upButton_clicked()
 {
     emit upPressed(this);

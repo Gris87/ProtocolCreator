@@ -20,6 +20,22 @@ PageFrame::~PageFrame()
     delete ui;
 }
 
+void PageFrame::variableSwitch(VariableExtendedListFrame* aComponent)
+{
+    removeVariable(aComponent);
+
+    disconnect(aComponent, SIGNAL(switchPressed(VariableExtendedListFrame*)), this, SLOT(variableSwitch(VariableExtendedListFrame*)));
+    disconnect(aComponent, SIGNAL(upPressed(PageComponent*)), this, SLOT(variableUp(PageComponent*)));
+    disconnect(aComponent, SIGNAL(downPressed(PageComponent*)), this, SLOT(variableDown(PageComponent*)));
+    disconnect(aComponent, SIGNAL(copyPressed(PageComponent*)), this, SLOT(variableCopy(PageComponent*)));
+    disconnect(aComponent, SIGNAL(deletePressed(PageComponent*)), this, SLOT(variableDelete(PageComponent*)));
+
+    aComponent->ui->useCheckBox->setVisible(true);
+    aComponent->ui->titleLabel->setVisible(false);
+
+    addComponent(aComponent);
+}
+
 void PageFrame::variableUp(PageComponent* aComponent)
 {
     int index=variables.indexOf(aComponent);
@@ -71,11 +87,27 @@ void PageFrame::variableDelete(PageComponent* aComponent)
 {
     if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить переменную \""+aComponent->name()+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
     {
-        variables.removeOne(aComponent);
+        removeVariable(aComponent);
 
-        ui->variableLayout->removeWidget(aComponent);
         delete aComponent;
     }
+}
+
+void PageFrame::componentSwitch(VariableExtendedListFrame* aComponent)
+{
+    removeComponent(aComponent);
+
+    disconnect(aComponent, SIGNAL(switchPressed(VariableExtendedListFrame*)), this, SLOT(componentSwitch(VariableExtendedListFrame*)));
+    disconnect(aComponent, SIGNAL(upPressed(PageComponent*)), this, SLOT(componentUp(PageComponent*)));
+    disconnect(aComponent, SIGNAL(downPressed(PageComponent*)), this, SLOT(componentDown(PageComponent*)));
+    disconnect(aComponent, SIGNAL(copyPressed(PageComponent*)), this, SLOT(componentCopy(PageComponent*)));
+    disconnect(aComponent, SIGNAL(deletePressed(PageComponent*)), this, SLOT(componentDelete(PageComponent*)));
+
+    aComponent->ui->useCheckBox->setChecked(true);
+    aComponent->ui->useCheckBox->setVisible(false);
+    aComponent->ui->titleLabel->setVisible(true);
+
+    addVariable(aComponent);
 }
 
 void PageFrame::componentUp(PageComponent* aComponent)
@@ -156,12 +188,12 @@ void PageFrame::componentCopy(PageComponent* aComponent)
 
         if (aMagicWord=="ComponentText")
         {
-            aComponent=new ComponentTextFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
+            aComponent=new ComponentTextFrame(mainWindow->ui->pagesTabWidget->widget(aRow-1));
         }
         else
         if (aMagicWord=="VarExtendedList")
         {
-            aComponent=new VariableExtendedListFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
+            aComponent=new VariableExtendedListFrame(mainWindow->ui->pagesTabWidget->widget(aRow-1));
 
             ((VariableExtendedListFrame*)aComponent)->ui->titleLabel->setVisible(false);
             ((VariableExtendedListFrame*)aComponent)->ui->nameEdit->setText("Таблица");
@@ -181,9 +213,8 @@ void PageFrame::componentDelete(PageComponent* aComponent)
 {
     if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить компонент \""+aComponent->name()+"\"", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
     {
-        components.removeOne(aComponent);
+        removeComponent(aComponent);
 
-        ui->componentLayout->removeWidget(aComponent);
         delete aComponent;
     }
 }
@@ -219,6 +250,62 @@ void PageFrame::updateHideButton()
     }
 }
 
+void PageFrame::removeVariable(PageComponent* aComponent)
+{
+    int index=variables.indexOf(aComponent);
+
+    if (index<0)
+    {
+        return;
+    }
+
+    variables.removeAt(index);
+    ui->variableLayout->removeWidget(aComponent);
+
+    if (variables.length()==0)
+    {
+        return;
+    }
+
+    if (index==variables.length())
+    {
+        index--;
+    }
+
+    if (index==0 || index==variables.length()-1)
+    {
+        variables.at(index)->setUpDownEnabled(index>0, index<variables.length()-1);
+    }
+}
+
+void PageFrame::removeComponent(PageComponent* aComponent)
+{
+    int index=components.indexOf(aComponent);
+
+    if (index<0)
+    {
+        return;
+    }
+
+    components.removeAt(index);
+    ui->componentLayout->removeWidget(aComponent);
+
+    if (components.length()==0)
+    {
+        return;
+    }
+
+    if (index==components.length())
+    {
+        index--;
+    }
+
+    if (index==0 || index==components.length()-1)
+    {
+        components.at(index)->setUpDownEnabled(index>0, index<components.length()-1);
+    }
+}
+
 void PageFrame::addVariable(PageComponent* aComponent)
 {
     variables.append(aComponent);
@@ -232,6 +319,13 @@ void PageFrame::addVariable(PageComponent* aComponent)
     }
 
     aComponent->createConnections(this, SLOT(variableUp(PageComponent*)), SLOT(variableDown(PageComponent*)), SLOT(variableCopy(PageComponent*)), SLOT(variableDelete(PageComponent*)));
+
+    if (aComponent->inherits("VariableExtendedListFrame"))
+    {
+        VariableExtendedListFrame *aVar=(VariableExtendedListFrame*)aComponent;
+
+        connect(aVar, SIGNAL(switchPressed(VariableExtendedListFrame*)), this, SLOT(variableSwitch(VariableExtendedListFrame*)));
+    }
 }
 
 void PageFrame::addComponent(PageComponent* aComponent)
@@ -247,6 +341,13 @@ void PageFrame::addComponent(PageComponent* aComponent)
     }
 
     aComponent->createConnections(this, SLOT(componentUp(PageComponent*)), SLOT(componentDown(PageComponent*)), SLOT(componentCopy(PageComponent*)), SLOT(componentDelete(PageComponent*)));
+
+    if (aComponent->inherits("VariableExtendedListFrame"))
+    {
+        VariableExtendedListFrame *aVar=(VariableExtendedListFrame*)aComponent;
+
+        connect(aVar, SIGNAL(switchPressed(VariableExtendedListFrame*)), this, SLOT(componentSwitch(VariableExtendedListFrame*)));
+    }
 }
 
 void PageFrame::saveToStream(QDataStream &aStream)
