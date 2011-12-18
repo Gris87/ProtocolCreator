@@ -22,6 +22,7 @@ public:
     explicit TableEditDialog(VariableExtendedListFrame *aTable, QWidget *parent = 0);
     ~TableEditDialog();
 
+    void updateAdmin();
 };
 
 #endif // TABLEEDITDIALOG_H

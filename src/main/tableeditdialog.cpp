@@ -7,9 +7,16 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
     ui->setupUi(this);
 
     mTable=aTable;
+
+    updateAdmin();
 }
 
 TableEditDialog::~TableEditDialog()
 {
     delete ui;
+}
+
+void TableEditDialog::updateAdmin()
+{
+
 }
