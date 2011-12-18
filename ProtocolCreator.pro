@@ -54,7 +54,8 @@ SOURCES += src/main.cpp\
     src/delegates/doubledelegate.cpp \
     src/delegates/datedelegate.cpp \
     src/delegates/timedelegate.cpp \
-    src/delegates/listdelegate.cpp
+    src/delegates/listdelegate.cpp \
+    src/main/tableeditdialog.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -95,7 +96,8 @@ HEADERS  += src/main/mainwindow.h \
     src/delegates/doubledelegate.h \
     src/delegates/datedelegate.h \
     src/delegates/timedelegate.h \
-    src/delegates/listdelegate.h
+    src/delegates/listdelegate.h \
+    src/main/tableeditdialog.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -113,7 +115,8 @@ FORMS    += src/main/mainwindow.ui \
     src/main/pageselectiondialog.ui \
     src/components/variableextendedlistframe.ui \
     src/components/variableexpressionframe.ui \
-    src/main/functiondialog.ui
+    src/main/functiondialog.ui \
+    src/main/tableeditdialog.ui
 
 OTHER_FILES += \
     TODO.txt

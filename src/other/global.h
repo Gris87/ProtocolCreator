@@ -26,6 +26,7 @@
 #include "src/main/pageselectiondialog.h"
 #include "src/main/passworddialog.h"
 #include "src/main/sectioncontroldialog.h"
+#include "src/main/tableeditdialog.h"
 
 #include "src/other/encoder.h"
 #include "src/other/utils.h"

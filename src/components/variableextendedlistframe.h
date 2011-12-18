@@ -46,6 +46,7 @@ private slots:
     void on_useCheckBox_toggled(bool checked);
     void on_lockButton_clicked();
     void on_editButton_clicked();
+    void on_configButton_clicked();
 
 signals:
     void switchPressed(VariableExtendedListFrame*  aComponent);

@@ -172,6 +172,8 @@ void VariableExtendedListFrame::on_lockButton_clicked()
 
 void VariableExtendedListFrame::updateLock()
 {
+    ui->configButton->setEnabled(ui->userWidget->isEnabled());
+
     if (ui->userWidget->isEnabled())
     {
         ui->lockButton->setIcon(QIcon(":/images/Unlock.png"));
@@ -207,4 +209,10 @@ QVariant VariableExtendedListFrame::calculate()
     PageComponent::calculate();
 
     return calculationResult;
+}
+
+void VariableExtendedListFrame::on_configButton_clicked()
+{
+    TableEditDialog dialog(this, this);
+    dialog.exec();
 }

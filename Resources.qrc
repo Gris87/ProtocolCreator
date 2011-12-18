@@ -27,5 +27,6 @@
         <file>images/Pencil.png</file>
         <file>images/Function.png</file>
         <file>images/Switch.png</file>
+        <file>images/Config.png</file>
     </qresource>
 </RCC>
