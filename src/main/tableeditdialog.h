@@ -23,6 +23,22 @@ public:
     ~TableEditDialog();
 
     void updateAdmin();
+
+private slots:
+    void headerUnion();
+    void headerDeunion();
+    void headerColumnSize();
+    void headerFont();
+    void headerOffset();
+    void headerLocation();
+    void headerAlignment();
+
+    void on_headerAddRowButton_clicked();
+    void on_headerDelRowButton_clicked();
+    void on_headerAddColButton_clicked();
+    void on_headerDelColButton_clicked();
+
+    void on_headerTableWidget_customContextMenuRequested(const QPoint &pos);
 };
 
 #endif // TABLEEDITDIALOG_H
