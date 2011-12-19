@@ -57,7 +57,8 @@ SOURCES += src/main.cpp\
     src/delegates/listdelegate.cpp \
     src/main/tableeditdialog.cpp \
     src/widgets/copyabletable.cpp \
-    src/widgets/unitedtable.cpp
+    src/widgets/unitedtable.cpp \
+    src/widgets/cellalignmentwidget.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -101,7 +102,8 @@ HEADERS  += src/main/mainwindow.h \
     src/delegates/listdelegate.h \
     src/main/tableeditdialog.h \
     src/widgets/copyabletable.h \
-    src/widgets/unitedtable.h
+    src/widgets/unitedtable.h \
+    src/widgets/cellalignmentwidget.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -120,7 +122,8 @@ FORMS    += src/main/mainwindow.ui \
     src/components/variableextendedlistframe.ui \
     src/components/variableexpressionframe.ui \
     src/main/functiondialog.ui \
-    src/main/tableeditdialog.ui
+    src/main/tableeditdialog.ui \
+    src/widgets/cellalignmentwidget.ui
 
 OTHER_FILES += \
     TODO.txt

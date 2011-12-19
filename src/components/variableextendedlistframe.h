@@ -15,6 +15,7 @@ class VariableExtendedListFrame : public PageComponent
 
 public:
     Ui::VariableExtendedListFrame *ui;
+    Qt::AlignmentFlag mTableAlignment;
 
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();

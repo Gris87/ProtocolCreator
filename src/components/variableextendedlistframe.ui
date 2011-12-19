@@ -444,68 +444,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QTableWidget" name="tableWidget">
-        <row>
-         <property name="text">
-          <string>Новая строка</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Новая строка</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Новая строка</string>
-         </property>
-        </row>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Новый столбец</string>
-         </property>
-        </column>
-       </widget>
+       <widget class="QTableWidget" name="tableWidget"/>
       </item>
      </layout>
     </widget>

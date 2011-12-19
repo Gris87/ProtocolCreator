@@ -9,13 +9,7 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     ui->nameEdit->setText("Расширенный список");
     ui->varNameEdit->setText("ExtendedList");
 
-    ui->tableWidget->setItemDelegateForColumn(0, new DoubleDelegate(this));
-    ui->tableWidget->setItem(0, 2, new QTableWidgetItem());
-    ui->tableWidget->item(0,2)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-    ui->tableWidget->item(0,2)->setCheckState(Qt::Checked);
-    ui->tableWidget->setItemDelegateForColumn(3, new DateDelegate(this));
-    ui->tableWidget->setItemDelegateForColumn(4, new TimeDelegate(this));
-    ui->tableWidget->setItemDelegateForColumn(5, new ListDelegate(this));
+    mTableAlignment=Qt::AlignCenter;
 }
 
 VariableExtendedListFrame::~VariableExtendedListFrame()
@@ -57,6 +51,11 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
     aStream << QString("Lock");
     aStream << aLock;
+
+    int intTableAlignment=(int)mTableAlignment;
+
+    aStream << QString("TableAlignment");
+    aStream << intTableAlignment;
 
     aStream << QString("VarEnd");
 }
@@ -105,6 +104,15 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
             ui->userWidget->setEnabled(!aLock);
 
             updateLock();
+        }
+        else
+        if (aMagicWord=="TableAlignment")
+        {
+            int intTableAlignment;
+
+            aStream >> intTableAlignment;
+
+            mTableAlignment=(Qt::AlignmentFlag)intTableAlignment;
         }
         else
         if (aMagicWord=="VarEnd")

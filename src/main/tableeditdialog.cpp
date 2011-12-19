@@ -10,6 +10,18 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
 
     mTable=aTable;
 
+    mCellAlignmentWidget=new CellAlignmentWidget(this);
+    mCellAlignmentWidget->setWindowFlags(Qt::Popup);
+    connect(mCellAlignmentWidget->ui->topLeftButton,     SIGNAL(clicked()), this, SLOT(headerCellAlignTopLeft()));
+    connect(mCellAlignmentWidget->ui->topButton,         SIGNAL(clicked()), this, SLOT(headerCellAlignTop()));
+    connect(mCellAlignmentWidget->ui->topRightButton,    SIGNAL(clicked()), this, SLOT(headerCellAlignTopRight()));
+    connect(mCellAlignmentWidget->ui->leftButton,        SIGNAL(clicked()), this, SLOT(headerCellAlignLeft()));
+    connect(mCellAlignmentWidget->ui->centerButton,      SIGNAL(clicked()), this, SLOT(headerCellAlignCenter()));
+    connect(mCellAlignmentWidget->ui->rightButton,       SIGNAL(clicked()), this, SLOT(headerCellAlignRight()));
+    connect(mCellAlignmentWidget->ui->bottomLeftButton,  SIGNAL(clicked()), this, SLOT(headerCellAlignBottomLeft()));
+    connect(mCellAlignmentWidget->ui->bottomButton,      SIGNAL(clicked()), this, SLOT(headerCellAlignBottom()));
+    connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(headerCellAlignBottomRight()));
+
     ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
 
     updateAdmin();
@@ -24,7 +36,9 @@ void TableEditDialog::setItemsForRow(int row)
 {
     for (int i=0; i<ui->headerTableWidget->columnCount(); i++)
     {
-        ui->headerTableWidget->setItem(row, i, new QTableWidgetItem());
+        QTableWidgetItem *aItem=new QTableWidgetItem();
+        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        ui->headerTableWidget->setItem(row, i, aItem);
     }
 }
 
@@ -32,7 +46,9 @@ void TableEditDialog::setItemsForColumn(int column)
 {
     for (int i=0; i<ui->headerTableWidget->rowCount(); i++)
     {
-        ui->headerTableWidget->setItem(i, column, new QTableWidgetItem());
+        QTableWidgetItem *aItem=new QTableWidgetItem();
+        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        ui->headerTableWidget->setItem(i, column, aItem);
     }
 }
 
@@ -231,22 +247,7 @@ void TableEditDialog::headerSeparate()
     }
 }
 
-void TableEditDialog::headerLocation()
-{
-
-}
-
-void TableEditDialog::headerOffset()
-{
-
-}
-
 void TableEditDialog::headerColumnSize()
-{
-
-}
-
-void TableEditDialog::headerAlignment()
 {
 
 }
@@ -256,8 +257,94 @@ void TableEditDialog::headerFont()
 
 }
 
+void TableEditDialog::headerOffset()
+{
+
+}
+
+void TableEditDialog::headerLocationLeft()
+{
+    mTable->mTableAlignment=Qt::AlignLeft;
+}
+
+void TableEditDialog::headerLocationCenter()
+{
+    mTable->mTableAlignment=Qt::AlignCenter;
+}
+
+void TableEditDialog::headerLocationRight()
+{
+    mTable->mTableAlignment=Qt::AlignRight;
+}
+
+void TableEditDialog::headerAlignmentShow()
+{
+    mCellAlignmentWidget->show();
+}
+
+void TableEditDialog::headerAlignmentHide()
+{
+    mCellAlignmentWidget->hide();
+}
+
+void TableEditDialog::setItemsAlignment(int aAlignment)
+{
+    QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+
+    for (int i=0; i<aItems.length(); i++)
+    {
+        aItems[i]->setTextAlignment(aAlignment);
+    }
+}
+
+void TableEditDialog::headerCellAlignTopLeft()
+{
+    setItemsAlignment(Qt::AlignTop | Qt::AlignLeft);
+}
+
+void TableEditDialog::headerCellAlignTop()
+{
+    setItemsAlignment(Qt::AlignTop | Qt::AlignHCenter);
+}
+
+void TableEditDialog::headerCellAlignTopRight()
+{
+    setItemsAlignment(Qt::AlignTop | Qt::AlignRight);
+}
+
+void TableEditDialog::headerCellAlignLeft()
+{
+    setItemsAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+}
+
+void TableEditDialog::headerCellAlignCenter()
+{
+    setItemsAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
+}
+
+void TableEditDialog::headerCellAlignRight()
+{
+    setItemsAlignment(Qt::AlignVCenter | Qt::AlignRight);
+}
+
+void TableEditDialog::headerCellAlignBottomLeft()
+{
+    setItemsAlignment(Qt::AlignBottom | Qt::AlignLeft);
+}
+
+void TableEditDialog::headerCellAlignBottom()
+{
+    setItemsAlignment(Qt::AlignBottom | Qt::AlignHCenter);
+}
+
+void TableEditDialog::headerCellAlignBottomRight()
+{
+    setItemsAlignment(Qt::AlignBottom | Qt::AlignRight);
+}
+
 void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoint &pos)
 {
+    QAction *aAction;
     QMenu *contextMenu=new QMenu;
 
     if (isAdmin)
@@ -278,8 +365,66 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
     contextMenu->addAction("Шрифт",                      this, SLOT(headerFont()));
     contextMenu->addAction("Сдвиг таблицы",              this, SLOT(headerOffset()));
     contextMenu->addSeparator();
-    contextMenu->addAction("Положение таблицы в тексте", this, SLOT(headerLocation()));
-    contextMenu->addAction("Положение в ячейке",         this, SLOT(headerAlignment()));
+
+    QMenu *tableAlignMenu=contextMenu->addMenu("Положение таблицы в тексте");
+
+    aAction=tableAlignMenu->addAction("Слева",      this, SLOT(headerLocationLeft()));
+    aAction->setCheckable(true);
+    aAction->setChecked(mTable->mTableAlignment==Qt::AlignLeft);
+
+    aAction=tableAlignMenu->addAction("Посередине", this, SLOT(headerLocationCenter()));
+    aAction->setCheckable(true);
+    aAction->setChecked(mTable->mTableAlignment==Qt::AlignCenter);
+
+    aAction=tableAlignMenu->addAction("Справа",     this, SLOT(headerLocationRight()));
+    aAction->setCheckable(true);
+    aAction->setChecked(mTable->mTableAlignment==Qt::AlignRight);
+
+    QMenu *cellAlignMenu=contextMenu->addMenu("Положение в ячейке");
+
+    if (ui->headerTableWidget->selectedItems().length()==0)
+    {
+        cellAlignMenu->setEnabled(false);
+    }
+    else
+    {
+        int aTextAlignment=ui->headerTableWidget->currentItem()->textAlignment();
+
+        mCellAlignmentWidget->ui->topLeftButton    ->setIcon(aTextAlignment==33  ? QIcon(":/images/CellTopLeftSelected.png")     : QIcon(":/images/CellTopLeft.png"));
+        mCellAlignmentWidget->ui->topButton        ->setIcon(aTextAlignment==36  ? QIcon(":/images/CellTopSelected.png")         : QIcon(":/images/CellTop.png"));
+        mCellAlignmentWidget->ui->topRightButton   ->setIcon(aTextAlignment==34  ? QIcon(":/images/CellTopRightSelected.png")    : QIcon(":/images/CellTopRight.png"));
+        mCellAlignmentWidget->ui->leftButton       ->setIcon(aTextAlignment==129 ? QIcon(":/images/CellLeftSelected.png")        : QIcon(":/images/CellLeft.png"));
+        mCellAlignmentWidget->ui->centerButton     ->setIcon(aTextAlignment==132 ? QIcon(":/images/CellCenterSelected.png")      : QIcon(":/images/CellCenter.png"));
+        mCellAlignmentWidget->ui->rightButton      ->setIcon(aTextAlignment==130 ? QIcon(":/images/CellRightSelected.png")       : QIcon(":/images/CellRight.png"));
+        mCellAlignmentWidget->ui->bottomLeftButton ->setIcon(aTextAlignment==65  ? QIcon(":/images/CellBottomLeftSelected.png")  : QIcon(":/images/CellBottomLeft.png"));
+        mCellAlignmentWidget->ui->bottomButton     ->setIcon(aTextAlignment==68  ? QIcon(":/images/CellBottomSelected.png")      : QIcon(":/images/CellBottom.png"));
+        mCellAlignmentWidget->ui->bottomRightButton->setIcon(aTextAlignment==66  ? QIcon(":/images/CellBottomRightSelected.png") : QIcon(":/images/CellBottomRight.png"));
+
+        int aWidthSize=mCellAlignmentWidget->width();
+        int aHeightSize=mCellAlignmentWidget->height();
+
+        int aX=cursor().pos().x()+200;
+        int aY=cursor().pos().y()+240;
+
+        QDesktopWidget *desktop = QApplication::desktop();
+        int aWidth = desktop->width();
+        int aHeight = desktop->height();
+
+        if (aX+aWidthSize>aWidth)
+        {
+            aX=aWidth-aWidthSize;
+        }
+
+        if (aY+aHeightSize>aHeight)
+        {
+            aY=aHeight-aHeightSize;
+        }
+
+        mCellAlignmentWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
+
+        connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(headerAlignmentShow()));
+        connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(headerAlignmentHide()));
+    }
 
     contextMenu->setGeometry(cursor().pos().x(),cursor().pos().y(),contextMenu->sizeHint().width(),contextMenu->sizeHint().height());
     contextMenu->show();

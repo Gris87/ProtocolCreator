@@ -6,6 +6,7 @@
 #include "ui_tableeditdialog.h"
 
 #include "src/components/variableextendedlistframe.h"
+#include "src/widgets/cellalignmentwidget.h"
 
 namespace Ui {
     class TableEditDialog;
@@ -18,12 +19,14 @@ class TableEditDialog : public QDialog
 public:
     Ui::TableEditDialog *ui;
     VariableExtendedListFrame *mTable;
+    CellAlignmentWidget *mCellAlignmentWidget;
 
     explicit TableEditDialog(VariableExtendedListFrame *aTable, QWidget *parent = 0);
     ~TableEditDialog();
 
     void setItemsForRow(int row);
     void setItemsForColumn(int column);
+    void setItemsAlignment(int aAlignment);
 
     void updateAdmin();
 
@@ -37,8 +40,20 @@ private slots:
     void headerColumnSize();
     void headerFont();
     void headerOffset();
-    void headerLocation();
-    void headerAlignment();
+    void headerLocationLeft();
+    void headerLocationCenter();
+    void headerLocationRight();
+    void headerAlignmentShow();
+    void headerAlignmentHide();
+    void headerCellAlignTopLeft();
+    void headerCellAlignTop();
+    void headerCellAlignTopRight();
+    void headerCellAlignLeft();
+    void headerCellAlignCenter();
+    void headerCellAlignRight();
+    void headerCellAlignBottomLeft();
+    void headerCellAlignBottom();
+    void headerCellAlignBottomRight();
 
     void on_headerTableWidget_customContextMenuRequested(const QPoint &pos);
     void on_headerAddRowButton_clicked();
