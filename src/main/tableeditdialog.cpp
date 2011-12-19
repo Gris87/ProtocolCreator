@@ -10,6 +10,8 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
 
     mTable=aTable;
 
+    ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
+
     updateAdmin();
 }
 
@@ -18,16 +20,27 @@ TableEditDialog::~TableEditDialog()
     delete ui;
 }
 
-void TableEditDialog::on_headerAddRowButton_clicked()
+void TableEditDialog::setItemsForRow(int row)
 {
-    ui->headerTableWidget->setRowCount(ui->headerTableWidget->rowCount()+1);
-
-    int row=ui->headerTableWidget->rowCount()-1;
-
     for (int i=0; i<ui->headerTableWidget->columnCount(); i++)
     {
         ui->headerTableWidget->setItem(row, i, new QTableWidgetItem());
     }
+}
+
+void TableEditDialog::setItemsForColumn(int column)
+{
+    for (int i=0; i<ui->headerTableWidget->rowCount(); i++)
+    {
+        ui->headerTableWidget->setItem(i, column, new QTableWidgetItem());
+    }
+}
+
+void TableEditDialog::on_headerAddRowButton_clicked()
+{
+    ui->headerTableWidget->setRowCount(ui->headerTableWidget->rowCount()+1);
+
+    setItemsForRow(ui->headerTableWidget->rowCount()-1);
 }
 
 void TableEditDialog::on_headerDelRowButton_clicked()
@@ -39,6 +52,7 @@ void TableEditDialog::on_headerDelRowButton_clicked()
     if (aItems.length()<0)
     {
         QMessageBox::information(this, protocolCreatorVersion, "Выберите строку");
+        return;
     }
 
     for (int i=0; i<aItems.length(); i++)
@@ -76,12 +90,7 @@ void TableEditDialog::on_headerAddColButton_clicked()
 {
     ui->headerTableWidget->setColumnCount(ui->headerTableWidget->columnCount()+1);
 
-    int col=ui->headerTableWidget->columnCount()-1;
-
-    for (int i=0; i<ui->headerTableWidget->rowCount(); i++)
-    {
-        ui->headerTableWidget->setItem(i, col, new QTableWidgetItem());
-    }
+    setItemsForColumn(ui->headerTableWidget->columnCount()-1);
 }
 
 void TableEditDialog::on_headerDelColButton_clicked()
@@ -93,6 +102,7 @@ void TableEditDialog::on_headerDelColButton_clicked()
     if (aItems.length()<0)
     {
         QMessageBox::information(this, protocolCreatorVersion, "Выберите столбец");
+        return;
     }
 
     for (int i=0; i<aItems.length(); i++)
@@ -126,14 +136,99 @@ void TableEditDialog::on_headerDelColButton_clicked()
     }
 }
 
-void TableEditDialog::headerUnion()
+void TableEditDialog::headerInsertRowBefore()
 {
+    int row=ui->headerTableWidget->currentRow();
 
+    if (row<0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите строку");
+        return;
+    }
+
+    ui->headerTableWidget->insertRow(row);
+
+    setItemsForRow(row);
 }
 
-void TableEditDialog::headerDeunion()
+void TableEditDialog::headerInsertRowAfter()
 {
+    int row=ui->headerTableWidget->currentRow()+1;
 
+    if (row<=0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите строку");
+        return;
+    }
+
+    ui->headerTableWidget->insertRow(row);
+
+    setItemsForRow(row);
+}
+
+void TableEditDialog::headerInsertColBefore()
+{
+    int column=ui->headerTableWidget->currentColumn();
+
+    if (column<0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите столбец");
+        return;
+    }
+
+    ui->headerTableWidget->insertColumn(column);
+
+    setItemsForColumn(column);
+}
+
+void TableEditDialog::headerInsertColAfter()
+{
+    int column=ui->headerTableWidget->currentColumn()+1;
+
+    if (column<=0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите столбец");
+        return;
+    }
+
+    ui->headerTableWidget->insertColumn(column);
+
+    setItemsForColumn(column);
+}
+
+void TableEditDialog::headerUnite()
+{
+    QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
+
+    if (aRanges.length()==0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите ячейку");
+        return;
+    }
+
+    if (aRanges.length()>1)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите одну зону");
+        return;
+    }
+
+    ui->headerTableWidget->unite(aRanges.at(0).leftColumn(), aRanges.at(0).topRow(), aRanges.at(0).rightColumn(), aRanges.at(0).bottomRow());
+}
+
+void TableEditDialog::headerSeparate()
+{
+    QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+
+    if (aItems.length()>0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите ячейку");
+        return;
+    }
+
+    for (int i=0; i<aItems.length(); i++)
+    {
+        ui->headerTableWidget->separate(aItems.at(i)->row(), aItems.at(i)->column());
+    }
 }
 
 void TableEditDialog::headerLocation()
@@ -167,22 +262,24 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
 
     if (isAdmin)
     {
-        contextMenu->addAction("Добавить строку",    this,SLOT(on_headerAddRowButton_clicked()));
-        contextMenu->addAction("Удалить строку(и)",  this,SLOT(on_headerDelRowButton_clicked()));
-        contextMenu->addAction("Добавить столбец",   this,SLOT(on_headerAddColButton_clicked()));
-        contextMenu->addAction("Удалить столбец(цы)",this,SLOT(on_headerDelColButton_clicked()));
+        contextMenu->addAction("Вставить строку перед текущей",   this, SLOT(headerInsertRowBefore()));
+        contextMenu->addAction("Вставить строку после текущей",   this, SLOT(headerInsertRowAfter()));
+        contextMenu->addAction("Удалить строку(и)",               this, SLOT(on_headerDelRowButton_clicked()));
+        contextMenu->addAction("Вставить столбец перед текущим",  this, SLOT(headerInsertColBefore()));
+        contextMenu->addAction("Вставить столбец после текущего", this, SLOT(headerInsertColAfter()));
+        contextMenu->addAction("Удалить столбец(цы)",             this, SLOT(on_headerDelColButton_clicked()));
         contextMenu->addSeparator();
     }
 
-    contextMenu->addAction("Объединить ячейки",  this,SLOT(headerUnion()));
-    contextMenu->addAction("Разъеденить ячейки", this,SLOT(headerDeunion()));
+    contextMenu->addAction("Объединить ячейки",          this, SLOT(headerUnite()));
+    contextMenu->addAction("Разъеденить ячейки",         this, SLOT(headerSeparate()));
     contextMenu->addSeparator();
-    contextMenu->addAction("Ширина",this,SLOT(headerColumnSize()));
-    contextMenu->addAction("Шрифт",this,SLOT(headerFont()));
-    contextMenu->addAction("Сдвиг таблицы",this,SLOT(headerOffset()));
+    contextMenu->addAction("Ширина",                     this, SLOT(headerColumnSize()));
+    contextMenu->addAction("Шрифт",                      this, SLOT(headerFont()));
+    contextMenu->addAction("Сдвиг таблицы",              this, SLOT(headerOffset()));
     contextMenu->addSeparator();
-    contextMenu->addAction("Положение таблицы в тексте",this,SLOT(headerLocation()));
-    contextMenu->addAction("Положение в ячейке",this,SLOT(headerAlignment()));
+    contextMenu->addAction("Положение таблицы в тексте", this, SLOT(headerLocation()));
+    contextMenu->addAction("Положение в ячейке",         this, SLOT(headerAlignment()));
 
     contextMenu->setGeometry(cursor().pos().x(),cursor().pos().y(),contextMenu->sizeHint().width(),contextMenu->sizeHint().height());
     contextMenu->show();
