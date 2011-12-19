@@ -13,5 +13,6 @@ QString                    adminPass="";
 // OTHERS
 QString                    dir="";
 QStringList                functionsList;
+double                     pixelToSantimeter=0.0263921875;
 
 QString                    protocolCreatorVersion="Protocol Creator v 1.0";

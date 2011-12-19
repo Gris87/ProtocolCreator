@@ -1,4 +1,4 @@
-#include "src/other/global.h"
+#include "wordeditframe.h"
 
 WordEditFrame::WordEditFrame(QWidget *parent) :
     QWidget(parent),

@@ -213,12 +213,34 @@ void TableEditDialog::headerSeparate()
 
 void TableEditDialog::headerColumnSize()
 {
+    ColumnSizeDialog dialog(this);
 
+    dialog.ui->widthSpinBox->setValue(ui->headerTableWidget->columnWidth(ui->headerTableWidget->currentColumn())*pixelToSantimeter);
+
+    if (dialog.exec())
+    {
+        QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+
+        for (int i=0; i<aItems.length(); i++)
+        {
+            ui->headerTableWidget->setColumnWidth(aItems.at(i)->column(), (int)(dialog.ui->widthSpinBox->value()/pixelToSantimeter));
+        }
+    }
 }
 
 void TableEditDialog::headerFont()
 {
+    QFontDialog dialog(ui->headerTableWidget->currentItem()->font(), this);
 
+    if (dialog.exec())
+    {
+        QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+
+        for (int i=0; i<aItems.length(); i++)
+        {
+            aItems[i]->setFont(dialog.selectedFont());
+        }
+    }
 }
 
 void TableEditDialog::headerOffset()

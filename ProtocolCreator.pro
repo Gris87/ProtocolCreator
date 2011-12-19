@@ -58,7 +58,8 @@ SOURCES += src/main.cpp\
     src/main/tableeditdialog.cpp \
     src/widgets/copyabletable.cpp \
     src/widgets/unitedtable.cpp \
-    src/widgets/cellalignmentwidget.cpp
+    src/widgets/cellalignmentwidget.cpp \
+    src/main/columnsizedialog.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -103,7 +104,8 @@ HEADERS  += src/main/mainwindow.h \
     src/main/tableeditdialog.h \
     src/widgets/copyabletable.h \
     src/widgets/unitedtable.h \
-    src/widgets/cellalignmentwidget.h
+    src/widgets/cellalignmentwidget.h \
+    src/main/columnsizedialog.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -123,7 +125,8 @@ FORMS    += src/main/mainwindow.ui \
     src/components/variableexpressionframe.ui \
     src/main/functiondialog.ui \
     src/main/tableeditdialog.ui \
-    src/widgets/cellalignmentwidget.ui
+    src/widgets/cellalignmentwidget.ui \
+    src/main/columnsizedialog.ui
 
 OTHER_FILES += \
     TODO.txt

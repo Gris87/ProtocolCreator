@@ -1,4 +1,4 @@
-#include "src/other/global.h"
+#include "passworddialog.h"
 
 PasswordDialog::PasswordDialog(QWidget *parent) :
     QDialog(parent),

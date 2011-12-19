@@ -1,4 +1,4 @@
-#include "src/other/global.h"
+#include "encoder.h"
 
 void Xoring(QByteArray &aStream, const QByteArray &aKeyArray)
 {

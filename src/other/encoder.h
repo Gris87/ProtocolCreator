@@ -1,7 +1,10 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
+#include <QByteArray>
 #include <QString>
+#include <QFile>
+#include <QDataStream>
 #include <math.h>
 
 void Xoring(QByteArray &aStream, const QByteArray &aKeyArray);

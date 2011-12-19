@@ -20,6 +20,7 @@
 #include "src/delegates/listdelegate.h"
 #include "src/delegates/timedelegate.h"
 
+#include "src/main/columnsizedialog.h"
 #include "src/main/functiondialog.h"
 #include "src/main/globaldialog.h"
 #include "src/main/mainwindow.h"
@@ -52,6 +53,7 @@ extern QString                    adminPass;
 // OTHERS
 extern QString                    dir;
 extern QStringList                functionsList;
+extern double                     pixelToSantimeter;
 
 extern QString                    protocolCreatorVersion;
 
