@@ -38,8 +38,10 @@ private slots:
     void headerUnite();
     void headerSeparate();
     void headerColumnSize();
-    void headerFont();
     void headerOffset();
+    void headerFont();
+    void headerBackgroundColor();
+    void headerTextColor();
     void headerLocationLeft();
     void headerLocationCenter();
     void headerLocationRight();

@@ -34,20 +34,26 @@ TableEditDialog::~TableEditDialog()
 
 void TableEditDialog::setItemsForRow(int row)
 {
+    QBrush aHeaderBrush(QColor(220, 220, 220));
+
     for (int i=0; i<ui->headerTableWidget->columnCount(); i++)
     {
         QTableWidgetItem *aItem=new QTableWidgetItem();
         aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setBackground(aHeaderBrush);
         ui->headerTableWidget->setItem(row, i, aItem);
     }
 }
 
 void TableEditDialog::setItemsForColumn(int column)
 {
+    QBrush aHeaderBrush(QColor(220, 220, 220));
+
     for (int i=0; i<ui->headerTableWidget->rowCount(); i++)
     {
         QTableWidgetItem *aItem=new QTableWidgetItem();
         aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setBackground(aHeaderBrush);
         ui->headerTableWidget->setItem(i, column, aItem);
     }
 }
@@ -228,6 +234,22 @@ void TableEditDialog::headerColumnSize()
     }
 }
 
+void TableEditDialog::headerOffset()
+{
+    ColumnSizeDialog dialog(this);
+
+    dialog.setWindowTitle("Сдвиг таблицы");
+    dialog.ui->titleLabel->setText("Сдвиг:");
+
+    dialog.ui->widthSpinBox->setMinimum(0);
+    dialog.ui->widthSpinBox->setValue(mTable->mTableOffset);
+
+    if (dialog.exec())
+    {
+        mTable->mTableOffset=dialog.ui->widthSpinBox->value();
+    }
+}
+
 void TableEditDialog::headerFont()
 {
     QFontDialog dialog(ui->headerTableWidget->currentItem()->font(), this);
@@ -243,19 +265,35 @@ void TableEditDialog::headerFont()
     }
 }
 
-void TableEditDialog::headerOffset()
+void TableEditDialog::headerBackgroundColor()
 {
-    ColumnSizeDialog dialog(this);
-
-    dialog.setWindowTitle("Сдвиг таблицы");
-    dialog.ui->titleLabel->setText("Сдвиг:");
-
-    dialog.ui->widthSpinBox->setMinimum(0);
-    dialog.ui->widthSpinBox->setValue(mTable->mTableOffset);
+    QColorDialog dialog(ui->headerTableWidget->currentItem()->background().color(), this);
 
     if (dialog.exec())
     {
-        mTable->mTableOffset=dialog.ui->widthSpinBox->value();
+        QBrush aNewBrush(dialog.selectedColor());
+
+        QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+
+        for (int i=0; i<aItems.length(); i++)
+        {
+            aItems[i]->setBackground(aNewBrush);
+        }
+    }
+}
+
+void TableEditDialog::headerTextColor()
+{
+    QColorDialog dialog(ui->headerTableWidget->currentItem()->textColor(), this);
+
+    if (dialog.exec())
+    {
+        QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+
+        for (int i=0; i<aItems.length(); i++)
+        {
+            aItems[i]->setTextColor(dialog.selectedColor());
+        }
     }
 }
 
@@ -361,8 +399,11 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
     contextMenu->addAction("Разъеденить ячейки",         this, SLOT(headerSeparate()))->setEnabled(itemSelected);
     contextMenu->addSeparator();
     contextMenu->addAction("Ширина",                     this, SLOT(headerColumnSize()))->setEnabled(itemSelected);
-    contextMenu->addAction("Шрифт",                      this, SLOT(headerFont()))->setEnabled(itemSelected);
     contextMenu->addAction("Сдвиг таблицы",              this, SLOT(headerOffset()));
+    contextMenu->addSeparator();
+    contextMenu->addAction("Шрифт",                      this, SLOT(headerFont()))->setEnabled(itemSelected);
+    contextMenu->addAction("Цвет ячейки",                this, SLOT(headerBackgroundColor()))->setEnabled(itemSelected);
+    contextMenu->addAction("Цвет текста",                this, SLOT(headerTextColor()))->setEnabled(itemSelected);
     contextMenu->addSeparator();
 
     QMenu *tableAlignMenu=contextMenu->addMenu("Положение таблицы в тексте");
@@ -399,7 +440,7 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
         int aHeightSize=mCellAlignmentWidget->height();
 
         int aX=cursor().pos().x()+200;
-        int aY=cursor().pos().y()+240;
+        int aY=cursor().pos().y()+280;
 
         QDesktopWidget *desktop = QApplication::desktop();
         int aWidth = desktop->width();
