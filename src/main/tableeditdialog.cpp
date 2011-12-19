@@ -245,7 +245,18 @@ void TableEditDialog::headerFont()
 
 void TableEditDialog::headerOffset()
 {
+    ColumnSizeDialog dialog(this);
 
+    dialog.setWindowTitle("Сдвиг таблицы");
+    dialog.ui->titleLabel->setText("Сдвиг:");
+
+    dialog.ui->widthSpinBox->setMinimum(0);
+    dialog.ui->widthSpinBox->setValue(mTable->mTableOffset);
+
+    if (dialog.exec())
+    {
+        mTable->mTableOffset=dialog.ui->widthSpinBox->value();
+    }
 }
 
 void TableEditDialog::headerLocationLeft()

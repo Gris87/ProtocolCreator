@@ -10,6 +10,7 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     ui->varNameEdit->setText("ExtendedList");
 
     mTableAlignment=Qt::AlignCenter;
+    mTableOffset=0;
 }
 
 VariableExtendedListFrame::~VariableExtendedListFrame()
@@ -56,6 +57,9 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
     aStream << QString("TableAlignment");
     aStream << intTableAlignment;
+
+    aStream << QString("TableOffset");
+    aStream << mTableOffset;
 
     aStream << QString("VarEnd");
 }
@@ -113,6 +117,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
             aStream >> intTableAlignment;
 
             mTableAlignment=(Qt::AlignmentFlag)intTableAlignment;
+        }
+        else
+        if (aMagicWord=="TableOffset")
+        {
+            aStream >> mTableOffset;
         }
         else
         if (aMagicWord=="VarEnd")
