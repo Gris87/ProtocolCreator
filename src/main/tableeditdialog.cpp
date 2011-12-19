@@ -22,6 +22,8 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
     connect(mCellAlignmentWidget->ui->bottomButton,      SIGNAL(clicked()), this, SLOT(headerCellAlignBottom()));
     connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(headerCellAlignBottomRight()));
 
+    ui->headerTableWidget->setItemDelegate(new UnionDelegate(ui->headerTableWidget));
+
     ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
 
     updateAdmin();

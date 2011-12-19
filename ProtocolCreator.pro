@@ -59,7 +59,8 @@ SOURCES += src/main.cpp\
     src/widgets/copyabletable.cpp \
     src/widgets/unitedtable.cpp \
     src/widgets/cellalignmentwidget.cpp \
-    src/main/columnsizedialog.cpp
+    src/main/columnsizedialog.cpp \
+    src/delegates/uniondelegate.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -105,7 +106,8 @@ HEADERS  += src/main/mainwindow.h \
     src/widgets/copyabletable.h \
     src/widgets/unitedtable.h \
     src/widgets/cellalignmentwidget.h \
-    src/main/columnsizedialog.h
+    src/main/columnsizedialog.h \
+    src/delegates/uniondelegate.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
