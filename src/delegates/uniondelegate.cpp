@@ -4,8 +4,7 @@ UnionDelegate::UnionDelegate(UnitedTable* aTable)
 {
     mTable=aTable;
 
-    int gridHint = mTable->style()->styleHint(QStyle::SH_Table_GridLineColor, new QStyleOptionViewItemV4());
-    QColor gridColor = (QRgb)gridHint;
+    QColor gridColor(120, 120, 120);
     _gridPen = QPen(gridColor, 0, mTable->gridStyle());
 
     mTable->setShowGrid(false);
