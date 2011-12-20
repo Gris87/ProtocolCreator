@@ -3,8 +3,6 @@
 
 #include "src/widgets/copyabletable.h"
 
-#include <qdebug.h>
-
 class UnitedTable : public CopyableTable
 {
     Q_OBJECT
@@ -18,8 +16,11 @@ public:
     void unite(int left, int top, int right, int bottom);
     void separate(int row, int column);
 
-protected:
-    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+public slots:
+    void insertRow(int row);
+    void insertColumn(int column);
+    void removeRow(int row);
+    void removeColumn(int column);
 };
 
 #endif // UNITEDTABLE_H

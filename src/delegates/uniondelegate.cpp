@@ -36,12 +36,12 @@ void UnionDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
         if (drawLeft)
         {
-            painter->drawLine(option.rect.bottomLeft(), option.rect.topLeft());
+            painter->drawLine(option.rect.left()-1, option.rect.bottom(), option.rect.left()-1, option.rect.top());
         }
 
         if (drawTop)
         {
-            painter->drawLine(option.rect.topLeft(), option.rect.topRight());
+            painter->drawLine(option.rect.left(), option.rect.top()-1, option.rect.right(), option.rect.top()-1);
         }
 
         if (drawRight)

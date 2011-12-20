@@ -1,8 +1,10 @@
 #include "unitedtable.h"
+#include "src/delegates/uniondelegate.h"
 
 UnitedTable::UnitedTable(QWidget *parent) :
         CopyableTable(parent)
 {
+    setItemDelegate(new UnionDelegate(this));
 }
 
 int UnitedTable::indexOfUnion(int row, int column)
@@ -24,6 +26,15 @@ void UnitedTable::unite(int left, int top, int right, int bottom)
 
     aRect.setCoords(left, top, right, bottom);
 
+    for (int i=0; i<unions.length(); i++)
+    {
+        if (aRect.contains(unions.at(i)))
+        {
+            unions.removeAt(i);
+            i--;
+        }
+    }
+
     unions.append(aRect);
 
     repaint();
@@ -41,74 +52,102 @@ void UnitedTable::separate(int row, int column)
     }
 }
 
-void UnitedTable::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void UnitedTable::insertRow(int row)
 {
-    QItemSelection aNewSelected=selected;
-    QItemSelection aNewDeselected=deselected;
-
-    QModelIndexList aIndexes;
-
-    aIndexes=deselected.indexes();
-
-    for (int i=0; i<aIndexes.length(); i++)
+    for (int i=0; i<unions.length(); i++)
     {
-        int index=indexOfUnion(aIndexes.at(i).row(), aIndexes.at(i).column());
-
-        if (index>=0)
+        if (unions.at(i).top()>=row)
         {
-            /*
-            QModelIndex topLeftIndex=indexFromItem(item(unions.at(index).top(), unions.at(index).left()));
-            QModelIndex bottomRightIndex=indexFromItem(item(unions.at(index).bottom(), unions.at(index).right()));
+            unions[i].setTop(unions.at(i).top()+1);
+        }
 
-            aNewDeselected.select(topLeftIndex, bottomRightIndex);
-
-            QItemSelection aTempSelection(topLeftIndex, bottomRightIndex);
-
-            aNewDeselected.merge(aTempSelection, QItemSelectionModel::Select);
-            */
-
-           // setSelection(unions.at(index), QItemSelectionModel::Deselect);
+        if (unions.at(i).bottom()>=row)
+        {
+            unions[i].setBottom(unions.at(i).bottom()+1);
         }
     }
 
-    aIndexes=selected.indexes();
+    CopyableTable::insertRow(row);
+}
 
-    for (int i=0; i<aIndexes.length(); i++)
+void UnitedTable::insertColumn(int column)
+{
+    for (int i=0; i<unions.length(); i++)
     {
-        int index=indexOfUnion(aIndexes.at(i).row(), aIndexes.at(i).column());
-
-        if (index>=0)
+        if (unions.at(i).left()>=column)
         {
-    //        QModelIndex topLeftIndex=indexFromItem(item(unions.at(index).top(), unions.at(index).left()));
-      //      QModelIndex bottomRightIndex=indexFromItem(item(unions.at(index).bottom(), unions.at(index).right()));
+            unions[i].setLeft(unions.at(i).left()+1);
+        }
 
-            //QItemSelection aTempSelection(topLeftIndex, bottomRightIndex);
-            setSelection(unions.at(index), QItemSelectionModel::Select);
-
-          //  aNewSelected.merge(aTempSelection, QItemSelectionModel::Select);
-
-//            qDebug()<<"DSF"<<topLeftIndex.row()<<topLeftIndex.column()<<bottomRightIndex.row()<<bottomRightIndex.column()<<aNewSelected.indexes().length();
+        if (unions.at(i).right()>=column)
+        {
+            unions[i].setRight(unions.at(i).right()+1);
         }
     }
 
-    /*
-    aNewSelected.merge(aNewDeselected, QItemSelectionModel::Deselect);
+    CopyableTable::insertColumn(column);
+}
 
-    aIndexes=aNewSelected.indexes();
-
-    for (int i=0; i<aIndexes.length(); i++)
+void UnitedTable::removeRow(int row)
+{
+    for (int i=0; i<unions.length(); i++)
     {
-        item(aIndexes.at(i).row(), aIndexes.at(i).column())->setSelected(true);
+        if (unions.at(i).top()>row)
+        {
+            unions[i].setTop(unions.at(i).top()-1);
+        }
+
+        if (unions.at(i).bottom()>=row)
+        {
+            unions[i].setBottom(unions.at(i).bottom()-1);
+        }
+
+        if (
+            unions.at(i).top()>unions.at(i).bottom()
+            ||
+            (
+             unions.at(i).left()==unions.at(i).right()
+             &&
+             unions.at(i).top()==unions.at(i).bottom()
+            )
+           )
+        {
+            unions.removeAt(i);
+            i--;
+        }
     }
 
-    aIndexes=aNewDeselected.indexes();
+    CopyableTable::removeRow(row);
+}
 
-    for (int i=0; i<aIndexes.length(); i++)
+void UnitedTable::removeColumn(int column)
+{
+    for (int i=0; i<unions.length(); i++)
     {
-        item(aIndexes.at(i).row(), aIndexes.at(i).column())->setSelected(false);
-    }
-    */
+        if (unions.at(i).left()>column)
+        {
+            unions[i].setLeft(unions.at(i).left()-1);
+        }
 
-    //CopyableTable::selectionChanged(aNewSelected, aNewDeselected);
-    CopyableTable::selectionChanged(selected, deselected);
+        if (unions.at(i).right()>=column)
+        {
+            unions[i].setRight(unions.at(i).right()-1);
+        }
+
+        if (
+            unions.at(i).left()>unions.at(i).right()
+            ||
+            (
+             unions.at(i).left()==unions.at(i).right()
+             &&
+             unions.at(i).top()==unions.at(i).bottom()
+            )
+           )
+        {
+            unions.removeAt(i);
+            i--;
+        }
+    }
+
+    CopyableTable::removeColumn(column);
 }

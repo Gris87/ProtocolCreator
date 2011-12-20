@@ -22,8 +22,6 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
     connect(mCellAlignmentWidget->ui->bottomButton,      SIGNAL(clicked()), this, SLOT(headerCellAlignBottom()));
     connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(headerCellAlignBottomRight()));
 
-    ui->headerTableWidget->setItemDelegate(new UnionDelegate(ui->headerTableWidget));
-
     ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
 
     updateAdmin();
@@ -198,15 +196,59 @@ void TableEditDialog::headerInsertColAfter()
 
 void TableEditDialog::headerUnite()
 {
-    QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
+    QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
 
-    if (aRanges.length()>1)
+    int startX=aItems.at(0)->column();
+    int startY=aItems.at(0)->row();
+
+    int leftLimit=startX;
+    int topLimit=startY;
+    int rightLimit=startX;
+    int bottomLimit=startY;
+
+    while (leftLimit>0 && ui->headerTableWidget->item(startY, leftLimit-1)->isSelected())
     {
-        QMessageBox::information(this, protocolCreatorVersion, "Выберите одну зону");
+        leftLimit--;
+    }
+
+    while (topLimit>0 && ui->headerTableWidget->item(topLimit-1, startX)->isSelected())
+    {
+        topLimit--;
+    }
+
+    while (rightLimit<ui->headerTableWidget->columnCount()-1 && ui->headerTableWidget->item(startY, rightLimit+1)->isSelected())
+    {
+        rightLimit++;
+    }
+
+    while (bottomLimit<ui->headerTableWidget->rowCount()-1 && ui->headerTableWidget->item(bottomLimit+1, startX)->isSelected())
+    {
+        bottomLimit++;
+    }
+
+    for (int i=topLimit; i<=bottomLimit; i++)
+    {
+        for (int j=leftLimit; j<=rightLimit; j++)
+        {
+            QTableWidgetItem *aItem=ui->headerTableWidget->item(i, j);
+
+            if (!aItem->isSelected())
+            {
+                QMessageBox::information(this, protocolCreatorVersion, "Выделение не образует прямоугольную зону");
+                return;
+            }
+
+            aItems.removeOne(aItem);
+        }
+    }
+
+    if (aItems.length()>0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выделение не образует прямоугольную зону");
         return;
     }
 
-    ui->headerTableWidget->unite(aRanges.at(0).leftColumn(), aRanges.at(0).topRow(), aRanges.at(0).rightColumn(), aRanges.at(0).bottomRow());
+    ui->headerTableWidget->unite(leftLimit, topLimit, rightLimit, bottomLimit);
 }
 
 void TableEditDialog::headerSeparate()
