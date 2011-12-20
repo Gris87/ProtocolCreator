@@ -44,7 +44,7 @@
        </widget>
       </item>
       <item>
-       <widget class="UnitedTable" name="headerTableWidget"/>
+       <widget class="CopyableTable" name="headerTableWidget"/>
       </item>
       <item>
        <widget class="QWidget" name="headerAdminWidget" native="true">
@@ -93,9 +93,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>UnitedTable</class>
+   <class>CopyableTable</class>
    <extends>QTableWidget</extends>
-   <header>src/widgets/unitedtable.h</header>
+   <header>src/widgets/copyabletable.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

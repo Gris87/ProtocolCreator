@@ -19,7 +19,6 @@
 #include "src/delegates/doubledelegate.h"
 #include "src/delegates/listdelegate.h"
 #include "src/delegates/timedelegate.h"
-#include "src/delegates/uniondelegate.h"
 
 #include "src/main/columnsizedialog.h"
 #include "src/main/functiondialog.h"

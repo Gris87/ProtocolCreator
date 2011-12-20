@@ -248,7 +248,7 @@ void TableEditDialog::headerUnite()
         return;
     }
 
-    ui->headerTableWidget->unite(leftLimit, topLimit, rightLimit, bottomLimit);
+    ui->headerTableWidget->setSpan(topLimit, leftLimit, bottomLimit-topLimit+1, rightLimit-leftLimit+1);
 }
 
 void TableEditDialog::headerSeparate()
@@ -257,7 +257,7 @@ void TableEditDialog::headerSeparate()
 
     for (int i=0; i<aItems.length(); i++)
     {
-        ui->headerTableWidget->separate(aItems.at(i)->row(), aItems.at(i)->column());
+        ui->headerTableWidget->setSpan(aItems.at(i)->row(), aItems.at(i)->column(), 1, 1);
     }
 }
 
