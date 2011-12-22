@@ -10,7 +10,7 @@ struct STableCell
     int spanY;
     QString fontString;
     QString text;
-    int alignment;
+    quint8 alignment;
     quint8 backgroundColorR;
     quint8 backgroundColorG;
     quint8 backgroundColorB;

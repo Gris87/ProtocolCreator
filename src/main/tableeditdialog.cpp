@@ -568,4 +568,5 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
 void TableEditDialog::updateAdmin()
 {
     ui->headerAdminWidget->setVisible(isAdmin);
+    ui->structureAdminWidget->setVisible(isAdmin);
 }
