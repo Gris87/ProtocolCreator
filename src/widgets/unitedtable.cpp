@@ -7,6 +7,28 @@ UnitedTable::UnitedTable(QWidget *parent) :
 
 void UnitedTable::unite(int left, int top, int right, int bottom)
 {
+    QString aText="";
+
+    for (int i=top; i<=bottom; i++)
+    {
+        for (int j=left; j<=right; j++)
+        {
+            QTableWidgetItem *aItem=item(i, j);
+
+            if (aItem->text()!="")
+            {
+                if (aText=="")
+                {
+                    aText=aItem->text();
+                }
+
+                aItem->setText("");
+            }
+        }
+    }
+
+    item(top, left)->setText(aText);
+
     setSpan(top, left, bottom-top+1, right-left+1);
 }
 
