@@ -69,20 +69,24 @@ void TableEditDialog::on_headerAddRowButton_clicked()
 
 void TableEditDialog::on_headerDelRowButton_clicked()
 {
-    QList<int> aRows;
+    QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
 
-    QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
-
-    if (aItems.length()<0)
+    if (aRanges.length()==0)
     {
         QMessageBox::information(this, protocolCreatorVersion, "Выберите строку");
         return;
     }
-    for (int i=0; i<aItems.length(); i++)
+
+    QList<int> aRows;
+
+    for (int i=0; i<aRanges.length(); i++)
     {
-        if (!aRows.contains(aItems.at(i)->row()))
+        for (int j=aRanges.at(i).bottomRow(); j>=aRanges.at(i).topRow(); j--)
         {
-            aRows.append(aItems.at(i)->row());
+            if (!aRows.contains(j))
+            {
+                aRows.append(j);
+            }
         }
     }
 
@@ -118,21 +122,24 @@ void TableEditDialog::on_headerAddColButton_clicked()
 
 void TableEditDialog::on_headerDelColButton_clicked()
 {
-    QList<int> aColumns;
+    QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
 
-    QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
-
-    if (aItems.length()<0)
+    if (aRanges.length()==0)
     {
         QMessageBox::information(this, protocolCreatorVersion, "Выберите столбец");
         return;
     }
 
-    for (int i=0; i<aItems.length(); i++)
+    QList<int> aColumns;
+
+    for (int i=0; i<aRanges.length(); i++)
     {
-        if (!aColumns.contains(aItems.at(i)->column()))
+        for (int j=aRanges.at(i).rightColumn(); j>=aRanges.at(i).leftColumn(); j--)
         {
-            aColumns.append(aItems.at(i)->column());
+            if (!aColumns.contains(j))
+            {
+                aColumns.append(j);
+            }
         }
     }
 
@@ -203,11 +210,14 @@ void TableEditDialog::headerColumnSize()
 
     if (dialog.exec())
     {
-        QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+        QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
 
-        for (int i=0; i<aItems.length(); i++)
+        for (int i=0; i<aRanges.length(); i++)
         {
-            ui->headerTableWidget->setColumnWidth(aItems.at(i)->column(), (int)(dialog.ui->widthSpinBox->value()/pixelToSantimeter));
+            for (int j=aRanges.at(i).leftColumn(); j<=aRanges.at(i).rightColumn(); j++)
+            {
+                ui->headerTableWidget->setColumnWidth(j, (int)(dialog.ui->widthSpinBox->value()/pixelToSantimeter));
+            }
         }
     }
 }
@@ -234,11 +244,17 @@ void TableEditDialog::headerFont()
 
     if (dialog.exec())
     {
-        QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+        QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
 
-        for (int i=0; i<aItems.length(); i++)
+        for (int i=0; i<aRanges.length(); i++)
         {
-            aItems[i]->setFont(dialog.selectedFont());
+            for (int j=aRanges.at(i).topRow(); j<=aRanges.at(i).bottomRow(); j++)
+            {
+                for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
+                {
+                    ui->headerTableWidget->item(j, k)->setFont(dialog.selectedFont());
+                }
+            }
         }
     }
 }
@@ -251,11 +267,17 @@ void TableEditDialog::headerBackgroundColor()
     {
         QBrush aNewBrush(dialog.selectedColor());
 
-        QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+        QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
 
-        for (int i=0; i<aItems.length(); i++)
+        for (int i=0; i<aRanges.length(); i++)
         {
-            aItems[i]->setBackground(aNewBrush);
+            for (int j=aRanges.at(i).topRow(); j<=aRanges.at(i).bottomRow(); j++)
+            {
+                for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
+                {
+                    ui->headerTableWidget->item(j, k)->setBackground(aNewBrush);
+                }
+            }
         }
     }
 }
@@ -266,11 +288,17 @@ void TableEditDialog::headerTextColor()
 
     if (dialog.exec())
     {
-        QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+        QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
 
-        for (int i=0; i<aItems.length(); i++)
+        for (int i=0; i<aRanges.length(); i++)
         {
-            aItems[i]->setTextColor(dialog.selectedColor());
+            for (int j=aRanges.at(i).topRow(); j<=aRanges.at(i).bottomRow(); j++)
+            {
+                for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
+                {
+                    ui->headerTableWidget->item(j, k)->setTextColor(dialog.selectedColor());
+                }
+            }
         }
     }
 }
@@ -302,11 +330,17 @@ void TableEditDialog::headerAlignmentHide()
 
 void TableEditDialog::setItemsAlignment(int aAlignment)
 {
-    QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
+    QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
 
-    for (int i=0; i<aItems.length(); i++)
+    for (int i=0; i<aRanges.length(); i++)
     {
-        aItems[i]->setTextAlignment(aAlignment);
+        for (int j=aRanges.at(i).topRow(); j<=aRanges.at(i).bottomRow(); j++)
+        {
+            for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
+            {
+                ui->headerTableWidget->item(j, k)->setTextAlignment(aAlignment);
+            }
+        }
     }
 }
 
