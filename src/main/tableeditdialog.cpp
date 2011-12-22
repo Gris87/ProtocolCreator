@@ -451,8 +451,8 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
         int aWidthSize=mCellAlignmentWidget->width();
         int aHeightSize=mCellAlignmentWidget->height();
 
-        int aX=cursor().pos().x()+200;
-        int aY=cursor().pos().y()+280;
+        int aX=cursor().pos().x()+contextMenu->sizeHint().width()-10;
+        int aY=cursor().pos().y()+contextMenu->sizeHint().height()-15;
 
         QDesktopWidget *desktop = QApplication::desktop();
         int aWidth = desktop->width();
