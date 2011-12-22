@@ -22,6 +22,8 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
     connect(mCellAlignmentWidget->ui->bottomButton,      SIGNAL(clicked()), this, SLOT(headerCellAlignBottom()));
     connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(headerCellAlignBottomRight()));
 
+    ui->headerTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
+
     ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
 
     updateAdmin();
@@ -76,7 +78,6 @@ void TableEditDialog::on_headerDelRowButton_clicked()
         QMessageBox::information(this, protocolCreatorVersion, "Выберите строку");
         return;
     }
-
     for (int i=0; i<aItems.length(); i++)
     {
         if (!aRows.contains(aItems.at(i)->row()))
@@ -192,73 +193,6 @@ void TableEditDialog::headerInsertColAfter()
     ui->headerTableWidget->insertColumn(column);
 
     setItemsForColumn(column);
-}
-
-void TableEditDialog::headerUnite()
-{
-    QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
-
-    int startX=aItems.at(0)->column();
-    int startY=aItems.at(0)->row();
-
-    int leftLimit=startX;
-    int topLimit=startY;
-    int rightLimit=startX;
-    int bottomLimit=startY;
-
-    while (leftLimit>0 && ui->headerTableWidget->item(startY, leftLimit-1)->isSelected())
-    {
-        leftLimit--;
-    }
-
-    while (topLimit>0 && ui->headerTableWidget->item(topLimit-1, startX)->isSelected())
-    {
-        topLimit--;
-    }
-
-    while (rightLimit<ui->headerTableWidget->columnCount()-1 && ui->headerTableWidget->item(startY, rightLimit+1)->isSelected())
-    {
-        rightLimit++;
-    }
-
-    while (bottomLimit<ui->headerTableWidget->rowCount()-1 && ui->headerTableWidget->item(bottomLimit+1, startX)->isSelected())
-    {
-        bottomLimit++;
-    }
-
-    for (int i=topLimit; i<=bottomLimit; i++)
-    {
-        for (int j=leftLimit; j<=rightLimit; j++)
-        {
-            QTableWidgetItem *aItem=ui->headerTableWidget->item(i, j);
-
-            if (!aItem->isSelected())
-            {
-                QMessageBox::information(this, protocolCreatorVersion, "Выделение не образует прямоугольную зону");
-                return;
-            }
-
-            aItems.removeOne(aItem);
-        }
-    }
-
-    if (aItems.length()>0)
-    {
-        QMessageBox::information(this, protocolCreatorVersion, "Выделение не образует прямоугольную зону");
-        return;
-    }
-
-    ui->headerTableWidget->setSpan(topLimit, leftLimit, bottomLimit-topLimit+1, rightLimit-leftLimit+1);
-}
-
-void TableEditDialog::headerSeparate()
-{
-    QList<QTableWidgetItem *> aItems=ui->headerTableWidget->selectedItems();
-
-    for (int i=0; i<aItems.length(); i++)
-    {
-        ui->headerTableWidget->setSpan(aItems.at(i)->row(), aItems.at(i)->column(), 1, 1);
-    }
 }
 
 void TableEditDialog::headerColumnSize()
@@ -439,8 +373,8 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
         contextMenu->addSeparator();
     }
 
-    contextMenu->addAction("Объединить ячейки",          this, SLOT(headerUnite()))->setEnabled(itemSelected);
-    contextMenu->addAction("Разъеденить ячейки",         this, SLOT(headerSeparate()))->setEnabled(itemSelected);
+    contextMenu->addAction("Объединить ячейки",          ui->headerTableWidget, SLOT(uniteSelection()))->setEnabled(itemSelected);
+    contextMenu->addAction("Разъеденить ячейки",         ui->headerTableWidget, SLOT(separateSelection()))->setEnabled(itemSelected);
     contextMenu->addSeparator();
     contextMenu->addAction("Ширина",                     this, SLOT(headerColumnSize()))->setEnabled(itemSelected);
     contextMenu->addAction("Сдвиг таблицы",              this, SLOT(headerOffset()));

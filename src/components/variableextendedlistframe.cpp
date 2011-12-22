@@ -11,6 +11,8 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
 
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
+
+    ui->dataTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
 }
 
 VariableExtendedListFrame::~VariableExtendedListFrame()

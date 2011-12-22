@@ -35,8 +35,6 @@ private slots:
     void headerInsertRowAfter();
     void headerInsertColBefore();
     void headerInsertColAfter();
-    void headerUnite();
-    void headerSeparate();
     void headerColumnSize();
     void headerOffset();
     void headerFont();
