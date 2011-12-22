@@ -30,6 +30,7 @@
 #include "src/main/tableeditdialog.h"
 
 #include "src/other/encoder.h"
+#include "src/other/types.h"
 #include "src/other/utils.h"
 
 #include "src/widgets/colorarea.h"

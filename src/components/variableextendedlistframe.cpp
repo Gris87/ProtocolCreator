@@ -63,6 +63,59 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
     aStream << QString("TableOffset");
     aStream << mTableOffset;
 
+    int headerRowCount=headerCells.length();
+    int headerColCount=headerRowCount==0? 0 : headerCells.at(0).length();
+
+    aStream << QString("Header");
+    aStream << headerRowCount;
+    aStream << headerColCount;
+
+    aStream << QString("ColumnWidth");
+
+    for (int i=0; i<headerColCount; i++)
+    {
+        aStream << headerColumnWidths.at(i);
+    }
+
+    aStream << QString("Cells");
+
+    for (int i=0; i<headerRowCount; i++)
+    {
+        for (int j=0; j<headerColCount; j++)
+        {
+            STableCell *aCell=&headerCells[i][j];
+
+            aStream << QString("SpanX");
+            aStream << aCell->spanX;
+
+            aStream << QString("SpanY");
+            aStream << aCell->spanY;
+
+            aStream << QString("Font");
+            aStream << aCell->fontString;
+
+            aStream << QString("Text");
+            aStream << aCell->text;
+
+            aStream << QString("Alignment");
+            aStream << aCell->alignment;
+
+            aStream << QString("Background");
+            aStream << aCell->backgroundColorR;
+            aStream << aCell->backgroundColorG;
+            aStream << aCell->backgroundColorB;
+
+            aStream << QString("TextColor");
+            aStream << aCell->textColorR;
+            aStream << aCell->textColorG;
+            aStream << aCell->textColorB;
+
+            aStream << QString("CellEnd");
+        }
+    }
+
+    aStream << QString("HeaderEnd");
+
     aStream << QString("VarEnd");
 }
 
@@ -124,6 +177,102 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
         if (aMagicWord=="TableOffset")
         {
             aStream >> mTableOffset;
+        }
+        else
+        if (aMagicWord=="Header")
+        {
+            int headerRowCount;
+            int headerColCount;
+
+            aStream >> headerRowCount;
+            aStream >> headerColCount;
+
+            while (!aStream.atEnd())
+            {
+                aStream >> aMagicWord;
+
+                if (aMagicWord=="ColumnWidth")
+                {
+                    int aColumnWidth;
+
+                    for (int i=0; i<headerColCount; i++)
+                    {
+                        aStream >> aColumnWidth;
+
+                        headerColumnWidths.append(aColumnWidth);
+                    }
+                }
+                else
+                if (aMagicWord=="Cells")
+                {
+                    QList<STableCell> aNewRow;
+
+                    for (int i=0; i<headerRowCount; i++)
+                    {
+                        headerCells.append(aNewRow);
+
+                        for (int j=0; j<headerColCount; j++)
+                        {
+                            STableCell aCell;
+
+                            while (!aStream.atEnd())
+                            {
+                                aStream >> aMagicWord;
+
+                                if (aMagicWord=="SpanX")
+                                {
+                                    aStream >> aCell.spanX;
+                                }
+                                else
+                                if (aMagicWord=="SpanY")
+                                {
+                                    aStream >> aCell.spanY;
+                                }
+                                else
+                                if (aMagicWord=="Font")
+                                {
+                                    aStream >> aCell.fontString;
+                                }
+                                else
+                                if (aMagicWord=="Text")
+                                {
+                                    aStream >> aCell.text;
+                                }
+                                else
+                                if (aMagicWord=="Alignment")
+                                {
+                                    aStream >> aCell.alignment;
+                                }
+                                else
+                                if (aMagicWord=="Background")
+                                {
+                                    aStream >> aCell.backgroundColorR;
+                                    aStream >> aCell.backgroundColorG;
+                                    aStream >> aCell.backgroundColorB;
+                                }
+                                else
+                                if (aMagicWord=="TextColor")
+                                {
+                                    aStream >> aCell.textColorR;
+                                    aStream >> aCell.textColorG;
+                                    aStream >> aCell.textColorB;
+                                }
+                                else
+                                if (aMagicWord=="CellEnd")
+                                {
+                                    headerCells[i].append(aCell);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                if (aMagicWord=="HeaderEnd")
+                {
+                    break;
+                }
+            }
         }
         else
         if (aMagicWord=="VarEnd")

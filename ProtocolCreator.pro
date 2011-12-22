@@ -105,7 +105,8 @@ HEADERS  += src/main/mainwindow.h \
     src/widgets/copyabletable.h \
     src/widgets/cellalignmentwidget.h \
     src/main/columnsizedialog.h \
-    src/widgets/unitedtable.h
+    src/widgets/unitedtable.h \
+    src/other/types.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -130,5 +131,6 @@ FORMS    += src/main/mainwindow.ui \
 
 OTHER_FILES += \
     TODO.txt
+
 
 

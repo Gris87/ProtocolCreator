@@ -5,6 +5,8 @@
 
 #include "ui_variableextendedlistframe.h"
 
+#include "src/other/types.h"
+
 namespace Ui {
     class VariableExtendedListFrame;
 }
@@ -17,6 +19,8 @@ public:
     Ui::VariableExtendedListFrame *ui;
     Qt::AlignmentFlag mTableAlignment;
     double mTableOffset;
+    QList<QList<STableCell> > headerCells;
+    QList<int> headerColumnWidths;
 
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();

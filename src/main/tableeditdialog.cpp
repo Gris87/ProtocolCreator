@@ -22,15 +22,98 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
     connect(mCellAlignmentWidget->ui->bottomButton,      SIGNAL(clicked()), this, SLOT(headerCellAlignBottom()));
     connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(headerCellAlignBottomRight()));
 
+    ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
+
     ui->headerTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
 
-    ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
+    int rowCount=mTable->headerCells.length();
+    int columnCount=rowCount==0? 0 : mTable->headerCells.at(0).length();
+
+    ui->headerTableWidget->setRowCount(rowCount);
+    ui->headerTableWidget->setColumnCount(columnCount);
+
+    for (int i=0; i<columnCount; i++)
+    {
+        ui->headerTableWidget->setColumnWidth(i, mTable->headerColumnWidths.at(i));
+    }
+
+    for (int i=0; i<rowCount; i++)
+    {
+        for (int j=0; j<columnCount; j++)
+        {
+            QTableWidgetItem *aItem=new QTableWidgetItem();
+            STableCell *aCell=&mTable->headerCells[i][j];
+
+            if (aCell->spanX>1 || aCell->spanY>1)
+            {
+                ui->headerTableWidget->setSpan(i, j, aCell->spanY, aCell->spanX);
+            }
+
+            QFont aFont;
+            aFont.fromString(aCell->fontString);
+
+            aItem->setFont(aFont);
+            aItem->setText(aCell->text);
+            aItem->setTextAlignment(aCell->alignment);
+            aItem->setBackground(QBrush(QColor(aCell->backgroundColorR, aCell->backgroundColorG, aCell->backgroundColorB)));
+            aItem->setTextColor(QColor(aCell->textColorR, aCell->textColorG, aCell->textColorB));
+
+            ui->headerTableWidget->setItem(i, j, aItem);
+        }
+    }
 
     updateAdmin();
 }
 
 TableEditDialog::~TableEditDialog()
 {
+    mTable->headerCells.clear();
+    mTable->headerColumnWidths.clear();
+
+    int rowCount=ui->headerTableWidget->rowCount();
+    int columnCount=ui->headerTableWidget->columnCount();
+
+    if (rowCount>0 && columnCount>0)
+    {
+        for (int i=0; i<columnCount; i++)
+        {
+            mTable->headerColumnWidths.append(ui->headerTableWidget->columnWidth(i));
+        }
+
+        QList<STableCell> aNewRow;
+
+        for (int i=0; i<rowCount; i++)
+        {
+            mTable->headerCells.append(aNewRow);
+
+            for (int j=0; j<columnCount; j++)
+            {
+                STableCell aNewCell;
+                QTableWidgetItem *aItem=ui->headerTableWidget->item(i, j);
+
+                aNewCell.spanX=ui->headerTableWidget->columnSpan(i, j);
+                aNewCell.spanY=ui->headerTableWidget->rowSpan(i, j);
+                aNewCell.fontString=aItem->font().toString();
+                aNewCell.text=aItem->text();
+                aNewCell.alignment=aItem->textAlignment();
+
+                QColor backgroundColor=aItem->background().color();
+
+                aNewCell.backgroundColorR=backgroundColor.red();
+                aNewCell.backgroundColorG=backgroundColor.green();
+                aNewCell.backgroundColorB=backgroundColor.blue();
+
+                QColor textColor=aItem->textColor();
+
+                aNewCell.textColorR=textColor.red();
+                aNewCell.textColorG=textColor.green();
+                aNewCell.textColorB=textColor.blue();
+
+                mTable->headerCells[i].append(aNewCell);
+            }
+        }
+    }
+
     delete ui;
 }
 
