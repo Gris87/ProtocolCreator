@@ -55,15 +55,18 @@ private slots:
     void headerCellAlignBottom();
     void headerCellAlignBottomRight();
 
-    void on_headerTableWidget_customContextMenuRequested(const QPoint &pos);
     void on_headerAddRowButton_clicked();
     void on_headerDelRowButton_clicked();
     void on_headerAddColButton_clicked();
     void on_headerDelColButton_clicked();
+    void on_headerTableWidget_customContextMenuRequested(const QPoint &pos);
 
+    void structureInsertColBefore();
+    void structureInsertColAfter();
     void on_structureAddColButton_clicked();
     void on_structureChangeColButton_clicked();
     void on_structureDelColButton_clicked();
+    void on_structureTableWidget_customContextMenuRequested(const QPoint &pos);
 };
 
 #endif // TABLEEDITDIALOG_H

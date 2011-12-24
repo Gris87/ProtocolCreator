@@ -567,20 +567,52 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
     contextMenu->show();
 }
 
+void TableEditDialog::structureInsertColBefore()
+{
+    ColumnEditDialog dialog(false, ui->structureTableWidget, mTable, ui->structureTableWidget->currentColumn(), this);
+    dialog.exec();
+}
+
+void TableEditDialog::structureInsertColAfter()
+{
+    ColumnEditDialog dialog(false, ui->structureTableWidget, mTable, ui->structureTableWidget->currentColumn()+1, this);
+    dialog.exec();
+}
+
 void TableEditDialog::on_structureAddColButton_clicked()
 {
-    ColumnEditDialog dialog(this);
+    ColumnEditDialog dialog(false, ui->structureTableWidget, mTable, ui->structureTableWidget->columnCount(), this);
     dialog.exec();
 }
 
 void TableEditDialog::on_structureChangeColButton_clicked()
 {
-
+    ColumnEditDialog dialog(true, ui->structureTableWidget, mTable, ui->structureTableWidget->currentColumn(), this);
+    dialog.exec();
 }
 
 void TableEditDialog::on_structureDelColButton_clicked()
 {
 
+}
+
+void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const QPoint &pos)
+{
+    bool itemSelected=ui->structureTableWidget->selectedItems().length()>0;
+
+    QAction *aAction;
+    QMenu *contextMenu=new QMenu;
+
+    if (isAdmin)
+    {
+        contextMenu->addAction("Вставить столбец перед текущим",  this, SLOT(structureInsertColBefore()))->setEnabled(itemSelected);
+        contextMenu->addAction("Вставить столбец после текущего", this, SLOT(structureInsertColAfter()))->setEnabled(itemSelected);
+        contextMenu->addAction("Удалить столбец(цы)",             this, SLOT(on_structureDelColButton_clicked()))->setEnabled(itemSelected);
+        contextMenu->addSeparator();
+    }
+
+    contextMenu->setGeometry(cursor().pos().x(),cursor().pos().y(),contextMenu->sizeHint().width(),contextMenu->sizeHint().height());
+    contextMenu->show();
 }
 
 void TableEditDialog::updateAdmin()

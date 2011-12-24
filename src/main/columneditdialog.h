@@ -5,6 +5,9 @@
 
 #include "ui_columneditdialog.h"
 
+#include <QTableWidget>
+#include "src/components/variableextendedlistframe.h"
+
 namespace Ui {
     class ColumnEditDialog;
 }
@@ -15,8 +18,10 @@ class ColumnEditDialog : public QDialog
 
 public:
     Ui::ColumnEditDialog *ui;
+    VariableExtendedListFrame *mTable;
+    QTableWidget *mTableWidget;
 
-    explicit ColumnEditDialog(QWidget *parent = 0);
+    explicit ColumnEditDialog(bool editMode, QTableWidget *aTableWidget, VariableExtendedListFrame *aTable, int columnIndex, QWidget *parent = 0);
     ~ColumnEditDialog();
 };
 
