@@ -3,6 +3,8 @@
 
 #include "qdebug.h"
 
+#include "src/column_types/columntype.h"
+
 #include "src/components/pagecomponent.h"
 #include "src/components/variableintegerframe.h"
 #include "src/components/variablestringframe.h"

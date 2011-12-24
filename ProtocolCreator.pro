@@ -60,7 +60,8 @@ SOURCES += src/main.cpp\
     src/widgets/cellalignmentwidget.cpp \
     src/main/columnsizedialog.cpp \
     src/widgets/unitedtable.cpp \
-    src/main/columneditdialog.cpp
+    src/main/columneditdialog.cpp \
+    src/column_types/columntype.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -108,7 +109,8 @@ HEADERS  += src/main/mainwindow.h \
     src/main/columnsizedialog.h \
     src/widgets/unitedtable.h \
     src/other/types.h \
-    src/main/columneditdialog.h
+    src/main/columneditdialog.h \
+    src/column_types/columntype.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -134,3 +136,5 @@ FORMS    += src/main/mainwindow.ui \
 
 OTHER_FILES += \
     TODO.txt
+
+
