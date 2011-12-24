@@ -20,6 +20,7 @@
 #include "src/delegates/listdelegate.h"
 #include "src/delegates/timedelegate.h"
 
+#include "src/main/columneditdialog.h"
 #include "src/main/columnsizedialog.h"
 #include "src/main/functiondialog.h"
 #include "src/main/globaldialog.h"

@@ -123,6 +123,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="structureChangeColButton">
+        <property name="text">
+         <string>Изменить столбец</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="structureDelColButton">
         <property name="text">
          <string>Удалить столбец</string>

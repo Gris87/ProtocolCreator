@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ColumnEditDialog</class>
+ <widget class="QDialog" name="ColumnEditDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>553</width>
+    <height>365</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>4</number>
+   </property>
+   <property name="margin">
+    <number>4</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>4</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="nameLabel">
+       <property name="text">
+        <string>Имя:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="nameEdit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="typeLabel">
+       <property name="text">
+        <string>Тип:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="typeComboBox">
+       <property name="minimumSize">
+        <size>
+         <width>132</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Число</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Строка</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Логическое значение</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Дата</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Время</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Список</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Расширенный список</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Выражение</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="typeStackedWidget"/>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="offsetGroupBox">
+     <property name="title">
+      <string>Сдвиги (см)</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="margin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="leftOffsetLabel">
+        <property name="text">
+         <string>Сдвиг слева:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QDoubleSpinBox" name="leftOffsetSpinBox"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="rightOffsetLabel">
+        <property name="text">
+         <string>Сдвиг справа:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="totalOffsetLabel">
+        <property name="text">
+         <string>Отступ:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="rightOffsetSpinBox"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QDoubleSpinBox" name="totalOffsetSpinBox"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

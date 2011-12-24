@@ -62,6 +62,8 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         }
     }
 
+    ui->structureTableWidget->setRowCount(1);
+
     updateAdmin();
 }
 
@@ -563,6 +565,22 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
 
     contextMenu->setGeometry(cursor().pos().x(),cursor().pos().y(),contextMenu->sizeHint().width(),contextMenu->sizeHint().height());
     contextMenu->show();
+}
+
+void TableEditDialog::on_structureAddColButton_clicked()
+{
+    ColumnEditDialog dialog(this);
+    dialog.exec();
+}
+
+void TableEditDialog::on_structureChangeColButton_clicked()
+{
+
+}
+
+void TableEditDialog::on_structureDelColButton_clicked()
+{
+
 }
 
 void TableEditDialog::updateAdmin()

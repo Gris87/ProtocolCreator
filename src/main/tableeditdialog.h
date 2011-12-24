@@ -61,7 +61,9 @@ private slots:
     void on_headerAddColButton_clicked();
     void on_headerDelColButton_clicked();
 
-
+    void on_structureAddColButton_clicked();
+    void on_structureChangeColButton_clicked();
+    void on_structureDelColButton_clicked();
 };
 
 #endif // TABLEEDITDIALOG_H
