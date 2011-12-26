@@ -11,6 +11,9 @@ void IntegerColumn::saveToStream(QDataStream &aStream)
     aStream << QString("Default");
     aStream << mDefaultValue;
 
+    aStream << QString("Decimals");
+    aStream << mDecimals;
+
     aStream << QString("AutoInc");
     aStream << mIsAutoInc;
 
@@ -36,6 +39,11 @@ void IntegerColumn::loadFromStream(QDataStream &aStream)
             aStream >> mDefaultValue;
         }
         else
+        if (aMagicWord=="Decimals")
+        {
+            aStream >> mDecimals;
+        }
+        else
         if (aMagicWord=="AutoInc")
         {
             aStream >> mIsAutoInc;
@@ -56,4 +64,28 @@ void IntegerColumn::loadFromStream(QDataStream &aStream)
             break;
         }
     }
+}
+
+QString IntegerColumn::typeDescription()
+{
+    QString aTypeDescription;
+
+    aTypeDescription="Число ("+QString::number(mDefaultValue)+"; "+
+                               QString::number(mDecimals)+"; ";
+
+    if (mIsAutoInc)
+    {
+        aTypeDescription.append("X");
+    }
+    else
+    {
+        aTypeDescription.append("_");
+    }
+
+    aTypeDescription.append(
+                            "; \""+mPrefix+"\"; "+
+                            "\""+mPostfix+"\")"
+                           );
+
+    return aTypeDescription;
 }

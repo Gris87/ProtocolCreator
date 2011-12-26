@@ -13,3 +13,8 @@ void ColumnType::loadFromStream(QDataStream &aStream)
 {
     // Nothing
 }
+
+QString ColumnType::typeDescription()
+{
+    return "";
+}

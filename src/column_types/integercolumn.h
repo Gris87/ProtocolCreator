@@ -9,6 +9,7 @@ class IntegerColumn: public ColumnType
 {
 public:
     double mDefaultValue;
+    int mDecimals;
     bool mIsAutoInc;
     QString mPrefix;
     QString mPostfix;
@@ -17,6 +18,8 @@ public:
 
     void saveToStream(QDataStream &aStream);
     void loadFromStream(QDataStream &aStream);
+
+    QString typeDescription();
 };
 
 #endif // INTEGERCOLUMN_H

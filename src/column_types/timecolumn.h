@@ -16,6 +16,8 @@ public:
 
     void saveToStream(QDataStream &aStream);
     void loadFromStream(QDataStream &aStream);
+
+    QString typeDescription();
 };
 
 #endif // TIMECOLUMN_H

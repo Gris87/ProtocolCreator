@@ -104,7 +104,11 @@
     </widget>
    </item>
    <item>
-    <widget class="UnitedTable" name="structureTableWidget"/>
+    <widget class="UnitedTable" name="structureTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QWidget" name="structureAdminWidget" native="true">

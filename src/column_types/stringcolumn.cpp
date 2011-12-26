@@ -33,3 +33,8 @@ void StringColumn::loadFromStream(QDataStream &aStream)
         }
     }
 }
+
+QString StringColumn::typeDescription()
+{
+    return "Строка (\""+mDefaultValue+"\")";
+}

@@ -10,6 +10,8 @@ public:
 
     virtual void saveToStream(QDataStream &aStream);
     virtual void loadFromStream(QDataStream &aStream);
+
+    virtual QString typeDescription();
 };
 
 #endif // COLUMNTYPE_H

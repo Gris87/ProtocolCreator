@@ -33,3 +33,8 @@ void TimeColumn::loadFromStream(QDataStream &aStream)
         }
     }
 }
+
+QString TimeColumn::typeDescription()
+{
+    return "Время ("+mDefaultValue.toString("hh:mm:ss")+")";
+}

@@ -33,3 +33,8 @@ void DateColumn::loadFromStream(QDataStream &aStream)
         }
     }
 }
+
+QString DateColumn::typeDescription()
+{
+    return "Дата ("+mDefaultValue.toString("dd.MM.yyyy")+")";
+}

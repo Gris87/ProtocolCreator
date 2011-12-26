@@ -33,3 +33,23 @@ void BoolColumn::loadFromStream(QDataStream &aStream)
         }
     }
 }
+
+QString BoolColumn::typeDescription()
+{
+    QString aTypeDescription;
+
+    aTypeDescription="Лог. значение (";
+
+    if (mDefaultValue)
+    {
+        aTypeDescription.append("X");
+    }
+    else
+    {
+        aTypeDescription.append("_");
+    }
+
+    aTypeDescription.append(")");
+
+    return aTypeDescription;
+}

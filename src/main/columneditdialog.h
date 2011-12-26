@@ -21,7 +21,7 @@ public:
     VariableExtendedListFrame *mTable;
     QTableWidget *mTableWidget;
     bool mEditMode;
-    bool mColumnIndex;
+    int mColumnIndex;
 
     explicit ColumnEditDialog(bool aEditMode, QTableWidget *aTableWidget, VariableExtendedListFrame *aTable, int aColumnIndex, QWidget *parent = 0);
     ~ColumnEditDialog();
@@ -30,6 +30,7 @@ public:
 
 private slots:
     void on_typeComboBox_currentIndexChanged(int index);
+    void on_integerNumberSpinBox_valueChanged(double value);
 };
 
 #endif // COLUMNEDITDIALOG_H
