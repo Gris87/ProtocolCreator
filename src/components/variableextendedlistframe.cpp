@@ -130,6 +130,7 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
         aStream << QString("Name");
         aStream << typeColumns.at(i).name;
 
+        aStream << QString("Column");
         typeColumns.at(i).column->saveToStream(aStream);
 
         aStream << QString("LeftOffset");
@@ -299,6 +300,96 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                 }
                 else
                 if (aMagicWord=="HeaderEnd")
+                {
+                    break;
+                }
+            }
+        }
+        else
+        if (aMagicWord=="ColTypes")
+        {
+            while (!aStream.atEnd())
+            {
+                aStream >> aMagicWord;
+
+                if (aMagicWord=="ColType")
+                {
+                    STableColumn aColumn;
+
+                    while (!aStream.atEnd())
+                    {
+                        aStream >> aMagicWord;
+
+                        if (aMagicWord=="Name")
+                        {
+                            aStream >> aColumn.name;
+                        }
+                        else
+                        if (aMagicWord=="Column")
+                        {
+                            aStream >> aMagicWord;
+
+                            ColumnType *aTypeColumn=0;
+
+                            if (aMagicWord=="ColInteger")
+                            {
+                                aTypeColumn=new IntegerColumn();
+                            }
+                            else
+                            if (aMagicWord=="ColString")
+                            {
+                                aTypeColumn=new StringColumn();
+                            }
+                            else
+                            if (aMagicWord=="ColBool")
+                            {
+                                aTypeColumn=new BoolColumn();
+                            }
+                            else
+                            if (aMagicWord=="ColDate")
+                            {
+                                aTypeColumn=new DateColumn();
+                            }
+                            else
+                            if (aMagicWord=="ColTime")
+                            {
+                                aTypeColumn=new TimeColumn();
+                            }
+                            else
+                            {
+                                throw "Unknown type column";
+                            }
+
+                            aTypeColumn->loadFromStream(aStream);
+
+                            aColumn.column=aTypeColumn;
+                        }
+                        else
+                        if (aMagicWord=="LeftOffset")
+                        {
+                            aStream >> aColumn.leftOffset;
+                        }
+                        else
+                        if (aMagicWord=="RightOffset")
+                        {
+                            aStream >> aColumn.rightOffset;
+                        }
+                        else
+                        if (aMagicWord=="TotalOffset")
+                        {
+                            aStream >> aColumn.totalOffset;
+                        }
+                        else
+                        if (aMagicWord=="ColTypeEnd")
+                        {
+                            break;
+                        }
+                    }
+
+                    typeColumns.append(aColumn);
+                }
+                else
+                if (aMagicWord=="ColTypesEnd")
                 {
                     break;
                 }
