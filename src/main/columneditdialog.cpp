@@ -1,6 +1,6 @@
 #include "src/main/columneditdialog.h"
 
-ColumnEditDialog::ColumnEditDialog(bool editMode, QTableWidget *aTableWidget, VariableExtendedListFrame *aTable, int columnIndex, QWidget *parent) :
+ColumnEditDialog::ColumnEditDialog(bool aEditMode, QTableWidget *aTableWidget, VariableExtendedListFrame *aTable, int aColumnIndex, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ColumnEditDialog)
 {
@@ -8,9 +8,23 @@ ColumnEditDialog::ColumnEditDialog(bool editMode, QTableWidget *aTableWidget, Va
 
     mTableWidget=aTableWidget;
     mTable=aTable;
+    mEditMode=aEditMode;
+    mColumnIndex=aColumnIndex;
 }
 
 ColumnEditDialog::~ColumnEditDialog()
 {
+    applyChanges();
+
     delete ui;
+}
+
+void ColumnEditDialog::applyChanges()
+{
+
+}
+
+void ColumnEditDialog::on_typeComboBox_currentIndexChanged(int index)
+{
+    ui->typeStackedWidget->setCurrentIndex(index);
 }

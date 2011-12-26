@@ -17,6 +17,11 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
 
 VariableExtendedListFrame::~VariableExtendedListFrame()
 {
+    for (int i=0; i<typeColumns.length(); i++)
+    {
+        delete typeColumns.at(i).column;
+    }
+
     delete ui;
 }
 
@@ -115,6 +120,31 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
     }
 
     aStream << QString("HeaderEnd");
+
+    aStream << QString("ColTypes");
+
+    for (int i=0; i<typeColumns.length(); i++)
+    {
+        aStream << QString("ColType");
+
+        aStream << QString("Name");
+        aStream << typeColumns.at(i).name;
+
+        typeColumns.at(i).column->saveToStream(aStream);
+
+        aStream << QString("LeftOffset");
+        aStream << typeColumns.at(i).leftOffset;
+
+        aStream << QString("RightOffset");
+        aStream << typeColumns.at(i).rightOffset;
+
+        aStream << QString("TotalOffset");
+        aStream << typeColumns.at(i).totalOffset;
+
+        aStream << QString("ColTypeEnd");
+    }
+
+    aStream << QString("ColTypesEnd");
 
     aStream << QString("VarEnd");
 }

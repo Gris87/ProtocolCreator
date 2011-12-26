@@ -4,6 +4,8 @@
 #include <QString>
 #include <QColor>
 
+#include "src/column_types/columntype.h"
+
 struct STableCell
 {
     int spanX;
@@ -17,6 +19,15 @@ struct STableCell
     quint8 textColorR;
     quint8 textColorG;
     quint8 textColorB;
+};
+
+struct STableColumn
+{
+    QString name;
+    ColumnType *column;
+    double leftOffset;
+    double rightOffset;
+    double totalOffset;
 };
 
 #endif // TYPES_H

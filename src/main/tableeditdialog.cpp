@@ -600,7 +600,6 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
 {
     bool itemSelected=ui->structureTableWidget->selectedItems().length()>0;
 
-    QAction *aAction;
     QMenu *contextMenu=new QMenu;
 
     if (isAdmin)

@@ -21,6 +21,7 @@ public:
     double mTableOffset;
     QList<QList<STableCell> > headerCells;
     QList<int> headerColumnWidths;
+    QList<STableColumn> typeColumns;
 
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();
