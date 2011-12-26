@@ -61,7 +61,12 @@ SOURCES += src/main.cpp\
     src/main/columnsizedialog.cpp \
     src/widgets/unitedtable.cpp \
     src/main/columneditdialog.cpp \
-    src/column_types/columntype.cpp
+    src/column_types/columntype.cpp \
+    src/column_types/integercolumn.cpp \
+    src/column_types/stringcolumn.cpp \
+    src/column_types/boolcolumn.cpp \
+    src/column_types/datecolumn.cpp \
+    src/column_types/timecolumn.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -110,7 +115,12 @@ HEADERS  += src/main/mainwindow.h \
     src/widgets/unitedtable.h \
     src/other/types.h \
     src/main/columneditdialog.h \
-    src/column_types/columntype.h
+    src/column_types/columntype.h \
+    src/column_types/integercolumn.h \
+    src/column_types/stringcolumn.h \
+    src/column_types/boolcolumn.h \
+    src/column_types/datecolumn.h \
+    src/column_types/timecolumn.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -136,5 +146,3 @@ FORMS    += src/main/mainwindow.ui \
 
 OTHER_FILES += \
     TODO.txt
-
-

@@ -6,8 +6,6 @@
 class ColumnType
 {
 public:
-    QString mName;
-
     explicit ColumnType();
 
     virtual void saveToStream(QDataStream &aStream);
