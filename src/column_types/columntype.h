@@ -3,6 +3,8 @@
 
 #include <QDataStream>
 
+enum EColumnType {ctNone, ctInteger, ctString, ctBool, ctDate, ctTime, ctList, ctExtendedList, ctExpression};
+
 class ColumnType
 {
 public:
@@ -12,6 +14,7 @@ public:
     virtual void loadFromStream(QDataStream &aStream);
 
     virtual QString typeDescription();
+    virtual EColumnType type();
 };
 
 #endif // COLUMNTYPE_H

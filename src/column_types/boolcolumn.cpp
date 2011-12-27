@@ -53,3 +53,8 @@ QString BoolColumn::typeDescription()
 
     return aTypeDescription;
 }
+
+EColumnType BoolColumn::type()
+{
+    return ctBool;
+}

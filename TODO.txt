@@ -1,1 +1,2 @@
 Special functions needs to add
+Do not forget to throw in case of reading incorrect component

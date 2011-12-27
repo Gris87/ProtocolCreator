@@ -38,3 +38,8 @@ QString TimeColumn::typeDescription()
 {
     return "Время ("+mDefaultValue.toString("hh:mm:ss")+")";
 }
+
+EColumnType TimeColumn::type()
+{
+    return ctTime;
+}

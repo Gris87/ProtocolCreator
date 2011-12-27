@@ -18,3 +18,8 @@ QString ColumnType::typeDescription()
 {
     return "";
 }
+
+EColumnType ColumnType::type()
+{
+    return ctNone;
+}

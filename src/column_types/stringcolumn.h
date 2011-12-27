@@ -16,6 +16,7 @@ public:
     void loadFromStream(QDataStream &aStream);
 
     QString typeDescription();
+    EColumnType type();
 };
 
 #endif // STRINGCOLUMN_H

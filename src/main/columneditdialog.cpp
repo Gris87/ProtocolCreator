@@ -13,7 +13,12 @@ ColumnEditDialog::ColumnEditDialog(bool aEditMode, QTableWidget *aTableWidget, V
 
     if (mEditMode)
     {
-
+        startEditing();
+    }
+    else
+    {
+        ui->leftButton->setVisible(false);
+        ui->rightButton->setVisible(false);
     }
 }
 
@@ -22,6 +27,68 @@ ColumnEditDialog::~ColumnEditDialog()
     applyChanges();
 
     delete ui;
+}
+
+void ColumnEditDialog::startEditing()
+{
+    ui->leftButton->setEnabled(mColumnIndex>0);
+    ui->rightButton->setEnabled(mColumnIndex<mTable->typeColumns.length()-1);
+
+    STableColumn *aColumn=&mTable->typeColumns[mColumnIndex];
+
+    ui->nameEdit->setText(aColumn->name);
+
+    switch (aColumn->column->type())
+    {
+        case ctInteger:
+        {
+            ui->typeComboBox->setCurrentIndex(0);
+
+            ui->integerDefaultSpinBox->setValue         (((IntegerColumn*)aColumn->column)->mDefaultValue);
+            ui->integerNumberSpinBox->setValue          (((IntegerColumn*)aColumn->column)->mDecimals);
+            ui->integerAutoIncrementCheckBox->setChecked(((IntegerColumn*)aColumn->column)->mIsAutoInc);
+            ui->integerPrefixEdit->setText              (((IntegerColumn*)aColumn->column)->mPrefix);
+            ui->integerPostfixEdit->setText             (((IntegerColumn*)aColumn->column)->mPostfix);
+        }
+        break;
+        case ctString:
+        {
+            ui->typeComboBox->setCurrentIndex(1);
+
+            ui->stringDefaultEdit->setText(((StringColumn*)aColumn->column)->mDefaultValue);
+        }
+        break;
+        case ctBool:
+        {
+            ui->typeComboBox->setCurrentIndex(2);
+
+            ui->boolDefaultCheckBox->setChecked(((BoolColumn*)aColumn->column)->mDefaultValue);
+        }
+        break;
+        case ctDate:
+        {
+            ui->typeComboBox->setCurrentIndex(3);
+
+            ui->dateDefaultEdit->setDate(((DateColumn*)aColumn->column)->mDefaultValue);
+        }
+        break;
+        case ctTime:
+        {
+            ui->typeComboBox->setCurrentIndex(4);
+
+            ui->timeDefaultEdit->setTime(((TimeColumn*)aColumn->column)->mDefaultValue);
+        }
+        break;
+        default:
+        {
+            throw "Unknown column type";
+        }
+        break;
+    }
+
+    ui->leftOffsetSpinBox->setValue(aColumn->leftOffset);
+    ui->rightOffsetSpinBox->setValue(aColumn->rightOffset);
+    ui->totalOffsetSpinBox->setValue(aColumn->totalOffset);
 }
 
 void ColumnEditDialog::applyChanges()
@@ -117,4 +184,24 @@ void ColumnEditDialog::on_typeComboBox_currentIndexChanged(int index)
 void ColumnEditDialog::on_integerNumberSpinBox_valueChanged(double value)
 {
     ui->integerDefaultSpinBox->setDecimals((int)value);
+}
+
+void ColumnEditDialog::on_leftButton_clicked()
+{
+    applyChanges();
+
+    mColumnIndex--;
+    mTableWidget->setCurrentCell(0, mColumnIndex);
+
+    startEditing();
+}
+
+void ColumnEditDialog::on_rightButton_clicked()
+{
+    applyChanges();
+
+    mColumnIndex++;
+    mTableWidget->setCurrentCell(0, mColumnIndex);
+
+    startEditing();
 }

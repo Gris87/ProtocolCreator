@@ -38,3 +38,8 @@ QString DateColumn::typeDescription()
 {
     return "Дата ("+mDefaultValue.toString("dd.MM.yyyy")+")";
 }
+
+EColumnType DateColumn::type()
+{
+    return ctDate;
+}

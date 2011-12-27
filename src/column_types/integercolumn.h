@@ -20,6 +20,7 @@ public:
     void loadFromStream(QDataStream &aStream);
 
     QString typeDescription();
+    EColumnType type();
 };
 
 #endif // INTEGERCOLUMN_H

@@ -587,6 +587,12 @@ void TableEditDialog::on_structureAddColButton_clicked()
 
 void TableEditDialog::on_structureChangeColButton_clicked()
 {
+    if (ui->structureTableWidget->currentColumn()<0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "ֲûבונטעו סעמכבוצ");
+        return;
+    }
+
     ColumnEditDialog dialog(true, ui->structureTableWidget, mTable, ui->structureTableWidget->currentColumn(), this);
     dialog.exec();
 }

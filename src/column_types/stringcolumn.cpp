@@ -38,3 +38,8 @@ QString StringColumn::typeDescription()
 {
     return "Строка (\""+mDefaultValue+"\")";
 }
+
+EColumnType StringColumn::type()
+{
+    return ctString;
+}

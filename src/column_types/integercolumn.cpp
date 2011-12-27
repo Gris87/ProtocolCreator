@@ -89,3 +89,9 @@ QString IntegerColumn::typeDescription()
 
     return aTypeDescription;
 }
+
+EColumnType IntegerColumn::type()
+{
+    return ctInteger;
+}
+

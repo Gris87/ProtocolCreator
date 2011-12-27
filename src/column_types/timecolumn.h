@@ -18,6 +18,7 @@ public:
     void loadFromStream(QDataStream &aStream);
 
     QString typeDescription();
+    EColumnType type();
 };
 
 #endif // TIMECOLUMN_H
