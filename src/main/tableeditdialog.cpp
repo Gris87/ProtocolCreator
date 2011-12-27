@@ -12,15 +12,15 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
 
     mCellAlignmentWidget=new CellAlignmentWidget(this);
     mCellAlignmentWidget->setWindowFlags(Qt::Popup);
-    connect(mCellAlignmentWidget->ui->topLeftButton,     SIGNAL(clicked()), this, SLOT(headerCellAlignTopLeft()));
-    connect(mCellAlignmentWidget->ui->topButton,         SIGNAL(clicked()), this, SLOT(headerCellAlignTop()));
-    connect(mCellAlignmentWidget->ui->topRightButton,    SIGNAL(clicked()), this, SLOT(headerCellAlignTopRight()));
-    connect(mCellAlignmentWidget->ui->leftButton,        SIGNAL(clicked()), this, SLOT(headerCellAlignLeft()));
-    connect(mCellAlignmentWidget->ui->centerButton,      SIGNAL(clicked()), this, SLOT(headerCellAlignCenter()));
-    connect(mCellAlignmentWidget->ui->rightButton,       SIGNAL(clicked()), this, SLOT(headerCellAlignRight()));
-    connect(mCellAlignmentWidget->ui->bottomLeftButton,  SIGNAL(clicked()), this, SLOT(headerCellAlignBottomLeft()));
-    connect(mCellAlignmentWidget->ui->bottomButton,      SIGNAL(clicked()), this, SLOT(headerCellAlignBottom()));
-    connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(headerCellAlignBottomRight()));
+    connect(mCellAlignmentWidget->ui->topLeftButton,     SIGNAL(clicked()), this, SLOT(tableCellAlignTopLeft()));
+    connect(mCellAlignmentWidget->ui->topButton,         SIGNAL(clicked()), this, SLOT(tableCellAlignTop()));
+    connect(mCellAlignmentWidget->ui->topRightButton,    SIGNAL(clicked()), this, SLOT(tableCellAlignTopRight()));
+    connect(mCellAlignmentWidget->ui->leftButton,        SIGNAL(clicked()), this, SLOT(tableCellAlignLeft()));
+    connect(mCellAlignmentWidget->ui->centerButton,      SIGNAL(clicked()), this, SLOT(tableCellAlignCenter()));
+    connect(mCellAlignmentWidget->ui->rightButton,       SIGNAL(clicked()), this, SLOT(tableCellAlignRight()));
+    connect(mCellAlignmentWidget->ui->bottomLeftButton,  SIGNAL(clicked()), this, SLOT(tableCellAlignBottomLeft()));
+    connect(mCellAlignmentWidget->ui->bottomButton,      SIGNAL(clicked()), this, SLOT(tableCellAlignBottom()));
+    connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(tableCellAlignBottomRight()));
 
     ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
 
@@ -61,6 +61,8 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
             ui->headerTableWidget->setItem(i, j, aItem);
         }
     }
+
+    ui->structureTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
 
     ui->structureTableWidget->setRowCount(2);
     ui->structureTableWidget->setColumnCount(mTable->typeColumns.length());
@@ -347,13 +349,13 @@ void TableEditDialog::headerOffset()
     }
 }
 
-void TableEditDialog::headerFont()
+void TableEditDialog::tableFont()
 {
-    QFontDialog dialog(ui->headerTableWidget->currentItem()->font(), this);
+    QFontDialog dialog(activeContextTable->currentItem()->font(), this);
 
     if (dialog.exec())
     {
-        QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
+        QList<QTableWidgetSelectionRange> aRanges=activeContextTable->selectedRanges();
 
         for (int i=0; i<aRanges.length(); i++)
         {
@@ -361,22 +363,22 @@ void TableEditDialog::headerFont()
             {
                 for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
                 {
-                    ui->headerTableWidget->item(j, k)->setFont(dialog.selectedFont());
+                    activeContextTable->item(j, k)->setFont(dialog.selectedFont());
                 }
             }
         }
     }
 }
 
-void TableEditDialog::headerBackgroundColor()
+void TableEditDialog::tableBackgroundColor()
 {
-    QColorDialog dialog(ui->headerTableWidget->currentItem()->background().color(), this);
+    QColorDialog dialog(activeContextTable->currentItem()->background().color(), this);
 
     if (dialog.exec())
     {
         QBrush aNewBrush(dialog.selectedColor());
 
-        QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
+        QList<QTableWidgetSelectionRange> aRanges=activeContextTable->selectedRanges();
 
         for (int i=0; i<aRanges.length(); i++)
         {
@@ -384,20 +386,20 @@ void TableEditDialog::headerBackgroundColor()
             {
                 for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
                 {
-                    ui->headerTableWidget->item(j, k)->setBackground(aNewBrush);
+                    activeContextTable->item(j, k)->setBackground(aNewBrush);
                 }
             }
         }
     }
 }
 
-void TableEditDialog::headerTextColor()
+void TableEditDialog::tableTextColor()
 {
-    QColorDialog dialog(ui->headerTableWidget->currentItem()->textColor(), this);
+    QColorDialog dialog(activeContextTable->currentItem()->textColor(), this);
 
     if (dialog.exec())
     {
-        QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
+        QList<QTableWidgetSelectionRange> aRanges=activeContextTable->selectedRanges();
 
         for (int i=0; i<aRanges.length(); i++)
         {
@@ -405,7 +407,7 @@ void TableEditDialog::headerTextColor()
             {
                 for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
                 {
-                    ui->headerTableWidget->item(j, k)->setTextColor(dialog.selectedColor());
+                    activeContextTable->item(j, k)->setTextColor(dialog.selectedColor());
                 }
             }
         }
@@ -427,19 +429,19 @@ void TableEditDialog::headerLocationRight()
     mTable->mTableAlignment=Qt::AlignRight;
 }
 
-void TableEditDialog::headerAlignmentShow()
+void TableEditDialog::tableAlignmentShow()
 {
     mCellAlignmentWidget->show();
 }
 
-void TableEditDialog::headerAlignmentHide()
+void TableEditDialog::tableAlignmentHide()
 {
     mCellAlignmentWidget->hide();
 }
 
 void TableEditDialog::setItemsAlignment(int aAlignment)
 {
-    QList<QTableWidgetSelectionRange> aRanges=ui->headerTableWidget->selectedRanges();
+    QList<QTableWidgetSelectionRange> aRanges=activeContextTable->selectedRanges();
 
     for (int i=0; i<aRanges.length(); i++)
     {
@@ -447,60 +449,62 @@ void TableEditDialog::setItemsAlignment(int aAlignment)
         {
             for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
             {
-                ui->headerTableWidget->item(j, k)->setTextAlignment(aAlignment);
+                activeContextTable->item(j, k)->setTextAlignment(aAlignment);
             }
         }
     }
 }
 
-void TableEditDialog::headerCellAlignTopLeft()
+void TableEditDialog::tableCellAlignTopLeft()
 {
     setItemsAlignment(Qt::AlignTop | Qt::AlignLeft);
 }
 
-void TableEditDialog::headerCellAlignTop()
+void TableEditDialog::tableCellAlignTop()
 {
     setItemsAlignment(Qt::AlignTop | Qt::AlignHCenter);
 }
 
-void TableEditDialog::headerCellAlignTopRight()
+void TableEditDialog::tableCellAlignTopRight()
 {
     setItemsAlignment(Qt::AlignTop | Qt::AlignRight);
 }
 
-void TableEditDialog::headerCellAlignLeft()
+void TableEditDialog::tableCellAlignLeft()
 {
     setItemsAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 }
 
-void TableEditDialog::headerCellAlignCenter()
+void TableEditDialog::tableCellAlignCenter()
 {
     setItemsAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
 }
 
-void TableEditDialog::headerCellAlignRight()
+void TableEditDialog::tableCellAlignRight()
 {
     setItemsAlignment(Qt::AlignVCenter | Qt::AlignRight);
 }
 
-void TableEditDialog::headerCellAlignBottomLeft()
+void TableEditDialog::tableCellAlignBottomLeft()
 {
     setItemsAlignment(Qt::AlignBottom | Qt::AlignLeft);
 }
 
-void TableEditDialog::headerCellAlignBottom()
+void TableEditDialog::tableCellAlignBottom()
 {
     setItemsAlignment(Qt::AlignBottom | Qt::AlignHCenter);
 }
 
-void TableEditDialog::headerCellAlignBottomRight()
+void TableEditDialog::tableCellAlignBottomRight()
 {
     setItemsAlignment(Qt::AlignBottom | Qt::AlignRight);
 }
 
 void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoint &pos)
 {
-    bool itemSelected=ui->headerTableWidget->selectedItems().length()>0;
+    activeContextTable=ui->headerTableWidget;
+
+    bool itemSelected=activeContextTable->selectedItems().length()>0;
 
     QAction *aAction;
     QMenu *contextMenu=new QMenu;
@@ -516,15 +520,15 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
         contextMenu->addSeparator();
     }
 
-    contextMenu->addAction("Объединить ячейки",          ui->headerTableWidget, SLOT(uniteSelection()))->setEnabled(itemSelected);
-    contextMenu->addAction("Разъеденить ячейки",         ui->headerTableWidget, SLOT(separateSelection()))->setEnabled(itemSelected);
+    contextMenu->addAction("Объединить ячейки",          activeContextTable, SLOT(uniteSelection()))->setEnabled(itemSelected);
+    contextMenu->addAction("Разъеденить ячейки",         activeContextTable, SLOT(separateSelection()))->setEnabled(itemSelected);
     contextMenu->addSeparator();
     contextMenu->addAction("Ширина",                     this, SLOT(headerColumnSize()))->setEnabled(itemSelected);
     contextMenu->addAction("Сдвиг таблицы",              this, SLOT(headerOffset()));
     contextMenu->addSeparator();
-    contextMenu->addAction("Шрифт",                      this, SLOT(headerFont()))->setEnabled(itemSelected);
-    contextMenu->addAction("Цвет ячейки",                this, SLOT(headerBackgroundColor()))->setEnabled(itemSelected);
-    contextMenu->addAction("Цвет текста",                this, SLOT(headerTextColor()))->setEnabled(itemSelected);
+    contextMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
+    contextMenu->addAction("Цвет ячейки",                this, SLOT(tableBackgroundColor()))->setEnabled(itemSelected);
+    contextMenu->addAction("Цвет текста",                this, SLOT(tableTextColor()))->setEnabled(itemSelected);
     contextMenu->addSeparator();
 
     QMenu *tableAlignMenu=contextMenu->addMenu("Положение таблицы в тексте");
@@ -545,7 +549,7 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
 
     if (itemSelected)
     {
-        int aTextAlignment=ui->headerTableWidget->currentItem()->textAlignment();
+        int aTextAlignment=activeContextTable->currentItem()->textAlignment();
 
         mCellAlignmentWidget->ui->topLeftButton    ->setIcon(aTextAlignment==33  ? QIcon(":/images/CellTopLeftSelected.png")     : QIcon(":/images/CellTopLeft.png"));
         mCellAlignmentWidget->ui->topButton        ->setIcon(aTextAlignment==36  ? QIcon(":/images/CellTopSelected.png")         : QIcon(":/images/CellTop.png"));
@@ -579,8 +583,8 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
 
         mCellAlignmentWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
 
-        connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(headerAlignmentShow()));
-        connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(headerAlignmentHide()));
+        connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(tableAlignmentShow()));
+        connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(tableAlignmentHide()));
     }
     else
     {
@@ -701,7 +705,9 @@ void TableEditDialog::on_structureDelColButton_clicked()
 
 void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const QPoint &pos)
 {
-    bool itemSelected=ui->structureTableWidget->selectedItems().length()>0;
+    activeContextTable=ui->structureTableWidget;
+
+    bool itemSelected=activeContextTable->selectedItems().length()>0;
 
     QMenu *contextMenu=new QMenu;
 
@@ -711,6 +717,57 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
         contextMenu->addAction("Вставить столбец после текущего", this, SLOT(structureInsertColAfter()))->setEnabled(itemSelected);
         contextMenu->addAction("Удалить столбец(цы)",             this, SLOT(on_structureDelColButton_clicked()))->setEnabled(itemSelected);
         contextMenu->addSeparator();
+    }
+
+    contextMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
+    contextMenu->addAction("Цвет ячейки",                this, SLOT(tableBackgroundColor()))->setEnabled(itemSelected);
+    contextMenu->addAction("Цвет текста",                this, SLOT(tableTextColor()))->setEnabled(itemSelected);
+    contextMenu->addSeparator();
+
+    QMenu *cellAlignMenu=contextMenu->addMenu("Положение в ячейке");
+
+    if (itemSelected)
+    {
+        int aTextAlignment=activeContextTable->currentItem()->textAlignment();
+
+        mCellAlignmentWidget->ui->topLeftButton    ->setIcon(aTextAlignment==33  ? QIcon(":/images/CellTopLeftSelected.png")     : QIcon(":/images/CellTopLeft.png"));
+        mCellAlignmentWidget->ui->topButton        ->setIcon(aTextAlignment==36  ? QIcon(":/images/CellTopSelected.png")         : QIcon(":/images/CellTop.png"));
+        mCellAlignmentWidget->ui->topRightButton   ->setIcon(aTextAlignment==34  ? QIcon(":/images/CellTopRightSelected.png")    : QIcon(":/images/CellTopRight.png"));
+        mCellAlignmentWidget->ui->leftButton       ->setIcon(aTextAlignment==129 ? QIcon(":/images/CellLeftSelected.png")        : QIcon(":/images/CellLeft.png"));
+        mCellAlignmentWidget->ui->centerButton     ->setIcon(aTextAlignment==132 ? QIcon(":/images/CellCenterSelected.png")      : QIcon(":/images/CellCenter.png"));
+        mCellAlignmentWidget->ui->rightButton      ->setIcon(aTextAlignment==130 ? QIcon(":/images/CellRightSelected.png")       : QIcon(":/images/CellRight.png"));
+        mCellAlignmentWidget->ui->bottomLeftButton ->setIcon(aTextAlignment==65  ? QIcon(":/images/CellBottomLeftSelected.png")  : QIcon(":/images/CellBottomLeft.png"));
+        mCellAlignmentWidget->ui->bottomButton     ->setIcon(aTextAlignment==68  ? QIcon(":/images/CellBottomSelected.png")      : QIcon(":/images/CellBottom.png"));
+        mCellAlignmentWidget->ui->bottomRightButton->setIcon(aTextAlignment==66  ? QIcon(":/images/CellBottomRightSelected.png") : QIcon(":/images/CellBottomRight.png"));
+
+        int aWidthSize=mCellAlignmentWidget->width();
+        int aHeightSize=mCellAlignmentWidget->height();
+
+        int aX=cursor().pos().x()+contextMenu->sizeHint().width()-10;
+        int aY=cursor().pos().y()+contextMenu->sizeHint().height()-15;
+
+        QDesktopWidget *desktop = QApplication::desktop();
+        int aWidth = desktop->width();
+        int aHeight = desktop->height();
+
+        if (aX+aWidthSize>aWidth)
+        {
+            aX=aWidth-aWidthSize;
+        }
+
+        if (aY+aHeightSize>aHeight)
+        {
+            aY=aHeight-aHeightSize;
+        }
+
+        mCellAlignmentWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
+
+        connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(tableAlignmentShow()));
+        connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(tableAlignmentHide()));
+    }
+    else
+    {
+        cellAlignMenu->setEnabled(false);
     }
 
     contextMenu->setGeometry(cursor().pos().x(),cursor().pos().y(),contextMenu->sizeHint().width(),contextMenu->sizeHint().height());

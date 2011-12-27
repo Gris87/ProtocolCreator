@@ -20,6 +20,7 @@ public:
     Ui::TableEditDialog *ui;
     VariableExtendedListFrame *mTable;
     CellAlignmentWidget *mCellAlignmentWidget;
+    UnitedTable *activeContextTable;
 
     explicit TableEditDialog(VariableExtendedListFrame *aTable, QWidget *parent = 0);
     ~TableEditDialog();
@@ -37,23 +38,23 @@ private slots:
     void headerInsertColAfter();
     void headerColumnSize();
     void headerOffset();
-    void headerFont();
-    void headerBackgroundColor();
-    void headerTextColor();
+    void tableFont();
+    void tableBackgroundColor();
+    void tableTextColor();
     void headerLocationLeft();
     void headerLocationCenter();
     void headerLocationRight();
-    void headerAlignmentShow();
-    void headerAlignmentHide();
-    void headerCellAlignTopLeft();
-    void headerCellAlignTop();
-    void headerCellAlignTopRight();
-    void headerCellAlignLeft();
-    void headerCellAlignCenter();
-    void headerCellAlignRight();
-    void headerCellAlignBottomLeft();
-    void headerCellAlignBottom();
-    void headerCellAlignBottomRight();
+    void tableAlignmentShow();
+    void tableAlignmentHide();
+    void tableCellAlignTopLeft();
+    void tableCellAlignTop();
+    void tableCellAlignTopRight();
+    void tableCellAlignLeft();
+    void tableCellAlignCenter();
+    void tableCellAlignRight();
+    void tableCellAlignBottomLeft();
+    void tableCellAlignBottom();
+    void tableCellAlignBottomRight();
 
     void on_headerAddRowButton_clicked();
     void on_headerDelRowButton_clicked();
