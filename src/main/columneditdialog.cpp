@@ -1,6 +1,6 @@
 #include "src/other/global.h"
 
-ColumnEditDialog::ColumnEditDialog(bool aEditMode, QTableWidget *aTableWidget, VariableExtendedListFrame *aTable, int aColumnIndex, QWidget *parent) :
+ColumnEditDialog::ColumnEditDialog(bool aEditMode, UnitedTable *aTableWidget, VariableExtendedListFrame *aTable, int aColumnIndex, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ColumnEditDialog)
 {
@@ -170,6 +170,10 @@ void ColumnEditDialog::applyChanges()
         mTableWidget->insertColumn(mColumnIndex);
         mTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));
         mTableWidget->setItem(0, mColumnIndex, new QTableWidgetItem(aColumn.column->typeDescription()));
+        mTableWidget->setItem(1, mColumnIndex, new QTableWidgetItem("Промежуточная строка"));
+
+        mTableWidget->separate(1, 0);
+        mTableWidget->unite(0, 1, mTableWidget->columnCount()-1, 1);
 
         mTable->ui->dataTableWidget->insertColumn(mColumnIndex);
         mTable->ui->dataTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));

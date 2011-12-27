@@ -62,7 +62,7 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         }
     }
 
-    ui->structureTableWidget->setRowCount(1);
+    ui->structureTableWidget->setRowCount(2);
     ui->structureTableWidget->setColumnCount(mTable->typeColumns.length());
 
     for (int i=0; i<mTable->typeColumns.length(); i++)
@@ -71,6 +71,12 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
 
         ui->structureTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(aColumn->name));
         ui->structureTableWidget->setItem(0, i, new QTableWidgetItem(aColumn->column->typeDescription()));
+        ui->structureTableWidget->setItem(1, i, new QTableWidgetItem("Промежуточная строка"));
+    }
+
+    if (mTable->typeColumns.length()>0)
+    {
+        ui->structureTableWidget->unite(0, 1, ui->structureTableWidget->columnCount()-1, 1);
     }
 
     updateAdmin();
@@ -608,7 +614,80 @@ void TableEditDialog::on_structureChangeColButton_clicked()
 
 void TableEditDialog::on_structureDelColButton_clicked()
 {
+    QList<QTableWidgetSelectionRange> aRanges=ui->structureTableWidget->selectedRanges();
 
+    if (aRanges.length()==0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите столбец");
+        return;
+    }
+
+    QList<int> aColumns;
+
+    for (int i=0; i<aRanges.length(); i++)
+    {
+        for (int j=aRanges.at(i).rightColumn(); j>=aRanges.at(i).leftColumn(); j--)
+        {
+            if (!aColumns.contains(j))
+            {
+                aColumns.append(j);
+            }
+        }
+    }
+
+    for (int e=0; e<aColumns.length()-1; e++)
+    {
+        int max=aColumns.at(e);
+        int maxIndex=e;
+
+        for (int i=e+1; i<aColumns.length(); i++)
+        {
+            if (aColumns.at(i)>max)
+            {
+                max=aColumns.at(i);
+                maxIndex=i;
+            }
+        }
+
+        aColumns.swap(e, maxIndex);
+    }
+
+    if (aColumns.length()==1)
+    {
+        if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить столбец \""+mTable->typeColumns.at(aColumns.at(0)).name+"\"?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::No)
+        {
+            return;
+        }
+    }
+    else
+    if (aColumns.length()<5)
+    {
+        if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить "+QString::number(aColumns.length())+" столбца?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::No)
+        {
+            return;
+        }
+    }
+    else
+    {
+        if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить "+QString::number(aColumns.length())+" столбцов?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::No)
+        {
+            return;
+        }
+    }
+
+    for (int i=0; i<aColumns.length(); i++)
+    {
+        delete mTable->typeColumns.at(aColumns.at(i)).column;
+        mTable->typeColumns.removeAt(aColumns.at(i));
+
+        ui->structureTableWidget->removeColumn(aColumns.at(i));
+        mTable->ui->dataTableWidget->removeColumn(aColumns.at(i));
+    }
+
+    if (ui->structureTableWidget->columnCount()>0 && aColumns.contains(0))
+    {
+        ui->structureTableWidget->item(1,0)->setText("Промежуточная строка");
+    }
 }
 
 void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const QPoint &pos)

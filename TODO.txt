@@ -1,4 +1,4 @@
 Special functions needs to add
-Deleting column types
+Adding rows to data table
 Setting delegates
-Add row for middle row
+Change cell properties

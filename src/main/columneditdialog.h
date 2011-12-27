@@ -5,7 +5,7 @@
 
 #include "ui_columneditdialog.h"
 
-#include <QTableWidget>
+#include "src/widgets/unitedtable.h"
 #include "src/components/variableextendedlistframe.h"
 
 namespace Ui {
@@ -19,11 +19,11 @@ class ColumnEditDialog : public QDialog
 public:
     Ui::ColumnEditDialog *ui;
     VariableExtendedListFrame *mTable;
-    QTableWidget *mTableWidget;
+    UnitedTable *mTableWidget;
     bool mEditMode;
     int mColumnIndex;
 
-    explicit ColumnEditDialog(bool aEditMode, QTableWidget *aTableWidget, VariableExtendedListFrame *aTable, int aColumnIndex, QWidget *parent = 0);
+    explicit ColumnEditDialog(bool aEditMode, UnitedTable *aTableWidget, VariableExtendedListFrame *aTable, int aColumnIndex, QWidget *parent = 0);
     ~ColumnEditDialog();
 
     void startEditing();
