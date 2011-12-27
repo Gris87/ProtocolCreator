@@ -1,2 +1,4 @@
 Special functions needs to add
-Do not forget to throw in case of reading incorrect component
+Deleting column types
+Setting delegates
+Add row for middle row

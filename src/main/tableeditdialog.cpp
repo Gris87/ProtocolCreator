@@ -63,6 +63,15 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
     }
 
     ui->structureTableWidget->setRowCount(1);
+    ui->structureTableWidget->setColumnCount(mTable->typeColumns.length());
+
+    for (int i=0; i<mTable->typeColumns.length(); i++)
+    {
+        STableColumn *aColumn=&mTable->typeColumns[i];
+
+        ui->structureTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(aColumn->name));
+        ui->structureTableWidget->setItem(0, i, new QTableWidgetItem(aColumn->column->typeDescription()));
+    }
 
     updateAdmin();
 }
