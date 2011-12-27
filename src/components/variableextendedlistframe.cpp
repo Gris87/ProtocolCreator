@@ -123,10 +123,20 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
     aStream << QString("ColTypes");
 
-    for (int i=0; i<typeColumns.length(); i++)
-    {
-        aStream << QString("ColType");
+    int typesCount=typeColumns.length();
+    aStream << typesCount;
 
+    aStream << QString("ColumnWidth");
+
+    for (int i=0; i<typesCount; i++)
+    {
+        aStream << typeColumnWidths.at(i);
+    }
+
+    aStream << QString("Types");
+
+    for (int i=0; i<typesCount; i++)
+    {
         aStream << QString("Name");
         aStream << typeColumns.at(i).name;
 
@@ -142,7 +152,7 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
         aStream << QString("TotalOffset");
         aStream << typeColumns.at(i).totalOffset;
 
-        aStream << QString("ColTypeEnd");
+        aStream << QString("TypeEnd");
     }
 
     aStream << QString("ColTypesEnd");
@@ -291,10 +301,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                 else
                                 if (aMagicWord=="CellEnd")
                                 {
-                                    headerCells[i].append(aCell);
                                     break;
                                 }
                             }
+
+                            headerCells[i].append(aCell);
                         }
                     }
                 }
@@ -308,85 +319,103 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
         else
         if (aMagicWord=="ColTypes")
         {
+            int aColumnCount;
+            aStream >> aColumnCount;
+
             while (!aStream.atEnd())
             {
                 aStream >> aMagicWord;
 
-                if (aMagicWord=="ColType")
+                if (aMagicWord=="ColumnWidth")
                 {
-                    STableColumn aColumn;
+                    int aColumnWidth;
 
-                    while (!aStream.atEnd())
+                    for (int i=0; i<aColumnCount; i++)
                     {
-                        aStream >> aMagicWord;
+                        aStream >> aColumnWidth;
 
-                        if (aMagicWord=="Name")
-                        {
-                            aStream >> aColumn.name;
-                        }
-                        else
-                        if (aMagicWord=="Column")
+                        typeColumnWidths.append(aColumnWidth);
+                    }
+                }
+                else
+                if (aMagicWord=="Types")
+                {
+                    for (int i=0; i<aColumnCount; i++)
+                    {
+                        STableColumn aColumn;
+
+                        while (!aStream.atEnd())
                         {
                             aStream >> aMagicWord;
 
-                            ColumnType *aTypeColumn=0;
+                            if (aMagicWord=="Name")
+                            {
+                                aStream >> aColumn.name;
+                            }
+                            else
+                            if (aMagicWord=="Column")
+                            {
+                                aStream >> aMagicWord;
 
-                            if (aMagicWord=="ColInteger")
-                            {
-                                aTypeColumn=new IntegerColumn();
-                            }
-                            else
-                            if (aMagicWord=="ColString")
-                            {
-                                aTypeColumn=new StringColumn();
-                            }
-                            else
-                            if (aMagicWord=="ColBool")
-                            {
-                                aTypeColumn=new BoolColumn();
-                            }
-                            else
-                            if (aMagicWord=="ColDate")
-                            {
-                                aTypeColumn=new DateColumn();
-                            }
-                            else
-                            if (aMagicWord=="ColTime")
-                            {
-                                aTypeColumn=new TimeColumn();
-                            }
-                            else
-                            {
-                                throw "Unknown type column";
-                            }
+                                ColumnType *aTypeColumn=0;
 
-                            aTypeColumn->loadFromStream(aStream);
+                                if (aMagicWord=="ColInteger")
+                                {
+                                    aTypeColumn=new IntegerColumn();
+                                }
+                                else
+                                if (aMagicWord=="ColString")
+                                {
+                                    aTypeColumn=new StringColumn();
+                                }
+                                else
+                                if (aMagicWord=="ColBool")
+                                {
+                                    aTypeColumn=new BoolColumn();
+                                }
+                                else
+                                if (aMagicWord=="ColDate")
+                                {
+                                    aTypeColumn=new DateColumn();
+                                }
+                                else
+                                if (aMagicWord=="ColTime")
+                                {
+                                    aTypeColumn=new TimeColumn();
+                                }
+                                else
+                                {
+                                    throw "Unknown type column";
+                                }
 
-                            aColumn.column=aTypeColumn;
+                                aTypeColumn->loadFromStream(aStream);
+
+                                aColumn.column=aTypeColumn;
+                            }
+                            else
+                            if (aMagicWord=="LeftOffset")
+                            {
+                                aStream >> aColumn.leftOffset;
+                            }
+                            else
+                            if (aMagicWord=="RightOffset")
+                            {
+                                aStream >> aColumn.rightOffset;
+                            }
+                            else
+                            if (aMagicWord=="TotalOffset")
+                            {
+                                aStream >> aColumn.totalOffset;
+                            }
+                            else
+                            if (aMagicWord=="TypeEnd")
+                            {
+                                break;
+                            }
                         }
-                        else
-                        if (aMagicWord=="LeftOffset")
-                        {
-                            aStream >> aColumn.leftOffset;
-                        }
-                        else
-                        if (aMagicWord=="RightOffset")
-                        {
-                            aStream >> aColumn.rightOffset;
-                        }
-                        else
-                        if (aMagicWord=="TotalOffset")
-                        {
-                            aStream >> aColumn.totalOffset;
-                        }
-                        else
-                        if (aMagicWord=="ColTypeEnd")
-                        {
-                            break;
-                        }
+
+                        typeColumns.append(aColumn);
                     }
-
-                    typeColumns.append(aColumn);
                 }
                 else
                 if (aMagicWord=="ColTypesEnd")

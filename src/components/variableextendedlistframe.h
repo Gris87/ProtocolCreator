@@ -22,6 +22,7 @@ public:
     QList<QList<STableCell> > headerCells;
     QList<int> headerColumnWidths;
     QList<STableColumn> typeColumns;
+    QList<int> typeColumnWidths;
 
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();

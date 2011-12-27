@@ -72,6 +72,8 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         ui->structureTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(aColumn->name));
         ui->structureTableWidget->setItem(0, i, new QTableWidgetItem(aColumn->column->typeDescription()));
         ui->structureTableWidget->setItem(1, i, new QTableWidgetItem("Промежуточная строка"));
+
+        ui->structureTableWidget->setColumnWidth(i, mTable->typeColumnWidths.at(i));
     }
 
     if (mTable->typeColumns.length()>0)
@@ -129,6 +131,13 @@ TableEditDialog::~TableEditDialog()
                 mTable->headerCells[i].append(aNewCell);
             }
         }
+    }
+
+    mTable->typeColumnWidths.clear();
+
+    for (int i=0; i<ui->structureTableWidget->columnCount(); i++)
+    {
+        mTable->typeColumnWidths.append(ui->structureTableWidget->columnWidth(i));
     }
 
     delete ui;
