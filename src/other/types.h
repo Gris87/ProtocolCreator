@@ -28,6 +28,14 @@ struct STableColumn
     double leftOffset;
     double rightOffset;
     double totalOffset;
+    QString fontString;
+    quint8 alignment;
+    quint8 backgroundColorR;
+    quint8 backgroundColorG;
+    quint8 backgroundColorB;
+    quint8 textColorR;
+    quint8 textColorG;
+    quint8 textColorB;
 };
 
 #endif // TYPES_H

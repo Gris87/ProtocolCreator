@@ -76,7 +76,14 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         QTableWidgetItem *aItem;
 
         aItem=new QTableWidgetItem(aColumn->column->typeDescription());
-        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        QFont aFont;
+        aFont.fromString(aColumn->fontString);
+        aItem->setFont(aFont);
+
+        aItem->setTextAlignment(aColumn->alignment);
+        aItem->setBackground(QBrush(QColor(aColumn->backgroundColorR, aColumn->backgroundColorG, aColumn->backgroundColorB)));
+        aItem->setTextColor(QColor(aColumn->textColorR, aColumn->textColorG, aColumn->textColorB));
 
         ui->structureTableWidget->setItem(0, i, aItem);
 
@@ -150,6 +157,26 @@ TableEditDialog::~TableEditDialog()
     for (int i=0; i<ui->structureTableWidget->columnCount(); i++)
     {
         mTable->typeColumnWidths.append(ui->structureTableWidget->columnWidth(i));
+
+        STableColumn *aColumn=&mTable->typeColumns[i];
+        QTableWidgetItem *aItem=ui->structureTableWidget->item(0, i);
+
+        aColumn->fontString=aItem->font().toString();
+        aColumn->alignment=aItem->textAlignment();
+
+        QColor aColor;
+
+        aColor=aItem->background().color();
+
+        aColumn->backgroundColorR=aColor.red();
+        aColumn->backgroundColorG=aColor.green();
+        aColumn->backgroundColorB=aColor.blue();
+
+        aColor=aItem->textColor();
+
+        aColumn->textColorR=aColor.red();
+        aColumn->textColorG=aColor.green();
+        aColumn->textColorB=aColor.blue();
     }
 
     delete ui;

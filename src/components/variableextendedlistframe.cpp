@@ -137,20 +137,38 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
     for (int i=0; i<typesCount; i++)
     {
+        STableColumn *aColumn=&typeColumns[i];
+
         aStream << QString("Name");
-        aStream << typeColumns.at(i).name;
+        aStream << aColumn->name;
 
         aStream << QString("Column");
-        typeColumns.at(i).column->saveToStream(aStream);
+        aColumn->column->saveToStream(aStream);
 
         aStream << QString("LeftOffset");
-        aStream << typeColumns.at(i).leftOffset;
+        aStream << aColumn->leftOffset;
 
         aStream << QString("RightOffset");
-        aStream << typeColumns.at(i).rightOffset;
+        aStream << aColumn->rightOffset;
 
         aStream << QString("TotalOffset");
-        aStream << typeColumns.at(i).totalOffset;
+        aStream << aColumn->totalOffset;
+
+        aStream << QString("Font");
+        aStream << aColumn->fontString;
+
+        aStream << QString("Alignment");
+        aStream << aColumn->alignment;
+
+        aStream << QString("Background");
+        aStream << aColumn->backgroundColorR;
+        aStream << aColumn->backgroundColorG;
+        aStream << aColumn->backgroundColorB;
+
+        aStream << QString("TextColor");
+        aStream << aColumn->textColorR;
+        aStream << aColumn->textColorG;
+        aStream << aColumn->textColorB;
 
         aStream << QString("TypeEnd");
     }
@@ -406,6 +424,27 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                             if (aMagicWord=="TotalOffset")
                             {
                                 aStream >> aColumn.totalOffset;
+                            }
+                            else
+                            if (aMagicWord=="Font")
+                            {
+                                aStream >> aColumn.fontString;
+                            }
+                            if (aMagicWord=="Alignment")
+                            {
+                                aStream >> aColumn.alignment;
+                            }
+                            if (aMagicWord=="Background")
+                            {
+                                aStream >> aColumn.backgroundColorR;
+                                aStream >> aColumn.backgroundColorG;
+                                aStream >> aColumn.backgroundColorB;
+                            }
+                            if (aMagicWord=="TextColor")
+                            {
+                                aStream >> aColumn.textColorR;
+                                aStream >> aColumn.textColorG;
+                                aStream >> aColumn.textColorB;
                             }
                             else
                             if (aMagicWord=="TypeEnd")

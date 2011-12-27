@@ -164,6 +164,14 @@ void ColumnEditDialog::applyChanges()
         aColumn.leftOffset=ui->leftOffsetSpinBox->value();
         aColumn.rightOffset=ui->rightOffsetSpinBox->value();
         aColumn.totalOffset=ui->totalOffsetSpinBox->value();
+        aColumn.fontString="";
+        aColumn.alignment=Qt::AlignTop | Qt::AlignLeft;
+        aColumn.backgroundColorR=255;
+        aColumn.backgroundColorG=255;
+        aColumn.backgroundColorB=255;
+        aColumn.textColorR=0;
+        aColumn.textColorG=0;
+        aColumn.textColorB=0;
 
         mTable->typeColumns.insert(mColumnIndex, aColumn);
 
@@ -171,14 +179,17 @@ void ColumnEditDialog::applyChanges()
         mTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));
 
         QTableWidgetItem *aItem;
+        QBrush aBrush(QColor(255, 255, 255));
 
         aItem=new QTableWidgetItem(aColumn.column->typeDescription());
         aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setBackground(aBrush);
 
         mTableWidget->setItem(0, mColumnIndex, aItem);
 
         aItem=new QTableWidgetItem("Промежуточная строка");
         aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setBackground(aBrush);
 
         mTableWidget->setItem(1, mColumnIndex, aItem);
 
