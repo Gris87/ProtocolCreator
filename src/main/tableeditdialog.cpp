@@ -72,8 +72,18 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         STableColumn *aColumn=&mTable->typeColumns[i];
 
         ui->structureTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(aColumn->name));
-        ui->structureTableWidget->setItem(0, i, new QTableWidgetItem(aColumn->column->typeDescription()));
-        ui->structureTableWidget->setItem(1, i, new QTableWidgetItem("Промежуточная строка"));
+
+        QTableWidgetItem *aItem;
+
+        aItem=new QTableWidgetItem(aColumn->column->typeDescription());
+        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        ui->structureTableWidget->setItem(0, i, aItem);
+
+        aItem=new QTableWidgetItem("Промежуточная строка");
+        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        ui->structureTableWidget->setItem(1, i, aItem);
 
         ui->structureTableWidget->setColumnWidth(i, mTable->typeColumnWidths.at(i));
     }

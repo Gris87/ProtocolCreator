@@ -169,10 +169,36 @@ void ColumnEditDialog::applyChanges()
 
         mTableWidget->insertColumn(mColumnIndex);
         mTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));
-        mTableWidget->setItem(0, mColumnIndex, new QTableWidgetItem(aColumn.column->typeDescription()));
-        mTableWidget->setItem(1, mColumnIndex, new QTableWidgetItem("Промежуточная строка"));
 
-        mTableWidget->separate(1, 0);
+        QTableWidgetItem *aItem;
+
+        aItem=new QTableWidgetItem(aColumn.column->typeDescription());
+        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        mTableWidget->setItem(0, mColumnIndex, aItem);
+
+        aItem=new QTableWidgetItem("Промежуточная строка");
+        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        mTableWidget->setItem(1, mColumnIndex, aItem);
+
+        if (mTableWidget->columnCount()>1)
+        {
+            int firstCell=0;
+
+            if (mColumnIndex==0)
+            {
+                firstCell++;
+            }
+
+            mTableWidget->item(1, mColumnIndex)->setFont(mTableWidget->item(1, firstCell)->font());
+            mTableWidget->item(1, mColumnIndex)->setBackground(mTableWidget->item(1, firstCell)->background());
+            mTableWidget->item(1, mColumnIndex)->setTextColor(mTableWidget->item(1, firstCell)->textColor());
+            mTableWidget->item(1, mColumnIndex)->setTextAlignment(mTableWidget->item(1, firstCell)->textAlignment());
+
+            mTableWidget->separate(1, firstCell);
+        }
+
         mTableWidget->unite(0, 1, mTableWidget->columnCount()-1, 1);
 
         mTable->ui->dataTableWidget->insertColumn(mColumnIndex);

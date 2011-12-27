@@ -1,4 +1,4 @@
 Special functions needs to add
 Adding rows to data table
 Setting delegates
-Change cell properties
+Save cell properties
