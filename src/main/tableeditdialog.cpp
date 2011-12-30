@@ -88,7 +88,13 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         ui->structureTableWidget->setItem(0, i, aItem);
 
         aItem=new QTableWidgetItem("Промежуточная строка");
-        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        aFont.fromString(mTable->middleRowFontString);
+        aItem->setFont(aFont);
+
+        aItem->setTextAlignment(mTable->middleRowAlignment);
+        aItem->setBackground(QBrush(mTable->middleRowBackgroundColor));
+        aItem->setTextColor(mTable->middleRowTextColor);
 
         ui->structureTableWidget->setItem(1, i, aItem);
 
@@ -177,6 +183,16 @@ TableEditDialog::~TableEditDialog()
         aColumn->textColorR=aColor.red();
         aColumn->textColorG=aColor.green();
         aColumn->textColorB=aColor.blue();
+    }
+
+    if (ui->structureTableWidget->columnCount()>0)
+    {
+        QTableWidgetItem *aItem=ui->structureTableWidget->item(1, 0);
+
+        mTable->middleRowFontString=aItem->font().toString();
+        mTable->middleRowAlignment=aItem->textAlignment();
+        mTable->middleRowBackgroundColor=aItem->background().color();
+        mTable->middleRowTextColor=aItem->textColor();
     }
 
     delete ui;

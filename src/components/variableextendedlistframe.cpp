@@ -11,6 +11,10 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
 
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
+    middleRowFontString="";
+    middleRowAlignment=Qt::AlignTop | Qt::AlignLeft;
+    middleRowBackgroundColor=QColor(255, 255, 255);
+    middleRowTextColor=QColor(0, 0, 0);
 
     ui->dataTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
 }
@@ -174,6 +178,22 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
     }
 
     aStream << QString("ColTypesEnd");
+
+    aStream << QString("MiddleFont");
+    aStream << middleRowFontString;
+
+    aStream << QString("MiddleAlignment");
+    aStream << middleRowAlignment;
+
+    aStream << QString("MiddleBackground");
+    aStream << (quint8)middleRowBackgroundColor.red();
+    aStream << (quint8)middleRowBackgroundColor.green();
+    aStream << (quint8)middleRowBackgroundColor.blue();
+
+    aStream << QString("MiddleTextColor");
+    aStream << (quint8)middleRowTextColor.red();
+    aStream << (quint8)middleRowTextColor.green();
+    aStream << (quint8)middleRowTextColor.blue();
 
     aStream << QString("VarEnd");
 }
@@ -462,6 +482,38 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                     break;
                 }
             }
+        }
+        else
+        if (aMagicWord=="MiddleFont")
+        {
+            aStream >> middleRowFontString;
+        }
+        else
+        if (aMagicWord=="MiddleAlignment")
+        {
+            aStream >> middleRowAlignment;
+        }
+        else
+        if (aMagicWord=="MiddleBackground")
+        {
+            quint8 r,g,b;
+
+            aStream >> r;
+            aStream >> g;
+            aStream >> b;
+
+            middleRowBackgroundColor=QColor(r, g, b);
+        }
+        else
+        if (aMagicWord=="MiddleTextColor")
+        {
+            quint8 r,g,b;
+
+            aStream >> r;
+            aStream >> g;
+            aStream >> b;
+
+            middleRowTextColor=QColor(r, g, b);
         }
         else
         if (aMagicWord=="VarEnd")

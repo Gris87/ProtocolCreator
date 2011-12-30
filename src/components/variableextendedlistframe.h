@@ -23,6 +23,10 @@ public:
     QList<int> headerColumnWidths;
     QList<STableColumn> typeColumns;
     QList<int> typeColumnWidths;
+    QString middleRowFontString;
+    quint8 middleRowAlignment;
+    QColor middleRowBackgroundColor;
+    QColor middleRowTextColor;
 
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();
