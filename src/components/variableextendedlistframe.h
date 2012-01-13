@@ -48,6 +48,9 @@ public:
     void checkForErrors(QStringList &aErrorList);
     QVariant calculate();
 
+    void setItemsForRow(int row);
+    void setItemsForMiddleRow(int row);
+
 private slots:
     void on_switchButton_clicked();
     void on_upButton_clicked();
@@ -59,6 +62,9 @@ private slots:
     void on_lockButton_clicked();
     void on_editButton_clicked();
     void on_configButton_clicked();
+    void on_addRowButton_clicked();
+    void on_addMiddleRowButton_clicked();
+    void on_deleteRowButton_clicked();
 
 signals:
     void switchPressed(VariableExtendedListFrame*  aComponent);

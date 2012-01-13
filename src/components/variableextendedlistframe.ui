@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>190</height>
+    <height>233</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -445,6 +445,40 @@
       </property>
       <item>
        <widget class="QTableWidget" name="dataTableWidget"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="addRowButton">
+          <property name="text">
+           <string>Добавить строку</string>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="addMiddleRowButton">
+          <property name="text">
+           <string>Добавить промежуточную строку</string>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="deleteRowButton">
+          <property name="text">
+           <string>Удалить строку</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

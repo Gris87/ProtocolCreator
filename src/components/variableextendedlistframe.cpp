@@ -625,3 +625,166 @@ void VariableExtendedListFrame::on_configButton_clicked()
     TableEditDialog dialog(this, this);
     dialog.exec();
 }
+
+void VariableExtendedListFrame::setItemsForRow(int row)
+{
+    for (int i=0; i<ui->dataTableWidget->columnCount(); i++)
+    {
+        QTableWidgetItem *aItem=new QTableWidgetItem();
+
+        QFont aFont;
+        aFont.fromString(typeColumns.at(i).fontString);
+        aItem->setFont(aFont);
+
+        aItem->setTextAlignment(typeColumns.at(i).alignment);
+        aItem->setBackground(QBrush(QColor(typeColumns.at(i).backgroundColorR, typeColumns.at(i).backgroundColorG, typeColumns.at(i).backgroundColorB)));
+        aItem->setTextColor(QColor(typeColumns.at(i).textColorR, typeColumns.at(i).textColorG, typeColumns.at(i).textColorB));
+
+        switch (typeColumns.at(i).column->type())
+        {
+            case ctInteger:
+                if (((IntegerColumn*)typeColumns.at(i).column)->mIsAutoInc)
+                {
+                    int id=1;
+
+                    for (int j=0; j<row; j++)
+                    {
+                        if (ui->dataTableWidget->columnSpan(j, 0)<=1)
+                        {
+                            id++;
+                        }
+                    }
+
+                    aItem->setText(QString::number(id));
+
+                    for (int j=row+1; j<ui->dataTableWidget->rowCount(); j++)
+                    {
+                        if (ui->dataTableWidget->columnSpan(j, 0)<=1)
+                        {
+                            id++;
+                            ui->dataTableWidget->item(j, 0)->setText(QString::number(id));
+                        }
+                    }
+                }
+                else
+                {
+                    aItem->setText(QString::number((((IntegerColumn*)typeColumns.at(i).column)->mDefaultValue)));
+                }
+            break;
+            case ctString:
+                aItem->setText((((StringColumn*)typeColumns.at(i).column)->mDefaultValue));
+            break;
+            case ctBool:
+                if (((BoolColumn*)typeColumns.at(i).column)->mDefaultValue)
+                {
+                    aItem->setCheckState(Qt::Checked);
+                }
+                else
+                {
+                    aItem->setCheckState(Qt::Unchecked);
+                }
+            break;
+            case ctDate:
+                aItem->setText(((DateColumn*)typeColumns.at(i).column)->mDefaultValue.toString("dd.MM.yyyy"));
+            break;
+            case ctTime:
+                aItem->setText(((TimeColumn*)typeColumns.at(i).column)->mDefaultValue.toString("hh:mm:ss"));
+            break;
+            case ctList:
+                aItem->setText("");
+            break;
+            case ctExtendedList:
+                aItem->setText("");
+            break;
+            case ctExpression:
+                aItem->setText("");
+            break;
+            default:
+            break;
+        }
+
+        ui->dataTableWidget->setItem(row, i, aItem);
+    }
+}
+
+void VariableExtendedListFrame::setItemsForMiddleRow(int row)
+{
+    ui->dataTableWidget->setRowCount(row+1);
+
+    for (int i=0; i<ui->dataTableWidget->columnCount(); i++)
+    {
+        QTableWidgetItem *aItem=new QTableWidgetItem();
+
+        QFont aFont;
+        aFont.fromString(middleRowFontString);
+        aItem->setFont(aFont);
+
+        aItem->setTextAlignment(middleRowAlignment);
+        aItem->setBackground(QBrush(middleRowBackgroundColor));
+        aItem->setTextColor(middleRowTextColor);
+
+        ui->dataTableWidget->setItem(row, i, aItem);
+    }
+
+    ui->dataTableWidget->setSpan(row, 0, 1, ui->dataTableWidget->columnCount());
+}
+
+void VariableExtendedListFrame::on_addRowButton_clicked()
+{
+    ui->dataTableWidget->setRowCount(ui->dataTableWidget->rowCount()+1);
+
+    setItemsForRow(ui->dataTableWidget->rowCount()-1);
+}
+
+void VariableExtendedListFrame::on_addMiddleRowButton_clicked()
+{
+    ui->dataTableWidget->setRowCount(ui->dataTableWidget->rowCount()+1);
+
+    setItemsForMiddleRow(ui->dataTableWidget->rowCount()-1);
+}
+
+void VariableExtendedListFrame::on_deleteRowButton_clicked()
+{
+    QList<QTableWidgetSelectionRange> aRanges=ui->dataTableWidget->selectedRanges();
+
+    if (aRanges.length()==0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите строку");
+        return;
+    }
+
+    QList<int> aRows;
+
+    for (int i=0; i<aRanges.length(); i++)
+    {
+        for (int j=aRanges.at(i).bottomRow(); j>=aRanges.at(i).topRow(); j--)
+        {
+            if (!aRows.contains(j))
+            {
+                aRows.append(j);
+            }
+        }
+    }
+
+    for (int e=0; e<aRows.length()-1; e++)
+    {
+        int max=aRows.at(e);
+        int maxIndex=e;
+
+        for (int i=e+1; i<aRows.length(); i++)
+        {
+            if (aRows.at(i)>max)
+            {
+                max=aRows.at(i);
+                maxIndex=i;
+            }
+        }
+
+        aRows.swap(e, maxIndex);
+    }
+
+    for (int i=0; i<aRows.length(); i++)
+    {
+        ui->dataTableWidget->removeRow(aRows.at(i));
+    }
+}
