@@ -66,7 +66,8 @@ SOURCES += src/main.cpp\
     src/column_types/stringcolumn.cpp \
     src/column_types/boolcolumn.cpp \
     src/column_types/datecolumn.cpp \
-    src/column_types/timecolumn.cpp
+    src/column_types/timecolumn.cpp \
+    src/widgets/datatable.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -120,7 +121,8 @@ HEADERS  += src/main/mainwindow.h \
     src/column_types/stringcolumn.h \
     src/column_types/boolcolumn.h \
     src/column_types/datecolumn.h \
-    src/column_types/timecolumn.h
+    src/column_types/timecolumn.h \
+    src/widgets/datatable.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

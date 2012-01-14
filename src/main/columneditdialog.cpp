@@ -214,6 +214,30 @@ void ColumnEditDialog::applyChanges()
 
         mTable->ui->dataTableWidget->insertColumn(mColumnIndex);
         mTable->ui->dataTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));
+
+        switch (ui->typeComboBox->currentIndex())
+        {
+            case 0:
+            {
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new DoubleDelegate(mTable));
+            }
+            break;
+            case 3:
+            {
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new DateDelegate(mTable));
+            }
+            break;
+            case 4:
+            {
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new TimeDelegate(mTable));
+            }
+            break;
+            case 5:
+            {
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new ListDelegate(mTable));
+            }
+            break;
+        }
     }
 }
 

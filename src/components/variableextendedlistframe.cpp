@@ -17,6 +17,7 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     middleRowTextColor=QColor(0, 0, 0);
 
     ui->dataTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
+    ui->dataTableWidget->mTable=this;
 }
 
 VariableExtendedListFrame::~VariableExtendedListFrame()
@@ -643,6 +644,7 @@ void VariableExtendedListFrame::setItemsForRow(int row)
         switch (typeColumns.at(i).column->type())
         {
             case ctInteger:
+            {
                 if (((IntegerColumn*)typeColumns.at(i).column)->mIsAutoInc)
                 {
                     int id=1;
@@ -670,11 +672,15 @@ void VariableExtendedListFrame::setItemsForRow(int row)
                 {
                     aItem->setText(QString::number((((IntegerColumn*)typeColumns.at(i).column)->mDefaultValue)));
                 }
+            }
             break;
             case ctString:
+            {
                 aItem->setText((((StringColumn*)typeColumns.at(i).column)->mDefaultValue));
+            }
             break;
             case ctBool:
+            {
                 if (((BoolColumn*)typeColumns.at(i).column)->mDefaultValue)
                 {
                     aItem->setCheckState(Qt::Checked);
@@ -683,21 +689,32 @@ void VariableExtendedListFrame::setItemsForRow(int row)
                 {
                     aItem->setCheckState(Qt::Unchecked);
                 }
+            }
             break;
             case ctDate:
+            {
                 aItem->setText(((DateColumn*)typeColumns.at(i).column)->mDefaultValue.toString("dd.MM.yyyy"));
+            }
             break;
             case ctTime:
+            {
                 aItem->setText(((TimeColumn*)typeColumns.at(i).column)->mDefaultValue.toString("hh:mm:ss"));
+            }
             break;
             case ctList:
+            {
                 aItem->setText("");
+            }
             break;
             case ctExtendedList:
+            {
                 aItem->setText("");
+            }
             break;
             case ctExpression:
+            {
                 aItem->setText("");
+            }
             break;
             default:
             break;

@@ -42,6 +42,7 @@
 #include "src/other/utils.h"
 
 #include "src/widgets/colorarea.h"
+#include "src/widgets/datatable.h"
 #include "src/widgets/knowncheckbox.h"
 #include "src/widgets/movabletabwidget.h"
 #include "src/widgets/pageframe.h"
