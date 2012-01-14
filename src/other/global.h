@@ -25,10 +25,12 @@
 #include "src/delegates/datedelegate.h"
 #include "src/delegates/doubledelegate.h"
 #include "src/delegates/listdelegate.h"
+#include "src/delegates/stringdelegate.h"
 #include "src/delegates/timedelegate.h"
 
 #include "src/main/columneditdialog.h"
 #include "src/main/columnsizedialog.h"
+#include "src/main/fulldialog.h"
 #include "src/main/functiondialog.h"
 #include "src/main/globaldialog.h"
 #include "src/main/mainwindow.h"

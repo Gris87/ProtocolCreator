@@ -621,6 +621,26 @@ QVariant VariableExtendedListFrame::calculate()
     return calculationResult;
 }
 
+void VariableExtendedListFrame::on_expandButton_clicked()
+{
+    FullDialog dialog(this);
+
+    ui->mainVerticalLayout->removeWidget(ui->expandedWidget);
+    ui->expandButton->setVisible(false);
+
+    ui->expandedWidget->setParent(&dialog);
+    ui->expandedWidget->show();
+    dialog.ui->verticalLayout->addWidget(ui->expandedWidget);
+
+    dialog.exec();
+
+    ui->expandButton->setVisible(true);
+
+    ui->expandedWidget->setParent(this);
+    ui->expandedWidget->show();
+    ui->mainVerticalLayout->addWidget(ui->expandedWidget);
+}
+
 void VariableExtendedListFrame::on_configButton_clicked()
 {
     TableEditDialog dialog(this, this);
@@ -744,6 +764,7 @@ void VariableExtendedListFrame::setItemsForMiddleRow(int row)
     }
 
     ui->dataTableWidget->setSpan(row, 0, 1, ui->dataTableWidget->columnCount());
+    ui->dataTableWidget->setItemDelegateForRow(row, new StringDelegate(this));
 }
 
 void VariableExtendedListFrame::on_addRowButton_clicked()
@@ -751,6 +772,8 @@ void VariableExtendedListFrame::on_addRowButton_clicked()
     ui->dataTableWidget->setRowCount(ui->dataTableWidget->rowCount()+1);
 
     setItemsForRow(ui->dataTableWidget->rowCount()-1);
+
+    ui->dataTableWidget->scrollToBottom();
 }
 
 void VariableExtendedListFrame::on_addMiddleRowButton_clicked()
@@ -758,6 +781,8 @@ void VariableExtendedListFrame::on_addMiddleRowButton_clicked()
     ui->dataTableWidget->setRowCount(ui->dataTableWidget->rowCount()+1);
 
     setItemsForMiddleRow(ui->dataTableWidget->rowCount()-1);
+
+    ui->dataTableWidget->scrollToBottom();
 }
 
 void VariableExtendedListFrame::on_deleteRowButton_clicked()

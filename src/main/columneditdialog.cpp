@@ -215,6 +215,11 @@ void ColumnEditDialog::applyChanges()
         mTable->ui->dataTableWidget->insertColumn(mColumnIndex);
         mTable->ui->dataTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));
 
+        for (int i=mTable->ui->dataTableWidget->columnCount()-1; i>mColumnIndex; i--)
+        {
+            mTable->ui->dataTableWidget->setItemDelegateForColumn(i, mTable->ui->dataTableWidget->itemDelegateForColumn(i-1));
+        }
+
         switch (ui->typeComboBox->currentIndex())
         {
             case 0:
@@ -235,6 +240,11 @@ void ColumnEditDialog::applyChanges()
             case 5:
             {
                 mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new ListDelegate(mTable));
+            }
+            break;
+            default:
+            {
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new StringDelegate(mTable));
             }
             break;
         }

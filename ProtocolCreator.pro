@@ -67,7 +67,9 @@ SOURCES += src/main.cpp\
     src/column_types/boolcolumn.cpp \
     src/column_types/datecolumn.cpp \
     src/column_types/timecolumn.cpp \
-    src/widgets/datatable.cpp
+    src/widgets/datatable.cpp \
+    src/delegates/stringdelegate.cpp \
+    src/main/fulldialog.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -122,7 +124,9 @@ HEADERS  += src/main/mainwindow.h \
     src/column_types/boolcolumn.h \
     src/column_types/datecolumn.h \
     src/column_types/timecolumn.h \
-    src/widgets/datatable.h
+    src/widgets/datatable.h \
+    src/delegates/stringdelegate.h \
+    src/main/fulldialog.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -144,7 +148,8 @@ FORMS    += src/main/mainwindow.ui \
     src/main/tableeditdialog.ui \
     src/widgets/cellalignmentwidget.ui \
     src/main/columnsizedialog.ui \
-    src/main/columneditdialog.ui
+    src/main/columneditdialog.ui \
+    src/main/fulldialog.ui
 
 OTHER_FILES += \
     TODO.txt

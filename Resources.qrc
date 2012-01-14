@@ -48,5 +48,6 @@
         <file>images/CellTopRightSelected.png</file>
         <file>images/LeftArrow.png</file>
         <file>images/RightArrow.png</file>
+        <file>images/Full.png</file>
     </qresource>
 </RCC>
