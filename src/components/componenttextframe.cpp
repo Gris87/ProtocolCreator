@@ -165,6 +165,38 @@ void ComponentTextFrame::on_useCheckBox_toggled(bool checked)
     ui->userWidget->setVisible(checked && (isAdmin || isEditable()));
 }
 
+void ComponentTextFrame::on_expandButton_clicked()
+{
+    FullDialog dialog(this);
+    dialog.setWindowTitle(ui->nameEdit->text());
+
+    //------------------------------------------
+
+    ui->mainVerticalLayout->removeWidget(ui->expandedWidget);
+
+    ui->expandButton->setVisible(false);
+    bool wasVisible=ui->useCheckBox->isChecked();
+    ui->useCheckBox->setChecked(true);
+    ui->useCheckBox->setVisible(false);
+
+    ui->expandedWidget->setParent(&dialog);
+    ui->expandedWidget->show();
+    dialog.ui->verticalLayout->addWidget(ui->expandedWidget);
+
+    dialog.exec();
+
+    //------------------------------------------
+
+    ui->expandButton->setVisible(true);
+
+    ui->useCheckBox->setChecked(wasVisible);
+    ui->useCheckBox->setVisible(true);
+
+    ui->expandedWidget->setParent(this);
+    ui->expandedWidget->show();
+    ui->mainVerticalLayout->addWidget(ui->expandedWidget);
+}
+
 void ComponentTextFrame::on_lockButton_clicked()
 {
     ui->userWidget->setEnabled(!ui->userWidget->isEnabled());

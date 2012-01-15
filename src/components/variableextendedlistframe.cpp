@@ -624,9 +624,18 @@ QVariant VariableExtendedListFrame::calculate()
 void VariableExtendedListFrame::on_expandButton_clicked()
 {
     FullDialog dialog(this);
+    dialog.setWindowTitle(ui->nameEdit->text());
+
+    //------------------------------------------
 
     ui->mainVerticalLayout->removeWidget(ui->expandedWidget);
+
     ui->expandButton->setVisible(false);
+    bool wasTable=ui->useCheckBox->isVisible();
+    bool wasVisible=ui->useCheckBox->isChecked();
+    ui->useCheckBox->setChecked(true);
+    ui->useCheckBox->setVisible(false);
+    ui->titleLabel->setVisible(false);
 
     ui->expandedWidget->setParent(&dialog);
     ui->expandedWidget->show();
@@ -634,7 +643,13 @@ void VariableExtendedListFrame::on_expandButton_clicked()
 
     dialog.exec();
 
+    //------------------------------------------
+
     ui->expandButton->setVisible(true);
+
+    ui->useCheckBox->setChecked(wasVisible);
+    ui->useCheckBox->setVisible(wasTable);
+    ui->titleLabel->setVisible(!wasTable);
 
     ui->expandedWidget->setParent(this);
     ui->expandedWidget->show();
