@@ -248,6 +248,89 @@ void ColumnEditDialog::applyChanges()
             }
             break;
         }
+
+        for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+        {
+            QTableWidgetItem *aItem=new QTableWidgetItem();
+
+            aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+            aItem->setBackground(QBrush(QColor(255, 255, 255)));
+
+            if (mTable->ui->dataTableWidget->columnSpan(i, 0)<=1)
+            {
+                switch (aColumn.column->type())
+                {
+                    case ctInteger:
+                    {
+                        if (((IntegerColumn*)aColumn.column)->mIsAutoInc)
+                        {
+                            int id=1;
+
+                            for (int j=0; j<i; j++)
+                            {
+                                if (mTable->ui->dataTableWidget->columnSpan(j, 0)<=1)
+                                {
+                                    id++;
+                                }
+                            }
+
+                            aItem->setText(QString::number(id));
+                        }
+                        else
+                        {
+                            aItem->setText(QString::number((((IntegerColumn*)aColumn.column)->mDefaultValue)));
+                        }
+                    }
+                    break;
+                    case ctString:
+                    {
+                        aItem->setText((((StringColumn*)aColumn.column)->mDefaultValue));
+                    }
+                    break;
+                    case ctBool:
+                    {
+                        if (((BoolColumn*)aColumn.column)->mDefaultValue)
+                        {
+                            aItem->setCheckState(Qt::Checked);
+                        }
+                        else
+                        {
+                            aItem->setCheckState(Qt::Unchecked);
+                        }
+                    }
+                    break;
+                    case ctDate:
+                    {
+                        aItem->setText(((DateColumn*)aColumn.column)->mDefaultValue.toString("dd.MM.yyyy"));
+                    }
+                    break;
+                    case ctTime:
+                    {
+                        aItem->setText(((TimeColumn*)aColumn.column)->mDefaultValue.toString("hh:mm:ss"));
+                    }
+                    break;
+                    case ctList:
+                    {
+                        aItem->setText("");
+                    }
+                    break;
+                    case ctExtendedList:
+                    {
+                        aItem->setText("");
+                    }
+                    break;
+                    case ctExpression:
+                    {
+                        aItem->setText("");
+                    }
+                    break;
+                    default:
+                    break;
+                }
+            }
+
+            mTable->ui->dataTableWidget->setItem(i, mColumnIndex, aItem);
+        }
     }
 }
 
