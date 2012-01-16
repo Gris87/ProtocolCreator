@@ -583,6 +583,7 @@ void VariableExtendedListFrame::on_lockButton_clicked()
 void VariableExtendedListFrame::updateLock()
 {
     ui->configButton->setEnabled(ui->userWidget->isEnabled());
+    ui->expandButton->setEnabled(ui->userWidget->isEnabled());
 
     if (ui->userWidget->isEnabled())
     {
@@ -631,6 +632,8 @@ void VariableExtendedListFrame::on_expandButton_clicked()
     ui->mainVerticalLayout->removeWidget(ui->expandedWidget);
 
     ui->expandButton->setVisible(false);
+    ui->lockButton->setVisible(false);
+
     bool wasTable=ui->useCheckBox->isVisible();
     bool wasVisible=ui->useCheckBox->isChecked();
     ui->useCheckBox->setChecked(true);
@@ -646,6 +649,7 @@ void VariableExtendedListFrame::on_expandButton_clicked()
     //------------------------------------------
 
     ui->expandButton->setVisible(true);
+    ui->lockButton->setVisible(true);
 
     ui->useCheckBox->setChecked(wasVisible);
     ui->useCheckBox->setVisible(wasTable);
@@ -842,6 +846,18 @@ void VariableExtendedListFrame::on_deleteRowButton_clicked()
 
     for (int i=0; i<aRows.length(); i++)
     {
-        ui->dataTableWidget->removeRow(aRows.at(i));
+        int realRow=aRows.at(i);
+
+        if (ui->dataTableWidget->itemDelegateForRow(realRow))
+        {
+            delete ui->dataTableWidget->itemDelegateForRow(realRow);
+        }
+
+        for (int j=realRow; j<ui->dataTableWidget->rowCount()-1; j++)
+        {
+            ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j+1));
+        }
+
+        ui->dataTableWidget->removeRow(realRow);
     }
 }

@@ -172,29 +172,24 @@ void ComponentTextFrame::on_expandButton_clicked()
 
     //------------------------------------------
 
-    ui->mainVerticalLayout->removeWidget(ui->expandedWidget);
+    ui->mainVerticalLayout->removeWidget(ui->userWidget);
 
-    ui->expandButton->setVisible(false);
     bool wasVisible=ui->useCheckBox->isChecked();
     ui->useCheckBox->setChecked(true);
-    ui->useCheckBox->setVisible(false);
 
-    ui->expandedWidget->setParent(&dialog);
-    ui->expandedWidget->show();
-    dialog.ui->verticalLayout->addWidget(ui->expandedWidget);
+    ui->userWidget->setParent(&dialog);
+    ui->userWidget->show();
+    dialog.ui->verticalLayout->addWidget(ui->userWidget);
 
     dialog.exec();
 
     //------------------------------------------
 
-    ui->expandButton->setVisible(true);
-
     ui->useCheckBox->setChecked(wasVisible);
-    ui->useCheckBox->setVisible(true);
 
-    ui->expandedWidget->setParent(this);
-    ui->expandedWidget->show();
-    ui->mainVerticalLayout->addWidget(ui->expandedWidget);
+    ui->userWidget->setParent(this);
+    ui->userWidget->show();
+    ui->mainVerticalLayout->addWidget(ui->userWidget);
 }
 
 void ComponentTextFrame::on_lockButton_clicked()
@@ -206,6 +201,8 @@ void ComponentTextFrame::on_lockButton_clicked()
 
 void ComponentTextFrame::updateLock()
 {
+    ui->expandButton->setEnabled(ui->userWidget->isEnabled());
+
     if (ui->userWidget->isEnabled())
     {
         ui->lockButton->setIcon(QIcon(":/images/Unlock.png"));
