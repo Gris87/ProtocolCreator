@@ -896,17 +896,67 @@ void VariableExtendedListFrame::on_deleteRowButton_clicked()
 
 void VariableExtendedListFrame::dataTableFont()
 {
+    QFontDialog dialog(ui->dataTableWidget->currentItem()->font(), this);
 
+    if (dialog.exec())
+    {
+        QList<QTableWidgetSelectionRange> aRanges=ui->dataTableWidget->selectedRanges();
+
+        for (int i=0; i<aRanges.length(); i++)
+        {
+            for (int j=aRanges.at(i).topRow(); j<=aRanges.at(i).bottomRow(); j++)
+            {
+                for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
+                {
+                    ui->dataTableWidget->item(j, k)->setFont(dialog.selectedFont());
+                }
+            }
+        }
+    }
 }
 
 void VariableExtendedListFrame::dataTableBackgroundColor()
 {
+    QColorDialog dialog(ui->dataTableWidget->currentItem()->background().color(), this);
 
+    if (dialog.exec())
+    {
+        QBrush aNewBrush(dialog.selectedColor());
+
+        QList<QTableWidgetSelectionRange> aRanges=ui->dataTableWidget->selectedRanges();
+
+        for (int i=0; i<aRanges.length(); i++)
+        {
+            for (int j=aRanges.at(i).topRow(); j<=aRanges.at(i).bottomRow(); j++)
+            {
+                for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
+                {
+                    ui->dataTableWidget->item(j, k)->setBackground(aNewBrush);
+                }
+            }
+        }
+    }
 }
 
 void VariableExtendedListFrame::dataTableTextColor()
 {
+    QColorDialog dialog(ui->dataTableWidget->currentItem()->textColor(), this);
 
+    if (dialog.exec())
+    {
+        QList<QTableWidgetSelectionRange> aRanges=ui->dataTableWidget->selectedRanges();
+
+        for (int i=0; i<aRanges.length(); i++)
+        {
+            for (int j=aRanges.at(i).topRow(); j<=aRanges.at(i).bottomRow(); j++)
+            {
+                for (int k=aRanges.at(i).leftColumn(); k<=aRanges.at(i).rightColumn(); k++)
+                {
+                    ui->dataTableWidget->item(j, k)->setTextColor(dialog.selectedColor());
+                }
+            }
+        }
+    }
 }
 
 void VariableExtendedListFrame::tableAlignmentShow()
