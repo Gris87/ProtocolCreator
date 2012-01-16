@@ -777,7 +777,7 @@ void VariableExtendedListFrame::setItemsForRow(int row)
 
 void VariableExtendedListFrame::setItemsForMiddleRow(int row)
 {
-    ui->dataTableWidget->setRowCount(row+1);
+    QBrush aBrush(middleRowBackgroundColor);
 
     for (int i=0; i<ui->dataTableWidget->columnCount(); i++)
     {
@@ -788,7 +788,7 @@ void VariableExtendedListFrame::setItemsForMiddleRow(int row)
         aItem->setFont(aFont);
 
         aItem->setTextAlignment(middleRowAlignment);
-        aItem->setBackground(QBrush(middleRowBackgroundColor));
+        aItem->setBackground(aBrush);
         aItem->setTextColor(middleRowTextColor);
 
         ui->dataTableWidget->setItem(row, i, aItem);
@@ -809,12 +809,60 @@ void VariableExtendedListFrame::on_addRowButton_clicked()
 
 void VariableExtendedListFrame::dataTableInsertRowBefore()
 {
+    QInputDialog dialog(this);
 
+    dialog.setWindowTitle("Вставка");
+    dialog.setInputMode(QInputDialog::IntInput);
+    dialog.setIntMinimum(1);
+    dialog.setIntMaximum(10000);
+    dialog.setIntValue(1);
+    dialog.setLabelText("Количество строк:");
+
+    if (dialog.exec())
+    {
+        int row=ui->dataTableWidget->currentRow();
+
+        for (int i=0; i<dialog.intValue(); i++)
+        {
+            for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
+            {
+                ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
+            }
+
+            ui->dataTableWidget->insertRow(row);
+            setItemsForRow(row);
+            row++;
+        }
+    }
 }
 
 void VariableExtendedListFrame::dataTableInsertRowAfter()
 {
+    QInputDialog dialog(this);
 
+    dialog.setWindowTitle("Вставка");
+    dialog.setInputMode(QInputDialog::IntInput);
+    dialog.setIntMinimum(1);
+    dialog.setIntMaximum(10000);
+    dialog.setIntValue(1);
+    dialog.setLabelText("Количество строк:");
+
+    if (dialog.exec())
+    {
+        int row=ui->dataTableWidget->currentRow()+1;
+
+        for (int i=0; i<dialog.intValue(); i++)
+        {
+            for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
+            {
+                ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
+            }
+
+            ui->dataTableWidget->insertRow(row);
+            setItemsForRow(row);
+            row++;
+        }
+    }
 }
 
 void VariableExtendedListFrame::on_addMiddleRowButton_clicked()
@@ -828,12 +876,60 @@ void VariableExtendedListFrame::on_addMiddleRowButton_clicked()
 
 void VariableExtendedListFrame::dataTableInsertMiddleRowBefore()
 {
+    QInputDialog dialog(this);
 
+    dialog.setWindowTitle("Вставка");
+    dialog.setInputMode(QInputDialog::IntInput);
+    dialog.setIntMinimum(1);
+    dialog.setIntMaximum(10000);
+    dialog.setIntValue(1);
+    dialog.setLabelText("Количество строк:");
+
+    if (dialog.exec())
+    {
+        int row=ui->dataTableWidget->currentRow();
+
+        for (int i=0; i<dialog.intValue(); i++)
+        {
+            for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
+            {
+                ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
+            }
+
+            ui->dataTableWidget->insertRow(row);
+            setItemsForMiddleRow(row);
+            row++;
+        }
+    }
 }
 
 void VariableExtendedListFrame::dataTableInsertMiddleRowAfter()
 {
+    QInputDialog dialog(this);
 
+    dialog.setWindowTitle("Вставка");
+    dialog.setInputMode(QInputDialog::IntInput);
+    dialog.setIntMinimum(1);
+    dialog.setIntMaximum(10000);
+    dialog.setIntValue(1);
+    dialog.setLabelText("Количество строк:");
+
+    if (dialog.exec())
+    {
+        int row=ui->dataTableWidget->currentRow()+1;
+
+        for (int i=0; i<dialog.intValue(); i++)
+        {
+            for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
+            {
+                ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
+            }
+
+            ui->dataTableWidget->insertRow(row);
+            setItemsForMiddleRow(row);
+            row++;
+        }
+    }
 }
 
 void VariableExtendedListFrame::on_deleteRowButton_clicked()
@@ -891,6 +987,27 @@ void VariableExtendedListFrame::on_deleteRowButton_clicked()
         }
 
         ui->dataTableWidget->removeRow(realRow);
+    }
+
+    for (int i=0; i<ui->dataTableWidget->columnCount(); i++)
+    {
+        if (
+            typeColumns.at(i).column->type()==ctInteger
+            &&
+            ((IntegerColumn*)typeColumns.at(i).column)->mIsAutoInc
+           )
+        {
+            int id=1;
+
+            for (int j=0; j<ui->dataTableWidget->rowCount(); j++)
+            {
+                if (ui->dataTableWidget->itemDelegateForRow(j)==0)
+                {
+                    ui->dataTableWidget->item(j,i)->setText(QString::number(id));
+                    id++;
+                }
+            }
+        }
     }
 }
 
