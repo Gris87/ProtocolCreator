@@ -686,7 +686,7 @@ void VariableExtendedListFrame::setItemsForRow(int row)
 
                     for (int j=0; j<row; j++)
                     {
-                        if (ui->dataTableWidget->columnSpan(j, 0)<=1)
+                        if (ui->dataTableWidget->itemDelegateForRow(j)==0)
                         {
                             id++;
                         }
@@ -696,7 +696,7 @@ void VariableExtendedListFrame::setItemsForRow(int row)
 
                     for (int j=row+1; j<ui->dataTableWidget->rowCount(); j++)
                     {
-                        if (ui->dataTableWidget->columnSpan(j, 0)<=1)
+                        if (ui->dataTableWidget->itemDelegateForRow(j)==0)
                         {
                             id++;
                             ui->dataTableWidget->item(j, 0)->setText(QString::number(id));

@@ -10,7 +10,7 @@ void DataTable::commitData(QWidget *editor)
     VariableExtendedListFrame *aTable=(VariableExtendedListFrame*)mTable;
 
     if (
-        columnSpan(currentRow(), currentColumn())>1
+        itemDelegateForRow(currentRow())
         ||
         (
          aTable->typeColumns.at(currentColumn()).column->type()!=ctBool

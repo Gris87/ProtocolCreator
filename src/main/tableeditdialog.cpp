@@ -743,11 +743,37 @@ void TableEditDialog::on_structureDelColButton_clicked()
 
     for (int i=0; i<aColumns.length(); i++)
     {
-        delete mTable->typeColumns.at(aColumns.at(i)).column;
-        mTable->typeColumns.removeAt(aColumns.at(i));
+        int realColumn=aColumns.at(i);
 
-        ui->structureTableWidget->removeColumn(aColumns.at(i));
-        mTable->ui->dataTableWidget->removeColumn(aColumns.at(i));
+        delete mTable->typeColumns.at(realColumn).column;
+        mTable->typeColumns.removeAt(realColumn);
+
+        ui->structureTableWidget->removeColumn(realColumn);
+
+
+
+        if (mTable->ui->dataTableWidget->itemDelegateForColumn(realColumn))
+        {
+            delete mTable->ui->dataTableWidget->itemDelegateForColumn(realColumn);
+        }
+
+        for (int j=realColumn; j<mTable->ui->dataTableWidget->columnCount()-1; j++)
+        {
+            mTable->ui->dataTableWidget->setItemDelegateForColumn(j, mTable->ui->dataTableWidget->itemDelegateForColumn(j+1));
+        }
+
+        if (realColumn==0 && mTable->ui->dataTableWidget->columnCount()>1)
+        {
+            for (int j=0; j<mTable->ui->dataTableWidget->rowCount(); j++)
+            {
+                if (mTable->ui->dataTableWidget->itemDelegateForRow(j))
+                {
+                    mTable->ui->dataTableWidget->item(j, 1)->setText(mTable->ui->dataTableWidget->item(j, 0)->text());
+                }
+            }
+        }
+
+        mTable->ui->dataTableWidget->removeColumn(realColumn);
     }
 
     if (ui->structureTableWidget->columnCount()>0 && aColumns.contains(0))

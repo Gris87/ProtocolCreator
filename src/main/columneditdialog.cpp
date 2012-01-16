@@ -208,9 +208,20 @@ void ColumnEditDialog::applyChanges()
             mTableWidget->item(1, mColumnIndex)->setTextAlignment(mTableWidget->item(1, firstCell)->textAlignment());
 
             mTableWidget->separate(1, firstCell);
+
+            mTableWidget->unite(0, 1, mTableWidget->columnCount()-1, 1);
         }
 
-        mTableWidget->unite(0, 1, mTableWidget->columnCount()-1, 1);
+        if (mTable->ui->dataTableWidget->columnCount()>1)
+        {
+            for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+            {
+                if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                {
+                    mTable->ui->dataTableWidget->setSpan(i, 0, 1, 1);
+                }
+            }
+        }
 
         mTable->ui->dataTableWidget->insertColumn(mColumnIndex);
         mTable->ui->dataTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));
@@ -256,7 +267,7 @@ void ColumnEditDialog::applyChanges()
             aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
             aItem->setBackground(QBrush(QColor(255, 255, 255)));
 
-            if (mTable->ui->dataTableWidget->columnSpan(i, 0)<=1)
+            if (mTable->ui->dataTableWidget->itemDelegateForRow(i)==0)
             {
                 switch (aColumn.column->type())
                 {
@@ -268,7 +279,7 @@ void ColumnEditDialog::applyChanges()
 
                             for (int j=0; j<i; j++)
                             {
-                                if (mTable->ui->dataTableWidget->columnSpan(j, 0)<=1)
+                                if (mTable->ui->dataTableWidget->itemDelegateForRow(j)==0)
                                 {
                                     id++;
                                 }
@@ -330,6 +341,17 @@ void ColumnEditDialog::applyChanges()
             }
 
             mTable->ui->dataTableWidget->setItem(i, mColumnIndex, aItem);
+        }
+
+        if (mTable->ui->dataTableWidget->columnCount()>1)
+        {
+            for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+            {
+                if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                {
+                    mTable->ui->dataTableWidget->setSpan(i, 0, 1, mTable->ui->dataTableWidget->columnCount());
+                }
+            }
         }
     }
 }
