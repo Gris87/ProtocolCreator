@@ -6,6 +6,7 @@
 #include "ui_variableextendedlistframe.h"
 
 #include "src/other/types.h"
+#include "src/widgets/cellalignmentwidget.h"
 
 namespace Ui {
     class VariableExtendedListFrame;
@@ -27,6 +28,7 @@ public:
     quint8 middleRowAlignment;
     QColor middleRowBackgroundColor;
     QColor middleRowTextColor;
+    CellAlignmentWidget *mCellAlignmentWidget;
 
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();
@@ -50,6 +52,7 @@ public:
 
     void setItemsForRow(int row);
     void setItemsForMiddleRow(int row);
+    void setItemsAlignment(int aAlignment);
 
 private slots:
     void on_switchButton_clicked();
@@ -64,8 +67,27 @@ private slots:
     void on_expandButton_clicked();
     void on_configButton_clicked();
     void on_addRowButton_clicked();
+    void dataTableInsertRowBefore();
+    void dataTableInsertRowAfter();
     void on_addMiddleRowButton_clicked();
+    void dataTableInsertMiddleRowBefore();
+    void dataTableInsertMiddleRowAfter();
     void on_deleteRowButton_clicked();
+    void dataTableFont();
+    void dataTableBackgroundColor();
+    void dataTableTextColor();
+    void tableAlignmentShow();
+    void tableAlignmentHide();
+    void tableCellAlignTopLeft();
+    void tableCellAlignTop();
+    void tableCellAlignTopRight();
+    void tableCellAlignLeft();
+    void tableCellAlignCenter();
+    void tableCellAlignRight();
+    void tableCellAlignBottomLeft();
+    void tableCellAlignBottom();
+    void tableCellAlignBottomRight();
+    void on_dataTableWidget_customContextMenuRequested(const QPoint &pos);
 
 signals:
     void switchPressed(VariableExtendedListFrame*  aComponent);
