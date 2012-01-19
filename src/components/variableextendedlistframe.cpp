@@ -435,6 +435,21 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                     aTypeColumn=new TimeColumn();
                                 }
                                 else
+                                if (aMagicWord=="ColList")
+                                {
+                                    aTypeColumn=new ListColumn();
+                                }
+                                else
+                                if (aMagicWord=="ColExtList")
+                                {
+                                    aTypeColumn=new ExtendedListColumn();
+                                }
+                                else
+                                if (aMagicWord=="ColExpression")
+                                {
+                                    aTypeColumn=new ExpressionColumn();
+                                }
+                                else
                                 {
                                     throw "Unknown type column";
                                 }
@@ -754,17 +769,17 @@ void VariableExtendedListFrame::setItemsForRow(int row)
             break;
             case ctList:
             {
-                aItem->setText("");
+                aItem->setText((((ListColumn*)typeColumns.at(i).column)->mDefaultValue));
             }
             break;
             case ctExtendedList:
             {
-                aItem->setText("");
+                aItem->setText((((ExtendedListColumn*)typeColumns.at(i).column)->mDefaultValue));
             }
             break;
             case ctExpression:
             {
-                aItem->setText("");
+                aItem->setText((((ExpressionColumn*)typeColumns.at(i).column)->mDefaultValue));
             }
             break;
             default:

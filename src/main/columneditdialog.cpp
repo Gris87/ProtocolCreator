@@ -79,6 +79,27 @@ void ColumnEditDialog::startEditing()
             ui->timeDefaultEdit->setTime(((TimeColumn*)aColumn->column)->mDefaultValue);
         }
         break;
+        case ctList:
+        {
+            ui->typeComboBox->setCurrentIndex(5);
+
+            ui->listDefaultComboBox->setEditText(((ListColumn*)aColumn->column)->mDefaultValue);
+        }
+        break;
+        case ctExtendedList:
+        {
+            ui->typeComboBox->setCurrentIndex(6);
+
+            ui->extendedListComboBox->setEditText(((ExtendedListColumn*)aColumn->column)->mDefaultValue);
+        }
+        break;
+        case ctExpression:
+        {
+            ui->typeComboBox->setCurrentIndex(7);
+
+            ui->expressionEdit->setText(((ExpressionColumn*)aColumn->column)->mDefaultValue);
+        }
+        break;
         default:
         {
             throw "Unknown column type";
@@ -150,6 +171,33 @@ void ColumnEditDialog::applyChanges()
                 TimeColumn *aTypeColumn=new TimeColumn();
 
                 aTypeColumn->mDefaultValue=ui->timeDefaultEdit->time();
+
+                aColumn.column=aTypeColumn;
+            }
+            break;
+            case 5:
+            {
+                ListColumn *aTypeColumn=new ListColumn();
+
+                aTypeColumn->mDefaultValue=ui->listDefaultComboBox->currentText();
+
+                aColumn.column=aTypeColumn;
+            }
+            break;
+            case 6:
+            {
+                ExtendedListColumn *aTypeColumn=new ExtendedListColumn();
+
+                aTypeColumn->mDefaultValue=ui->extendedListComboBox->currentText();
+
+                aColumn.column=aTypeColumn;
+            }
+            break;
+            case 7:
+            {
+                ExpressionColumn *aTypeColumn=new ExpressionColumn();
+
+                aTypeColumn->mDefaultValue=ui->expressionEdit->text();
 
                 aColumn.column=aTypeColumn;
             }
@@ -322,17 +370,17 @@ void ColumnEditDialog::applyChanges()
                     break;
                     case ctList:
                     {
-                        aItem->setText("");
+                        aItem->setText((((ListColumn*)aColumn.column)->mDefaultValue));
                     }
                     break;
                     case ctExtendedList:
                     {
-                        aItem->setText("");
+                        aItem->setText((((ExtendedListColumn*)aColumn.column)->mDefaultValue));
                     }
                     break;
                     case ctExpression:
                     {
-                        aItem->setText("");
+                        aItem->setText((((ExpressionColumn*)aColumn.column)->mDefaultValue));
                     }
                     break;
                     default:

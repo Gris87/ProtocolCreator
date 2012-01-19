@@ -69,7 +69,10 @@ SOURCES += src/main.cpp\
     src/column_types/timecolumn.cpp \
     src/widgets/datatable.cpp \
     src/delegates/stringdelegate.cpp \
-    src/main/fulldialog.cpp
+    src/main/fulldialog.cpp \
+    src/column_types/listcolumn.cpp \
+    src/column_types/extendedlistcolumn.cpp \
+    src/column_types/expressioncolumn.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -126,7 +129,10 @@ HEADERS  += src/main/mainwindow.h \
     src/column_types/timecolumn.h \
     src/widgets/datatable.h \
     src/delegates/stringdelegate.h \
-    src/main/fulldialog.h
+    src/main/fulldialog.h \
+    src/column_types/listcolumn.h \
+    src/column_types/extendedlistcolumn.h \
+    src/column_types/expressioncolumn.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

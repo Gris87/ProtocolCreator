@@ -9,6 +9,9 @@
 #include "src/column_types/boolcolumn.h"
 #include "src/column_types/datecolumn.h"
 #include "src/column_types/timecolumn.h"
+#include "src/column_types/listcolumn.h"
+#include "src/column_types/extendedlistcolumn.h"
+#include "src/column_types/expressioncolumn.h"
 
 #include "src/components/pagecomponent.h"
 #include "src/components/variableintegerframe.h"
