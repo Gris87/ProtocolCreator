@@ -9,10 +9,10 @@ SectionControlDialog::SectionControlDialog(QWidget *parent) :
     setWindowFlags(Qt::Window);
 
     headerWordEdit=new WordEditFrame(this);
-    ui->userLayout->insertWidget(5,headerWordEdit);
+    ui->userLayout->insertWidget(3,headerWordEdit);
 
     footerWordEdit=new WordEditFrame(this);
-    ui->userLayout->insertWidget(7,footerWordEdit);
+    ui->userLayout->insertWidget(5,footerWordEdit);
 
     for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
     {
