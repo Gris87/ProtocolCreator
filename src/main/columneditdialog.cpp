@@ -11,6 +11,15 @@ ColumnEditDialog::ColumnEditDialog(bool aEditMode, UnitedTable *aTableWidget, Va
     mEditMode=aEditMode;
     mColumnIndex=aColumnIndex;
 
+    ui->listLinkPagesListWidget->addItem("Global");
+
+    for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
+    {
+        ui->listLinkPagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text());
+    }
+
+    ui->listLinkPagesListWidget->setCurrentRow(mainWindow->ui->pagesTabWidget->currentIndex()+1);
+
     if (mEditMode)
     {
         startEditing();
@@ -412,6 +421,39 @@ void ColumnEditDialog::on_typeComboBox_currentIndexChanged(int index)
 void ColumnEditDialog::on_integerNumberSpinBox_valueChanged(double value)
 {
     ui->integerDefaultSpinBox->setDecimals((int)value);
+}
+
+void ColumnEditDialog::on_listLinkPagesListWidget_currentRowChanged(int currentRow)
+{
+    ui->listLinkVariablesListWidget->clear();
+
+    if (currentRow<0)
+    {
+        return;
+    }
+
+    if (currentRow==0)
+    {
+        for (int i=0; i<globalDialog->variables.length(); i++)
+        {
+            if (globalDialog->variables.at(i)->inherits("VariableListFrame"))
+            {
+                ui->listLinkVariablesListWidget->addItem(globalDialog->variables.at(i)->variableName());
+            }
+        }
+    }
+    else
+    {
+        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(currentRow-1);
+
+        for (int i=0; i<aPage->variables.length(); i++)
+        {
+            if (aPage->variables.at(i)->inherits("VariableListFrame"))
+            {
+                ui->listLinkVariablesListWidget->addItem(aPage->variables.at(i)->variableName());
+            }
+        }
+    }
 }
 
 void ColumnEditDialog::on_leftButton_clicked()
