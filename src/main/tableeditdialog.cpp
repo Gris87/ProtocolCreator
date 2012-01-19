@@ -22,7 +22,7 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
     connect(mCellAlignmentWidget->ui->bottomButton,      SIGNAL(clicked()), this, SLOT(tableCellAlignBottom()));
     connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(tableCellAlignBottomRight()));
 
-    ui->headerWidget->setVisible(mTable->ui->useCheckBox->isVisible());
+    ui->headerWidget->setVisible(mTable->mIsTable);
 
     ui->headerTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
 

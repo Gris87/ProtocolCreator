@@ -106,6 +106,7 @@ void GlobalDialog::on_extendedListButton_clicked()
 {
     VariableExtendedListFrame *aVar=new VariableExtendedListFrame(this);
 
+    aVar->mIsTable=false;
     aVar->ui->useCheckBox->setVisible(false);
     aVar->ui->switchButton->setVisible(false);
 
@@ -206,6 +207,7 @@ void GlobalDialog::loadFromStream(QDataStream &aStream)
                 {
                     aVariable=new VariableExtendedListFrame(this);
 
+                    ((VariableExtendedListFrame*)aVariable)->mIsTable=false;
                     ((VariableExtendedListFrame*)aVariable)->ui->useCheckBox->setVisible(false);
                     ((VariableExtendedListFrame*)aVariable)->ui->switchButton->setVisible(false);
                 }

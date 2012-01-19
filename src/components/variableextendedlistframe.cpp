@@ -9,6 +9,8 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     ui->nameEdit->setText("Расширенный список");
     ui->varNameEdit->setText("ExtendedList");
 
+    mIsTable=false;
+
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
     middleRowFontString="";
@@ -661,7 +663,6 @@ void VariableExtendedListFrame::on_expandButton_clicked()
     ui->expandButton->setVisible(false);
     ui->lockButton->setVisible(false);
 
-    bool wasTable=ui->useCheckBox->isVisible();
     bool wasVisible=ui->useCheckBox->isChecked();
     ui->useCheckBox->setChecked(true);
     ui->useCheckBox->setVisible(false);
@@ -679,8 +680,8 @@ void VariableExtendedListFrame::on_expandButton_clicked()
     ui->lockButton->setVisible(true);
 
     ui->useCheckBox->setChecked(wasVisible);
-    ui->useCheckBox->setVisible(wasTable);
-    ui->titleLabel->setVisible(!wasTable);
+    ui->useCheckBox->setVisible(mIsTable);
+    ui->titleLabel->setVisible(!mIsTable);
 
     ui->expandedWidget->setParent(this);
     ui->expandedWidget->show();

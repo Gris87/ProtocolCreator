@@ -881,6 +881,7 @@ void MainWindow::on_actionVariableExtendedList_triggered()
 
     VariableExtendedListFrame *aVar=new VariableExtendedListFrame(ui->pagesTabWidget->currentWidget());
 
+    aVar->mIsTable=false;
     aVar->ui->useCheckBox->setVisible(false);
 
     ((PageFrame*)ui->pagesTabWidget->currentWidget())->addVariable(aVar);
@@ -915,6 +916,7 @@ void MainWindow::on_actionComponentTable_triggered()
 
     VariableExtendedListFrame *aVar=new VariableExtendedListFrame(ui->pagesTabWidget->currentWidget());
 
+    aVar->mIsTable=true;
     aVar->ui->titleLabel->setVisible(false);
     aVar->ui->nameEdit->setText("Таблица");
     aVar->ui->varNameEdit->setText("Table");

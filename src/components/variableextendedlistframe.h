@@ -29,6 +29,7 @@ public:
     QColor middleRowBackgroundColor;
     QColor middleRowTextColor;
     CellAlignmentWidget *mCellAlignmentWidget;
+    bool mIsTable;
 
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();

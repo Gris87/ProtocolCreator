@@ -30,6 +30,7 @@ void PageFrame::variableSwitch(VariableExtendedListFrame* aComponent)
     disconnect(aComponent, SIGNAL(copyPressed(PageComponent*)), this, SLOT(variableCopy(PageComponent*)));
     disconnect(aComponent, SIGNAL(deletePressed(PageComponent*)), this, SLOT(variableDelete(PageComponent*)));
 
+    aComponent->mIsTable=true;
     aComponent->ui->useCheckBox->setVisible(true);
     aComponent->ui->titleLabel->setVisible(false);
 
@@ -103,6 +104,7 @@ void PageFrame::componentSwitch(VariableExtendedListFrame* aComponent)
     disconnect(aComponent, SIGNAL(copyPressed(PageComponent*)), this, SLOT(componentCopy(PageComponent*)));
     disconnect(aComponent, SIGNAL(deletePressed(PageComponent*)), this, SLOT(componentDelete(PageComponent*)));
 
+    aComponent->mIsTable=false;
     aComponent->ui->useCheckBox->setChecked(true);
     aComponent->ui->useCheckBox->setVisible(false);
     aComponent->ui->titleLabel->setVisible(true);
@@ -195,6 +197,7 @@ void PageFrame::componentCopy(PageComponent* aComponent)
         {
             aComponent=new VariableExtendedListFrame(mainWindow->ui->pagesTabWidget->widget(aRow-1));
 
+            ((VariableExtendedListFrame*)aComponent)->mIsTable=true;
             ((VariableExtendedListFrame*)aComponent)->ui->titleLabel->setVisible(false);
             ((VariableExtendedListFrame*)aComponent)->ui->nameEdit->setText("Таблица");
             ((VariableExtendedListFrame*)aComponent)->ui->varNameEdit->setText("Table");
@@ -507,6 +510,7 @@ void PageFrame::loadFromStream(QDataStream &aStream)
                 {
                     aVariable=new VariableExtendedListFrame(this);
 
+                    ((VariableExtendedListFrame*)aVariable)->mIsTable=false;
                     ((VariableExtendedListFrame*)aVariable)->ui->useCheckBox->setVisible(false);
                 }
                 else
@@ -545,6 +549,7 @@ void PageFrame::loadFromStream(QDataStream &aStream)
                 {
                     aComponent=new VariableExtendedListFrame(this);
 
+                    ((VariableExtendedListFrame*)aComponent)->mIsTable=true;
                     ((VariableExtendedListFrame*)aComponent)->ui->titleLabel->setVisible(false);
                     ((VariableExtendedListFrame*)aComponent)->ui->nameEdit->setText("Таблица");
                     ((VariableExtendedListFrame*)aComponent)->ui->varNameEdit->setText("Table");

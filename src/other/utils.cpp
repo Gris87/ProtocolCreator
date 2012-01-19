@@ -62,6 +62,7 @@ void copyVariable(PageComponent *aComponent)
         {
             aVariable=new VariableExtendedListFrame(aRow==0 ? globalDialog : mainWindow->ui->pagesTabWidget->widget(aRow-1));
 
+            ((VariableExtendedListFrame*)aVariable)->mIsTable=false;
             ((VariableExtendedListFrame*)aVariable)->ui->useCheckBox->setVisible(false);
             ((VariableExtendedListFrame*)aVariable)->ui->switchButton->setVisible(aRow>0);
         }
