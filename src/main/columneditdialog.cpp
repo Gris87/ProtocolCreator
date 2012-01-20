@@ -430,7 +430,20 @@ void ColumnEditDialog::applyChanges()
             break;
             case 5:
             {
-                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new ListDelegate(mTable));
+                ListDelegate *delegate=new ListDelegate(mTable);
+
+                delegate->mLink=ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text();
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+            }
+            break;
+            case 6:
+            {
+                ListDelegate *delegate=new ListDelegate(mTable);
+
+                delegate->mLink=ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]";
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
             }
             break;
             default:
