@@ -11,6 +11,9 @@ void ListColumn::saveToStream(QDataStream &aStream)
     aStream << QString("Default");
     aStream << mDefaultValue;
 
+    aStream << QString("Link");
+    aStream << mLinkComponent;
+
     aStream << QString("ColEnd");
 }
 
@@ -27,6 +30,11 @@ void ListColumn::loadFromStream(QDataStream &aStream)
             aStream >> mDefaultValue;
         }
         else
+        if (aMagicWord=="Link")
+        {
+            aStream >> mLinkComponent;
+        }
+        else
         if (aMagicWord=="ColEnd")
         {
             break;
@@ -36,7 +44,7 @@ void ListColumn::loadFromStream(QDataStream &aStream)
 
 QString ListColumn::typeDescription()
 {
-    return "Список (\""+mDefaultValue+"\")";
+    return "Список (\""+mDefaultValue+"\"; \""+mLinkComponent+"\")";
 }
 
 EColumnType ListColumn::type()

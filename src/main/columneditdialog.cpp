@@ -108,6 +108,44 @@ void ColumnEditDialog::startEditing()
             ui->typeComboBox->setCurrentIndex(5);
 
             ui->listDefaultComboBox->setEditText(((ListColumn*)aColumn->column)->mDefaultValue);
+
+            QString linkName=((ListColumn*)aColumn->column)->mLinkComponent;
+
+            int index=linkName.indexOf(".");
+            QString aSectionName=linkName.left(index);
+            linkName=linkName.mid(index+1);
+
+            index=-1;
+
+            for (int i=0; i<ui->listLinkPagesListWidget->count(); i++)
+            {
+                if (ui->listLinkPagesListWidget->item(i)->text()==aSectionName)
+                {
+                    index=i;
+                    break;
+                }
+            }
+
+            if (index>=0)
+            {
+                ui->listLinkPagesListWidget->setCurrentRow(index);
+
+                index=-1;
+
+                for (int i=0; i<ui->listLinkVariablesListWidget->count(); i++)
+                {
+                    if (ui->listLinkVariablesListWidget->item(i)->text()==linkName)
+                    {
+                        index=i;
+                        break;
+                    }
+                }
+
+                if (index>=0)
+                {
+                    ui->listLinkVariablesListWidget->setCurrentRow(index);
+                }
+            }
         }
         break;
         case ctExtendedList:
@@ -115,6 +153,56 @@ void ColumnEditDialog::startEditing()
             ui->typeComboBox->setCurrentIndex(6);
 
             ui->extendedListComboBox->setEditText(((ExtendedListColumn*)aColumn->column)->mDefaultValue);
+
+            QString linkName=((ListColumn*)aColumn->column)->mLinkComponent;
+
+            int index=linkName.indexOf(".");
+            QString aSectionName=linkName.left(index);
+            linkName=linkName.mid(index+1);
+
+            index=linkName.indexOf("[");
+            QString aVarName=linkName.left(index);
+            linkName=linkName.mid(index+1);
+            linkName.remove(linkName.length()-1, 1);
+
+            index=-1;
+
+            for (int i=0; i<ui->extListLinkPagesListWidget->count(); i++)
+            {
+                if (ui->extListLinkPagesListWidget->item(i)->text()==aSectionName)
+                {
+                    index=i;
+                    break;
+                }
+            }
+
+            if (index>=0)
+            {
+                ui->extListLinkPagesListWidget->setCurrentRow(index);
+
+                index=-1;
+
+                for (int i=0; i<ui->extListLinkVariablesListWidget->count(); i++)
+                {
+                    if (ui->extListLinkVariablesListWidget->item(i)->text()==aVarName)
+                    {
+                        index=i;
+                        break;
+                    }
+                }
+
+                if (index>=0)
+                {
+                    ui->extListLinkVariablesListWidget->setCurrentRow(index);
+
+                    int aColumnIndex=linkName.toInt()-1;
+
+                    if (aColumnIndex<ui->extListLinkColumnsListWidget->count())
+                    {
+                        ui->extListLinkColumnsListWidget->setCurrentRow(aColumnIndex);
+                    }
+                }
+            }
         }
         break;
         case ctExpression:
@@ -201,18 +289,32 @@ void ColumnEditDialog::applyChanges()
             break;
             case 5:
             {
+                if (ui->listLinkVariablesListWidget->currentRow()<0)
+                {
+                    QMessageBox::information(this, protocolCreatorVersion, "Укажите список для связки");
+                    return;
+                }
+
                 ListColumn *aTypeColumn=new ListColumn();
 
                 aTypeColumn->mDefaultValue=ui->listDefaultComboBox->currentText();
+                aTypeColumn->mLinkComponent=ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text();
 
                 aColumn.column=aTypeColumn;
             }
             break;
             case 6:
             {
+                if (ui->extListLinkColumnsListWidget->currentRow()<0)
+                {
+                    QMessageBox::information(this, protocolCreatorVersion, "Укажите столбец из расширенного списка для связки");
+                    return;
+                }
+
                 ExtendedListColumn *aTypeColumn=new ExtendedListColumn();
 
                 aTypeColumn->mDefaultValue=ui->extendedListComboBox->currentText();
+                aTypeColumn->mLinkComponent=ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]";
 
                 aColumn.column=aTypeColumn;
             }
@@ -626,7 +728,7 @@ void ColumnEditDialog::on_extListLinkVariablesListWidget_currentRowChanged(int c
 
             if (aFrame==0)
             {
-                for (int i=0; i<aPage->variables.length(); i++)
+                for (int i=0; i<aPage->components.length(); i++)
                 {
                     if (
                         aPage->components.at(i)->inherits("VariableExtendedListFrame")

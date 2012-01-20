@@ -11,6 +11,9 @@ void ExtendedListColumn::saveToStream(QDataStream &aStream)
     aStream << QString("Default");
     aStream << mDefaultValue;
 
+    aStream << QString("Link");
+    aStream << mLinkComponent;
+
     aStream << QString("ColEnd");
 }
 
@@ -27,6 +30,11 @@ void ExtendedListColumn::loadFromStream(QDataStream &aStream)
             aStream >> mDefaultValue;
         }
         else
+        if (aMagicWord=="Link")
+        {
+            aStream >> mLinkComponent;
+        }
+        else
         if (aMagicWord=="ColEnd")
         {
             break;
@@ -36,7 +44,7 @@ void ExtendedListColumn::loadFromStream(QDataStream &aStream)
 
 QString ExtendedListColumn::typeDescription()
 {
-    return "Расш. список (\""+mDefaultValue+"\")";
+    return "Расш. список (\""+mDefaultValue+"\"; \""+mLinkComponent+"\")";
 }
 
 EColumnType ExtendedListColumn::type()
