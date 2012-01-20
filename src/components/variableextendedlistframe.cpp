@@ -737,7 +737,7 @@ void VariableExtendedListFrame::setItemsForRow(int row)
                 }
                 else
                 {
-                    aItem->setText(QString::number((((IntegerColumn*)typeColumns.at(i).column)->mDefaultValue)));
+                    aItem->setText(((IntegerColumn*)typeColumns.at(i).column)->mPrefix+QString::number(((IntegerColumn*)typeColumns.at(i).column)->mDefaultValue, 'f', ((IntegerColumn*)typeColumns.at(i).column)->mDecimals)+((IntegerColumn*)typeColumns.at(i).column)->mPostfix);
                 }
             }
             break;

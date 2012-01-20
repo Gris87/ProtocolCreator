@@ -9,6 +9,10 @@ class DoubleDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
+    quint8 mDecimals;
+    QString mPrefix;
+    QString mPostfix;
+
     DoubleDelegate(QObject *parent = 0);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;

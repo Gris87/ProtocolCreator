@@ -409,7 +409,13 @@ void ColumnEditDialog::applyChanges()
         {
             case 0:
             {
-                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new DoubleDelegate(mTable));
+                DoubleDelegate *delegate=new DoubleDelegate(mTable);
+
+                delegate->mDecimals=(int)ui->integerNumberSpinBox->value();
+                delegate->mPrefix=ui->integerPrefixEdit->text();
+                delegate->mPostfix=ui->integerPostfixEdit->text();
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
             }
             break;
             case 3:
@@ -463,7 +469,7 @@ void ColumnEditDialog::applyChanges()
                         }
                         else
                         {
-                            aItem->setText(QString::number((((IntegerColumn*)aColumn.column)->mDefaultValue)));
+                            aItem->setText(((IntegerColumn*)aColumn.column)->mPrefix+QString::number(((IntegerColumn*)aColumn.column)->mDefaultValue, 'f', ((IntegerColumn*)aColumn.column)->mDecimals)+((IntegerColumn*)aColumn.column)->mPostfix);
                         }
                     }
                     break;
@@ -538,6 +544,11 @@ void ColumnEditDialog::on_typeComboBox_currentIndexChanged(int index)
 void ColumnEditDialog::on_integerNumberSpinBox_valueChanged(double value)
 {
     ui->integerDefaultSpinBox->setDecimals((int)value);
+}
+
+void ColumnEditDialog::on_integerAutoIncrementCheckBox_toggled(bool checked)
+{
+    ui->autoIncWidget->setVisible(!checked);
 }
 
 void ColumnEditDialog::on_listLinkPagesListWidget_currentRowChanged(int currentRow)
