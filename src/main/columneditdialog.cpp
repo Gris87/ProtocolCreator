@@ -11,6 +11,8 @@ ColumnEditDialog::ColumnEditDialog(bool aEditMode, UnitedTable *aTableWidget, Va
     mEditMode=aEditMode;
     mColumnIndex=aColumnIndex;
 
+
+
     ui->listLinkPagesListWidget->addItem("Global");
 
     for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
@@ -19,6 +21,19 @@ ColumnEditDialog::ColumnEditDialog(bool aEditMode, UnitedTable *aTableWidget, Va
     }
 
     ui->listLinkPagesListWidget->setCurrentRow(mainWindow->ui->pagesTabWidget->currentIndex()+1);
+
+
+
+    ui->extListLinkPagesListWidget->addItem("Global");
+
+    for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
+    {
+        ui->extListLinkPagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text());
+    }
+
+    ui->extListLinkPagesListWidget->setCurrentRow(mainWindow->ui->pagesTabWidget->currentIndex()+1);
+
+
 
     if (mEditMode)
     {
@@ -93,6 +108,44 @@ void ColumnEditDialog::startEditing()
             ui->typeComboBox->setCurrentIndex(5);
 
             ui->listDefaultComboBox->setEditText(((ListColumn*)aColumn->column)->mDefaultValue);
+
+            QString linkName=((ListColumn*)aColumn->column)->mLinkComponent;
+
+            int index=linkName.indexOf(".");
+            QString aSectionName=linkName.left(index);
+            linkName=linkName.mid(index+1);
+
+            index=-1;
+
+            for (int i=0; i<ui->listLinkPagesListWidget->count(); i++)
+            {
+                if (ui->listLinkPagesListWidget->item(i)->text()==aSectionName)
+                {
+                    index=i;
+                    break;
+                }
+            }
+
+            if (index>=0)
+            {
+                ui->listLinkPagesListWidget->setCurrentRow(index);
+
+                index=-1;
+
+                for (int i=0; i<ui->listLinkVariablesListWidget->count(); i++)
+                {
+                    if (ui->listLinkVariablesListWidget->item(i)->text()==linkName)
+                    {
+                        index=i;
+                        break;
+                    }
+                }
+
+                if (index>=0)
+                {
+                    ui->listLinkVariablesListWidget->setCurrentRow(index);
+                }
+            }
         }
         break;
         case ctExtendedList:
@@ -100,6 +153,56 @@ void ColumnEditDialog::startEditing()
             ui->typeComboBox->setCurrentIndex(6);
 
             ui->extendedListComboBox->setEditText(((ExtendedListColumn*)aColumn->column)->mDefaultValue);
+
+            QString linkName=((ListColumn*)aColumn->column)->mLinkComponent;
+
+            int index=linkName.indexOf(".");
+            QString aSectionName=linkName.left(index);
+            linkName=linkName.mid(index+1);
+
+            index=linkName.indexOf("[");
+            QString aVarName=linkName.left(index);
+            linkName=linkName.mid(index+1);
+            linkName.remove(linkName.length()-1, 1);
+
+            index=-1;
+
+            for (int i=0; i<ui->extListLinkPagesListWidget->count(); i++)
+            {
+                if (ui->extListLinkPagesListWidget->item(i)->text()==aSectionName)
+                {
+                    index=i;
+                    break;
+                }
+            }
+
+            if (index>=0)
+            {
+                ui->extListLinkPagesListWidget->setCurrentRow(index);
+
+                index=-1;
+
+                for (int i=0; i<ui->extListLinkVariablesListWidget->count(); i++)
+                {
+                    if (ui->extListLinkVariablesListWidget->item(i)->text()==aVarName)
+                    {
+                        index=i;
+                        break;
+                    }
+                }
+
+                if (index>=0)
+                {
+                    ui->extListLinkVariablesListWidget->setCurrentRow(index);
+
+                    int aColumnIndex=linkName.toInt()-1;
+
+                    if (aColumnIndex<ui->extListLinkColumnsListWidget->count())
+                    {
+                        ui->extListLinkColumnsListWidget->setCurrentRow(aColumnIndex);
+                    }
+                }
+            }
         }
         break;
         case ctExpression:
@@ -186,18 +289,32 @@ void ColumnEditDialog::applyChanges()
             break;
             case 5:
             {
+                if (ui->listLinkVariablesListWidget->currentRow()<0)
+                {
+                    QMessageBox::information(this, protocolCreatorVersion, "Укажите список для связки");
+                    return;
+                }
+
                 ListColumn *aTypeColumn=new ListColumn();
 
                 aTypeColumn->mDefaultValue=ui->listDefaultComboBox->currentText();
+                aTypeColumn->mLinkComponent=ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text();
 
                 aColumn.column=aTypeColumn;
             }
             break;
             case 6:
             {
+                if (ui->extListLinkColumnsListWidget->currentRow()<0)
+                {
+                    QMessageBox::information(this, protocolCreatorVersion, "Укажите столбец из расширенного списка для связки");
+                    return;
+                }
+
                 ExtendedListColumn *aTypeColumn=new ExtendedListColumn();
 
                 aTypeColumn->mDefaultValue=ui->extendedListComboBox->currentText();
+                aTypeColumn->mLinkComponent=ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]";
 
                 aColumn.column=aTypeColumn;
             }
@@ -292,7 +409,13 @@ void ColumnEditDialog::applyChanges()
         {
             case 0:
             {
-                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new DoubleDelegate(mTable));
+                DoubleDelegate *delegate=new DoubleDelegate(mTable);
+
+                delegate->mDecimals=(int)ui->integerNumberSpinBox->value();
+                delegate->mPrefix=ui->integerPrefixEdit->text();
+                delegate->mPostfix=ui->integerPostfixEdit->text();
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
             }
             break;
             case 3:
@@ -307,7 +430,20 @@ void ColumnEditDialog::applyChanges()
             break;
             case 5:
             {
-                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new ListDelegate(mTable));
+                ListDelegate *delegate=new ListDelegate(mTable);
+
+                delegate->mLink=ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text();
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+            }
+            break;
+            case 6:
+            {
+                ListDelegate *delegate=new ListDelegate(mTable);
+
+                delegate->mLink=ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]";
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
             }
             break;
             default:
@@ -346,7 +482,7 @@ void ColumnEditDialog::applyChanges()
                         }
                         else
                         {
-                            aItem->setText(QString::number((((IntegerColumn*)aColumn.column)->mDefaultValue)));
+                            aItem->setText(((IntegerColumn*)aColumn.column)->mPrefix+QString::number(((IntegerColumn*)aColumn.column)->mDefaultValue, 'f', ((IntegerColumn*)aColumn.column)->mDecimals)+((IntegerColumn*)aColumn.column)->mPostfix);
                         }
                     }
                     break;
@@ -423,36 +559,321 @@ void ColumnEditDialog::on_integerNumberSpinBox_valueChanged(double value)
     ui->integerDefaultSpinBox->setDecimals((int)value);
 }
 
+void ColumnEditDialog::on_integerAutoIncrementCheckBox_toggled(bool checked)
+{
+    ui->autoIncWidget->setVisible(!checked);
+}
+
 void ColumnEditDialog::on_listLinkPagesListWidget_currentRowChanged(int currentRow)
 {
+    QString currentDefault=ui->listDefaultComboBox->currentText();
+
+    ui->listDefaultComboBox->clear();
     ui->listLinkVariablesListWidget->clear();
 
-    if (currentRow<0)
+    if (currentRow>=0)
     {
-        return;
-    }
-
-    if (currentRow==0)
-    {
-        for (int i=0; i<globalDialog->variables.length(); i++)
+        if (currentRow==0)
         {
-            if (globalDialog->variables.at(i)->inherits("VariableListFrame"))
+            for (int i=0; i<globalDialog->variables.length(); i++)
             {
-                ui->listLinkVariablesListWidget->addItem(globalDialog->variables.at(i)->variableName());
+                if (globalDialog->variables.at(i)->inherits("VariableListFrame"))
+                {
+                    ui->listLinkVariablesListWidget->addItem(globalDialog->variables.at(i)->variableName());
+                }
             }
         }
+        else
+        {
+            PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(currentRow-1);
+
+            for (int i=0; i<aPage->variables.length(); i++)
+            {
+                if (aPage->variables.at(i)->inherits("VariableListFrame"))
+                {
+                    ui->listLinkVariablesListWidget->addItem(aPage->variables.at(i)->variableName());
+                }
+            }
+        }
+    }
+
+    ui->listDefaultComboBox->setEditText(currentDefault);
+}
+
+void ColumnEditDialog::on_listLinkVariablesListWidget_currentRowChanged(int currentRow)
+{
+    QString currentDefault=ui->listDefaultComboBox->currentText();
+
+    ui->listDefaultComboBox->clear();
+
+    if (currentRow>=0)
+    {
+        QString varName=ui->listLinkVariablesListWidget->item(currentRow)->text();
+        VariableListFrame *aFrame=0;
+
+        if (ui->listLinkPagesListWidget->currentRow()==0)
+        {
+            for (int i=0; i<globalDialog->variables.length(); i++)
+            {
+                if (
+                    globalDialog->variables.at(i)->inherits("VariableListFrame")
+                    &&
+                    globalDialog->variables.at(i)->variableName()==varName
+                   )
+                {
+                    aFrame=(VariableListFrame*)globalDialog->variables[i];
+                }
+            }
+        }
+        else
+        {
+            PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(ui->listLinkPagesListWidget->currentRow()-1);
+
+            for (int i=0; i<aPage->variables.length(); i++)
+            {
+                if (
+                    aPage->variables.at(i)->inherits("VariableListFrame")
+                    &&
+                    aPage->variables.at(i)->variableName()==varName
+                   )
+                {
+                    aFrame=(VariableListFrame*)aPage->variables[i];
+                }
+            }
+        }
+
+        if (aFrame)
+        {
+            for (int i=0; i<aFrame->ui->valueComboBox->count(); i++)
+            {
+                ui->listDefaultComboBox->addItem(aFrame->ui->valueComboBox->itemText(i));
+            }
+        }
+    }
+
+    int index=ui->listDefaultComboBox->findText(currentDefault);
+
+    if (index>=0)
+    {
+        ui->listDefaultComboBox->setCurrentIndex(index);
     }
     else
     {
-        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(currentRow-1);
+        ui->listDefaultComboBox->setEditText(currentDefault);
+    }
+}
 
-        for (int i=0; i<aPage->variables.length(); i++)
+void ColumnEditDialog::on_extListLinkPagesListWidget_currentRowChanged(int currentRow)
+{
+    QString currentDefault=ui->extendedListComboBox->currentText();
+
+    ui->extendedListComboBox->clear();
+    ui->extListLinkVariablesListWidget->clear();
+    ui->extListLinkColumnsListWidget->clear();
+
+    if (currentRow>=0)
+    {
+        if (currentRow==0)
         {
-            if (aPage->variables.at(i)->inherits("VariableListFrame"))
+            for (int i=0; i<globalDialog->variables.length(); i++)
             {
-                ui->listLinkVariablesListWidget->addItem(aPage->variables.at(i)->variableName());
+                if (globalDialog->variables.at(i)->inherits("VariableExtendedListFrame"))
+                {
+                    ui->extListLinkVariablesListWidget->addItem(globalDialog->variables.at(i)->variableName());
+                }
             }
         }
+        else
+        {
+            PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(currentRow-1);
+
+            for (int i=0; i<aPage->variables.length(); i++)
+            {
+                if (aPage->variables.at(i)->inherits("VariableExtendedListFrame"))
+                {
+                    ui->extListLinkVariablesListWidget->addItem(aPage->variables.at(i)->variableName());
+                }
+            }
+
+            for (int i=0; i<aPage->components.length(); i++)
+            {
+                if (aPage->components.at(i)->inherits("VariableExtendedListFrame"))
+                {
+                    ui->extListLinkVariablesListWidget->addItem(aPage->components.at(i)->variableName());
+                }
+            }
+        }
+    }
+
+    ui->extendedListComboBox->setEditText(currentDefault);
+}
+
+void ColumnEditDialog::on_extListLinkVariablesListWidget_currentRowChanged(int currentRow)
+{
+    QString currentDefault=ui->extendedListComboBox->currentText();
+
+    ui->extendedListComboBox->clear();
+    ui->extListLinkColumnsListWidget->clear();
+
+    if (currentRow>=0)
+    {
+        QString varName=ui->extListLinkVariablesListWidget->item(currentRow)->text();
+        VariableExtendedListFrame *aFrame=0;
+
+        if (ui->extListLinkPagesListWidget->currentRow()==0)
+        {
+            for (int i=0; i<globalDialog->variables.length(); i++)
+            {
+                if (
+                    globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
+                    &&
+                    globalDialog->variables.at(i)->variableName()==varName
+                   )
+                {
+                    aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
+                }
+            }
+        }
+        else
+        {
+            PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(ui->extListLinkPagesListWidget->currentRow()-1);
+
+            for (int i=0; i<aPage->variables.length(); i++)
+            {
+                if (
+                    aPage->variables.at(i)->inherits("VariableExtendedListFrame")
+                    &&
+                    aPage->variables.at(i)->variableName()==varName
+                   )
+                {
+                    aFrame=(VariableExtendedListFrame*)aPage->variables[i];
+                }
+            }
+
+            if (aFrame==0)
+            {
+                for (int i=0; i<aPage->components.length(); i++)
+                {
+                    if (
+                        aPage->components.at(i)->inherits("VariableExtendedListFrame")
+                        &&
+                        aPage->components.at(i)->variableName()==varName
+                       )
+                    {
+                        aFrame=(VariableExtendedListFrame*)aPage->components[i];
+                    }
+                }
+            }
+        }
+
+        if (aFrame)
+        {
+            for (int i=0; i<aFrame->typeColumns.length(); i++)
+            {
+                ui->extListLinkColumnsListWidget->addItem("Столбец_"+QString::number(i+1)+" "+aFrame->typeColumns.at(i).name);
+            }
+        }
+    }
+
+    ui->extendedListComboBox->setEditText(currentDefault);
+}
+
+void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int currentRow)
+{
+    QString currentDefault=ui->extendedListComboBox->currentText();
+
+    ui->extendedListComboBox->clear();
+
+    if (currentRow>=0)
+    {
+        QString varName=ui->extListLinkVariablesListWidget->currentItem()->text();
+        VariableExtendedListFrame *aFrame=0;
+
+        if (ui->extListLinkPagesListWidget->currentRow()==0)
+        {
+            for (int i=0; i<globalDialog->variables.length(); i++)
+            {
+                if (
+                    globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
+                    &&
+                    globalDialog->variables.at(i)->variableName()==varName
+                   )
+                {
+                    aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
+                }
+            }
+        }
+        else
+        {
+            PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(ui->extListLinkPagesListWidget->currentRow()-1);
+
+            for (int i=0; i<aPage->variables.length(); i++)
+            {
+                if (
+                    aPage->variables.at(i)->inherits("VariableExtendedListFrame")
+                    &&
+                    aPage->variables.at(i)->variableName()==varName
+                   )
+                {
+                    aFrame=(VariableExtendedListFrame*)aPage->variables[i];
+                }
+            }
+
+            if (aFrame==0)
+            {
+                for (int i=0; i<aPage->variables.length(); i++)
+                {
+                    if (
+                        aPage->components.at(i)->inherits("VariableExtendedListFrame")
+                        &&
+                        aPage->components.at(i)->variableName()==varName
+                       )
+                    {
+                        aFrame=(VariableExtendedListFrame*)aPage->components[i];
+                    }
+                }
+            }
+        }
+
+        if (aFrame)
+        {
+            EColumnType aColumnType=aFrame->typeColumns.at(currentRow).column->type();
+
+            if (aColumnType!=ctBool && aColumnType!=ctExpression)
+            {
+                QStringList aItems;
+
+                for (int i=0; i<aFrame->ui->dataTableWidget->rowCount(); i++)
+                {
+                    aItems.append(aFrame->ui->dataTableWidget->item(i, currentRow)->text());
+                }
+
+                aItems.removeDuplicates();
+
+                if (aColumnType==ctDate)
+                {
+                    for (int i=0; i<aItems.length(); i++)
+                    {
+                        aItems[i]=QDate::fromString(aItems.at(i), "yyyy-MM-dd").toString("dd.MM.yyyy");
+                    }
+                }
+
+                aItems.sort();
+
+                ui->extendedListComboBox->addItems(aItems);
+            }
+        }
+    }
+
+    int index=ui->extendedListComboBox->findText(currentDefault);
+
+    if (index>=0)
+    {
+        ui->extendedListComboBox->setCurrentIndex(index);
+    }
+    else
+    {
+        ui->extendedListComboBox->setEditText(currentDefault);
     }
 }
 

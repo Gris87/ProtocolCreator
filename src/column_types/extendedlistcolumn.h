@@ -9,6 +9,7 @@ class ExtendedListColumn: public ColumnType
 {
 public:
     QString mDefaultValue;
+    QString mLinkComponent;
 
     explicit ExtendedListColumn();
 

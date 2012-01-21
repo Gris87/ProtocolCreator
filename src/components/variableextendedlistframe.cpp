@@ -210,6 +210,85 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
     aStream << (quint8)middleRowTextColor.green();
     aStream << (quint8)middleRowTextColor.blue();
 
+    if (typesCount>0)
+    {
+        aStream << QString("Data");
+
+        aStream << QString("ColumnWidth");
+
+        for (int i=0; i<typesCount; i++)
+        {
+            aStream << ui->dataTableWidget->columnWidth(i);
+        }
+
+        aStream << QString("Rows");
+
+        int rowsCount=ui->dataTableWidget->rowCount();
+        aStream << rowsCount;
+
+        QTableWidgetItem *aItem;
+        QColor aColor;
+
+        for (int i=0; i<rowsCount; i++)
+        {
+            bool isMiddleRow=ui->dataTableWidget->itemDelegateForRow(i)!=0;
+            int stop;
+
+            if (isMiddleRow)
+            {
+                aStream << QString("MiddleRow");
+                stop=1;
+            }
+            else
+            {
+                aStream << QString("Row");
+                stop=typesCount;
+            }
+
+            for (int j=0; j<stop; j++)
+            {
+                aItem=ui->dataTableWidget->item(i, j);
+
+                aStream << QString("Font");
+                aStream << aItem->font().toString();
+
+                aStream << QString("Alignment");
+                aStream << aItem->textAlignment();
+
+                aColor=aItem->background().color();
+
+                aStream << QString("Background");
+                aStream << (quint8)aColor.red();
+                aStream << (quint8)aColor.green();
+                aStream << (quint8)aColor.blue();
+
+                aColor=aItem->textColor();
+
+                aStream << QString("TextColor");
+                aStream << (quint8)aColor.red();
+                aStream << (quint8)aColor.green();
+                aStream << (quint8)aColor.blue();
+
+                if (aItem->text()!="")
+                {
+                    aStream << QString("Text");
+                    aStream << aItem->text();
+                }
+
+                if (!isMiddleRow && typeColumns.at(j).column->type()==ctBool)
+                {
+                    aStream << QString("Checked");
+                    bool isChecked=aItem->checkState()==Qt::Checked;
+                    aStream << isChecked;
+                }
+
+                aStream << QString("CellEnd");
+            }
+        }
+
+        aStream << QString("DataEnd");
+    }
+
     aStream << QString("VarEnd");
 }
 
@@ -375,6 +454,8 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
             int aColumnCount;
             aStream >> aColumnCount;
 
+            ui->dataTableWidget->setColumnCount(aColumnCount);
+
             while (!aStream.atEnd())
             {
                 aStream >> aMagicWord;
@@ -404,6 +485,7 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                             if (aMagicWord=="Name")
                             {
                                 aStream >> aColumn.name;
+                                ui->dataTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(aColumn.name));
                             }
                             else
                             if (aMagicWord=="Column")
@@ -480,16 +562,19 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                             {
                                 aStream >> aColumn.fontString;
                             }
+                            else
                             if (aMagicWord=="Alignment")
                             {
                                 aStream >> aColumn.alignment;
                             }
+                            else
                             if (aMagicWord=="Background")
                             {
                                 aStream >> aColumn.backgroundColorR;
                                 aStream >> aColumn.backgroundColorG;
                                 aStream >> aColumn.backgroundColorB;
                             }
+                            else
                             if (aMagicWord=="TextColor")
                             {
                                 aStream >> aColumn.textColorR;
@@ -544,6 +629,145 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
             aStream >> b;
 
             middleRowTextColor=QColor(r, g, b);
+        }
+        else
+        if (aMagicWord=="Data")
+        {
+            while (!aStream.atEnd())
+            {
+                aStream >> aMagicWord;
+
+                if (aMagicWord=="ColumnWidth")
+                {
+                    int aColumnWidth;
+
+                    for (int i=0; i<ui->dataTableWidget->columnCount(); i++)
+                    {
+                        aStream >> aColumnWidth;
+
+                        ui->dataTableWidget->setColumnWidth(i, aColumnWidth);
+                    }
+                }
+                else
+                if (aMagicWord=="Rows")
+                {
+                    int aRowCount;
+                    aStream >> aRowCount;
+
+                    ui->dataTableWidget->setRowCount(aRowCount);
+
+                    QTableWidgetItem *aItem=0;
+                    QString isMiddleRow;
+
+                    for (int i=0; i<aRowCount; i++)
+                    {
+                        aStream >> isMiddleRow;
+
+                        int stop;
+
+                        if (isMiddleRow=="MiddleRow")
+                        {
+                            stop=1;
+                        }
+                        else
+                        {
+                            stop=typeColumns.length();
+                        }
+
+                        for (int j=0; j<stop; j++)
+                        {
+                            aItem=new QTableWidgetItem();
+
+                            while (!aStream.atEnd())
+                            {
+                                aStream >> aMagicWord;
+
+                                if (aMagicWord=="Font")
+                                {
+                                    QString fontString;
+                                    aStream >> fontString;
+
+                                    QFont aFont;
+                                    aFont.fromString(fontString);
+
+                                    aItem->setFont(aFont);
+                                }
+                                else
+                                if (aMagicWord=="Alignment")
+                                {
+                                    int textAlignment;
+                                    aStream >> textAlignment;
+
+                                    aItem->setTextAlignment(textAlignment);
+                                }
+                                else
+                                if (aMagicWord=="Background")
+                                {
+                                    quint8 r,g,b;
+
+                                    aStream >> r;
+                                    aStream >> g;
+                                    aStream >> b;
+
+                                    aItem->setBackground(QBrush(QColor(r, g, b)));
+                                }
+                                else
+                                if (aMagicWord=="TextColor")
+                                {
+                                    quint8 r,g,b;
+
+                                    aStream >> r;
+                                    aStream >> g;
+                                    aStream >> b;
+
+                                    aItem->setTextColor(QColor(r, g, b));
+                                }
+                                else
+                                if (aMagicWord=="Text")
+                                {
+                                    QString aValue;
+
+                                    aStream >> aValue;
+
+                                    aItem->setText(aValue);
+                                }
+                                else
+                                if (aMagicWord=="Checked")
+                                {
+                                    bool isChecked;
+
+                                    aStream >> isChecked;
+
+                                    aItem->setCheckState(isChecked? Qt::Checked : Qt::Unchecked);
+                                }
+                                else
+                                if (aMagicWord=="CellEnd")
+                                {
+                                    break;
+                                }
+                            }
+
+                            ui->dataTableWidget->setItem(i, j, aItem);
+                        }
+
+                        if (isMiddleRow=="MiddleRow")
+                        {
+                            for (int j=1; j<typeColumns.length(); j++)
+                            {
+                                ui->dataTableWidget->setItem(i, j, aItem->clone());
+                            }
+
+                            ui->dataTableWidget->setSpan(i, 0, 1, typeColumns.length());
+                            ui->dataTableWidget->setItemDelegateForRow(i, new StringDelegate(this));
+                        }
+                    }
+                }
+                else
+                if (aMagicWord=="DataEnd")
+                {
+                    break;
+                }
+            }
         }
         else
         if (aMagicWord=="VarEnd")
@@ -737,7 +961,7 @@ void VariableExtendedListFrame::setItemsForRow(int row)
                 }
                 else
                 {
-                    aItem->setText(QString::number((((IntegerColumn*)typeColumns.at(i).column)->mDefaultValue)));
+                    aItem->setText(((IntegerColumn*)typeColumns.at(i).column)->mPrefix+QString::number(((IntegerColumn*)typeColumns.at(i).column)->mDefaultValue, 'f', ((IntegerColumn*)typeColumns.at(i).column)->mDecimals)+((IntegerColumn*)typeColumns.at(i).column)->mPostfix);
                 }
             }
             break;

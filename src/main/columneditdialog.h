@@ -32,7 +32,12 @@ public:
 private slots:
     void on_typeComboBox_currentIndexChanged(int index);
     void on_integerNumberSpinBox_valueChanged(double value);
+    void on_integerAutoIncrementCheckBox_toggled(bool checked);
     void on_listLinkPagesListWidget_currentRowChanged(int currentRow);
+    void on_listLinkVariablesListWidget_currentRowChanged(int currentRow);
+    void on_extListLinkPagesListWidget_currentRowChanged(int currentRow);
+    void on_extListLinkVariablesListWidget_currentRowChanged(int currentRow);
+    void on_extListLinkColumnsListWidget_currentRowChanged(int currentRow);
     void on_leftButton_clicked();
     void on_rightButton_clicked();
 };

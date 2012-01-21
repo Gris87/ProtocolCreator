@@ -9,6 +9,8 @@ class ListDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
+    QString mLink;
+
     ListDelegate(QObject *parent = 0);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;

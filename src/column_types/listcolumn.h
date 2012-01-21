@@ -9,6 +9,7 @@ class ListColumn: public ColumnType
 {
 public:
     QString mDefaultValue;
+    QString mLinkComponent;
 
     explicit ListColumn();
 

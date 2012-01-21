@@ -15,6 +15,8 @@ void DataTable::commitData(QWidget *editor)
         (
          aTable->typeColumns.at(currentColumn()).column->type()!=ctBool
          &&
+         aTable->typeColumns.at(currentColumn()).column->type()!=ctExpression
+         &&
          (
           aTable->typeColumns.at(currentColumn()).column->type()!=ctInteger
           ||
