@@ -228,7 +228,175 @@ void ColumnEditDialog::applyChanges()
 {
     if (mEditMode)
     {
+        STableColumn *aColumn=&mTable->typeColumns[mColumnIndex];
 
+        aColumn->name=ui->nameEdit->text();
+
+        ColumnType *aOldTypeColumn=aColumn->column;
+
+        switch (ui->typeComboBox->currentIndex())
+        {
+            case 0:
+            {
+                IntegerColumn *aTypeColumn=new IntegerColumn();
+
+                aTypeColumn->mDefaultValue=ui->integerDefaultSpinBox->value();
+                aTypeColumn->mDecimals=(int)ui->integerNumberSpinBox->value();
+                aTypeColumn->mIsAutoInc=ui->integerAutoIncrementCheckBox->isChecked();
+                aTypeColumn->mPrefix=ui->integerPrefixEdit->text();
+                aTypeColumn->mPostfix=ui->integerPostfixEdit->text();
+
+                aColumn->column=aTypeColumn;
+            }
+            break;
+            case 1:
+            {
+                StringColumn *aTypeColumn=new StringColumn();
+
+                aTypeColumn->mDefaultValue=ui->stringDefaultEdit->text();
+
+                aColumn->column=aTypeColumn;
+            }
+            break;
+            case 2:
+            {
+                BoolColumn *aTypeColumn=new BoolColumn();
+
+                aTypeColumn->mDefaultValue=ui->boolDefaultCheckBox->isChecked();
+
+                aColumn->column=aTypeColumn;
+            }
+            break;
+            case 3:
+            {
+                DateColumn *aTypeColumn=new DateColumn();
+
+                aTypeColumn->mDefaultValue=ui->dateDefaultEdit->date();
+
+                aColumn->column=aTypeColumn;
+            }
+            break;
+            case 4:
+            {
+                TimeColumn *aTypeColumn=new TimeColumn();
+
+                aTypeColumn->mDefaultValue=ui->timeDefaultEdit->time();
+
+                aColumn->column=aTypeColumn;
+            }
+            break;
+            case 5:
+            {
+                if (ui->listLinkVariablesListWidget->currentRow()<0)
+                {
+                    QMessageBox::information(this, protocolCreatorVersion, "Укажите список для связки");
+                    return;
+                }
+
+                ListColumn *aTypeColumn=new ListColumn();
+
+                aTypeColumn->mDefaultValue=ui->listDefaultComboBox->currentText();
+                aTypeColumn->mLinkComponent=ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text();
+
+                aColumn->column=aTypeColumn;
+            }
+            break;
+            case 6:
+            {
+                if (ui->extListLinkColumnsListWidget->currentRow()<0)
+                {
+                    QMessageBox::information(this, protocolCreatorVersion, "Укажите столбец из расширенного списка для связки");
+                    return;
+                }
+
+                ExtendedListColumn *aTypeColumn=new ExtendedListColumn();
+
+                aTypeColumn->mDefaultValue=ui->extendedListComboBox->currentText();
+                aTypeColumn->mLinkComponent=ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]";
+
+                aColumn->column=aTypeColumn;
+            }
+            break;
+            case 7:
+            {
+                ExpressionColumn *aTypeColumn=new ExpressionColumn();
+
+                aTypeColumn->mDefaultValue=ui->expressionEdit->text();
+
+                aColumn->column=aTypeColumn;
+            }
+            break;
+            default:
+            {
+                throw "Unknown column type";
+            }
+            break;
+        }
+
+        aColumn->leftOffset=ui->leftOffsetSpinBox->value();
+        aColumn->rightOffset=ui->rightOffsetSpinBox->value();
+        aColumn->totalOffset=ui->totalOffsetSpinBox->value();
+
+
+
+        mTableWidget->horizontalHeaderItem(mColumnIndex)->setText(aColumn->name);
+        mTableWidget->item(0, mColumnIndex)->setText(aColumn->column->typeDescription());
+
+
+
+        mTable->ui->dataTableWidget->horizontalHeaderItem(mColumnIndex)->setText(aColumn->name);
+
+        delete mTable->ui->dataTableWidget->itemDelegateForColumn(mColumnIndex);
+
+        switch (ui->typeComboBox->currentIndex())
+        {
+            case 0:
+            {
+                DoubleDelegate *delegate=new DoubleDelegate(mTable);
+
+                delegate->mDecimals=(int)ui->integerNumberSpinBox->value();
+                delegate->mPrefix=ui->integerPrefixEdit->text();
+                delegate->mPostfix=ui->integerPostfixEdit->text();
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+            }
+            break;
+            case 3:
+            {
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new DateDelegate(mTable));
+            }
+            break;
+            case 4:
+            {
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new TimeDelegate(mTable));
+            }
+            break;
+            case 5:
+            {
+                ListDelegate *delegate=new ListDelegate(mTable);
+
+                delegate->mLink=ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text();
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+            }
+            break;
+            case 6:
+            {
+                ListDelegate *delegate=new ListDelegate(mTable);
+
+                delegate->mLink=ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]";
+
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+            }
+            break;
+            default:
+            {
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new StringDelegate(mTable));
+            }
+            break;
+        }
+
+        delete aOldTypeColumn;
     }
     else
     {
