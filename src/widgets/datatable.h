@@ -11,6 +11,8 @@ public:
 
     explicit DataTable(QWidget *parent = 0);
 
+    QModelIndex indexFromItem(QTableWidgetItem *item) const;
+
 protected:
     void commitData(QWidget *editor);
 };

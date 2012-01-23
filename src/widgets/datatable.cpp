@@ -5,6 +5,11 @@ DataTable::DataTable(QWidget *parent) :
 {
 }
 
+QModelIndex DataTable::indexFromItem(QTableWidgetItem *item) const
+{
+    return QTableWidget::indexFromItem(item);
+}
+
 void DataTable::commitData(QWidget *editor)
 {
     VariableExtendedListFrame *aTable=(VariableExtendedListFrame*)mTable;

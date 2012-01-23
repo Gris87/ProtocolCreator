@@ -396,6 +396,167 @@ void ColumnEditDialog::applyChanges()
             break;
         }
 
+        EColumnType aOldColumnType=aOldTypeColumn->type();
+        EColumnType aNewColumnType=aColumn->column->type();
+
+        if (aOldColumnType==ctBool)
+        {
+            for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+            {
+                if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                {
+                    continue;
+                }
+
+                if (mTable->ui->dataTableWidget->item(i, mColumnIndex)->checkState()==Qt::Checked)
+                {
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText("1");
+                }
+                else
+                {
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText("0");
+                }
+
+                QMap<int, QVariant> dataRoles=mTable->ui->dataTableWidget->model()->itemData(mTable->ui->dataTableWidget->indexFromItem(mTable->ui->dataTableWidget->item(i, mColumnIndex)));
+
+                delete mTable->ui->dataTableWidget->takeItem(i, mColumnIndex);
+
+                QTableWidgetItem *aItem=new QTableWidgetItem();
+
+                for (QMap<int, QVariant>::ConstIterator j=dataRoles.constBegin(); j!=dataRoles.constEnd(); j++)
+                {
+                    if (j.key()!=Qt::CheckStateRole)
+                    {
+                        aItem->setData(j.key(), j.value());
+                    }
+                }
+
+                mTable->ui->dataTableWidget->setItem(i, mColumnIndex, aItem);
+            }
+
+            aOldColumnType=ctString;
+        }
+
+        if (aNewColumnType==ctInteger)
+        {
+            if (ui->integerAutoIncrementCheckBox->isChecked())
+            {
+                int id=1;
+
+                for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+                {
+                    if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                    {
+                        continue;
+                    }
+
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(QString::number(id));
+
+                    id++;
+                }
+            }
+        }
+        else
+        if (aNewColumnType==ctString || aNewColumnType==ctList || aNewColumnType==ctExtendedList)
+        {
+            // Nothing
+        }
+        else
+        if (aNewColumnType==ctBool)
+        {
+            for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+            {
+                if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                {
+                    continue;
+                }
+
+                if (
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->text()=="1"
+                    &&
+                    (
+                     aOldColumnType!=ctInteger
+                     ||
+                     !((IntegerColumn*)aOldTypeColumn)->mIsAutoInc
+                    )
+                   )
+                {
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setCheckState(Qt::Checked);
+                }
+                else
+                if (mTable->ui->dataTableWidget->item(i, mColumnIndex)->text()=="0")
+                {
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setCheckState(Qt::Unchecked);
+                }
+                else
+                {
+                    if (ui->boolDefaultCheckBox->isChecked())
+                    {
+                        mTable->ui->dataTableWidget->item(i, mColumnIndex)->setCheckState(Qt::Checked);
+                    }
+                    else
+                    {
+                        mTable->ui->dataTableWidget->item(i, mColumnIndex)->setCheckState(Qt::Unchecked);
+                    }
+                }
+
+                mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText("");
+            }
+        }
+        else
+        if (aNewColumnType==ctDate)
+        {
+            for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+            {
+                if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                {
+                    continue;
+                }
+
+                QDate aDate=QDate::fromString(mTable->ui->dataTableWidget->item(i, mColumnIndex)->text(), "dd.MM.yyyy");
+
+                if (!aDate.isValid())
+                {
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(ui->dateDefaultEdit->date().toString("dd.MM.yyyy"));
+                }
+            }
+        }
+        else
+        if (aNewColumnType==ctTime)
+        {
+            for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+            {
+                if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                {
+                    continue;
+                }
+
+                QTime aTime=QTime::fromString(mTable->ui->dataTableWidget->item(i, mColumnIndex)->text(), "hh:mm:ss");
+
+                if (!aTime.isValid())
+                {
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(ui->timeDefaultEdit->time().toString("hh:mm:ss"));
+                }
+            }
+        }
+        else
+        if (aNewColumnType==ctExpression)
+        {
+            for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+            {
+                if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                {
+                    continue;
+                }
+
+                mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(ui->expressionEdit->text());
+            }
+        }
+        else
+        {
+            throw "Unknown column type";
+        }
+
         delete aOldTypeColumn;
     }
     else
