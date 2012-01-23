@@ -513,24 +513,31 @@ void ColumnEditDialog::applyChanges()
                     continue;
                 }
 
-                if (
-                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->text()=="1"
-                    &&
-                    (
-                     aOldColumnType!=ctInteger
-                     ||
-                     !((IntegerColumn*)aOldTypeColumn)->mIsAutoInc
-                    )
-                   )
+                bool ok;
+                double aValue=mTable->ui->dataTableWidget->item(i, mColumnIndex)->text().toDouble(&ok);
+
+                if (ok)
                 {
-                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setCheckState(Qt::Checked);
+                    if (aValue==0)
+                    {
+                        mTable->ui->dataTableWidget->item(i, mColumnIndex)->setCheckState(Qt::Unchecked);
+                    }
+                    else
+                    if (
+                        aOldColumnType!=ctInteger
+                        ||
+                        !((IntegerColumn*)aOldTypeColumn)->mIsAutoInc
+                       )
+                    {
+                        mTable->ui->dataTableWidget->item(i, mColumnIndex)->setCheckState(Qt::Checked);
+                    }
+                    else
+                    {
+                        ok=false;
+                    }
                 }
-                else
-                if (mTable->ui->dataTableWidget->item(i, mColumnIndex)->text()=="0")
-                {
-                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setCheckState(Qt::Unchecked);
-                }
-                else
+
+                if (!ok)
                 {
                     if (ui->boolDefaultCheckBox->isChecked())
                     {
@@ -925,9 +932,9 @@ void ColumnEditDialog::on_typeComboBox_currentIndexChanged(int index)
     ui->typeStackedWidget->setCurrentIndex(index);
 }
 
-void ColumnEditDialog::on_integerNumberSpinBox_valueChanged(double value)
+void ColumnEditDialog::on_integerNumberSpinBox_valueChanged(int value)
 {
-    ui->integerDefaultSpinBox->setDecimals((int)value);
+    ui->integerDefaultSpinBox->setDecimals(value);
 }
 
 void ColumnEditDialog::on_integerAutoIncrementCheckBox_toggled(bool checked)
