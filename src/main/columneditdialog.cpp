@@ -241,7 +241,7 @@ void ColumnEditDialog::applyChanges()
                 IntegerColumn *aTypeColumn=new IntegerColumn();
 
                 aTypeColumn->mDefaultValue=ui->integerDefaultSpinBox->value();
-                aTypeColumn->mDecimals=(int)ui->integerNumberSpinBox->value();
+                aTypeColumn->mDecimals=ui->integerNumberSpinBox->value();
                 aTypeColumn->mIsAutoInc=ui->integerAutoIncrementCheckBox->isChecked();
                 aTypeColumn->mPrefix=ui->integerPrefixEdit->text();
                 aTypeColumn->mPostfix=ui->integerPostfixEdit->text();
@@ -354,7 +354,7 @@ void ColumnEditDialog::applyChanges()
             {
                 DoubleDelegate *delegate=new DoubleDelegate(mTable);
 
-                delegate->mDecimals=(int)ui->integerNumberSpinBox->value();
+                delegate->mDecimals=ui->integerNumberSpinBox->value();
                 delegate->mPrefix=ui->integerPrefixEdit->text();
                 delegate->mPostfix=ui->integerPostfixEdit->text();
 
@@ -453,6 +453,48 @@ void ColumnEditDialog::applyChanges()
                     mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(QString::number(id));
 
                     id++;
+                }
+            }
+            else
+            {
+                int removeBefore=0;
+                int removeAfter=0;
+
+                if (
+                    aOldColumnType==ctInteger
+                    &&
+                    !((IntegerColumn*)aOldTypeColumn)->mIsAutoInc
+                   )
+                {
+                    removeBefore=((IntegerColumn*)aOldTypeColumn)->mPrefix.length();
+                    removeAfter=((IntegerColumn*)aOldTypeColumn)->mPostfix.length();
+                }
+
+                for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+                {
+                    if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                    {
+                        continue;
+                    }
+
+                    QString aText=mTable->ui->dataTableWidget->item(i, mColumnIndex)->text();
+
+                    aText.remove(0, removeBefore);
+                    aText.remove(aText.length()-removeAfter, removeAfter);
+
+                    bool ok;
+                    double aValue=aText.toDouble(&ok);
+
+                    if (ok)
+                    {
+                        aText=QString::number(aValue, 'f', ui->integerNumberSpinBox->value());
+                    }
+                    else
+                    {
+                        aText=QString::number(ui->integerDefaultSpinBox->value(), 'f', ui->integerNumberSpinBox->value());
+                    }
+
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(ui->integerPrefixEdit->text()+aText+ui->integerPostfixEdit->text());
                 }
             }
         }
@@ -572,7 +614,7 @@ void ColumnEditDialog::applyChanges()
                 IntegerColumn *aTypeColumn=new IntegerColumn();
 
                 aTypeColumn->mDefaultValue=ui->integerDefaultSpinBox->value();
-                aTypeColumn->mDecimals=(int)ui->integerNumberSpinBox->value();
+                aTypeColumn->mDecimals=ui->integerNumberSpinBox->value();
                 aTypeColumn->mIsAutoInc=ui->integerAutoIncrementCheckBox->isChecked();
                 aTypeColumn->mPrefix=ui->integerPrefixEdit->text();
                 aTypeColumn->mPostfix=ui->integerPostfixEdit->text();
@@ -740,7 +782,7 @@ void ColumnEditDialog::applyChanges()
             {
                 DoubleDelegate *delegate=new DoubleDelegate(mTable);
 
-                delegate->mDecimals=(int)ui->integerNumberSpinBox->value();
+                delegate->mDecimals=ui->integerNumberSpinBox->value();
                 delegate->mPrefix=ui->integerPrefixEdit->text();
                 delegate->mPostfix=ui->integerPostfixEdit->text();
 

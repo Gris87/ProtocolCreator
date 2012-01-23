@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>553</width>
-    <height>219</height>
+    <height>228</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -221,18 +221,15 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="integerNumberSpinBox">
+             <widget class="QSpinBox" name="integerNumberSpinBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="decimals">
-               <number>0</number>
-              </property>
               <property name="value">
-               <double>2.000000000000000</double>
+               <number>2</number>
               </property>
              </widget>
             </item>
