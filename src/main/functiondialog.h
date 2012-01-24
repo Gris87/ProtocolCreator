@@ -6,6 +6,7 @@
 #include "ui_functiondialog.h"
 
 #include <QSplitter>
+#include "src/components/variableextendedlistframe.h"
 
 namespace Ui {
     class FunctionDialog;
@@ -19,15 +20,18 @@ public:
     Ui::FunctionDialog *ui;
     QSplitter *dividerSplitter;
     QSplitter *dividerSplitter2;
+    VariableExtendedListFrame* mExtList;
 
-    explicit FunctionDialog(QWidget *parent = 0);
+    explicit FunctionDialog(VariableExtendedListFrame *aExtList=0, QWidget *parent = 0);
     ~FunctionDialog();
 
 private slots:
     void on_functionsListWidget_currentRowChanged(int currentRow);
     void on_functionsListWidget_itemDoubleClicked(QListWidgetItem *item);
     void on_pagesListWidget_currentRowChanged(int currentRow);
+    void on_variablesListWidget_currentRowChanged(int currentRow);
     void on_variablesListWidget_itemDoubleClicked(QListWidgetItem *item);
+    void on_columnListWidget_itemDoubleClicked(QListWidgetItem *item);
     void on_okButton_clicked();
     void on_cancelButton_clicked();
 };

@@ -1,12 +1,14 @@
 #include "src/other/global.h"
 
-FunctionDialog::FunctionDialog(QWidget *parent) :
+FunctionDialog::FunctionDialog(VariableExtendedListFrame *aExtList, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::FunctionDialog)
 {
     ui->setupUi(this);
 
     setWindowFlags(Qt::Window);
+
+    mExtList=aExtList;
 
 
 
@@ -37,24 +39,28 @@ FunctionDialog::FunctionDialog(QWidget *parent) :
     ui->dividerLayout_2->removeWidget(ui->functionWidget);
     ui->dividerLayout_2->removeWidget(ui->pagesListWidget);
     ui->dividerLayout_2->removeWidget(ui->variablesListWidget);
+    ui->dividerLayout_2->removeWidget(ui->columnListWidget);
 
     dividerSplitter2->addWidget(ui->functionWidget);
     dividerSplitter2->addWidget(ui->pagesListWidget);
     dividerSplitter2->addWidget(ui->variablesListWidget);
+    dividerSplitter2->addWidget(ui->columnListWidget);
 
     ui->dividerLayout_2->addWidget(dividerSplitter2);
 
     aSizes.clear();
 
-    aSizes.append(500);
-    aSizes.append(150);
-    aSizes.append(150);
+    aSizes.append(400);
+    aSizes.append(200);
+    aSizes.append(200);
+    aSizes.append(200);
 
     dividerSplitter2->setSizes(aSizes);
 
     dividerSplitter2->setCollapsible(0, false);
     dividerSplitter2->setCollapsible(1, false);
     dividerSplitter2->setCollapsible(2, false);
+    dividerSplitter2->setCollapsible(3, false);
 
 
 
@@ -122,6 +128,7 @@ void FunctionDialog::on_functionsListWidget_itemDoubleClicked(QListWidgetItem *i
 void FunctionDialog::on_pagesListWidget_currentRowChanged(int currentRow)
 {
     ui->variablesListWidget->clear();
+    ui->columnListWidget->clear();
 
     if (currentRow<0)
     {
@@ -151,9 +158,96 @@ void FunctionDialog::on_pagesListWidget_currentRowChanged(int currentRow)
     }
 }
 
+void FunctionDialog::on_variablesListWidget_currentRowChanged(int currentRow)
+{
+    ui->columnListWidget->clear();
+
+    if (currentRow<0)
+    {
+        return;
+    }
+
+    QString varName=ui->variablesListWidget->item(currentRow)->text();
+    VariableExtendedListFrame *aFrame=0;
+
+    if (ui->pagesListWidget->currentRow()==0)
+    {
+        for (int i=0; i<globalDialog->variables.length(); i++)
+        {
+            if (
+                globalDialog->variables.at(i)->variableName()==varName
+                &&
+                globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
+               )
+            {
+                aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
+            }
+        }
+    }
+    else
+    {
+        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(ui->pagesListWidget->currentRow()-1);
+
+        for (int i=0; i<aPage->variables.length(); i++)
+        {
+            if (
+                aPage->variables.at(i)->variableName()==varName
+                &&
+                aPage->variables.at(i)->inherits("VariableExtendedListFrame")
+               )
+            {
+                aFrame=(VariableExtendedListFrame*)aPage->variables[i];
+            }
+        }
+
+        if (aFrame==0)
+        {
+            for (int i=0; i<aPage->components.length(); i++)
+            {
+                if (
+                    aPage->components.at(i)->variableName()==varName
+                    &&
+                    aPage->components.at(i)->inherits("VariableExtendedListFrame")
+                   )
+                {
+                    aFrame=(VariableExtendedListFrame*)aPage->components[i];
+                }
+            }
+        }
+    }
+
+    if (aFrame)
+    {
+        for (int i=0; i<aFrame->typeColumns.length(); i++)
+        {
+            ui->columnListWidget->addItem("Столбец_"+QString::number(i+1)+" "+aFrame->typeColumns.at(i).name);
+        }
+    }
+}
+
 void FunctionDialog::on_variablesListWidget_itemDoubleClicked(QListWidgetItem *item)
 {
     ui->expressionEdit->insert(ui->pagesListWidget->currentItem()->text()+"."+item->text());
+    ui->expressionEdit->setFocus();
+}
+
+void FunctionDialog::on_columnListWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    if (
+        mExtList
+        &&
+        ui->pagesListWidget->currentRow()==mainWindow->ui->pagesTabWidget->currentIndex()+1
+        &&
+        ui->variablesListWidget->currentItem()->text()==mExtList->variableName()
+       )
+    {
+        ui->expressionEdit->insert("["+QString::number(ui->columnListWidget->row(item)+1)+"]");
+    }
+    else
+    {
+        ui->expressionEdit->insert(ui->pagesListWidget->currentItem()->text()+"."+ui->variablesListWidget->currentItem()->text()+"["+QString::number(ui->columnListWidget->row(item)+1)+"]");
+    }
+
     ui->expressionEdit->setFocus();
 }
 

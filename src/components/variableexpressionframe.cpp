@@ -176,7 +176,7 @@ bool VariableExpressionFrame::isEditable()
 
 void VariableExpressionFrame::on_functionButton_clicked()
 {
-    FunctionDialog dialog(this);
+    FunctionDialog dialog(0, this);
     dialog.ui->expressionEdit->setText(ui->valueEdit->text());
 
     if (dialog.exec())

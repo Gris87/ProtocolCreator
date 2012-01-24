@@ -994,9 +994,9 @@ void ColumnEditDialog::on_listLinkVariablesListWidget_currentRowChanged(int curr
             for (int i=0; i<globalDialog->variables.length(); i++)
             {
                 if (
-                    globalDialog->variables.at(i)->inherits("VariableListFrame")
-                    &&
                     globalDialog->variables.at(i)->variableName()==varName
+                    &&
+                    globalDialog->variables.at(i)->inherits("VariableListFrame")
                    )
                 {
                     aFrame=(VariableListFrame*)globalDialog->variables[i];
@@ -1010,9 +1010,9 @@ void ColumnEditDialog::on_listLinkVariablesListWidget_currentRowChanged(int curr
             for (int i=0; i<aPage->variables.length(); i++)
             {
                 if (
-                    aPage->variables.at(i)->inherits("VariableListFrame")
-                    &&
                     aPage->variables.at(i)->variableName()==varName
+                    &&
+                    aPage->variables.at(i)->inherits("VariableListFrame")
                    )
                 {
                     aFrame=(VariableListFrame*)aPage->variables[i];
@@ -1103,9 +1103,9 @@ void ColumnEditDialog::on_extListLinkVariablesListWidget_currentRowChanged(int c
             for (int i=0; i<globalDialog->variables.length(); i++)
             {
                 if (
-                    globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
-                    &&
                     globalDialog->variables.at(i)->variableName()==varName
+                    &&
+                    globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
                    )
                 {
                     aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
@@ -1119,9 +1119,9 @@ void ColumnEditDialog::on_extListLinkVariablesListWidget_currentRowChanged(int c
             for (int i=0; i<aPage->variables.length(); i++)
             {
                 if (
-                    aPage->variables.at(i)->inherits("VariableExtendedListFrame")
-                    &&
                     aPage->variables.at(i)->variableName()==varName
+                    &&
+                    aPage->variables.at(i)->inherits("VariableExtendedListFrame")
                    )
                 {
                     aFrame=(VariableExtendedListFrame*)aPage->variables[i];
@@ -1133,9 +1133,9 @@ void ColumnEditDialog::on_extListLinkVariablesListWidget_currentRowChanged(int c
                 for (int i=0; i<aPage->components.length(); i++)
                 {
                     if (
-                        aPage->components.at(i)->inherits("VariableExtendedListFrame")
-                        &&
                         aPage->components.at(i)->variableName()==varName
+                        &&
+                        aPage->components.at(i)->inherits("VariableExtendedListFrame")
                        )
                     {
                         aFrame=(VariableExtendedListFrame*)aPage->components[i];
@@ -1172,9 +1172,9 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
             for (int i=0; i<globalDialog->variables.length(); i++)
             {
                 if (
-                    globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
-                    &&
                     globalDialog->variables.at(i)->variableName()==varName
+                    &&
+                    globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
                    )
                 {
                     aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
@@ -1188,9 +1188,9 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
             for (int i=0; i<aPage->variables.length(); i++)
             {
                 if (
-                    aPage->variables.at(i)->inherits("VariableExtendedListFrame")
-                    &&
                     aPage->variables.at(i)->variableName()==varName
+                    &&
+                    aPage->variables.at(i)->inherits("VariableExtendedListFrame")
                    )
                 {
                     aFrame=(VariableExtendedListFrame*)aPage->variables[i];
@@ -1202,9 +1202,9 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
                 for (int i=0; i<aPage->variables.length(); i++)
                 {
                     if (
-                        aPage->components.at(i)->inherits("VariableExtendedListFrame")
-                        &&
                         aPage->components.at(i)->variableName()==varName
+                        &&
+                        aPage->components.at(i)->inherits("VariableExtendedListFrame")
                        )
                     {
                         aFrame=(VariableExtendedListFrame*)aPage->components[i];
@@ -1257,7 +1257,7 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
 
 void ColumnEditDialog::on_functionButton_clicked()
 {
-    FunctionDialog dialog(this);
+    FunctionDialog dialog(mTable, this);
     dialog.ui->expressionEdit->setText(ui->expressionEdit->text());
 
     if (dialog.exec())
