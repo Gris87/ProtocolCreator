@@ -38,6 +38,7 @@ private slots:
     void on_extListLinkPagesListWidget_currentRowChanged(int currentRow);
     void on_extListLinkVariablesListWidget_currentRowChanged(int currentRow);
     void on_extListLinkColumnsListWidget_currentRowChanged(int currentRow);
+    void on_functionButton_clicked();
     void on_leftButton_clicked();
     void on_rightButton_clicked();
 };

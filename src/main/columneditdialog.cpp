@@ -1255,6 +1255,17 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
     }
 }
 
+void ColumnEditDialog::on_functionButton_clicked()
+{
+    FunctionDialog dialog(this);
+    dialog.ui->expressionEdit->setText(ui->expressionEdit->text());
+
+    if (dialog.exec())
+    {
+        ui->expressionEdit->setText(dialog.ui->expressionEdit->text());
+    }
+}
+
 void ColumnEditDialog::on_leftButton_clicked()
 {
     applyChanges();
