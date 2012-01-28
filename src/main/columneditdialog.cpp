@@ -1228,6 +1228,49 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
 
                 aItems.removeDuplicates();
 
+                if (aColumnType==ctInteger)
+                {
+                    QString aPrefix=((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mPrefix;
+                    QString aPostfix=((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mPostfix;
+                    int aDecimal=((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mDecimals;
+
+                    QList<double> doubles;
+
+                    for (int i=0; i<aItems.length(); i++)
+                    {
+                        QString aText=aItems.at(i);
+
+                        aText.remove(aText.length()-aPostfix.length(), aPostfix.length());
+                        aText.remove(0, aPrefix.length());
+
+                        doubles.append(aText.toDouble());
+                    }
+
+                    for (int e=0; e<doubles.length()-1; e++)
+                    {
+                        int minIndex=e;
+                        double minDouble=doubles.at(e);
+
+                        for (int i=e+1; i<doubles.length(); i++)
+                        {
+                            if (doubles.at(i)<minDouble)
+                            {
+                                minDouble=doubles.at(i);
+                                minIndex=i;
+                            }
+                        }
+
+                        doubles.swap(e, minIndex);
+                    }
+
+                    aItems.clear();
+
+                    for (int i=0; i<doubles.length(); i++)
+                    {
+                        aItems.append(aPrefix+QString::number(doubles.at(i), 'f', aDecimal)+aPostfix);
+                    }
+                }
+                else
                 if (aColumnType==ctDate)
                 {
                     QList<QDate> dates;

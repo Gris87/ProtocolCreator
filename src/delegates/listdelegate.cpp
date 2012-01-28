@@ -135,6 +135,49 @@ QWidget *ListDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem 
 
                     aItems.removeDuplicates();
 
+                    if (aColumnType==ctInteger)
+                    {
+                        QString aPrefix=((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mPrefix;
+                        QString aPostfix=((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mPostfix;
+                        int aDecimal=((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mDecimals;
+
+                        QList<double> doubles;
+
+                        for (int i=0; i<aItems.length(); i++)
+                        {
+                            QString aText=aItems.at(i);
+
+                            aText.remove(aText.length()-aPostfix.length(), aPostfix.length());
+                            aText.remove(0, aPrefix.length());
+
+                            doubles.append(aText.toDouble());
+                        }
+
+                        for (int e=0; e<doubles.length()-1; e++)
+                        {
+                            int minIndex=e;
+                            double minDouble=doubles.at(e);
+
+                            for (int i=e+1; i<doubles.length(); i++)
+                            {
+                                if (doubles.at(i)<minDouble)
+                                {
+                                    minDouble=doubles.at(i);
+                                    minIndex=i;
+                                }
+                            }
+
+                            doubles.swap(e, minIndex);
+                        }
+
+                        aItems.clear();
+
+                        for (int i=0; i<doubles.length(); i++)
+                        {
+                            aItems.append(aPrefix+QString::number(doubles.at(i), 'f', aDecimal)+aPostfix);
+                        }
+                    }
+                    else
                     if (aColumnType==ctDate)
                     {
                         QList<QDate> dates;
