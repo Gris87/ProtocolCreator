@@ -137,13 +137,41 @@ QWidget *ListDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem 
 
                     if (aColumnType==ctDate)
                     {
+                        QList<QDate> dates;
+
                         for (int i=0; i<aItems.length(); i++)
                         {
-                            aItems[i]=QDate::fromString(aItems.at(i), "yyyy-MM-dd").toString("dd.MM.yyyy");
+                            dates.append(QDate::fromString(aItems.at(i), "dd.MM.yyyy"));
+                        }
+
+                        for (int e=0; e<dates.length()-1; e++)
+                        {
+                            int minIndex=e;
+                            QDate minDate=dates.at(e);
+
+                            for (int i=e+1; i<dates.length(); i++)
+                            {
+                                if (dates.at(i)<minDate)
+                                {
+                                    minDate=dates.at(i);
+                                    minIndex=i;
+                                }
+                            }
+
+                            dates.swap(e, minIndex);
+                        }
+
+                        aItems.clear();
+
+                        for (int i=0; i<dates.length(); i++)
+                        {
+                            aItems.append(dates.at(i).toString("dd.MM.yyyy"));
                         }
                     }
-
-                    aItems.sort();
+                    else
+                    {
+                        aItems.sort();
+                    }
 
                     editor->addItems(aItems);
                 }

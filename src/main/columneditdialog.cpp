@@ -479,8 +479,8 @@ void ColumnEditDialog::applyChanges()
 
                     QString aText=mTable->ui->dataTableWidget->item(i, mColumnIndex)->text();
 
-                    aText.remove(0, removeBefore);
                     aText.remove(aText.length()-removeAfter, removeAfter);
+                    aText.remove(0, removeBefore);
 
                     bool ok;
                     double aValue=aText.toDouble(&ok);
@@ -1199,7 +1199,7 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
 
             if (aFrame==0)
             {
-                for (int i=0; i<aPage->variables.length(); i++)
+                for (int i=0; i<aPage->components.length(); i++)
                 {
                     if (
                         aPage->components.at(i)->variableName()==varName
@@ -1230,13 +1230,41 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
 
                 if (aColumnType==ctDate)
                 {
+                    QList<QDate> dates;
+
                     for (int i=0; i<aItems.length(); i++)
                     {
-                        aItems[i]=QDate::fromString(aItems.at(i), "yyyy-MM-dd").toString("dd.MM.yyyy");
+                        dates.append(QDate::fromString(aItems.at(i), "dd.MM.yyyy"));
+                    }
+
+                    for (int e=0; e<dates.length()-1; e++)
+                    {
+                        int minIndex=e;
+                        QDate minDate=dates.at(e);
+
+                        for (int i=e+1; i<dates.length(); i++)
+                        {
+                            if (dates.at(i)<minDate)
+                            {
+                                minDate=dates.at(i);
+                                minIndex=i;
+                            }
+                        }
+
+                        dates.swap(e, minIndex);
+                    }
+
+                    aItems.clear();
+
+                    for (int i=0; i<dates.length(); i++)
+                    {
+                        aItems.append(dates.at(i).toString("dd.MM.yyyy"));
                     }
                 }
-
-                aItems.sort();
+                else
+                {
+                    aItems.sort();
+                }
 
                 ui->extendedListComboBox->addItems(aItems);
             }

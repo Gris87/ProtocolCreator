@@ -18,18 +18,24 @@ class VariableExtendedListFrame : public PageComponent
 
 public:
     Ui::VariableExtendedListFrame *ui;
+    CellAlignmentWidget *mCellAlignmentWidget;
+
+    bool mIsTable;
     Qt::AlignmentFlag mTableAlignment;
     double mTableOffset;
+
     QList<QList<STableCell> > headerCells;
     QList<int> headerColumnWidths;
+
     QList<STableColumn> typeColumns;
     QList<int> typeColumnWidths;
+
     QString middleRowFontString;
     quint8 middleRowAlignment;
     QColor middleRowBackgroundColor;
     QColor middleRowTextColor;
-    CellAlignmentWidget *mCellAlignmentWidget;
-    bool mIsTable;
+
+    QList<QList<QVariant> > mCellResults;
 
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();

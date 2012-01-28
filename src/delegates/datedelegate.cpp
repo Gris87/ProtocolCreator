@@ -14,7 +14,7 @@ QWidget *DateDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem 
 
 void DateDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    ((QDateEdit*)editor)->setDate(index.model()->data(index, Qt::EditRole).toDate());
+    ((QDateEdit*)editor)->setDate(QDate::fromString(index.model()->data(index, Qt::EditRole).toString(), "dd.MM.yyyy"));
 }
 
 void DateDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
@@ -23,7 +23,7 @@ void DateDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, cons
 
     dateEdit->interpretText();
 
-    model->setData(index, dateEdit->date(), Qt::EditRole);
+    model->setData(index, dateEdit->date().toString("dd.MM.yyyy"), Qt::EditRole);
 }
 
 void DateDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
