@@ -861,6 +861,176 @@ bool VariableExtendedListFrame::isEditable()
 void VariableExtendedListFrame::checkForErrors(QStringList &aErrorList)
 {
     PageComponent::checkForErrors(aErrorList);
+
+    for (int i=0; i<typeColumns.length(); i++)
+    {
+        ColumnType *aColumnType=typeColumns.at(i).column;
+
+        QString aLink="";
+
+        if (aColumnType->type()==ctList)
+        {
+            aLink=((ListColumn*)aColumnType)->mLinkComponent;
+        }
+        else
+        if (aColumnType->type()==ctExtendedList)
+        {
+            aLink=((ExtendedListColumn*)aColumnType)->mLinkComponent;
+        }
+
+        if (aLink!="")
+        {
+            int index=aLink.indexOf(".");
+
+            if (index>=0)
+            {
+                QString aSectionName=aLink.left(index);
+                aLink=aLink.mid(index+1);
+
+                QString aVarName;
+                QString aColumnIndex="";
+                index=aLink.indexOf("[");
+
+                if (index>=0)
+                {
+                    aVarName=aLink.left(index);
+                    aLink=aLink.mid(index+1);
+                    aLink.remove(aLink.length()-1, 1);
+
+                    aColumnIndex=aLink;
+                }
+                else
+                {
+                    aVarName=aLink;
+                }
+
+                VariableExtendedListFrame* aExtFrame=0;
+                VariableListFrame* aFrame=0;
+
+                if (aSectionName=="Global")
+                {
+                    for (int i=0; i<globalDialog->variables.length(); i++)
+                    {
+                        if (globalDialog->variables.at(i)->variableName()==aVarName)
+                        {
+                            if (
+                                aColumnIndex!=""
+                                &&
+                                globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
+                               )
+                            {
+                                aExtFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
+                            }
+                            else
+                            if (globalDialog->variables.at(i)->inherits("VariableListFrame"))
+                            {
+                                aFrame=(VariableListFrame*)globalDialog->variables[i];
+                            }
+
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
+                    {
+                        if(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text()==aSectionName)
+                        {
+                            PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(i);
+
+                            for (int i=0; i<aPage->variables.length(); i++)
+                            {
+                                if (aPage->variables.at(i)->variableName()==aVarName)
+                                {
+                                    if (
+                                        aColumnIndex!=""
+                                        &&
+                                        aPage->variables.at(i)->inherits("VariableExtendedListFrame")
+                                       )
+                                    {
+                                        aExtFrame=(VariableExtendedListFrame*)aPage->variables[i];
+                                    }
+                                    else
+                                    if (aPage->variables.at(i)->inherits("VariableListFrame"))
+                                    {
+                                        aFrame=(VariableListFrame*)aPage->variables[i];
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            for (int i=0; i<aPage->components.length(); i++)
+                            {
+                                if (aPage->components.at(i)->variableName()==aVarName)
+                                {
+                                    if (
+                                        aColumnIndex!=""
+                                        &&
+                                        aPage->components.at(i)->inherits("VariableExtendedListFrame")
+                                       )
+                                    {
+                                        aExtFrame=(VariableExtendedListFrame*)aPage->components[i];
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (aExtFrame)
+                {
+                    bool ok;
+                    int aColumnID=aColumnIndex.toInt(&ok)-1;
+
+                    if (!ok || aColumnID<0 || aColumnID>=aExtFrame->typeColumns.length())
+                    {
+                        if (ok)
+                        {
+                            if (aSectionName=="Global")
+                            {
+                                aErrorList.append("Hint: Индекс неправильный у глобальной переменной \""+aVarName+"\"");
+                            }
+                            else
+                            {
+                                aErrorList.append("Hint: Индекс неправильный у переменной \""+aVarName+"\" в разделе \""+aSectionName+"\"");
+                            }
+                        }
+                        else
+                        {
+                            if (aSectionName=="Global")
+                            {
+                                aErrorList.append("Hint: Индекс столбца не число у глобальной переменной \""+aVarName+"\"");
+                            }
+                            else
+                            {
+                                aErrorList.append("Hint: Индекс столбца не число у переменной \""+aVarName+"\" в разделе \""+aSectionName+"\"");
+                            }
+                        }
+                    }
+                }
+                else
+                if (aFrame==0)
+                {
+                    if (aSectionName=="Global")
+                    {
+                        aErrorList.append("Hint: Не найдена глобальная переменная \""+aVarName+"\"");
+                    }
+                    else
+                    {
+                        aErrorList.append("Hint: Не найдена переменная \""+aVarName+"\" в разделе \""+aSectionName+"\"");
+                    }
+                }
+            }
+            else
+            {
+                aErrorList.append("Hint: Не найдена точка для определения связи со списком");
+            }
+        }
+    }
 }
 
 QVariant VariableExtendedListFrame::calculate()

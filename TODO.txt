@@ -1,5 +1,2 @@
 Special functions needs to add
-Adding rows to data table
-Setting delegates
-Fill rows with default data
-Replace column type
+Also return StringList for list component calculation
