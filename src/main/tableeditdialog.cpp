@@ -106,6 +106,8 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         ui->structureTableWidget->unite(0, 1, ui->structureTableWidget->columnCount()-1, 1);
     }
 
+    connect(ui->structureTableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(structureTableHeaderMove(int,int,int)));
+
     updateAdmin();
 }
 
@@ -853,8 +855,66 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
     contextMenu->show();
 }
 
+void TableEditDialog::structureTableHeaderMove(int logicalIndex, int oldVisualIndex, int newVisualIndex)
+{
+    disconnect(ui->structureTableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(structureTableHeaderMove(int,int,int)));
+
+    ui->structureTableWidget->horizontalHeader()->moveSection(newVisualIndex, oldVisualIndex);
+
+    mTable->typeColumns.move(oldVisualIndex, newVisualIndex);
+
+    QTableWidgetItem *takenItem=ui->structureTableWidget->takeItem(0, oldVisualIndex);
+    int step=oldVisualIndex<newVisualIndex? 1 : -1;
+
+    for (int i=oldVisualIndex; i!=newVisualIndex; i+=step)
+    {
+        ui->structureTableWidget->setItem(0, i, ui->structureTableWidget->takeItem(0, i+step));
+    }
+
+    ui->structureTableWidget->setItem(0, newVisualIndex, takenItem);
+
+    takenItem=ui->structureTableWidget->takeHorizontalHeaderItem(oldVisualIndex);
+
+    for (int i=oldVisualIndex; i!=newVisualIndex; i+=step)
+    {
+        ui->structureTableWidget->setHorizontalHeaderItem(i, ui->structureTableWidget->takeHorizontalHeaderItem(i+step));
+    }
+
+    ui->structureTableWidget->setHorizontalHeaderItem(newVisualIndex, takenItem);
+
+//------------------------------------------------------------------
+
+    for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+    {
+        if (mTable->ui->dataTableWidget->itemDelegateForRow(i)==0)
+        {
+            takenItem=mTable->ui->dataTableWidget->takeItem(i, oldVisualIndex);
+
+            for (int j=oldVisualIndex; j!=newVisualIndex; j+=step)
+            {
+                mTable->ui->dataTableWidget->setItem(i, j, mTable->ui->dataTableWidget->takeItem(i, j+step));
+            }
+
+            mTable->ui->dataTableWidget->setItem(i, newVisualIndex, takenItem);
+        }
+    }
+
+    takenItem=mTable->ui->dataTableWidget->takeHorizontalHeaderItem(oldVisualIndex);
+
+    for (int i=oldVisualIndex; i!=newVisualIndex; i+=step)
+    {
+        mTable->ui->dataTableWidget->setHorizontalHeaderItem(i, mTable->ui->dataTableWidget->takeHorizontalHeaderItem(i+step));
+    }
+
+    mTable->ui->dataTableWidget->setHorizontalHeaderItem(newVisualIndex, takenItem);
+
+    connect(ui->structureTableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(structureTableHeaderMove(int,int,int)));
+}
+
 void TableEditDialog::updateAdmin()
 {
     ui->headerAdminWidget->setVisible(isAdmin);
     ui->structureAdminWidget->setVisible(isAdmin);
+
+    ui->structureTableWidget->horizontalHeader()->setMovable(isAdmin);
 }

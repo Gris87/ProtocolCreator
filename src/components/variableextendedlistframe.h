@@ -95,6 +95,7 @@ private slots:
     void tableCellAlignBottom();
     void tableCellAlignBottomRight();
     void on_dataTableWidget_customContextMenuRequested(const QPoint &pos);
+    void dataTableHeaderMove(int logicalIndex, int oldVisualIndex, int newVisualIndex);
 
 signals:
     void switchPressed(VariableExtendedListFrame*  aComponent);

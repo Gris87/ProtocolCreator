@@ -68,6 +68,8 @@ private slots:
     void on_structureChangeColButton_clicked();
     void on_structureDelColButton_clicked();
     void on_structureTableWidget_customContextMenuRequested(const QPoint &pos);
+
+    void structureTableHeaderMove(int logicalIndex, int oldVisualIndex, int newVisualIndex);
 };
 
 #endif // TABLEEDITDIALOG_H

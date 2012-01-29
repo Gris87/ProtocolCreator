@@ -31,7 +31,10 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     connect(mCellAlignmentWidget->ui->bottomRightButton, SIGNAL(clicked()), this, SLOT(tableCellAlignBottomRight()));
 
     ui->dataTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
+    ui->dataTableWidget->verticalHeader()->setMovable(true);
     ui->dataTableWidget->mTable=this;
+
+    connect(ui->dataTableWidget->verticalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(dataTableHeaderMove(int,int,int)));
 }
 
 VariableExtendedListFrame::~VariableExtendedListFrame()
@@ -1738,4 +1741,68 @@ void VariableExtendedListFrame::on_dataTableWidget_customContextMenuRequested(co
 
     contextMenu->setGeometry(cursor().pos().x(),cursor().pos().y(),contextMenu->sizeHint().width(),contextMenu->sizeHint().height());
     contextMenu->show();
+}
+
+void VariableExtendedListFrame::dataTableHeaderMove(int logicalIndex, int oldVisualIndex, int newVisualIndex)
+{
+    disconnect(ui->dataTableWidget->verticalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(dataTableHeaderMove(int,int,int)));
+
+    ui->dataTableWidget->verticalHeader()->moveSection(newVisualIndex, oldVisualIndex);
+
+    QTableWidgetItem *takenItem;
+    int step=oldVisualIndex<newVisualIndex? 1 : -1;
+
+    for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
+    {
+        takenItem=ui->dataTableWidget->takeItem(oldVisualIndex, j);
+
+        for (int i=oldVisualIndex; i!=newVisualIndex; i+=step)
+        {
+            ui->dataTableWidget->setItem(i, j, ui->dataTableWidget->takeItem(i+step, j));
+        }
+
+        ui->dataTableWidget->setItem(newVisualIndex, j, takenItem);
+    }
+
+    QAbstractItemDelegate *takenDelegate=ui->dataTableWidget->itemDelegateForRow(oldVisualIndex);
+
+    for (int i=oldVisualIndex; i!=newVisualIndex; i+=step)
+    {
+        ui->dataTableWidget->setItemDelegateForRow(i, ui->dataTableWidget->itemDelegateForRow(i+step));
+    }
+
+    ui->dataTableWidget->setItemDelegateForRow(newVisualIndex, takenDelegate);
+
+    int takenColSpan=ui->dataTableWidget->columnSpan(oldVisualIndex, 0);
+
+    for (int i=oldVisualIndex; i!=newVisualIndex; i+=step)
+    {
+        ui->dataTableWidget->setSpan(i, 0, 1, ui->dataTableWidget->columnSpan(i+step, 0));
+    }
+
+    ui->dataTableWidget->setSpan(newVisualIndex, 0, 1, takenColSpan);
+
+    for (int j=0; j<typeColumns.length(); j++)
+    {
+        if (
+            typeColumns.at(j).column->type()==ctInteger
+            &&
+            ((IntegerColumn*)typeColumns.at(j).column)->mIsAutoInc
+           )
+        {
+            int id=1;
+
+            for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+            {
+                if (ui->dataTableWidget->itemDelegateForRow(i)==0)
+                {
+                    ui->dataTableWidget->item(i, j)->setText(QString::number(id));
+
+                    id++;
+                }
+            }
+        }
+    }
+
+    connect(ui->dataTableWidget->verticalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(dataTableHeaderMove(int,int,int)));
 }
