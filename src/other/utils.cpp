@@ -255,8 +255,6 @@ PageComponent* getVariableOrThrow(QString aVariableName, PageComponent *aCompone
 
 QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableExtendedListFrame *inFrame, int tableRow)
 {
-    qDebug()<<aExpression;
-
     aExpression=aExpression.trimmed();
 
     QChar quote='0';
@@ -1692,6 +1690,42 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
 
             aComponent->calculationError="Строка \""+aExpression+"\" должна была закончиться кавычкой "+QString(quote);
             throw "Wrong end";
+        }
+        else
+        if (aExpression.startsWith("[") && aExpression.endsWith("]"))
+        {
+            if (inFrame==0)
+            {
+                aComponent->calculationError="Обращение к столбцу \""+aExpression+"\" доступно только для таблицы";
+                throw "Column index is unavailable";
+            }
+
+            aExpression.remove(aExpression.length()-1, 1);
+            aExpression.remove(0, 1);
+
+            bool ok;
+            int aColumn=aExpression.toInt(&ok);
+
+            if (!ok)
+            {
+                aComponent->calculationError="Индекс столбца \"["+aExpression+"]\" должен быть числом";
+                throw "Column index is not a number";
+            }
+
+            if (aColumn<1 || aColumn>inFrame->typeColumns.length())
+            {
+                aComponent->calculationError="Не найден "+aExpression+" столбец";
+                throw "Wrong column index";
+            }
+
+            aColumn--;
+
+            if (!inFrame->mCellResults.at(tableRow).at(aColumn).isValid())
+            {
+                throw "Not now. Maybe later";
+            }
+
+            return inFrame->mCellResults.at(tableRow).at(aColumn);
         }
         else
         if (aExpression.at(0).isNumber())

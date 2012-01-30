@@ -1143,6 +1143,65 @@ QVariant VariableExtendedListFrame::calculate()
                 break;
             }
         }
+
+        int lastNotCalculated=0;
+        int curNotCalculated=0;
+
+        do
+        {
+            curNotCalculated=0;
+
+            for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
+            {
+                if (
+                    typeColumns.at(j).column->type()==ctExpression
+                    &&
+                    !mCellResults.at(0).at(j).isValid()
+                   )
+                {
+                    curNotCalculated++;
+                }
+            }
+
+            if (curNotCalculated==0)
+            {
+                break;
+            }
+
+            if (lastNotCalculated==curNotCalculated)
+            {
+                calculationError="Вычисление зациклилось";
+                throw "Recursive error";
+                break;
+            }
+
+            lastNotCalculated=curNotCalculated;
+
+            for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
+            {
+                if (
+                    typeColumns.at(j).column->type()==ctExpression
+                    &&
+                    !mCellResults.at(0).at(j).isValid()
+                   )
+                {
+                    for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+                    {
+                        try
+                        {
+                            mCellResults[i][j]=calculatePart(ui->dataTableWidget->item(i,j)->text(), this, this, i);
+                        }
+                        catch(...)
+                        {
+                            if (calculationError!="")
+                            {
+                                throw "Recursive throw";
+                            }
+                        }
+                    }
+                }
+            }
+        } while(true);
     }
 
 //----------------------------------------------
