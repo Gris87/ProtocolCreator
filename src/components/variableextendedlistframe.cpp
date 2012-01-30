@@ -1062,83 +1062,86 @@ QVariant VariableExtendedListFrame::calculate()
 
 //----------------------------------------------
 
-    for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
+    if (mCellResults.length()>0)
     {
-        switch(typeColumns.at(j).column->type())
+        for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
         {
-            case ctInteger:
+            switch(typeColumns.at(j).column->type())
             {
-                int removeBefore=0;
-                int removeAfter=0;
-
-                if (!((IntegerColumn*)typeColumns.at(j).column)->mIsAutoInc)
+                case ctInteger:
                 {
-                    removeBefore=((IntegerColumn*)typeColumns.at(j).column)->mPrefix.length();
-                    removeAfter=((IntegerColumn*)typeColumns.at(j).column)->mPostfix.length();
-                }
+                    int removeBefore=0;
+                    int removeAfter=0;
 
-                for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
-                {
-                    QString aText=ui->dataTableWidget->item(i,j)->text();
-
-                    aText.remove(aText.length()-removeAfter, removeAfter);
-                    aText.remove(0, removeBefore);
-
-                    mCellResults[i][j]=aText.toDouble();
-                }
-            }
-            break;
-            case ctString:
-            case ctList:
-            case ctExtendedList:
-            {
-                for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
-                {
-                    mCellResults[i][j]=ui->dataTableWidget->item(i,j)->text();
-                }
-            }
-            break;
-            case ctBool:
-            {
-                for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
-                {
-                    if (ui->dataTableWidget->item(i,j)->checkState()==Qt::Checked)
+                    if (!((IntegerColumn*)typeColumns.at(j).column)->mIsAutoInc)
                     {
-                        mCellResults[i][j]=true;
+                        removeBefore=((IntegerColumn*)typeColumns.at(j).column)->mPrefix.length();
+                        removeAfter=((IntegerColumn*)typeColumns.at(j).column)->mPostfix.length();
                     }
-                    else
+
+                    for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
                     {
-                        mCellResults[i][j]=false;
+                        QString aText=ui->dataTableWidget->item(i,j)->text();
+
+                        aText.remove(aText.length()-removeAfter, removeAfter);
+                        aText.remove(0, removeBefore);
+
+                        mCellResults[i][j]=aText.toDouble();
                     }
                 }
-            }
-            break;
-            case ctDate:
-            {
-                for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+                break;
+                case ctString:
+                case ctList:
+                case ctExtendedList:
                 {
-                    mCellResults[i][j]=QDate::fromString(ui->dataTableWidget->item(i,j)->text(), "dd.MM.yyyy");
+                    for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+                    {
+                        mCellResults[i][j]=ui->dataTableWidget->item(i,j)->text();
+                    }
                 }
-            }
-            break;
-            case ctTime:
-            {
-                for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+                break;
+                case ctBool:
                 {
-                    mCellResults[i][j]=QTime::fromString(ui->dataTableWidget->item(i,j)->text(), "hh:mm:ss");
+                    for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+                    {
+                        if (ui->dataTableWidget->item(i,j)->checkState()==Qt::Checked)
+                        {
+                            mCellResults[i][j]=true;
+                        }
+                        else
+                        {
+                            mCellResults[i][j]=false;
+                        }
+                    }
                 }
+                break;
+                case ctDate:
+                {
+                    for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+                    {
+                        mCellResults[i][j]=QDate::fromString(ui->dataTableWidget->item(i,j)->text(), "dd.MM.yyyy");
+                    }
+                }
+                break;
+                case ctTime:
+                {
+                    for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+                    {
+                        mCellResults[i][j]=QTime::fromString(ui->dataTableWidget->item(i,j)->text(), "hh:mm:ss");
+                    }
+                }
+                break;
+                case ctExpression:
+                {
+                    // Nothing, will be process later
+                }
+                break;
+                default:
+                {
+                    throw "Unknown column type";
+                }
+                break;
             }
-            break;
-            case ctExpression:
-            {
-                // Nothing, will be process later
-            }
-            break;
-            default:
-            {
-                throw "Unknown column type";
-            }
-            break;
         }
     }
 

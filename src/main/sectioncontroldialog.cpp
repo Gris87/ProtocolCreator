@@ -19,7 +19,7 @@ SectionControlDialog::SectionControlDialog(QWidget *parent) :
         ui->pagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->nameEdit->text());
     }
 
-    ui->pagesListWidget->setCurrentRow(0);
+    ui->pagesListWidget->selectAll();
 }
 
 SectionControlDialog::~SectionControlDialog()

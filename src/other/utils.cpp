@@ -253,7 +253,7 @@ PageComponent* getVariableOrThrow(QString aVariableName, PageComponent *aCompone
     return aVariable;
 }
 
-QVariant calculatePart(QString aExpression, PageComponent *aComponent)
+QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableExtendedListFrame *inFrame, int tableRow)
 {
     qDebug()<<aExpression;
 
@@ -509,7 +509,7 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent)
 
         if (aFunction=="Если")
         {
-            QVariant aCondition=calculatePart(aParameters.at(0), aComponent);
+            QVariant aCondition=calculatePart(aParameters.at(0), aComponent, inFrame, tableRow);
 
             if (aCondition.type()!=QVariant::Bool)
             {
@@ -519,11 +519,11 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent)
 
             if (aCondition.toBool())
             {
-                return calculatePart(aParameters.at(1), aComponent);
+                return calculatePart(aParameters.at(1), aComponent, inFrame, tableRow);
             }
             else
             {
-                return calculatePart(aParameters.at(2), aComponent);
+                return calculatePart(aParameters.at(2), aComponent, inFrame, tableRow);
             }
         }
         else
@@ -532,7 +532,7 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent)
 
             for (int i=0; i<aParameters.length(); i++)
             {
-                aResults.append(calculatePart(aParameters.at(i), aComponent));
+                aResults.append(calculatePart(aParameters.at(i), aComponent, inFrame, tableRow));
             }
 
             if (aFunction=="Сумма_чисел")
