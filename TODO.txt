@@ -1,5 +1,4 @@
 Special functions needs to add
-Return StringList for list component calculation
 Hide/Show data type columns
 Check that count of type columns and count header columns are the same
 Copy and paste rows with inserting
