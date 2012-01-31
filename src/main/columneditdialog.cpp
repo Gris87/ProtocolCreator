@@ -61,6 +61,7 @@ void ColumnEditDialog::startEditing()
     STableColumn *aColumn=&mTable->typeColumns[mColumnIndex];
 
     ui->nameEdit->setText(aColumn->name);
+    ui->visibleCheckBox->setChecked(aColumn->visible);
 
     switch (aColumn->column->type())
     {
@@ -231,6 +232,7 @@ void ColumnEditDialog::applyChanges()
         STableColumn *aColumn=&mTable->typeColumns[mColumnIndex];
 
         aColumn->name=ui->nameEdit->text();
+        aColumn->visible=ui->visibleCheckBox->isChecked();
 
         ColumnType *aOldTypeColumn=aColumn->column;
 
@@ -340,11 +342,13 @@ void ColumnEditDialog::applyChanges()
 
 
         mTableWidget->horizontalHeaderItem(mColumnIndex)->setText(aColumn->name);
+        mTableWidget->horizontalHeaderItem(mColumnIndex)->setTextColor(aColumn->visible? QColor(0, 0, 0) : QColor(128, 128, 128));
         mTableWidget->item(0, mColumnIndex)->setText(aColumn->column->typeDescription());
 
 
 
         mTable->ui->dataTableWidget->horizontalHeaderItem(mColumnIndex)->setText(aColumn->name);
+        mTable->ui->dataTableWidget->horizontalHeaderItem(mColumnIndex)->setTextColor(aColumn->visible? QColor(0, 0, 0) : QColor(128, 128, 128));
 
         delete mTable->ui->dataTableWidget->itemDelegateForColumn(mColumnIndex);
 
@@ -613,6 +617,7 @@ void ColumnEditDialog::applyChanges()
         STableColumn aColumn;
 
         aColumn.name=ui->nameEdit->text();
+        aColumn.visible=ui->visibleCheckBox->isChecked();
 
         switch (ui->typeComboBox->currentIndex())
         {
@@ -728,9 +733,16 @@ void ColumnEditDialog::applyChanges()
         mTable->typeColumns.insert(mColumnIndex, aColumn);
 
         mTableWidget->insertColumn(mColumnIndex);
-        mTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));
 
         QTableWidgetItem *aItem;
+
+        aItem=new QTableWidgetItem(aColumn.name);
+        aItem->setTextColor(aColumn.visible? QColor(0, 0, 0) : QColor(128, 128, 128));
+
+        mTableWidget->setHorizontalHeaderItem(mColumnIndex, aItem);
+
+
+
         QBrush aBrush(QColor(255, 255, 255));
 
         aItem=new QTableWidgetItem(aColumn.column->typeDescription());
@@ -776,7 +788,11 @@ void ColumnEditDialog::applyChanges()
         }
 
         mTable->ui->dataTableWidget->insertColumn(mColumnIndex);
-        mTable->ui->dataTableWidget->setHorizontalHeaderItem(mColumnIndex, new QTableWidgetItem(aColumn.name));
+
+        aItem=new QTableWidgetItem(aColumn.name);
+        aItem->setTextColor(aColumn.visible? QColor(0, 0, 0) : QColor(128, 128, 128));
+
+        mTable->ui->dataTableWidget->setHorizontalHeaderItem(mColumnIndex, aItem);
 
         for (int i=mTable->ui->dataTableWidget->columnCount()-1; i>mColumnIndex; i--)
         {

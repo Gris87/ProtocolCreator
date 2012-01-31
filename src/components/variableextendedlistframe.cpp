@@ -164,6 +164,9 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
         aStream << QString("Name");
         aStream << aColumn->name;
 
+        aStream << QString("Visible");
+        aStream << aColumn->visible;
+
         aStream << QString("Column");
         aColumn->column->saveToStream(aStream);
 
@@ -489,6 +492,12 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                             {
                                 aStream >> aColumn.name;
                                 ui->dataTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(aColumn.name));
+                            }
+                            else
+                            if (aMagicWord=="Visible")
+                            {
+                                aStream >> aColumn.visible;
+                                ui->dataTableWidget->horizontalHeaderItem(i)->setTextColor(aColumn.visible? QColor(0, 0, 0) : QColor(128, 128, 128));
                             }
                             else
                             if (aMagicWord=="Column")

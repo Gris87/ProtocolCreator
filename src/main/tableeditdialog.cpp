@@ -71,9 +71,14 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
     {
         STableColumn *aColumn=&mTable->typeColumns[i];
 
-        ui->structureTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(aColumn->name));
-
         QTableWidgetItem *aItem;
+
+        aItem=new QTableWidgetItem(aColumn->name);
+        aItem->setTextColor(aColumn->visible? QColor(0, 0, 0) : QColor(128, 128, 128));
+
+        ui->structureTableWidget->setHorizontalHeaderItem(i, aItem);
+
+
 
         aItem=new QTableWidgetItem(aColumn->column->typeDescription());
 

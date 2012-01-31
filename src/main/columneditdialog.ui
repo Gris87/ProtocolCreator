@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>553</width>
-    <height>228</height>
+    <height>249</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -136,6 +136,16 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="visibleCheckBox">
+     <property name="text">
+      <string>Столбец видим</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QStackedWidget" name="typeStackedWidget">

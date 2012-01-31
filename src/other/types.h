@@ -24,6 +24,7 @@ struct STableCell
 struct STableColumn
 {
     QString name;
+    bool visible;
     ColumnType *column;
     double leftOffset;
     double rightOffset;
