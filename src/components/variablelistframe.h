@@ -15,6 +15,7 @@ class VariableListFrame : public PageComponent
 
 public:
     Ui::VariableListFrame *ui;
+    QStringList mCalculationList;
 
     explicit VariableListFrame(QWidget *parent = 0);
     ~VariableListFrame();

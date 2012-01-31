@@ -1223,6 +1223,9 @@ QVariant VariableExtendedListFrame::calculate()
     mCellResults.clear();
     calculationResult=resultRows;
 
+    isWasCalculated=true;
+    isInCalculation=false;
+
     return calculationResult;
 }
 

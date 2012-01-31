@@ -242,6 +242,13 @@ QVariant VariableListFrame::calculate()
 
     calculationResult=ui->valueComboBox->currentText();
 
+    mCalculationList.clear();
+
+    for (int i=0; i<ui->valueComboBox->count(); i++)
+    {
+        mCalculationList.append(ui->valueComboBox->itemText(i));
+    }
+
     isWasCalculated=true;
     isInCalculation=false;
 

@@ -1301,6 +1301,20 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
             else
             if (aFunction=="Список_в_Строку")
             {
+                if (aResults.at(0).type()==QVariant::String)
+                {
+                    PageComponent* aVariable=variableByName(aParameters.at(0), aComponent);
+
+                    if (
+                        aVariable
+                        &&
+                        aVariable->inherits("VariableListFrame")
+                       )
+                    {
+                        aResults[0]=((VariableListFrame*)aVariable)->mCalculationList;
+                    }
+                }
+
                 if (aResults.at(0).type()!=QVariant::StringList)
                 {
                     aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должен быть список";
@@ -1771,16 +1785,102 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
         }
         else
         {
+            QString aColumnIndex="";
+
+            int index=aExpression.indexOf("[");
+
+            if (index>=0)
+            {
+                if (!aExpression.endsWith("]"))
+                {
+                    aComponent->calculationError="Не найдена закрывающаяся квадратная скобка в \""+aExpression+"\"";
+                    throw "Wrong column index";
+                }
+
+                aColumnIndex=aExpression.mid(index+1);
+                aColumnIndex.remove(aColumnIndex.length()-1, 1);
+
+                aExpression=aExpression.left(index);
+            }
+
             PageComponent *aVariable=getVariableOrThrow(aExpression, aComponent);
+            QVariant varResult;
 
             try
             {
-                return aVariable->calculate();
+                varResult=aVariable->calculate();
             }
             catch (...)
             {
                 aComponent->calculationError=aVariable->calculationError;
                 throw "Recursive throw";
+            }
+
+            if (aColumnIndex=="")
+            {
+                return varResult;
+            }
+            else
+            {
+                if (!aVariable->inherits("VariableExtendedListFrame"))
+                {
+                    aComponent->calculationError="Переменная \""+aExpression+"\" не является расширенным списком";
+                    throw "Supported for VariableExtendedListFrame only";
+                }
+
+                bool ok;
+                int aColumnID=aColumnIndex.toInt(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Индекс таблицы \"["+aColumnIndex+"]\" не является числом";
+                    throw "Column index is not a number";
+                }
+
+                if (aColumnID<1 || aColumnID>((VariableExtendedListFrame*)aVariable)->typeColumns.length())
+                {
+                    aComponent->calculationError="Не найден "+aColumnIndex+" столбец";
+                    throw "Column index not found";
+                }
+
+                aColumnID--;
+
+                QStringList aResultList;
+                QVariantList rowValues=varResult.toList();
+
+                for (int i=0; i<rowValues.length(); i++)
+                {
+                    QVariantList colValues=rowValues.at(i).toList();
+                    QVariant aValue=colValues.at(aColumnID);
+
+                    if (aValue.type()==QVariant::Date)
+                    {
+                        aResultList.append(aValue.toDate().toString("dd.MM.yyyy"));
+                    }
+                    else
+                    if (aValue.type()==QVariant::Time)
+                    {
+                        aResultList.append(aValue.toTime().toString("hh:mm:ss"));
+                    }
+                    else
+                    if (aValue.type()==QVariant::Bool)
+                    {
+                        if (aValue.toBool())
+                        {
+                            aResultList.append("1");
+                        }
+                        else
+                        {
+                            aResultList.append("0");
+                        }
+                    }
+                    else
+                    {
+                        aResultList.append(aValue.toString());
+                    }
+                }
+
+                return aResultList;
             }
         }
     }
