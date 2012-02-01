@@ -874,6 +874,24 @@ void VariableExtendedListFrame::checkForErrors(QStringList &aErrorList)
 {
     PageComponent::checkForErrors(aErrorList);
 
+    if (mIsTable)
+    {
+        int visibleColumns=0;
+
+        for (int i=0; i<typeColumns.length(); i++)
+        {
+            if (typeColumns.at(i).visible)
+            {
+                visibleColumns++;
+            }
+        }
+
+        if (visibleColumns!=headerColumnWidths.length())
+        {
+            aErrorList.append("Error: Количество видимых столбцов в таблице не совпадает с количеством столбцов в заголовке");
+        }
+    }
+
     for (int i=0; i<typeColumns.length(); i++)
     {
         ColumnType *aColumnType=typeColumns.at(i).column;

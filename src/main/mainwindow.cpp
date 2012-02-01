@@ -116,7 +116,7 @@ void MainWindow::on_actionOpen_triggered()
 
         if (aMagicWord!="ProtocolCreator")
         {
-            QMessageBox::warning(this, "Openning file", "Incorrect format");
+            QMessageBox::warning(this, "Открытие файла", "Неверный формат");
             return;
         }
 
@@ -124,7 +124,7 @@ void MainWindow::on_actionOpen_triggered()
 
         if (aMagicWord!="DocumentPassword")
         {
-            QMessageBox::warning(this, "Openning file", "Incorrect format");
+            QMessageBox::warning(this, "Открытие файла", "Неверный формат");
             return;
         }
 

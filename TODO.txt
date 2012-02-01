@@ -1,5 +1,4 @@
 Special functions needs to add
-Check that count of type columns and count header columns are the same
 Copy and paste rows with inserting
 Maybe sort columns
 Search for table and word document
