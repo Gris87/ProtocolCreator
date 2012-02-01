@@ -11,7 +11,7 @@ class ListDelegate : public QItemDelegate
 public:
     QString mLink;
 
-    ListDelegate(QObject *parent = 0);
+    ListDelegate(QString aLink, QObject *parent = 0);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 

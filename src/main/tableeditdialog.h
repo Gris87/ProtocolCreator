@@ -69,6 +69,12 @@ private slots:
     void on_structureDelColButton_clicked();
     void on_structureTableWidget_customContextMenuRequested(const QPoint &pos);
 
+    void structureLinkForMiddleRow();
+    void structureDelinkForMiddleRow();
+    void structureLinkForAnotherList();
+    void structureDelinkForAnotherList();
+    void on_structureAdditionalButton_clicked();
+
     void structureTableHeaderMove(int logicalIndex, int oldVisualIndex, int newVisualIndex);
 };
 

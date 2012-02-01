@@ -1,5 +1,34 @@
 #include "src/other/global.h"
 
+void setGeometryInDesktop(QWidget* aWidget, int aX, int aY, int aWidthSize, int aHeightSize)
+{
+    QDesktopWidget *desktop = QApplication::desktop();
+    int aWidth = desktop->width();
+    int aHeight = desktop->height();
+
+    if (aX<0)
+    {
+        aX=0;
+    }
+
+    if (aY<0)
+    {
+        aY=0;
+    }
+
+    if (aX+aWidthSize>aWidth)
+    {
+        aX=aWidth-aWidthSize;
+    }
+
+    if (aY+aHeightSize>aHeight)
+    {
+        aY=aHeight-aHeightSize;
+    }
+
+    aWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
+}
+
 void copyVariable(PageComponent *aComponent)
 {
     PageSelectionDialog dialog(mainWindow);

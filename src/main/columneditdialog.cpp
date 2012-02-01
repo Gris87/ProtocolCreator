@@ -377,20 +377,18 @@ void ColumnEditDialog::applyChanges()
             break;
             case 5:
             {
-                ListDelegate *delegate=new ListDelegate(mTable);
-
-                delegate->mLink=ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text();
-
-                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new ListDelegate(
+                                                                                                     ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text(),
+                                                                                                     mTable
+                                                                                                    ));
             }
             break;
             case 6:
             {
-                ListDelegate *delegate=new ListDelegate(mTable);
-
-                delegate->mLink=ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]";
-
-                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new ListDelegate(
+                                                                                                     ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]",
+                                                                                                     mTable
+                                                                                                    ));
             }
             break;
             default:
@@ -824,20 +822,18 @@ void ColumnEditDialog::applyChanges()
             break;
             case 5:
             {
-                ListDelegate *delegate=new ListDelegate(mTable);
-
-                delegate->mLink=ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text();
-
-                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new ListDelegate(
+                                                                                                     ui->listLinkPagesListWidget->currentItem()->text()+"."+ui->listLinkVariablesListWidget->currentItem()->text(),
+                                                                                                     mTable
+                                                                                                    ));
             }
             break;
             case 6:
             {
-                ListDelegate *delegate=new ListDelegate(mTable);
-
-                delegate->mLink=ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]";
-
-                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
+                mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, new ListDelegate(
+                                                                                                     ui->extListLinkPagesListWidget->currentItem()->text()+"."+ui->extListLinkVariablesListWidget->currentItem()->text()+"["+QString::number(ui->extListLinkColumnsListWidget->currentRow()+1)+"]",
+                                                                                                     mTable
+                                                                                                    ));
             }
             break;
             default:
@@ -1016,6 +1012,7 @@ void ColumnEditDialog::on_listLinkVariablesListWidget_currentRowChanged(int curr
                    )
                 {
                     aFrame=(VariableListFrame*)globalDialog->variables[i];
+                    break;
                 }
             }
         }
@@ -1032,6 +1029,7 @@ void ColumnEditDialog::on_listLinkVariablesListWidget_currentRowChanged(int curr
                    )
                 {
                     aFrame=(VariableListFrame*)aPage->variables[i];
+                    break;
                 }
             }
         }
@@ -1125,6 +1123,7 @@ void ColumnEditDialog::on_extListLinkVariablesListWidget_currentRowChanged(int c
                    )
                 {
                     aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
+                    break;
                 }
             }
         }
@@ -1141,6 +1140,7 @@ void ColumnEditDialog::on_extListLinkVariablesListWidget_currentRowChanged(int c
                    )
                 {
                     aFrame=(VariableExtendedListFrame*)aPage->variables[i];
+                    break;
                 }
             }
 
@@ -1155,6 +1155,7 @@ void ColumnEditDialog::on_extListLinkVariablesListWidget_currentRowChanged(int c
                        )
                     {
                         aFrame=(VariableExtendedListFrame*)aPage->components[i];
+                        break;
                     }
                 }
             }
@@ -1194,6 +1195,7 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
                    )
                 {
                     aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
+                    break;
                 }
             }
         }
@@ -1210,6 +1212,7 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
                    )
                 {
                     aFrame=(VariableExtendedListFrame*)aPage->variables[i];
+                    break;
                 }
             }
 
@@ -1224,6 +1227,7 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
                        )
                     {
                         aFrame=(VariableExtendedListFrame*)aPage->components[i];
+                        break;
                     }
                 }
             }

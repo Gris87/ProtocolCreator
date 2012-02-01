@@ -1,8 +1,9 @@
 #include "src/other/global.h"
 
-ListDelegate::ListDelegate(QObject *parent)
+ListDelegate::ListDelegate(QString aLink, QObject *parent)
     : QItemDelegate(parent)
 {
+    mLink=aLink;
 }
 
 QWidget *ListDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const

@@ -4,4 +4,4 @@ Maybe sort columns
 Search for table and word document
 Insert rows from another table
 Link with another table
-Link for middle rows
+Restore link if already exists. By pressing additional button

@@ -6,6 +6,7 @@
 
 #include <math.h>
 
+void setGeometryInDesktop(QWidget* aWidget, int aX, int aY, int aWidthSize, int aHeightSize);
 void copyVariable(PageComponent *aComponent);
 void checkVarName(QString aName, QStringList &aErrorList);
 PageComponent* variableByName(QString aVariableName, PageComponent *aComponent);

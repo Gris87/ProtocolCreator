@@ -23,6 +23,8 @@ public:
     bool mIsTable;
     Qt::AlignmentFlag mTableAlignment;
     double mTableOffset;
+    QString mLinkForMiddleRow;
+    QString mLinkForAnotherList;
 
     QList<QList<STableCell> > headerCells;
     QList<int> headerColumnWidths;
@@ -54,6 +56,7 @@ public:
 
     bool isEditable();
 
+    void checkLink(QStringList &aErrorList, QString aLink);
     void checkForErrors(QStringList &aErrorList);
     QVariant calculate();
 

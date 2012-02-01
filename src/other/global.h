@@ -36,6 +36,7 @@
 #include "src/main/fulldialog.h"
 #include "src/main/functiondialog.h"
 #include "src/main/globaldialog.h"
+#include "src/main/listselectiondialog.h"
 #include "src/main/mainwindow.h"
 #include "src/main/pageselectiondialog.h"
 #include "src/main/passworddialog.h"

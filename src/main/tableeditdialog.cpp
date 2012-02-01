@@ -621,27 +621,11 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
         mCellAlignmentWidget->ui->bottomButton     ->setIcon(aTextAlignment==68  ? QIcon(":/images/CellBottomSelected.png")      : QIcon(":/images/CellBottom.png"));
         mCellAlignmentWidget->ui->bottomRightButton->setIcon(aTextAlignment==66  ? QIcon(":/images/CellBottomRightSelected.png") : QIcon(":/images/CellBottomRight.png"));
 
-        int aWidthSize=mCellAlignmentWidget->width();
-        int aHeightSize=mCellAlignmentWidget->height();
-
-        int aX=cursor().pos().x()+contextMenu->sizeHint().width()-10;
-        int aY=cursor().pos().y()+contextMenu->sizeHint().height()-15;
-
-        QDesktopWidget *desktop = QApplication::desktop();
-        int aWidth = desktop->width();
-        int aHeight = desktop->height();
-
-        if (aX+aWidthSize>aWidth)
-        {
-            aX=aWidth-aWidthSize;
-        }
-
-        if (aY+aHeightSize>aHeight)
-        {
-            aY=aHeight-aHeightSize;
-        }
-
-        mCellAlignmentWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
+        setGeometryInDesktop(mCellAlignmentWidget,
+                             cursor().pos().x()+contextMenu->sizeHint().width()-10,
+                             cursor().pos().y()+contextMenu->sizeHint().height()-15,
+                             mCellAlignmentWidget->width(),
+                             mCellAlignmentWidget->height());
 
         connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(tableAlignmentShow()));
         connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(tableAlignmentHide()));
@@ -651,7 +635,12 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
         cellAlignMenu->setEnabled(false);
     }
 
-    contextMenu->setGeometry(cursor().pos().x(),cursor().pos().y(),contextMenu->sizeHint().width(),contextMenu->sizeHint().height());
+    setGeometryInDesktop(contextMenu,
+                         cursor().pos().x(),
+                         cursor().pos().y(),
+                         contextMenu->sizeHint().width(),
+                         contextMenu->sizeHint().height());
+
     contextMenu->show();
 }
 
@@ -803,6 +792,16 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
         contextMenu->addAction("Вставить столбец после текущего", this, SLOT(structureInsertColAfter()))->setEnabled(itemSelected);
         contextMenu->addAction("Удалить столбец(цы)",             this, SLOT(on_structureDelColButton_clicked()))->setEnabled(itemSelected);
         contextMenu->addSeparator();
+
+        QMenu *linkMenu=contextMenu->addMenu("Привязка");
+
+        linkMenu->addAction("Привязать промежуточные строки к списку",      this, SLOT(structureLinkForMiddleRow()));
+        linkMenu->addAction("Убрать привязку промежуточных строк",          this, SLOT(structureDelinkForMiddleRow()))->setEnabled(mTable->mLinkForMiddleRow!="");
+        linkMenu->addSeparator();
+        linkMenu->addAction("Привязать к другому расширенному списку",      this, SLOT(structureLinkForAnotherList()));
+        linkMenu->addAction("Убрать привязку с другим расширенным списком", this, SLOT(structureDelinkForAnotherList()))->setEnabled(mTable->mLinkForAnotherList!="");
+
+        contextMenu->addSeparator();
     }
 
     contextMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
@@ -826,27 +825,11 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
         mCellAlignmentWidget->ui->bottomButton     ->setIcon(aTextAlignment==68  ? QIcon(":/images/CellBottomSelected.png")      : QIcon(":/images/CellBottom.png"));
         mCellAlignmentWidget->ui->bottomRightButton->setIcon(aTextAlignment==66  ? QIcon(":/images/CellBottomRightSelected.png") : QIcon(":/images/CellBottomRight.png"));
 
-        int aWidthSize=mCellAlignmentWidget->width();
-        int aHeightSize=mCellAlignmentWidget->height();
-
-        int aX=cursor().pos().x()+contextMenu->sizeHint().width()-10;
-        int aY=cursor().pos().y()+contextMenu->sizeHint().height()-15;
-
-        QDesktopWidget *desktop = QApplication::desktop();
-        int aWidth = desktop->width();
-        int aHeight = desktop->height();
-
-        if (aX+aWidthSize>aWidth)
-        {
-            aX=aWidth-aWidthSize;
-        }
-
-        if (aY+aHeightSize>aHeight)
-        {
-            aY=aHeight-aHeightSize;
-        }
-
-        mCellAlignmentWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
+        setGeometryInDesktop(mCellAlignmentWidget,
+                             cursor().pos().x()+contextMenu->sizeHint().width()-10,
+                             cursor().pos().y()+contextMenu->sizeHint().height()-15,
+                             mCellAlignmentWidget->width(),
+                             mCellAlignmentWidget->height());
 
         connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(tableAlignmentShow()));
         connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(tableAlignmentHide()));
@@ -856,7 +839,79 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
         cellAlignMenu->setEnabled(false);
     }
 
-    contextMenu->setGeometry(cursor().pos().x(),cursor().pos().y(),contextMenu->sizeHint().width(),contextMenu->sizeHint().height());
+    setGeometryInDesktop(contextMenu,
+                         cursor().pos().x(),
+                         cursor().pos().y(),
+                         contextMenu->sizeHint().width(),
+                         contextMenu->sizeHint().height());
+
+    contextMenu->show();
+}
+
+void TableEditDialog::structureLinkForMiddleRow()
+{
+    ListSelectionDialog dialog(mTable->mLinkForMiddleRow, this);
+
+    if (dialog.exec())
+    {
+        mTable->mLinkForMiddleRow=dialog.mResult;
+
+        for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+        {
+            if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+            {
+                delete mTable->ui->dataTableWidget->itemDelegateForRow(i);
+                mTable->ui->dataTableWidget->setItemDelegateForRow(i, new ListDelegate(mTable->mLinkForMiddleRow, mTable));
+            }
+        }
+    }
+}
+
+void TableEditDialog::structureDelinkForMiddleRow()
+{
+    mTable->mLinkForMiddleRow="";
+
+    for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+    {
+        if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+        {
+            delete mTable->ui->dataTableWidget->itemDelegateForRow(i);
+            mTable->ui->dataTableWidget->setItemDelegateForRow(i, new StringDelegate(mTable));
+        }
+    }
+}
+
+void TableEditDialog::structureLinkForAnotherList()
+{
+    ListSelectionDialog dialog(mTable->mLinkForAnotherList, this);
+
+    if (dialog.exec())
+    {
+        mTable->mLinkForAnotherList=dialog.mResult;
+    }
+}
+
+void TableEditDialog::structureDelinkForAnotherList()
+{
+    mTable->mLinkForAnotherList="";
+}
+
+void TableEditDialog::on_structureAdditionalButton_clicked()
+{
+    QMenu *contextMenu=new QMenu;
+
+    contextMenu->addAction("Привязать промежуточные строки к списку",      this, SLOT(structureLinkForMiddleRow()));
+    contextMenu->addAction("Убрать привязку промежуточных строк",          this, SLOT(structureDelinkForMiddleRow()))->setEnabled(mTable->mLinkForMiddleRow!="");
+    contextMenu->addSeparator();
+    contextMenu->addAction("Привязать к другому расширенному списку",      this, SLOT(structureLinkForAnotherList()));
+    contextMenu->addAction("Убрать привязку с другим расширенным списком", this, SLOT(structureDelinkForAnotherList()))->setEnabled(mTable->mLinkForAnotherList!="");
+
+    setGeometryInDesktop(contextMenu,
+                         cursor().pos().x(),
+                         cursor().pos().y(),
+                         contextMenu->sizeHint().width(),
+                         contextMenu->sizeHint().height());
+
     contextMenu->show();
 }
 

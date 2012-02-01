@@ -140,6 +140,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="structureAdditionalButton">
+        <property name="text">
+         <string>Дополнительно</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
