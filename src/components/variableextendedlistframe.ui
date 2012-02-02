@@ -505,11 +505,11 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <layout class="QGridLayout" name="gridLayout_2">
            <property name="spacing">
             <number>4</number>
            </property>
-           <item>
+           <item row="0" column="0">
             <widget class="QPushButton" name="addRowButton">
              <property name="text">
               <string>Добавить строку</string>
@@ -519,7 +519,7 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="1" column="0">
             <widget class="QPushButton" name="addMiddleRowButton">
              <property name="text">
               <string>Добавить промежуточную строку</string>
@@ -529,10 +529,17 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="0" column="1">
             <widget class="QPushButton" name="deleteRowButton">
              <property name="text">
               <string>Удалить строку</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="addFromAnotherButton">
+             <property name="text">
+              <string>Вставить строки из связанного расширенного списка</string>
              </property>
             </widget>
            </item>

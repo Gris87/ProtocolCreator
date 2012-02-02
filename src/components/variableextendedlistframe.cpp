@@ -1426,6 +1426,8 @@ void VariableExtendedListFrame::setItemsForRow(int row)
 
         ui->dataTableWidget->setItem(row, i, aItem);
     }
+
+    ui->dataTableWidget->setItemDelegateForRow(row, 0);
 }
 
 void VariableExtendedListFrame::setItemsForMiddleRow(int row)
@@ -1459,11 +1461,33 @@ void VariableExtendedListFrame::setItemsForMiddleRow(int row)
     }
 }
 
+void VariableExtendedListFrame::insertRow(int row)
+{
+    ui->dataTableWidget->insertRow(row);
+
+    for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
+    {
+        ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
+    }
+
+    setItemsForRow(row);
+}
+
+void VariableExtendedListFrame::insertMiddleRow(int row)
+{
+    ui->dataTableWidget->insertRow(row);
+
+    for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
+    {
+        ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
+    }
+
+    setItemsForMiddleRow(row);
+}
+
 void VariableExtendedListFrame::on_addRowButton_clicked()
 {
-    ui->dataTableWidget->setRowCount(ui->dataTableWidget->rowCount()+1);
-
-    setItemsForRow(ui->dataTableWidget->rowCount()-1);
+    insertRow(ui->dataTableWidget->rowCount());
 
     ui->dataTableWidget->scrollToBottom();
 }
@@ -1485,13 +1509,7 @@ void VariableExtendedListFrame::dataTableInsertRowBefore()
 
         for (int i=0; i<dialog.intValue(); i++)
         {
-            for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
-            {
-                ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
-            }
-
-            ui->dataTableWidget->insertRow(row);
-            setItemsForRow(row);
+            insertRow(row);
             row++;
         }
     }
@@ -1514,13 +1532,7 @@ void VariableExtendedListFrame::dataTableInsertRowAfter()
 
         for (int i=0; i<dialog.intValue(); i++)
         {
-            for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
-            {
-                ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
-            }
-
-            ui->dataTableWidget->insertRow(row);
-            setItemsForRow(row);
+            insertRow(row);
             row++;
         }
     }
@@ -1528,9 +1540,7 @@ void VariableExtendedListFrame::dataTableInsertRowAfter()
 
 void VariableExtendedListFrame::on_addMiddleRowButton_clicked()
 {
-    ui->dataTableWidget->setRowCount(ui->dataTableWidget->rowCount()+1);
-
-    setItemsForMiddleRow(ui->dataTableWidget->rowCount()-1);
+    insertMiddleRow(ui->dataTableWidget->rowCount());
 
     ui->dataTableWidget->scrollToBottom();
 }
@@ -1552,13 +1562,7 @@ void VariableExtendedListFrame::dataTableInsertMiddleRowBefore()
 
         for (int i=0; i<dialog.intValue(); i++)
         {
-            for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
-            {
-                ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
-            }
-
-            ui->dataTableWidget->insertRow(row);
-            setItemsForMiddleRow(row);
+            insertMiddleRow(row);
             row++;
         }
     }
@@ -1581,13 +1585,7 @@ void VariableExtendedListFrame::dataTableInsertMiddleRowAfter()
 
         for (int i=0; i<dialog.intValue(); i++)
         {
-            for (int j=ui->dataTableWidget->rowCount()-1; j>row; j--)
-            {
-                ui->dataTableWidget->setItemDelegateForRow(j, ui->dataTableWidget->itemDelegateForRow(j-1));
-            }
-
-            ui->dataTableWidget->insertRow(row);
-            setItemsForMiddleRow(row);
+            insertMiddleRow(row);
             row++;
         }
     }
@@ -1668,6 +1666,102 @@ void VariableExtendedListFrame::on_deleteRowButton_clicked()
                     id++;
                 }
             }
+        }
+    }
+}
+
+void VariableExtendedListFrame::on_addFromAnotherButton_clicked()
+{
+    VariableExtendedListFrame *aFrame=0;
+
+    QString aLink=mLinkForAnotherList;
+
+    int index=aLink.indexOf(".");
+
+    if (index>=0)
+    {
+        QString aSectionName=aLink.left(index);
+        QString aVarName=aLink.mid(index+1);
+
+        if (aSectionName=="Global")
+        {
+            for (int i=0; i<globalDialog->variables.length(); i++)
+            {
+                if (globalDialog->variables.at(i)->variableName()==aVarName)
+                {
+                    if (globalDialog->variables.at(i)->inherits("VariableExtendedListFrame"))
+                    {
+                        aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
+                    }
+
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
+            {
+                if(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text()==aSectionName)
+                {
+                    PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(i);
+
+                    for (int i=0; i<aPage->variables.length(); i++)
+                    {
+                        if (aPage->variables.at(i)->variableName()==aVarName)
+                        {
+                            if (aPage->variables.at(i)->inherits("VariableExtendedListFrame"))
+                            {
+                                aFrame=(VariableExtendedListFrame*)aPage->variables[i];
+                            }
+
+                            break;
+                        }
+                    }
+
+                    for (int i=0; i<aPage->components.length(); i++)
+                    {
+                        if (aPage->components.at(i)->variableName()==aVarName)
+                        {
+                            if (aPage->components.at(i)->inherits("VariableExtendedListFrame"))
+                            {
+                                aFrame=(VariableExtendedListFrame*)aPage->components[i];
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (aFrame)
+    {
+        if (ui->dataTableWidget->columnCount()==0)
+        {
+            QMessageBox::information(this, "Вставка из расширенного списка", "Нет столбцов в исходном расширенном списке");
+            return;
+        }
+
+        if (aFrame->ui->dataTableWidget->rowCount()==0 || aFrame->ui->dataTableWidget->columnCount()==0)
+        {
+            QMessageBox::information(this, "Вставка из расширенного списка", "Нет данных в связанной таблице");
+            return;
+        }
+
+        InsertLinkTableDialog dialog(aFrame, this, this);
+        dialog.exec();
+    }
+    else
+    {
+        if (mLinkForAnotherList=="")
+        {
+            QMessageBox::information(this, "Вставка из расширенного списка", "Отсуствует привязка к расширенному списку");
+        }
+        else
+        {
+            QMessageBox::information(this, "Вставка из расширенного списка", "Не найдена привязка к расширенному списку \""+mLinkForAnotherList+"\"");
         }
     }
 }

@@ -73,7 +73,8 @@ SOURCES += src/main.cpp\
     src/column_types/listcolumn.cpp \
     src/column_types/extendedlistcolumn.cpp \
     src/column_types/expressioncolumn.cpp \
-    src/main/listselectiondialog.cpp
+    src/main/listselectiondialog.cpp \
+    src/main/insertlinktabledialog.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -134,7 +135,8 @@ HEADERS  += src/main/mainwindow.h \
     src/column_types/listcolumn.h \
     src/column_types/extendedlistcolumn.h \
     src/column_types/expressioncolumn.h \
-    src/main/listselectiondialog.h
+    src/main/listselectiondialog.h \
+    src/main/insertlinktabledialog.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -158,7 +160,8 @@ FORMS    += src/main/mainwindow.ui \
     src/main/columnsizedialog.ui \
     src/main/columneditdialog.ui \
     src/main/fulldialog.ui \
-    src/main/listselectiondialog.ui
+    src/main/listselectiondialog.ui \
+    src/main/insertlinktabledialog.ui
 
 OTHER_FILES += \
     TODO.txt

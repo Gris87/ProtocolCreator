@@ -62,6 +62,8 @@ public:
 
     void setItemsForRow(int row);
     void setItemsForMiddleRow(int row);
+    void insertRow(int row);
+    void insertMiddleRow(int row);
     void setItemsAlignment(int aAlignment);
 
 private slots:
@@ -83,6 +85,7 @@ private slots:
     void dataTableInsertMiddleRowBefore();
     void dataTableInsertMiddleRowAfter();
     void on_deleteRowButton_clicked();
+    void on_addFromAnotherButton_clicked();
     void dataTableFont();
     void dataTableBackgroundColor();
     void dataTableTextColor();
