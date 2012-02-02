@@ -850,7 +850,7 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
 
 void TableEditDialog::structureLinkForMiddleRow()
 {
-    ListSelectionDialog dialog(mTable->mLinkForMiddleRow, this);
+    ListSelectionDialog dialog(false, mTable->mLinkForMiddleRow, this);
 
     if (dialog.exec())
     {
@@ -883,7 +883,7 @@ void TableEditDialog::structureDelinkForMiddleRow()
 
 void TableEditDialog::structureLinkForAnotherList()
 {
-    ListSelectionDialog dialog(mTable->mLinkForAnotherList, this);
+    ListSelectionDialog dialog(true, mTable->mLinkForAnotherList, this);
 
     if (dialog.exec())
     {

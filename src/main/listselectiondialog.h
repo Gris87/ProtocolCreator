@@ -18,9 +18,10 @@ class ListSelectionDialog : public QDialog
 public:
     Ui::ListSelectionDialog *ui;
     QSplitter *dividerSplitter;
+    bool mExtListOnly;
     QString mResult;
 
-    explicit ListSelectionDialog(QString aBaseList="", QWidget *parent = 0);
+    explicit ListSelectionDialog(bool aExtListOnly=false, QString aBaseList="", QWidget *parent = 0);
     ~ListSelectionDialog();
 
 private slots:

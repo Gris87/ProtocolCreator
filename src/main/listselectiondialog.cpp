@@ -1,10 +1,14 @@
 #include "src/other/global.h"
 
-ListSelectionDialog::ListSelectionDialog(QString aBaseList, QWidget *parent) :
+ListSelectionDialog::ListSelectionDialog(bool aExtListOnly, QString aBaseList, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ListSelectionDialog)
 {
     ui->setupUi(this);
+
+    mExtListOnly=aExtListOnly;
+
+
 
     dividerSplitter = new QSplitter(Qt::Horizontal, this);
 
@@ -14,21 +18,37 @@ ListSelectionDialog::ListSelectionDialog(QString aBaseList, QWidget *parent) :
 
     dividerSplitter->addWidget(ui->pagesListWidget);
     dividerSplitter->addWidget(ui->variablesListWidget);
-    dividerSplitter->addWidget(ui->columnListWidget);
+
+    if (!mExtListOnly)
+    {
+        dividerSplitter->addWidget(ui->columnListWidget);
+    }
 
     ui->dividerLayout->addWidget(dividerSplitter);
 
     QList<int> aSizes;
 
-    aSizes.append(240);
-    aSizes.append(200);
-    aSizes.append(200);
+    if (mExtListOnly)
+    {
+        aSizes.append(390);
+        aSizes.append(250);
+    }
+    else
+    {
+        aSizes.append(240);
+        aSizes.append(200);
+        aSizes.append(200);
+    }
 
     dividerSplitter->setSizes(aSizes);
 
     dividerSplitter->setCollapsible(0, false);
     dividerSplitter->setCollapsible(1, false);
-    dividerSplitter->setCollapsible(2, false);
+
+    if (!mExtListOnly)
+    {
+        dividerSplitter->setCollapsible(2, false);
+    }
 
 
 
@@ -43,7 +63,64 @@ ListSelectionDialog::ListSelectionDialog(QString aBaseList, QWidget *parent) :
 
     if (aBaseList!="")
     {
+        int index=aBaseList.indexOf(".");
+        QString aSectionName=aBaseList.left(index);
+        QString aVarName=aBaseList.mid(index+1);
 
+        index=-1;
+
+        for (int i=0; i<ui->pagesListWidget->count(); i++)
+        {
+            if (ui->pagesListWidget->item(i)->text()==aSectionName)
+            {
+                index=i;
+                break;
+            }
+        }
+
+        if (index>=0)
+        {
+            ui->pagesListWidget->setCurrentRow(index);
+
+            QString aColumn;
+
+            index=aVarName.indexOf("[");
+
+            if (index>=0)
+            {
+                aColumn=aVarName.mid(index+1);
+                aColumn.remove(aColumn.length()-1, 1);
+
+                aVarName=aVarName.left(index);
+            }
+
+            index=-1;
+
+            for (int i=0; i<ui->variablesListWidget->count(); i++)
+            {
+                if (ui->variablesListWidget->item(i)->text()==aVarName)
+                {
+                    index=i;
+                    break;
+                }
+            }
+
+            if (index>=0)
+            {
+                ui->variablesListWidget->setCurrentRow(index);
+
+                if (aColumn!="")
+                {
+                    bool ok;
+                    int aColumnID=aColumn.toInt(&ok);
+
+                    if (ok && aColumnID>=1 && aColumnID<=ui->columnListWidget->count())
+                    {
+                        ui->columnListWidget->setCurrentRow(aColumnID-1);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -67,7 +144,11 @@ void ListSelectionDialog::on_pagesListWidget_currentRowChanged(int currentRow)
         for (int i=0; i<globalDialog->variables.length(); i++)
         {
             if (
-                globalDialog->variables.at(i)->inherits("VariableListFrame")
+                (
+                 !mExtListOnly
+                 &&
+                 globalDialog->variables.at(i)->inherits("VariableListFrame")
+                )
                 ||
                 globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
                )
@@ -83,7 +164,11 @@ void ListSelectionDialog::on_pagesListWidget_currentRowChanged(int currentRow)
         for (int i=0; i<aPage->variables.length(); i++)
         {
             if (
-                aPage->variables.at(i)->inherits("VariableListFrame")
+                (
+                 !mExtListOnly
+                 &&
+                 aPage->variables.at(i)->inherits("VariableListFrame")
+                )
                 ||
                 aPage->variables.at(i)->inherits("VariableExtendedListFrame")
                )
@@ -94,11 +179,7 @@ void ListSelectionDialog::on_pagesListWidget_currentRowChanged(int currentRow)
 
         for (int i=0; i<aPage->components.length(); i++)
         {
-            if (
-                aPage->components.at(i)->inherits("VariableListFrame")
-                ||
-                aPage->components.at(i)->inherits("VariableExtendedListFrame")
-               )
+            if (aPage->components.at(i)->inherits("VariableExtendedListFrame"))
             {
                 ui->variablesListWidget->addItem(aPage->components.at(i)->variableName());
             }
@@ -108,6 +189,11 @@ void ListSelectionDialog::on_pagesListWidget_currentRowChanged(int currentRow)
 
 void ListSelectionDialog::on_variablesListWidget_currentRowChanged(int currentRow)
 {
+    if (mExtListOnly)
+    {
+        return;
+    }
+
     ui->columnListWidget->clear();
 
     if (currentRow<0)
@@ -190,64 +276,67 @@ void ListSelectionDialog::on_okButton_clicked()
         return;
     }
 
-    QString varName=ui->variablesListWidget->currentItem()->text();
-    VariableExtendedListFrame *aFrame=0;
-
-    if (ui->pagesListWidget->currentRow()==0)
+    if (!mExtListOnly)
     {
-        for (int i=0; i<globalDialog->variables.length(); i++)
-        {
-            if (
-                globalDialog->variables.at(i)->variableName()==varName
-                &&
-                globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
-               )
-            {
-                aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
-                break;
-            }
-        }
-    }
-    else
-    {
-        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(ui->pagesListWidget->currentRow()-1);
+        QString varName=ui->variablesListWidget->currentItem()->text();
+        VariableExtendedListFrame *aFrame=0;
 
-        for (int i=0; i<aPage->variables.length(); i++)
+        if (ui->pagesListWidget->currentRow()==0)
         {
-            if (
-                aPage->variables.at(i)->variableName()==varName
-                &&
-                aPage->variables.at(i)->inherits("VariableExtendedListFrame")
-               )
-            {
-                aFrame=(VariableExtendedListFrame*)aPage->variables[i];
-                break;
-            }
-        }
-
-        if (aFrame==0)
-        {
-            for (int i=0; i<aPage->components.length(); i++)
+            for (int i=0; i<globalDialog->variables.length(); i++)
             {
                 if (
-                    aPage->components.at(i)->variableName()==varName
+                    globalDialog->variables.at(i)->variableName()==varName
                     &&
-                    aPage->components.at(i)->inherits("VariableExtendedListFrame")
+                    globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
                    )
                 {
-                    aFrame=(VariableExtendedListFrame*)aPage->components[i];
+                    aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
                     break;
                 }
             }
         }
-    }
-
-    if (aFrame)
-    {
-        if (ui->columnListWidget->currentRow()<0)
+        else
         {
-            QMessageBox::information(this, "Выбор списка", "Выберите столбец");
-            return;
+            PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(ui->pagesListWidget->currentRow()-1);
+
+            for (int i=0; i<aPage->variables.length(); i++)
+            {
+                if (
+                    aPage->variables.at(i)->variableName()==varName
+                    &&
+                    aPage->variables.at(i)->inherits("VariableExtendedListFrame")
+                   )
+                {
+                    aFrame=(VariableExtendedListFrame*)aPage->variables[i];
+                    break;
+                }
+            }
+
+            if (aFrame==0)
+            {
+                for (int i=0; i<aPage->components.length(); i++)
+                {
+                    if (
+                        aPage->components.at(i)->variableName()==varName
+                        &&
+                        aPage->components.at(i)->inherits("VariableExtendedListFrame")
+                       )
+                    {
+                        aFrame=(VariableExtendedListFrame*)aPage->components[i];
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (aFrame)
+        {
+            if (ui->columnListWidget->currentRow()<0)
+            {
+                QMessageBox::information(this, "Выбор списка", "Выберите столбец");
+                return;
+            }
         }
     }
 
