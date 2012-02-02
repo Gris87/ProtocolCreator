@@ -79,8 +79,6 @@ void InsertLinkTableDialog::on_addButton_clicked()
         rows.swap(e, minIndex);
     }
 
-    qDebug()<<rows;
-
     for (int i=0; i<rows.length(); i++)
     {
         int aSourceRow=rows.at(i);
@@ -114,7 +112,7 @@ void InsertLinkTableDialog::on_addButton_clicked()
         {
             mDestTable->insertMiddleRow(aDestRow);
 
-            mDestTable->ui->dataTableWidget->item(aDestRow, 0)->setText(ui->sourceTableWidget->item(aSourceRow,0)->text());
+            mDestTable->ui->dataTableWidget->item(aDestRow, 0)->setText(ui->sourceTableWidget->item(aSourceRow, 0)->text());
         }
         else
         {
@@ -122,7 +120,120 @@ void InsertLinkTableDialog::on_addButton_clicked()
 
             for (int j=0; j<ui->sourceTableWidget->columnCount() && j<mDestTable->ui->dataTableWidget->columnCount(); j++)
             {
+                EColumnType aDestColumnType=mDestTable->typeColumns.at(j).column->type();
+                EColumnType aSourceColumnType=mSourceTable->typeColumns.at(j).column->type();
 
+                if (aDestColumnType==ctInteger)
+                {
+                    if (!((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mIsAutoInc)
+                    {
+                        if (aSourceColumnType==ctInteger)
+                        {
+                            QString aText=ui->sourceTableWidget->item(aSourceRow, j)->text();
+
+                            int removeBefore=((IntegerColumn*)mSourceTable->typeColumns.at(j).column)->mPrefix.length();
+                            int removeAfter=((IntegerColumn*)mSourceTable->typeColumns.at(j).column)->mPostfix.length();
+
+                            aText.remove(aText.length()-removeAfter, removeAfter);
+                            aText.remove(0, removeBefore);
+
+                            double aValue=aText.toDouble();
+
+                            mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(
+                                                                                        ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPrefix+
+                                                                                        QString::number(aValue, 'f', ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mDecimals)+
+                                                                                        ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPostfix);
+                        }
+                        else
+                        {
+                            bool ok=true;
+                            double aValue;
+
+                            if (aSourceColumnType==ctBool)
+                            {
+                                if (ui->sourceTableWidget->item(aSourceRow, j)->checkState()==Qt::Checked)
+                                {
+                                    aValue=1;
+                                }
+                                else
+                                {
+                                    aValue=0;
+                                }
+                            }
+                            else
+                            {
+                                aValue=ui->sourceTableWidget->item(aSourceRow, j)->text().toDouble(&ok);
+                            }
+
+                            if (ok)
+                            {
+                                mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(
+                                                                                            ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPrefix+
+                                                                                            QString::number(aValue, 'f', ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mDecimals)+
+                                                                                            ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPostfix);
+                            }
+                        }
+                    }
+                }
+                else
+                if (aDestColumnType==ctString || aDestColumnType==ctList || aDestColumnType==ctExtendedList)
+                {
+                    if (aSourceColumnType==ctBool)
+                    {
+                        if (ui->sourceTableWidget->item(aSourceRow, j)->checkState()==Qt::Checked)
+                        {
+                            mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText("1");
+                        }
+                        else
+                        {
+                            mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText("0");
+                        }
+                    }
+                    else
+                    {
+                        mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(ui->sourceTableWidget->item(aSourceRow, j)->text());
+                    }
+                }
+                else
+                if (aDestColumnType==ctBool)
+                {
+                    if (aSourceColumnType==ctBool)
+                    {
+                        mDestTable->ui->dataTableWidget->item(aDestRow, j)->setCheckState(ui->sourceTableWidget->item(aSourceRow, j)->checkState());
+                    }
+                    else
+                    {
+                        if (ui->sourceTableWidget->item(aSourceRow, j)->text()=="1")
+                        {
+                            mDestTable->ui->dataTableWidget->item(aDestRow, j)->setCheckState(Qt::Checked);
+                        }
+                        else
+                        if (ui->sourceTableWidget->item(aSourceRow, j)->text()=="0")
+                        {
+                            mDestTable->ui->dataTableWidget->item(aDestRow, j)->setCheckState(Qt::Unchecked);
+                        }
+                    }
+                }
+                else
+                if (aDestColumnType==ctDate)
+                {
+                    QDate aDate=QDate::fromString(ui->sourceTableWidget->item(aSourceRow, j)->text(), "dd.MM.yyyy");
+
+                    if (aDate.isValid())
+                    {
+                        mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(ui->sourceTableWidget->item(aSourceRow, j)->text());
+                    }
+                }
+                else
+                if (aDestColumnType==ctTime)
+                {
+                    QTime aTime=QTime::fromString(ui->sourceTableWidget->item(aSourceRow, j)->text(), "hh:mm:ss");
+
+                    if (aTime.isValid())
+                    {
+                        mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(ui->sourceTableWidget->item(aSourceRow, j)->text());
+                    }
+                }
             }
         }
     }
