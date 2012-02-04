@@ -15,6 +15,7 @@ public:
 
 protected:
     void commitData(QWidget *editor);
+    void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // DATATABLE_H
