@@ -13,6 +13,8 @@ public:
 
     QModelIndex indexFromItem(QTableWidgetItem *item) const;
 
+    void pasteData();
+
 protected:
     void commitData(QWidget *editor);
     void keyPressEvent(QKeyEvent *event);

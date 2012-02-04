@@ -81,7 +81,60 @@ void DataTable::keyPressEvent(QKeyEvent *event)
         }
     }
     else
+    if (event==QKeySequence::Paste)
+    {
+        pasteData();
+    }
+    else
+    if (event==QKeySequence::Delete)
+    {
+        QList<QTableWidgetSelectionRange> aRanges=selectedRanges();
+
+        QList<int> aRows;
+
+        for (int i=0; i<aRanges.length(); i++)
+        {
+            for (int j=aRanges.at(i).bottomRow(); j>=aRanges.at(i).topRow(); j--)
+            {
+                if (!aRows.contains(j))
+                {
+                    aRows.append(j);
+                }
+            }
+        }
+
+        if (
+            (
+             aRows.length()==1
+             &&
+             QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить строку?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes
+            )
+            ||
+            (
+             aRows.length()>=2
+             &&
+             aRows.length()<=4
+             &&
+             QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить "+QString::number(aRows.length())+" строки?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes
+            )
+            ||
+            (
+             aRows.length()>=5
+             &&
+             QMessageBox::question(this, protocolCreatorVersion, "Вы хотите удалить "+QString::number(aRows.length())+" строк?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes
+            )
+           )
+        {
+            ((VariableExtendedListFrame*)parent()->parent()->parent())->ui->deleteRowButton->click();
+        }
+    }
+    else
     {
         QTableWidget::keyPressEvent(event);
     }
+}
+
+void DataTable::pasteData()
+{
+    //VariableExtendedListFrame* aTable=(VariableExtendedListFrame*)parent()->parent()->parent();
 }
