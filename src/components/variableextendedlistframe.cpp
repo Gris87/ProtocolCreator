@@ -1638,27 +1638,37 @@ void VariableExtendedListFrame::dataTableCopyRows()
         int realRow=aRows.at(i);
         QString aRow="";
 
-        for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
+        if (ui->dataTableWidget->itemDelegateForRow(i))
         {
-            if (aRow!="")
+            if (ui->dataTableWidget->columnCount()>0)
             {
-                aRow.append("\t");
+                aRow="#### "+ui->dataTableWidget->item(realRow, 0)->text();
             }
-
-            if (ui->dataTableWidget->item(realRow, j)->data(Qt::CheckStateRole).isValid())
+        }
+        else
+        {
+            for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
             {
-                if (ui->dataTableWidget->item(realRow, j)->checkState()==Qt::Checked)
+                if (aRow!="")
                 {
-                    aRow.append("1");
+                    aRow.append("\t");
+                }
+
+                if (ui->dataTableWidget->item(realRow, j)->data(Qt::CheckStateRole).isValid())
+                {
+                    if (ui->dataTableWidget->item(realRow, j)->checkState()==Qt::Checked)
+                    {
+                        aRow.append("1");
+                    }
+                    else
+                    {
+                        aRow.append("0");
+                    }
                 }
                 else
                 {
-                    aRow.append("0");
+                    aRow.append(ui->dataTableWidget->item(realRow, j)->text());
                 }
-            }
-            else
-            {
-                aRow.append(ui->dataTableWidget->item(realRow, j)->text());
             }
         }
 

@@ -51,44 +51,48 @@ void DataTable::keyPressEvent(QKeyEvent *event)
 
             for (int i=aTop; i<=aBottom; i++)
             {
-                for (int j=aLeft; j<=aRight; j++)
+                QString aRow="";
+
+                if (itemDelegateForRow(i))
                 {
-                    if (!isColumnHidden(j))
+                    if (columnCount()>0)
                     {
-                        if (item(i,j)->data(Qt::CheckStateRole).isValid())
+                        aRow="#### "+item(i, 0)->text();
+                    }
+                }
+                else
+                {
+                    for (int j=aLeft; j<=aRight; j++)
+                    {
+                        if (aRow!="")
                         {
-                            if (item(i,j)->checkState()==Qt::Checked)
+                            aRow.append("\t");
+                        }
+
+                        if (item(i, j)->data(Qt::CheckStateRole).isValid())
+                        {
+                            if (item(i, j)->checkState()==Qt::Checked)
                             {
-                                toClipBoard.append("1");
+                                aRow.append("1");
                             }
                             else
                             {
-                                toClipBoard.append("0");
+                                aRow.append("0");
                             }
                         }
                         else
                         {
-                            toClipBoard.append(item(i,j)->text());
+                            aRow.append(item(i, j)->text());
                         }
-
-                        toClipBoard.append("\t");
                     }
                 }
 
-                if (toClipBoard.endsWith("\t"))
-                {
-                    toClipBoard.remove(toClipBoard.length()-1, 1);
-                }
-
-                if (i<aBottom)
+                if (aRow!="" && toClipBoard!="")
                 {
                     toClipBoard.append("\n");
                 }
-            }
 
-            while (toClipBoard.endsWith("\n"))
-            {
-                toClipBoard.remove(toClipBoard.length()-1, 1);
+                toClipBoard.append(aRow);
             }
 
             QApplication::clipboard()->setText(toClipBoard);
@@ -189,89 +193,141 @@ void DataTable::pasteData()
 
     for (int i=0; i<cells.length(); i++)
     {
-        for (int j=0; j<cells.at(i).length() && curCol+j<totalCol; j++)
+        if (cells.at(i).length()==1 && cells.at(i).at(0).startsWith("#### "))
         {
-            QString aText=cells.at(i).at(j);
-            QTableWidgetItem *aItem=item(curRow+i, curCol+j);
+            QString aText=cells.at(i).at(0);
+            aText.remove(0, 5);
 
-            switch (aTable->typeColumns.at(curCol+j).column->type())
+            QTableWidgetItem *aItem=item(curRow+i, 0);
+
+            for (int j=1; j<totalCol; j++)
             {
-                case ctInteger:
+                item(curRow+i, j)->setFont(aItem->font());
+                item(curRow+i, j)->setBackground(aItem->background());
+                item(curRow+i, j)->setTextColor(aItem->textColor());
+                item(curRow+i, j)->setTextAlignment(aItem->textAlignment());
+                item(curRow+i, j)->setText("");
+            }
+
+            setSpan(curRow+i, 0, 1, totalCol);
+            aItem->setText(aText);
+
+            if (aTable->mLinkForMiddleRow=="")
+            {
+                setItemDelegateForRow(curRow+i, new StringDelegate(aTable));
+            }
+            else
+            {
+                setItemDelegateForRow(curRow+i, new ListDelegate(aTable->mLinkForMiddleRow, aTable));
+            }
+        }
+        else
+        {
+            for (int j=0; j<cells.at(i).length() && curCol+j<totalCol; j++)
+            {
+                QString aText=cells.at(i).at(j);
+                QTableWidgetItem *aItem=item(curRow+i, curCol+j);
+
+                switch (aTable->typeColumns.at(curCol+j).column->type())
                 {
-                    if (!((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mIsAutoInc)
+                    case ctInteger:
                     {
-                        while (aText.length()>0 && !aText.at(aText.length()-1).isNumber())
+                        if (!((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mIsAutoInc)
                         {
-                            aText.remove(aText.length()-1, 1);
-                        }
+                            while (aText.length()>0 && !aText.at(aText.length()-1).isNumber())
+                            {
+                                aText.remove(aText.length()-1, 1);
+                            }
 
-                        while (aText.length()>0 && !aText.at(0).isNumber())
-                        {
-                            aText.remove(0, 1);
-                        }
+                            while (aText.length()>0 && !aText.at(0).isNumber())
+                            {
+                                aText.remove(0, 1);
+                            }
 
-                        bool ok;
-                        double aValue=aText.toDouble(&ok);
+                            bool ok;
+                            double aValue=aText.toDouble(&ok);
 
-                        if (ok)
-                        {
-                            aItem->setText(
-                                           ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mPrefix+
-                                           QString::number(aValue, 'f', ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mDecimals)+
-                                           ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mPostfix
-                                          );
+                            if (ok)
+                            {
+                                aItem->setText(
+                                               ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mPrefix+
+                                               QString::number(aValue, 'f', ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mDecimals)+
+                                               ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mPostfix
+                                              );
+                            }
                         }
                     }
-                }
-                break;
-                case ctString:
-                case ctList:
-                case ctExtendedList:
-                {
-                    aItem->setText(aText);
-                }
-                break;
-                case ctBool:
-                {
-                    if (aText=="1")
-                    {
-                        aItem->setCheckState(Qt::Checked);
-                    }
-                    else
-                    if (aText=="0")
-                    {
-                        aItem->setCheckState(Qt::Unchecked);
-                    }
-                }
-                break;
-                case ctDate:
-                {
-                    QDate aDate=QDate::fromString(aText, "dd.MM.yyyy");
-
-                    if (aDate.isValid())
+                    break;
+                    case ctString:
+                    case ctList:
+                    case ctExtendedList:
                     {
                         aItem->setText(aText);
                     }
-                }
-                break;
-                case ctTime:
-                {
-                    QTime aTime=QTime::fromString(aText, "hh:mm:ss");
-
-                    if (aTime.isValid())
+                    break;
+                    case ctBool:
                     {
-                        aItem->setText(aText);
+                        if (aText=="1")
+                        {
+                            aItem->setCheckState(Qt::Checked);
+                        }
+                        else
+                        if (aText=="0")
+                        {
+                            aItem->setCheckState(Qt::Unchecked);
+                        }
+                    }
+                    break;
+                    case ctDate:
+                    {
+                        QDate aDate=QDate::fromString(aText, "dd.MM.yyyy");
+
+                        if (aDate.isValid())
+                        {
+                            aItem->setText(aText);
+                        }
+                    }
+                    break;
+                    case ctTime:
+                    {
+                        QTime aTime=QTime::fromString(aText, "hh:mm:ss");
+
+                        if (aTime.isValid())
+                        {
+                            aItem->setText(aText);
+                        }
+                    }
+                    break;
+                    case ctExpression:
+                    {
+                        // Nothing
+                    }
+                    break;
+                    default:
+                    {
+                        throw "Unknown column type";
                     }
                 }
-                break;
-                case ctExpression:
+            }
+        }
+    }
+
+    for (int i=0; i<columnCount(); i++)
+    {
+        if (
+            aTable->typeColumns.at(i).column->type()==ctInteger
+            &&
+            ((IntegerColumn*)aTable->typeColumns.at(i).column)->mIsAutoInc
+           )
+        {
+            int id=1;
+
+            for (int j=0; j<rowCount(); j++)
+            {
+                if (itemDelegateForRow(j)==0)
                 {
-                    // Nothing
-                }
-                break;
-                default:
-                {
-                    throw "Unknown column type";
+                    item(j,i)->setText(QString::number(id));
+                    id++;
                 }
             }
         }
