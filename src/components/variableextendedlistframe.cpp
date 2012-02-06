@@ -1591,6 +1591,156 @@ void VariableExtendedListFrame::dataTableInsertMiddleRowAfter()
     }
 }
 
+void VariableExtendedListFrame::dataTableCopyRows()
+{
+    QList<QTableWidgetSelectionRange> aRanges=ui->dataTableWidget->selectedRanges();
+
+    if (aRanges.length()==0)
+    {
+        QMessageBox::information(this, protocolCreatorVersion, "Выберите строку");
+        return;
+    }
+
+    QList<int> aRows;
+
+    for (int i=0; i<aRanges.length(); i++)
+    {
+        for (int j=aRanges.at(i).bottomRow(); j>=aRanges.at(i).topRow(); j--)
+        {
+            if (!aRows.contains(j))
+            {
+                aRows.append(j);
+            }
+        }
+    }
+
+    for (int e=0; e<aRows.length()-1; e++)
+    {
+        int min=aRows.at(e);
+        int minIndex=e;
+
+        for (int i=e+1; i<aRows.length(); i++)
+        {
+            if (aRows.at(i)<min)
+            {
+                min=aRows.at(i);
+                minIndex=i;
+            }
+        }
+
+        aRows.swap(e, minIndex);
+    }
+
+    QString toClipBoard="";
+
+    for (int i=0; i<aRows.length(); i++)
+    {
+        int realRow=aRows.at(i);
+        QString aRow="";
+
+        for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
+        {
+            if (aRow!="")
+            {
+                aRow.append("\t");
+            }
+
+            if (ui->dataTableWidget->item(realRow, j)->data(Qt::CheckStateRole).isValid())
+            {
+                if (ui->dataTableWidget->item(realRow, j)->checkState()==Qt::Checked)
+                {
+                    aRow.append("1");
+                }
+                else
+                {
+                    aRow.append("0");
+                }
+            }
+            else
+            {
+                aRow.append(ui->dataTableWidget->item(realRow, j)->text());
+            }
+        }
+
+        if (aRow!="" && toClipBoard!="")
+        {
+            toClipBoard.append("\n");
+        }
+
+        toClipBoard.append(aRow);
+    }
+
+    QApplication::clipboard()->setText(toClipBoard);
+}
+
+void VariableExtendedListFrame::dataTablePasteBefore()
+{
+    QString aClipboard=QApplication::clipboard()->text().replace("\r","");
+
+    if (aClipboard.endsWith("\n"))
+    {
+        aClipboard.remove(aClipboard.length()-1, 1);
+    }
+
+    if (aClipboard=="")
+    {
+        return;
+    }
+
+    QStringList rows=aClipboard.split("\n");
+
+    int row=ui->dataTableWidget->currentRow();
+    int origRow=row;
+
+    for (int i=0; i<rows.length(); i++)
+    {
+        insertRow(row);
+        row++;
+    }
+
+    QTableWidgetItem *lastItem=ui->dataTableWidget->currentItem();
+
+    ui->dataTableWidget->setCurrentCell(origRow, 0);
+    ui->dataTableWidget->pasteData();
+
+    ui->dataTableWidget->setCurrentItem(lastItem);
+    ui->dataTableWidget->scrollToItem(lastItem);
+}
+
+void VariableExtendedListFrame::dataTablePasteAfter()
+{
+    QString aClipboard=QApplication::clipboard()->text().replace("\r","");
+
+    if (aClipboard.endsWith("\n"))
+    {
+        aClipboard.remove(aClipboard.length()-1, 1);
+    }
+
+    if (aClipboard=="")
+    {
+        return;
+    }
+
+    QStringList rows=aClipboard.split("\n");
+
+    int row=ui->dataTableWidget->currentRow()+1;
+    int origRow=row;
+
+    for (int i=0; i<rows.length(); i++)
+    {
+        insertRow(row);
+        row++;
+    }
+
+    QTableWidgetItem *lastItem=ui->dataTableWidget->currentItem();
+
+    ui->dataTableWidget->setCurrentCell(origRow, 0);
+    ui->dataTableWidget->pasteData();
+
+    ui->dataTableWidget->setCurrentItem(lastItem);
+    ui->dataTableWidget->scrollToItem(lastItem);
+}
+
 void VariableExtendedListFrame::on_deleteRowButton_clicked()
 {
     QList<QTableWidgetSelectionRange> aRanges=ui->dataTableWidget->selectedRanges();
@@ -1905,6 +2055,7 @@ void VariableExtendedListFrame::tableCellAlignBottomRight()
 void VariableExtendedListFrame::on_dataTableWidget_customContextMenuRequested(const QPoint &pos)
 {
     bool itemSelected=ui->dataTableWidget->selectedItems().length()>0;
+    QString aClipboard=QApplication::clipboard()->text().replace("\r","");
 
     QMenu *contextMenu=new QMenu;
 
@@ -1912,6 +2063,11 @@ void VariableExtendedListFrame::on_dataTableWidget_customContextMenuRequested(co
     contextMenu->addAction("Вставить строки после текущей",               this, SLOT(dataTableInsertRowAfter()))->setEnabled(itemSelected);
     contextMenu->addAction("Вставить промежуточные строки перед текущей", this, SLOT(dataTableInsertMiddleRowBefore()))->setEnabled(itemSelected);
     contextMenu->addAction("Вставить промежуточные строки после текущей", this, SLOT(dataTableInsertMiddleRowAfter()))->setEnabled(itemSelected);
+    contextMenu->addSeparator();
+    contextMenu->addAction("Копировать строки в буфер",                   this, SLOT(dataTableCopyRows()))->setEnabled(itemSelected);
+    contextMenu->addAction("Вставить строки из буфера перед текущей",     this, SLOT(dataTablePasteBefore()))->setEnabled(itemSelected && aClipboard!="");
+    contextMenu->addAction("Вставить строки из буфера после текущей",     this, SLOT(dataTablePasteAfter()))->setEnabled(itemSelected && aClipboard!="");
+    contextMenu->addSeparator();
     contextMenu->addAction("Удалить строку(и)",                           this, SLOT(on_deleteRowButton_clicked()))->setEnabled(itemSelected);
     contextMenu->addSeparator();
     contextMenu->addAction("Шрифт",                                       this, SLOT(dataTableFont()))->setEnabled(itemSelected);

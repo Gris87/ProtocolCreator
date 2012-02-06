@@ -1,4 +1,3 @@
 Special functions needs to add
-Copy and paste rows with inserting
 Maybe sort columns
 Search for table and word document

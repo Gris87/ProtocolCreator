@@ -84,6 +84,9 @@ private slots:
     void on_addMiddleRowButton_clicked();
     void dataTableInsertMiddleRowBefore();
     void dataTableInsertMiddleRowAfter();
+    void dataTableCopyRows();
+    void dataTablePasteBefore();
+    void dataTablePasteAfter();
     void on_deleteRowButton_clicked();
     void on_addFromAnotherButton_clicked();
     void dataTableFont();
