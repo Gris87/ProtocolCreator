@@ -14,7 +14,7 @@ QWidget *TimeDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem 
 
 void TimeDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    ((QTimeEdit*)editor)->setTime(index.model()->data(index, Qt::EditRole).toTime());
+    ((QTimeEdit*)editor)->setTime(QTime::fromString(index.model()->data(index, Qt::EditRole).toString(), "hh:mm:ss"));
 }
 
 void TimeDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
@@ -23,7 +23,7 @@ void TimeDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, cons
 
     timeEdit->interpretText();
 
-    model->setData(index, timeEdit->time(), Qt::EditRole);
+    model->setData(index, timeEdit->time().toString("hh:mm:ss"), Qt::EditRole);
 }
 
 void TimeDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
