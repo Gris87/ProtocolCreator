@@ -728,12 +728,86 @@ void MainWindow::on_actionReplace_triggered()
 
 void MainWindow::on_actionFindNext_triggered()
 {
+    int pageIndex;
+    int varIndex;
+    int compIndex;
 
+    findFocus(pageIndex, varIndex, compIndex);
+
+    int startPage=pageIndex;
+    int startIndex;
+    int totalCount;
+
+    if (startPage<0)
+    {
+        totalCount=globalDialog->variables.length();
+    }
+    else
+    {
+        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(startPage);
+
+        totalCount=aPage->variables.length()+aPage->components.length();
+    }
+
+    if (varIndex>=0)
+    {
+        startIndex=varIndex;
+    }
+    else
+    {
+        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(startPage);
+
+        if (compIndex>=0)
+        {
+            startIndex=aPage->variables.length()+compIndex;
+        }
+        else
+        {
+            startIndex=0;
+        }
+    }
 }
 
 void MainWindow::on_actionFindPrev_triggered()
 {
+    int pageIndex;
+    int varIndex;
+    int compIndex;
 
+    findFocus(pageIndex, varIndex, compIndex);
+
+    int startPage=pageIndex;
+    int startIndex;
+    int totalCount;
+
+    if (startPage<0)
+    {
+        totalCount=globalDialog->variables.length();
+    }
+    else
+    {
+        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(startPage);
+
+        totalCount=aPage->variables.length()+aPage->components.length();
+    }
+
+    if (varIndex>=0)
+    {
+        startIndex=varIndex;
+    }
+    else
+    {
+        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(startPage);
+
+        if (compIndex>=0)
+        {
+            startIndex=aPage->variables.length()+compIndex;
+        }
+        else
+        {
+            startIndex=totalCount-1;
+        }
+    }
 }
 
 void MainWindow::on_actionGlobalVars_triggered()

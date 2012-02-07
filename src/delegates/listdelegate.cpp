@@ -74,39 +74,39 @@ QWidget *ListDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem 
                 {
                     PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(i);
 
-                    for (int i=0; i<aPage->variables.length(); i++)
+                    for (int j=0; j<aPage->variables.length(); j++)
                     {
-                        if (aPage->variables.at(i)->variableName()==aVarName)
+                        if (aPage->variables.at(j)->variableName()==aVarName)
                         {
                             if (
                                 aColumnIndex!=""
                                 &&
-                                aPage->variables.at(i)->inherits("VariableExtendedListFrame")
+                                aPage->variables.at(j)->inherits("VariableExtendedListFrame")
                                )
                             {
-                                aExtFrame=(VariableExtendedListFrame*)aPage->variables[i];
+                                aExtFrame=(VariableExtendedListFrame*)aPage->variables[j];
                             }
                             else
-                            if (aPage->variables.at(i)->inherits("VariableListFrame"))
+                            if (aPage->variables.at(j)->inherits("VariableListFrame"))
                             {
-                                aFrame=(VariableListFrame*)aPage->variables[i];
+                                aFrame=(VariableListFrame*)aPage->variables[j];
                             }
 
                             break;
                         }
                     }
 
-                    for (int i=0; i<aPage->components.length(); i++)
+                    for (int j=0; j<aPage->components.length(); j++)
                     {
-                        if (aPage->components.at(i)->variableName()==aVarName)
+                        if (aPage->components.at(j)->variableName()==aVarName)
                         {
                             if (
                                 aColumnIndex!=""
                                 &&
-                                aPage->components.at(i)->inherits("VariableExtendedListFrame")
+                                aPage->components.at(j)->inherits("VariableExtendedListFrame")
                                )
                             {
-                                aExtFrame=(VariableExtendedListFrame*)aPage->components[i];
+                                aExtFrame=(VariableExtendedListFrame*)aPage->components[j];
                             }
 
                             break;

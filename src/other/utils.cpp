@@ -29,6 +29,106 @@ void setGeometryInDesktop(QWidget* aWidget, int aX, int aY, int aWidthSize, int 
     aWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
 }
 
+bool widgetInWidget(QWidget *aWidget, QWidget *aInsideWidget)
+{
+    if (aWidget==aInsideWidget)
+    {
+        return true;
+    }
+
+    QObjectList aChildren=aInsideWidget->children();
+
+    for (int j=0; j<aChildren.length(); j++)
+    {
+        if (
+            aChildren.at(j)->isWidgetType()
+            &&
+            widgetInWidget(aWidget, (QWidget*)aChildren.at(j))
+           )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void findFocus(int &pageIndex, int &varIndex, int &compIndex)
+{
+    pageIndex=-1;
+    varIndex=-1;
+    compIndex=-1;
+
+    if (globalDialog->isVisible())
+    {
+        QWidget* aFocusWidget=globalDialog->focusWidget();
+
+        for (int i=0; globalDialog->variables.length(); i++)
+        {
+            for (int j=0; j<globalDialog->variables.length(); j++)
+            {
+                QObjectList aChildren=globalDialog->variables.at(j)->children();
+
+                for (int k=0; k<aChildren.length(); k++)
+                {
+                    if (
+                        aChildren.at(j)->isWidgetType()
+                        &&
+                        widgetInWidget(aFocusWidget, (QWidget*)aChildren.at(j))
+                       )
+                    {
+                        varIndex=j;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        pageIndex=mainWindow->ui->pagesTabWidget->currentIndex();
+        PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(pageIndex);
+
+        QWidget* aFocusWidget=mainWindow->focusWidget();
+
+        for (int i=0; i<aPage->variables.length(); i++)
+        {
+            QObjectList aChildren=aPage->variables.at(i)->children();
+
+            for (int j=0; j<aChildren.length(); j++)
+            {
+                if (
+                    aChildren.at(j)->isWidgetType()
+                    &&
+                    widgetInWidget(aFocusWidget, (QWidget*)aChildren.at(j))
+                   )
+                {
+                    varIndex=i;
+                    return;
+                }
+            }
+        }
+
+        for (int i=0; i<aPage->components.length(); i++)
+        {
+            QObjectList aChildren=aPage->components.at(i)->children();
+
+            for (int j=0; j<aChildren.length(); j++)
+            {
+                if (
+                    aChildren.at(j)->isWidgetType()
+                    &&
+                    widgetInWidget(aFocusWidget, (QWidget*)aChildren.at(j))
+                   )
+                {
+                    compIndex=i;
+                    return;
+                }
+            }
+        }
+    }
+}
+
 void copyVariable(PageComponent *aComponent)
 {
     PageSelectionDialog dialog(mainWindow);

@@ -7,6 +7,8 @@
 #include <math.h>
 
 void setGeometryInDesktop(QWidget* aWidget, int aX, int aY, int aWidthSize, int aHeightSize);
+bool widgetInWidget(QWidget *aWidget, QWidget *aInsideWidget);
+void findFocus(int &pageIndex, int &varIndex, int &compIndex);
 void copyVariable(PageComponent *aComponent);
 void checkVarName(QString aName, QStringList &aErrorList);
 PageComponent* variableByName(QString aVariableName, PageComponent *aComponent);
