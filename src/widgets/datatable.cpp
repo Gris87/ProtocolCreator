@@ -143,7 +143,9 @@ void DataTable::keyPressEvent(QKeyEvent *event)
             )
            )
         {
-            ((VariableExtendedListFrame*)parent()->parent()->parent())->ui->deleteRowButton->click();
+            VariableExtendedListFrame *aTable=(VariableExtendedListFrame*)mTable;
+
+            aTable->ui->deleteRowButton->click();
         }
     }
     else
@@ -189,7 +191,7 @@ void DataTable::pasteData()
         }
     }
 
-    VariableExtendedListFrame* aTable=(VariableExtendedListFrame*)parent()->parent()->parent();
+    VariableExtendedListFrame *aTable=(VariableExtendedListFrame*)mTable;
 
     for (int i=0; i<cells.length(); i++)
     {
@@ -223,6 +225,21 @@ void DataTable::pasteData()
         }
         else
         {
+            if (itemDelegateForRow(curRow+i))
+            {
+                curCol=0;
+
+                delete itemDelegateForRow(curRow+i);
+
+                for (int j=curRow+i; j<totalRow-1; j++)
+                {
+                    setItemDelegateForRow(j, itemDelegateForRow(j+1));
+                }
+
+                removeRow(curRow+i);
+                aTable->insertRow(curRow+i);
+            }
+
             for (int j=0; j<cells.at(i).length() && curCol+j<totalCol; j++)
             {
                 QString aText=cells.at(i).at(j);
