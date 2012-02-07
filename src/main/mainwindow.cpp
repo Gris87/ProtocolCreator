@@ -766,6 +766,42 @@ void MainWindow::on_actionFindNext_triggered()
             startIndex=0;
         }
     }
+
+    int curPage=startPage;
+    int curIndex=startIndex;
+
+    do
+    {
+        curIndex++;
+
+        if (curIndex>=totalCount)
+        {
+            curIndex=0;
+            curPage++;
+
+            if (curPage>=ui->pagesTabWidget->count())
+            {
+                curPage=-1;
+            }
+
+            if (curPage<0)
+            {
+                totalCount=globalDialog->variables.length();
+            }
+            else
+            {
+                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                totalCount=aPage->variables.length()+aPage->components.length();
+            }
+        }
+
+        if (curPage==startPage && curIndex==startIndex)
+        {
+            break;
+        }
+    }
+    while (true);
 }
 
 void MainWindow::on_actionFindPrev_triggered()
@@ -808,6 +844,42 @@ void MainWindow::on_actionFindPrev_triggered()
             startIndex=totalCount-1;
         }
     }
+
+    int curPage=startPage;
+    int curIndex=startIndex;
+
+    do
+    {
+        curIndex--;
+
+        if (curIndex<0)
+        {
+            curIndex=totalCount-1;
+            curPage--;
+
+            if (curPage<1)
+            {
+                curPage=ui->pagesTabWidget->count()-1;
+            }
+
+            if (curPage<0)
+            {
+                totalCount=globalDialog->variables.length();
+            }
+            else
+            {
+                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                totalCount=aPage->variables.length()+aPage->components.length();
+            }
+        }
+
+        if (curPage==startPage && curIndex==startIndex)
+        {
+            break;
+        }
+    }
+    while (true);
 }
 
 void MainWindow::on_actionGlobalVars_triggered()
