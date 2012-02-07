@@ -1638,7 +1638,7 @@ void VariableExtendedListFrame::dataTableCopyRows()
         int realRow=aRows.at(i);
         QString aRow="";
 
-        if (ui->dataTableWidget->itemDelegateForRow(i))
+        if (ui->dataTableWidget->itemDelegateForRow(realRow))
         {
             if (ui->dataTableWidget->columnCount()>0)
             {
