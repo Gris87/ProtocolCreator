@@ -18,6 +18,11 @@ InsertLinkTableDialog::InsertLinkTableDialog(VariableExtendedListFrame *aSourceT
         for (int j=0; j<ui->sourceTableWidget->columnCount(); j++)
         {
             ui->sourceTableWidget->setItem(i, j, mSourceTable->ui->dataTableWidget->item(i, j)->clone());
+
+            if (ui->sourceTableWidget->item(i, j)->data(Qt::CheckStateRole).isValid())
+            {
+                ui->sourceTableWidget->item(i, j)->setFlags(ui->sourceTableWidget->item(i, j)->flags() & ~Qt::ItemIsUserCheckable);
+            }
         }
 
         if (mSourceTable->ui->dataTableWidget->itemDelegateForRow(i))
