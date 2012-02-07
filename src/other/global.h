@@ -41,6 +41,7 @@
 #include "src/main/mainwindow.h"
 #include "src/main/pageselectiondialog.h"
 #include "src/main/passworddialog.h"
+#include "src/main/searchdialog.h"
 #include "src/main/sectioncontroldialog.h"
 #include "src/main/tableeditdialog.h"
 
@@ -59,6 +60,7 @@
 
 // FORMS
 extern MainWindow                *mainWindow;
+extern SearchDialog              *searchDialog;
 extern GlobalDialog              *globalDialog;
 
 // GENERAL
@@ -73,5 +75,9 @@ extern QStringList                functionsList;
 extern double                     pixelToSantimeter;
 
 extern QString                    protocolCreatorVersion;
+
+extern QString                    lastSearch;
+extern QString                    lastReplace;
+extern bool                       isReplace;
 
 #endif // GLOBAL_H

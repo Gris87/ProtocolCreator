@@ -46,6 +46,10 @@ public:
     inline void saveState();
     inline void loadState();
 
+public slots:
+    void on_actionFindNext_triggered();
+    void on_actionFindPrev_triggered();
+
 private slots:
     void pageMoved(int from, int to);
     void page_nameChanged(PageFrame *parentPage);
@@ -59,6 +63,8 @@ private slots:
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
     void on_actionExit_triggered();
+    void on_actionFind_triggered();
+    void on_actionReplace_triggered();
     void on_actionGlobalVars_triggered();
     void on_actionSectionControl_triggered();
     void on_actionCheckDocument_triggered();

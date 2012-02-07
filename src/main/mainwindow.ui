@@ -63,6 +63,18 @@
     <property name="title">
      <string>Протокол</string>
     </property>
+    <widget class="QMenu" name="menuSearch">
+     <property name="title">
+      <string>Поиск и замена</string>
+     </property>
+     <addaction name="actionFind"/>
+     <addaction name="actionReplace"/>
+     <addaction name="separator"/>
+     <addaction name="actionFindNext"/>
+     <addaction name="actionFindPrev"/>
+    </widget>
+    <addaction name="menuSearch"/>
+    <addaction name="separator"/>
     <addaction name="actionGlobalVars"/>
     <addaction name="actionSectionControl"/>
     <addaction name="actionCheckDocument"/>
@@ -289,6 +301,41 @@
    </property>
    <property name="shortcut">
     <string>F9</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="text">
+    <string>Поиск</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionFindNext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Искать вперед</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="actionFindPrev">
+   <property name="text">
+    <string>Искать назад</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="actionReplace">
+   <property name="text">
+    <string>Замена</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

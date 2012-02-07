@@ -13,24 +13,41 @@ QModelIndex DataTable::indexFromItem(QTableWidgetItem *item) const
 void DataTable::commitData(QWidget *editor)
 {
     VariableExtendedListFrame *aTable=(VariableExtendedListFrame*)mTable;
+    int curRow=currentRow();
+    int curCol=currentColumn();
 
     if (
-        itemDelegateForRow(currentRow())
+        itemDelegateForRow(curRow)
         ||
         (
-         aTable->typeColumns.at(currentColumn()).column->type()!=ctBool
+         aTable->typeColumns.at(curCol).column->type()!=ctBool
          &&
-         aTable->typeColumns.at(currentColumn()).column->type()!=ctExpression
+         aTable->typeColumns.at(curCol).column->type()!=ctExpression
          &&
          (
-          aTable->typeColumns.at(currentColumn()).column->type()!=ctInteger
+          aTable->typeColumns.at(curCol).column->type()!=ctInteger
           ||
-          !((IntegerColumn*)(aTable->typeColumns.at(currentColumn()).column))->mIsAutoInc
+          !((IntegerColumn*)(aTable->typeColumns.at(curCol).column))->mIsAutoInc
          )
         )
        )
     {
         QTableWidget::commitData(editor);
+
+        if (curRow<rowCount()-1)
+        {
+            lastRow=curRow;
+            lastCol=curCol;
+            QTimer::singleShot(0, this, SLOT(jumpToNext()));
+        }
+    }
+}
+
+void DataTable::jumpToNext()
+{
+    if (lastRow==currentRow() && lastCol==currentColumn())
+    {
+        setCurrentCell(lastRow+1, lastCol);
     }
 }
 

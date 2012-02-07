@@ -3,6 +3,8 @@
 
 #include <QTableWidget>
 
+#include <QTimer>
+
 class DataTable : public QTableWidget
 {
     Q_OBJECT
@@ -18,6 +20,13 @@ public:
 protected:
     void commitData(QWidget *editor);
     void keyPressEvent(QKeyEvent *event);
+
+private:
+    int lastRow;
+    int lastCol;
+
+private slots:
+    void jumpToNext();
 };
 
 #endif // DATATABLE_H

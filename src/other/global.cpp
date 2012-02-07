@@ -2,6 +2,7 @@
 
 // FORMS
 MainWindow                *mainWindow=0;
+SearchDialog              *searchDialog=0;
 GlobalDialog              *globalDialog=0;
 
 // GENERAL
@@ -16,3 +17,7 @@ QStringList                functionsList;
 double                     pixelToSantimeter=0.0263921875;
 
 QString                    protocolCreatorVersion="Protocol Creator v 1.0";
+
+QString                    lastSearch="";
+QString                    lastReplace="";
+bool                       isReplace=false;

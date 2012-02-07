@@ -701,6 +701,41 @@ void MainWindow::on_actionCheckDocument_triggered()
     }
 }
 
+void MainWindow::on_actionFind_triggered()
+{
+    if (searchDialog)
+    {
+        delete searchDialog;
+        searchDialog=0;
+    }
+
+    searchDialog = new SearchDialog(this);
+    searchDialog->show();
+}
+
+void MainWindow::on_actionReplace_triggered()
+{
+    if (searchDialog)
+    {
+        delete searchDialog;
+        searchDialog=0;
+    }
+
+    searchDialog = new SearchDialog(this);
+    searchDialog->ui->replaceGroupBox->setChecked(true);
+    searchDialog->show();
+}
+
+void MainWindow::on_actionFindNext_triggered()
+{
+
+}
+
+void MainWindow::on_actionFindPrev_triggered()
+{
+
+}
+
 void MainWindow::on_actionGlobalVars_triggered()
 {
     globalDialog->exec();
