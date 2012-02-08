@@ -823,10 +823,6 @@ void MainWindow::on_actionFindNext_triggered()
             {
                 if (aComponent->find(true))
                 {
-
-                }
-                else
-                {
                     if (isFindAll)
                     {
                         continue;
