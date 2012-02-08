@@ -168,6 +168,7 @@ void SearchDialog::find(int mode)
         }
 
         isReplace=false;
+        isFindAll=false;
 
         switch (mode)
         {
@@ -180,7 +181,11 @@ void SearchDialog::find(int mode)
             break;
             case 1:
             {
-
+                isReplace=true;
+                isFindAll=true;
+                mainWindow->on_actionFindNext_triggered();
+                isReplace=false;
+                isFindAll=false;
             }
             break;
             case 2:

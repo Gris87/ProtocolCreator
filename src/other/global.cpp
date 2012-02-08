@@ -21,3 +21,4 @@ QString                    protocolCreatorVersion="Protocol Creator v 1.0";
 QString                    lastSearch="";
 QString                    lastReplace="";
 bool                       isReplace=false;
+bool                       isFindAll=false;

@@ -79,5 +79,6 @@ extern QString                    protocolCreatorVersion;
 extern QString                    lastSearch;
 extern QString                    lastReplace;
 extern bool                       isReplace;
+extern bool                       isFindAll;
 
 #endif // GLOBAL_H
