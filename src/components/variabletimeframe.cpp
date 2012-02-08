@@ -188,3 +188,10 @@ QVariant VariableTimeFrame::calculate()
 
     return calculationResult;
 }
+
+void VariableTimeFrame::getWidgetList(QList<QWidget*> &aList)
+{
+    aList.append(ui->nameEdit);
+    aList.append(ui->varNameEdit);
+    aList.append(ui->valueEdit);
+}

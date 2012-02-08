@@ -35,6 +35,8 @@ public:
 
     QVariant calculate();
 
+    void getWidgetList(QList<QWidget*> &aList);
+
 private slots:
     void on_upButton_clicked();
     void on_downButton_clicked();

@@ -201,3 +201,10 @@ QVariant VariableExpressionFrame::calculate()
 
     return calculationResult;
 }
+
+void VariableExpressionFrame::getWidgetList(QList<QWidget*> &aList)
+{
+    aList.append(ui->nameEdit);
+    aList.append(ui->varNameEdit);
+    aList.append(ui->valueEdit);
+}

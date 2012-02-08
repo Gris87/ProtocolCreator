@@ -239,3 +239,10 @@ QVariant ComponentTextFrame::calculate()
 
     return calculationResult;
 }
+
+void ComponentTextFrame::getWidgetList(QList<QWidget*> &aList)
+{
+    aList.append(ui->nameEdit);
+    aList.append(ui->varNameEdit);
+    aList.append(wordEdit);
+}

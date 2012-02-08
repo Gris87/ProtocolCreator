@@ -35,6 +35,9 @@ public:
     void resetCalculation();
     virtual QVariant calculate();
 
+    virtual void getWidgetList(QList<QWidget*> &aList);
+    bool find(bool isForward);
+
 signals:
     void upPressed(PageComponent *aComponent);
     void downPressed(PageComponent *aComponent);

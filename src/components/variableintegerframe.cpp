@@ -206,3 +206,10 @@ QVariant VariableIntegerFrame::calculate()
 
     return calculationResult;
 }
+
+void VariableIntegerFrame::getWidgetList(QList<QWidget*> &aList)
+{
+    aList.append(ui->nameEdit);
+    aList.append(ui->varNameEdit);
+    aList.append(ui->valueSpinBox);
+}

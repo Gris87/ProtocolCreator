@@ -60,6 +60,8 @@ public:
     void checkForErrors(QStringList &aErrorList);
     QVariant calculate();
 
+    void getWidgetList(QList<QWidget*> &aList);
+
     void setItemsForRow(int row);
     void setItemsForMiddleRow(int row);
     void insertRow(int row);

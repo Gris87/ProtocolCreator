@@ -706,7 +706,6 @@ void MainWindow::on_actionFind_triggered()
     if (searchDialog)
     {
         delete searchDialog;
-        searchDialog=0;
     }
 
     if (globalDialog->isVisible())
@@ -726,7 +725,6 @@ void MainWindow::on_actionReplace_triggered()
     if (searchDialog)
     {
         delete searchDialog;
-        searchDialog=0;
     }
 
     if (globalDialog->isVisible())

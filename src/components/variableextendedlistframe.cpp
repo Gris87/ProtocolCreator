@@ -1288,6 +1288,13 @@ QVariant VariableExtendedListFrame::calculate()
     return calculationResult;
 }
 
+void VariableExtendedListFrame::getWidgetList(QList<QWidget*> &aList)
+{
+    aList.append(ui->nameEdit);
+    aList.append(ui->varNameEdit);
+    aList.append(ui->dataTableWidget);
+}
+
 void VariableExtendedListFrame::on_expandButton_clicked()
 {
     FullDialog dialog(this);

@@ -188,3 +188,9 @@ QVariant VariableBoolFrame::calculate()
 
     return calculationResult;
 }
+
+void VariableBoolFrame::getWidgetList(QList<QWidget*> &aList)
+{
+    aList.append(ui->nameEdit);
+    aList.append(ui->varNameEdit);
+}

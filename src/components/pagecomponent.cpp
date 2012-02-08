@@ -76,3 +76,44 @@ QVariant PageComponent::calculate()
 
     return calculationResult;
 }
+
+void PageComponent::getWidgetList(QList<QWidget*> &aList)
+{
+    // Nothing
+}
+
+bool PageComponent::find(bool isForward)
+{
+    QList<QWidget*> widgets;
+    getWidgetList(widgets);
+
+    if (widgets.length()==0)
+    {
+        return false;
+    }
+
+    int selectIndex=-1;
+
+    for (int i=0; i<widgets.length(); i++)
+    {
+        if (widgets.at(i)->hasFocus())
+        {
+            selectIndex=i;
+            break;
+        }
+    }
+
+    if (selectIndex<0)
+    {
+        if (isForward)
+        {
+            selectIndex=0;
+        }
+        else
+        {
+            selectIndex=widgets.length()-1;
+        }
+    }
+
+    return false;
+}
