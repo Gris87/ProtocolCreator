@@ -29,30 +29,6 @@ void setGeometryInDesktop(QWidget* aWidget, int aX, int aY, int aWidthSize, int 
     aWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
 }
 
-bool widgetInWidget(QWidget *aWidget, QWidget *aInsideWidget)
-{
-    if (aWidget==aInsideWidget)
-    {
-        return true;
-    }
-
-    QObjectList aChildren=aInsideWidget->children();
-
-    for (int j=0; j<aChildren.length(); j++)
-    {
-        if (
-            aChildren.at(j)->isWidgetType()
-            &&
-            widgetInWidget(aWidget, (QWidget*)aChildren.at(j))
-           )
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 void findFocus(int &pageIndex, int &varIndex, int &compIndex)
 {
     pageIndex=-1;
@@ -63,24 +39,12 @@ void findFocus(int &pageIndex, int &varIndex, int &compIndex)
     {
         QWidget* aFocusWidget=globalDialog->focusWidget();
 
-        for (int i=0; globalDialog->variables.length(); i++)
+        for (int i=0; i<globalDialog->variables.length(); i++)
         {
-            for (int j=0; j<globalDialog->variables.length(); j++)
+            if (globalDialog->variables.at(i)->isAncestorOf(aFocusWidget))
             {
-                QObjectList aChildren=globalDialog->variables.at(j)->children();
-
-                for (int k=0; k<aChildren.length(); k++)
-                {
-                    if (
-                        aChildren.at(j)->isWidgetType()
-                        &&
-                        widgetInWidget(aFocusWidget, (QWidget*)aChildren.at(j))
-                       )
-                    {
-                        varIndex=j;
-                        return;
-                    }
-                }
+                varIndex=i;
+                return;
             }
         }
     }
@@ -93,37 +57,19 @@ void findFocus(int &pageIndex, int &varIndex, int &compIndex)
 
         for (int i=0; i<aPage->variables.length(); i++)
         {
-            QObjectList aChildren=aPage->variables.at(i)->children();
-
-            for (int j=0; j<aChildren.length(); j++)
+            if (aPage->variables.at(i)->isAncestorOf(aFocusWidget))
             {
-                if (
-                    aChildren.at(j)->isWidgetType()
-                    &&
-                    widgetInWidget(aFocusWidget, (QWidget*)aChildren.at(j))
-                   )
-                {
-                    varIndex=i;
-                    return;
-                }
+                varIndex=i;
+                return;
             }
         }
 
         for (int i=0; i<aPage->components.length(); i++)
         {
-            QObjectList aChildren=aPage->components.at(i)->children();
-
-            for (int j=0; j<aChildren.length(); j++)
+            if (aPage->components.at(i)->isAncestorOf(aFocusWidget))
             {
-                if (
-                    aChildren.at(j)->isWidgetType()
-                    &&
-                    widgetInWidget(aFocusWidget, (QWidget*)aChildren.at(j))
-                   )
-                {
-                    compIndex=i;
-                    return;
-                }
+                compIndex=i;
+                return;
             }
         }
     }

@@ -709,7 +709,15 @@ void MainWindow::on_actionFind_triggered()
         searchDialog=0;
     }
 
-    searchDialog = new SearchDialog(this);
+    if (globalDialog->isVisible())
+    {
+        searchDialog = new SearchDialog(globalDialog);
+    }
+    else
+    {
+        searchDialog = new SearchDialog(this);
+    }
+
     searchDialog->show();
 }
 
@@ -721,20 +729,27 @@ void MainWindow::on_actionReplace_triggered()
         searchDialog=0;
     }
 
-    searchDialog = new SearchDialog(this);
+    if (globalDialog->isVisible())
+    {
+        searchDialog = new SearchDialog(globalDialog);
+    }
+    else
+    {
+        searchDialog = new SearchDialog(this);
+    }
+
     searchDialog->ui->replaceGroupBox->setChecked(true);
     searchDialog->show();
 }
 
 void MainWindow::on_actionFindNext_triggered()
 {
-    int pageIndex;
+    int startPage;
     int varIndex;
     int compIndex;
 
-    findFocus(pageIndex, varIndex, compIndex);
+    findFocus(startPage, varIndex, compIndex);
 
-    int startPage=pageIndex;
     int startIndex;
     int totalCount;
 
@@ -772,6 +787,46 @@ void MainWindow::on_actionFindNext_triggered()
 
     do
     {
+        if (curIndex<totalCount)
+        {
+            PageComponent *aComponent;
+
+            if (curPage<0)
+            {
+                aComponent=globalDialog->variables.at(curIndex);
+            }
+            else
+            {
+                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                if (curIndex<aPage->variables.length())
+                {
+                    aComponent=aPage->variables.at(curIndex);
+                }
+                else
+                {
+                    aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                }
+            }
+
+            if (
+                (
+                 curPage<0
+                 &&
+                 aComponent->isVisibleTo(globalDialog)
+                )
+                ||
+                (
+                 curPage>=0
+                 &&
+                 aComponent->isVisibleTo(mainWindow->ui->pagesTabWidget->widget(curPage))
+                )
+               )
+            {
+
+            }
+        }
+
         curIndex++;
 
         if (curIndex>=totalCount)
@@ -806,13 +861,12 @@ void MainWindow::on_actionFindNext_triggered()
 
 void MainWindow::on_actionFindPrev_triggered()
 {
-    int pageIndex;
+    int startPage;
     int varIndex;
     int compIndex;
 
-    findFocus(pageIndex, varIndex, compIndex);
+    findFocus(startPage, varIndex, compIndex);
 
-    int startPage=pageIndex;
     int startIndex;
     int totalCount;
 
@@ -842,6 +896,11 @@ void MainWindow::on_actionFindPrev_triggered()
         else
         {
             startIndex=totalCount-1;
+
+            if (startIndex<0)
+            {
+                startIndex=0;
+            }
         }
     }
 
@@ -850,14 +909,53 @@ void MainWindow::on_actionFindPrev_triggered()
 
     do
     {
+        if (curIndex<totalCount)
+        {
+            PageComponent *aComponent;
+
+            if (curPage<0)
+            {
+                aComponent=globalDialog->variables.at(curIndex);
+            }
+            else
+            {
+                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                if (curIndex<aPage->variables.length())
+                {
+                    aComponent=aPage->variables.at(curIndex);
+                }
+                else
+                {
+                    aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                }
+            }
+
+            if (
+                (
+                 curPage<0
+                 &&
+                 aComponent->isVisibleTo(globalDialog)
+                )
+                ||
+                (
+                 curPage>=0
+                 &&
+                 aComponent->isVisibleTo(mainWindow->ui->pagesTabWidget->widget(curPage))
+                )
+               )
+            {
+
+            }
+        }
+
         curIndex--;
 
         if (curIndex<0)
         {
-            curIndex=totalCount-1;
             curPage--;
 
-            if (curPage<1)
+            if (curPage<-1)
             {
                 curPage=ui->pagesTabWidget->count()-1;
             }
@@ -871,6 +969,13 @@ void MainWindow::on_actionFindPrev_triggered()
                 PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
 
                 totalCount=aPage->variables.length()+aPage->components.length();
+            }
+
+            curIndex=totalCount-1;
+
+            if (curIndex<0)
+            {
+                curIndex=0;
             }
         }
 

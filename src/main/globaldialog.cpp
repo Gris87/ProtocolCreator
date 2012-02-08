@@ -7,6 +7,29 @@ GlobalDialog::GlobalDialog(QWidget *parent) :
     ui->setupUi(this);
 
     setWindowFlags(Qt::Window);
+
+    addAction(mainWindow->ui->actionFind);
+    addAction(mainWindow->ui->actionReplace);
+    addAction(mainWindow->ui->actionFindNext);
+    addAction(mainWindow->ui->actionFindPrev);
+
+    connect(ui->actionVariableInteger,      SIGNAL(triggered()), this, SLOT(on_numberButton_clicked()));
+    connect(ui->actionVariableString,       SIGNAL(triggered()), this, SLOT(on_stringButton_clicked()));
+    connect(ui->actionVariableBool,         SIGNAL(triggered()), this, SLOT(on_boolButton_clicked()));
+    connect(ui->actionVariableDate,         SIGNAL(triggered()), this, SLOT(on_dateButton_clicked()));
+    connect(ui->actionVariableTime,         SIGNAL(triggered()), this, SLOT(on_timeButton_clicked()));
+    connect(ui->actionVariableList,         SIGNAL(triggered()), this, SLOT(on_listButton_clicked()));
+    connect(ui->actionVariableExtendedList, SIGNAL(triggered()), this, SLOT(on_extendedListButton_clicked()));
+    connect(ui->actionVariableExpression,   SIGNAL(triggered()), this, SLOT(on_expressionButton_clicked()));
+
+    addAction(ui->actionVariableInteger);
+    addAction(ui->actionVariableString);
+    addAction(ui->actionVariableBool);
+    addAction(ui->actionVariableDate);
+    addAction(ui->actionVariableTime);
+    addAction(ui->actionVariableList);
+    addAction(ui->actionVariableExtendedList);
+    addAction(ui->actionVariableExpression);
 }
 
 GlobalDialog::~GlobalDialog()
