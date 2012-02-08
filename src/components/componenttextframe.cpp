@@ -244,5 +244,5 @@ void ComponentTextFrame::getWidgetList(QList<QWidget*> &aList)
 {
     aList.append(ui->nameEdit);
     aList.append(ui->varNameEdit);
-    aList.append(wordEdit);
+    aList.append(wordEdit->ui->valueEdit);
 }

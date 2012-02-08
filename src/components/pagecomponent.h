@@ -36,6 +36,7 @@ public:
     virtual QVariant calculate();
 
     virtual void getWidgetList(QList<QWidget*> &aList);
+    void setWidgetCursor(QWidget* aWidget, bool isForward);
     bool find(bool isForward);
 
 signals:

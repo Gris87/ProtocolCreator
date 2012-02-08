@@ -863,6 +863,53 @@ void MainWindow::on_actionFindNext_triggered()
         {
             break;
         }
+
+        if (curIndex<totalCount)
+        {
+            PageComponent *aComponent;
+
+            if (curPage<0)
+            {
+                aComponent=globalDialog->variables.at(curIndex);
+            }
+            else
+            {
+                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                if (curIndex<aPage->variables.length())
+                {
+                    aComponent=aPage->variables.at(curIndex);
+                }
+                else
+                {
+                    aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                }
+            }
+
+            if (
+                (
+                 curPage<0
+                 &&
+                 aComponent->isVisibleTo(globalDialog)
+                )
+                ||
+                (
+                 curPage>=0
+                 &&
+                 aComponent->isVisibleTo(mainWindow->ui->pagesTabWidget->widget(curPage))
+                )
+               )
+            {
+                QList<QWidget*> widgets;
+                aComponent->getWidgetList(widgets);
+
+                if (widgets.length()>0)
+                {
+                    widgets.at(0)->setFocus();
+                    aComponent->setWidgetCursor(widgets.at(0), true);
+                }
+            }
+        }
     }
     while (true);
 }
@@ -953,7 +1000,17 @@ void MainWindow::on_actionFindPrev_triggered()
                 )
                )
             {
-
+                if (aComponent->find(false))
+                {
+                    if (isFindAll)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
             }
         }
 
@@ -990,6 +1047,53 @@ void MainWindow::on_actionFindPrev_triggered()
         if (curPage==startPage && curIndex==startIndex)
         {
             break;
+        }
+
+        if (curIndex<totalCount)
+        {
+            PageComponent *aComponent;
+
+            if (curPage<0)
+            {
+                aComponent=globalDialog->variables.at(curIndex);
+            }
+            else
+            {
+                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                if (curIndex<aPage->variables.length())
+                {
+                    aComponent=aPage->variables.at(curIndex);
+                }
+                else
+                {
+                    aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                }
+            }
+
+            if (
+                (
+                 curPage<0
+                 &&
+                 aComponent->isVisibleTo(globalDialog)
+                )
+                ||
+                (
+                 curPage>=0
+                 &&
+                 aComponent->isVisibleTo(mainWindow->ui->pagesTabWidget->widget(curPage))
+                )
+               )
+            {
+                QList<QWidget*> widgets;
+                aComponent->getWidgetList(widgets);
+
+                if (widgets.length()>0)
+                {
+                    widgets.at(widgets.length()-1)->setFocus();
+                    aComponent->setWidgetCursor(widgets.at(widgets.length()-1), false);
+                }
+            }
         }
     }
     while (true);
