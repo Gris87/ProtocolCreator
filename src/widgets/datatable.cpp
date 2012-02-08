@@ -55,14 +55,51 @@ void DataTable::keyPressEvent(QKeyEvent *event)
 {
     if (event==QKeySequence::Copy)
     {
-        QList<QTableWidgetSelectionRange> aRanges=selectedRanges();
+        QList<QTableWidgetItem *> aItems=selectedItems();
 
-        if (aRanges.length()>0)
+        if (aItems.length()>0)
         {
-            int aLeft=aRanges.at(0).leftColumn();
-            int aTop=aRanges.at(0).topRow();
-            int aRight=aRanges.at(0).rightColumn();
-            int aBottom=aRanges.at(0).bottomRow();
+            int aLeft=aItems.at(0)->column();
+            int aTop=aItems.at(0)->row();
+            int aRight=aLeft;
+            int aBottom=aTop;
+
+            for (int i=1; i<aItems.length(); i++)
+            {
+                int aRow=aItems.at(i)->row();
+                int aColumn=aItems.at(i)->column();
+
+                if (aRow<aTop)
+                {
+                    aTop=aRow;
+                }
+                else
+                if (aRow>aBottom)
+                {
+                    aBottom=aRow;
+                }
+
+                if (aColumn<aLeft)
+                {
+                    aLeft=aColumn;
+                }
+                else
+                if (aColumn>aRight)
+                {
+                    aRight=aColumn;
+                }
+            }
+
+            for (int i=aTop; i<=aBottom; i++)
+            {
+                for (int j=aLeft; j<=aRight; j++)
+                {
+                    if (!item(i, j)->isSelected())
+                    {
+                        return;
+                    }
+                }
+            }
 
             QString toClipBoard="";
 
