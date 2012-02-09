@@ -111,7 +111,38 @@ void PageComponent::setWidgetCursor(QWidget* aWidget, bool isForward)
     else
     if (aWidget->inherits("QPlainTextEdit"))
     {
-        ((QPlainTextEdit*)aWidget)->moveCursor(QTextCursor::Start);
+        if (isForward)
+        {
+            ((QPlainTextEdit*)aWidget)->moveCursor(QTextCursor::Start);
+        }
+        else
+        {
+            ((QPlainTextEdit*)aWidget)->moveCursor(QTextCursor::End);
+        }
+    }
+    else
+    if (aWidget->inherits("QTextEdit"))
+    {
+        if (isForward)
+        {
+            ((QTextEdit*)aWidget)->moveCursor(QTextCursor::Start);
+        }
+        else
+        {
+            ((QTextEdit*)aWidget)->moveCursor(QTextCursor::End);
+        }
+    }
+    else
+    if (aWidget->inherits("QComboBox"))
+    {
+        if (isForward)
+        {
+            ((QComboBox*)aWidget)->lineEdit()->setCursorPosition(0);
+        }
+        else
+        {
+            ((QComboBox*)aWidget)->lineEdit()->setCursorPosition(((QComboBox*)aWidget)->currentText().length());
+        }
     }
 }
 
@@ -469,6 +500,189 @@ bool PageComponent::find(bool isForward)
             else
             {
                 ((QPlainTextEdit*)aWidget)->moveCursor(QTextCursor::Start);
+            }
+        }
+        else
+        if (aWidget->inherits("QTextEdit"))
+        {
+            QString aText=((QTextEdit*)aWidget)->toPlainText();
+            QString aSelection=((QTextEdit*)aWidget)->textCursor().selectedText();
+            int aStart;
+
+            if (aSelection.length()>0)
+            {
+                aStart=((QTextEdit*)aWidget)->textCursor().selectionStart();
+
+                if (aSelection.compare(lastSearch, Qt::CaseInsensitive)==0)
+                {
+                    if (isReplace)
+                    {
+                        QTextCursor aCursor=((QTextEdit*)aWidget)->textCursor();
+
+                        aCursor.setPosition(aCursor.selectionStart()+1);
+
+                        ((QTextEdit*)aWidget)->textCursor().insertText(lastReplace, aCursor.charFormat());
+                        aText=((QTextEdit*)aWidget)->toPlainText();
+
+                        if (isForward)
+                        {
+                            aStart+=lastReplace.length();
+                        }
+                        else
+                        {
+                            aStart--;
+                        }
+                    }
+                    else
+                    {
+                        if (isForward)
+                        {
+                            aStart+=aSelection.length();
+                        }
+                        else
+                        {
+                            aStart--;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!isForward)
+                    {
+                        aStart+=aSelection.length()-1;
+                    }
+                }
+            }
+            else
+            {
+                aStart=((QTextEdit*)aWidget)->textCursor().position();
+            }
+
+            int index;
+
+            if (aStart<0)
+            {
+                index=-1;
+            }
+            else
+            {
+                if (isForward)
+                {
+                    index=aText.indexOf(lastSearch, aStart, Qt::CaseInsensitive);
+                }
+                else
+                {
+                    if (aStart==aText.length())
+                    {
+                        aStart=aText.length()-1;
+                    }
+
+                    index=aText.lastIndexOf(lastSearch, aStart, Qt::CaseInsensitive);
+                }
+            }
+
+            if (index>=0)
+            {
+                QTextCursor aCursor=((QTextEdit*)aWidget)->textCursor();
+
+                aCursor.setPosition(index);
+                aCursor.setPosition(index+lastSearch.length(), QTextCursor::KeepAnchor);
+
+                ((QTextEdit*)aWidget)->setTextCursor(aCursor);
+                aWidget->activateWindow();
+                aWidget->setFocus();
+                return true;
+            }
+            else
+            {
+                ((QTextEdit*)aWidget)->moveCursor(QTextCursor::Start);
+            }
+        }
+        else
+        if (aWidget->inherits("QComboBox"))
+        {
+            QString aText=((QComboBox*)aWidget)->currentText();
+            QString aSelection=((QComboBox*)aWidget)->lineEdit()->selectedText();
+            int aStart;
+
+            if (aSelection.length()>0)
+            {
+                aStart=((QComboBox*)aWidget)->lineEdit()->selectionStart();
+
+                if (aSelection.compare(lastSearch, Qt::CaseInsensitive)==0)
+                {
+                    if (isReplace)
+                    {
+                        ((QComboBox*)aWidget)->lineEdit()->insert(lastReplace);
+                        aText=((QComboBox*)aWidget)->currentText();
+
+                        if (isForward)
+                        {
+                            aStart+=lastReplace.length();
+                        }
+                        else
+                        {
+                            aStart--;
+                        }
+                    }
+                    else
+                    {
+                        if (isForward)
+                        {
+                            aStart+=aSelection.length();
+                        }
+                        else
+                        {
+                            aStart--;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!isForward)
+                    {
+                        aStart+=aSelection.length()-1;
+                    }
+                }
+            }
+            else
+            {
+                aStart=((QComboBox*)aWidget)->lineEdit()->cursorPosition();
+            }
+
+            int index;
+
+            if (aStart<0)
+            {
+                index=-1;
+            }
+            else
+            {
+                if (isForward)
+                {
+                    index=aText.indexOf(lastSearch, aStart, Qt::CaseInsensitive);
+                }
+                else
+                {
+                    if (aStart==aText.length())
+                    {
+                        aStart=aText.length()-1;
+                    }
+
+                    index=aText.lastIndexOf(lastSearch, aStart, Qt::CaseInsensitive);
+                }
+            }
+
+            if (index>=0)
+            {
+                ((QComboBox*)aWidget)->lineEdit()->setSelection(index, lastSearch.length());
+                aWidget->activateWindow();
+                aWidget->setFocus();
+                return true;
+            }
+            else
+            {
+                ((QComboBox*)aWidget)->lineEdit()->setCursorPosition(0);
             }
         }
 
