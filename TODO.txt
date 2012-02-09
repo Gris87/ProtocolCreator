@@ -1,4 +1,3 @@
 Special functions needs to add
 Maybe sort columns
 Search for table and word document
-Show and hide global dialog on search

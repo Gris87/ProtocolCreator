@@ -17,10 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Search/Replace</string>
-  </property>
-  <property name="locale">
-   <locale language="English" country="UnitedStates"/>
+   <string>Поиск/Замена</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">

@@ -823,21 +823,48 @@ void MainWindow::on_actionFindNext_triggered()
             {
                 if (aComponent->find(true))
                 {
-                    if (curPage<0)
-                    {
-                        globalDialog->ui->scrollArea->ensureWidgetVisible(globalDialog->focusWidget());
-                    }
-                    else
-                    {
-                        ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage))->ui->scrollArea->ensureWidgetVisible(mainWindow->focusWidget());
-                    }
-
                     if (isFindAll)
                     {
                         continue;
                     }
                     else
                     {
+                        if (curPage<0)
+                        {
+                            globalDialog->ui->scrollArea->ensureWidgetVisible(globalDialog->focusWidget());
+
+                            if (!globalDialog->isVisible())
+                            {
+                                if (searchDialog)
+                                {
+                                    globalDialog->show();
+
+                                    SearchDialog* oldSearchDialog=searchDialog;
+                                    searchDialog=new SearchDialog(globalDialog);
+                                    searchDialog->ui->replaceGroupBox->setChecked(oldSearchDialog->ui->replaceGroupBox->isChecked());
+                                    searchDialog->setGeometry(oldSearchDialog->geometry());
+                                    searchDialog->show();
+
+                                    delete oldSearchDialog;
+
+                                    globalDialog->activateWindow();
+                                }
+
+                                globalDialog->exec();
+                            }
+                        }
+                        else
+                        {
+                            if (globalDialog->isVisible())
+                            {
+                                globalDialog->reject();
+                            }
+
+                            mainWindow->ui->pagesTabWidget->setCurrentIndex(curPage);
+
+                            ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage))->ui->scrollArea->ensureWidgetVisible(mainWindow->focusWidget());
+                        }
+
                         break;
                     }
                 }
@@ -1011,21 +1038,48 @@ void MainWindow::on_actionFindPrev_triggered()
             {
                 if (aComponent->find(false))
                 {
-                    if (curPage<0)
-                    {
-                        globalDialog->ui->scrollArea->ensureWidgetVisible(globalDialog->focusWidget());
-                    }
-                    else
-                    {
-                        ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage))->ui->scrollArea->ensureWidgetVisible(mainWindow->focusWidget());
-                    }
-
                     if (isFindAll)
                     {
                         continue;
                     }
                     else
                     {
+                        if (curPage<0)
+                        {
+                            globalDialog->ui->scrollArea->ensureWidgetVisible(globalDialog->focusWidget());
+
+                            if (!globalDialog->isVisible())
+                            {
+                                if (searchDialog)
+                                {
+                                    globalDialog->show();
+
+                                    SearchDialog* oldSearchDialog=searchDialog;
+                                    searchDialog=new SearchDialog(globalDialog);
+                                    searchDialog->ui->replaceGroupBox->setChecked(oldSearchDialog->ui->replaceGroupBox->isChecked());
+                                    searchDialog->setGeometry(oldSearchDialog->geometry());
+                                    searchDialog->show();
+
+                                    delete oldSearchDialog;
+
+                                    globalDialog->activateWindow();
+                                }
+
+                                globalDialog->exec();
+                            }
+                        }
+                        else
+                        {
+                            if (globalDialog->isVisible())
+                            {
+                                globalDialog->reject();
+                            }
+
+                            mainWindow->ui->pagesTabWidget->setCurrentIndex(curPage);
+
+                            ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage))->ui->scrollArea->ensureWidgetVisible(mainWindow->focusWidget());
+                        }
+
                         break;
                     }
                 }
