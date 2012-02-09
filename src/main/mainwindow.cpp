@@ -823,6 +823,15 @@ void MainWindow::on_actionFindNext_triggered()
             {
                 if (aComponent->find(true))
                 {
+                    if (curPage<0)
+                    {
+                        globalDialog->ui->scrollArea->ensureWidgetVisible(globalDialog->focusWidget());
+                    }
+                    else
+                    {
+                        ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage))->ui->scrollArea->ensureWidgetVisible(mainWindow->focusWidget());
+                    }
+
                     if (isFindAll)
                     {
                         continue;
@@ -1002,6 +1011,15 @@ void MainWindow::on_actionFindPrev_triggered()
             {
                 if (aComponent->find(false))
                 {
+                    if (curPage<0)
+                    {
+                        globalDialog->ui->scrollArea->ensureWidgetVisible(globalDialog->focusWidget());
+                    }
+                    else
+                    {
+                        ((PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage))->ui->scrollArea->ensureWidgetVisible(mainWindow->focusWidget());
+                    }
+
                     if (isFindAll)
                     {
                         continue;
