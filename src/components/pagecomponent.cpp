@@ -108,6 +108,11 @@ void PageComponent::setWidgetCursor(QWidget* aWidget, bool isForward)
     {
         ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
     }
+    else
+    if (aWidget->inherits("QPlainTextEdit"))
+    {
+        ((QPlainTextEdit*)aWidget)->moveCursor(QTextCursor::Start);
+    }
 }
 
 bool PageComponent::find(bool isForward)
@@ -228,7 +233,7 @@ bool PageComponent::find(bool isForward)
             if (index>=0)
             {
                 ((QLineEdit*)aWidget)->setSelection(index, lastSearch.length());
-                aWidget->window()->setFocus();
+                aWidget->activateWindow();
                 aWidget->setFocus();
                 return true;
             }
@@ -262,7 +267,7 @@ bool PageComponent::find(bool isForward)
                 else
                 {
                     ((MySpinBox*)aWidget)->selectAll();
-                    aWidget->window()->setFocus();
+                    aWidget->activateWindow();
                     aWidget->setFocus();
                     return true;
                 }
@@ -299,7 +304,7 @@ bool PageComponent::find(bool isForward)
                     else
                     {
                         ((MySpinBox*)aWidget)->selectAll();
-                        aWidget->window()->setFocus();
+                        aWidget->activateWindow();
                         aWidget->setFocus();
                         return true;
                     }
@@ -330,7 +335,7 @@ bool PageComponent::find(bool isForward)
                 else
                 {
                     ((MySpinBox*)aWidget)->selectAll();
-                    aWidget->window()->setFocus();
+                    aWidget->activateWindow();
                     aWidget->setFocus();
                     return true;
                 }
@@ -364,7 +369,7 @@ bool PageComponent::find(bool isForward)
                 else
                 {
                     ((MySpinBox*)aWidget)->selectAll();
-                    aWidget->window()->setFocus();
+                    aWidget->activateWindow();
                     aWidget->setFocus();
                     return true;
                 }
@@ -372,6 +377,98 @@ bool PageComponent::find(bool isForward)
             else
             {
                 ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
+            }
+        }
+        else
+        if (aWidget->inherits("QPlainTextEdit"))
+        {
+            QString aText=((QPlainTextEdit*)aWidget)->toPlainText();
+            QString aSelection=((QPlainTextEdit*)aWidget)->textCursor().selectedText();
+            int aStart;
+
+            if (aSelection.length()>0)
+            {
+                aStart=((QPlainTextEdit*)aWidget)->textCursor().selectionStart();
+
+                if (aSelection.compare(lastSearch, Qt::CaseInsensitive)==0)
+                {
+                    if (isReplace)
+                    {
+                        ((QPlainTextEdit*)aWidget)->textCursor().insertText(lastReplace);
+                        aText=((QPlainTextEdit*)aWidget)->toPlainText();
+
+                        if (isForward)
+                        {
+                            aStart+=lastReplace.length();
+                        }
+                        else
+                        {
+                            aStart--;
+                        }
+                    }
+                    else
+                    {
+                        if (isForward)
+                        {
+                            aStart+=aSelection.length();
+                        }
+                        else
+                        {
+                            aStart--;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!isForward)
+                    {
+                        aStart+=aSelection.length()-1;
+                    }
+                }
+            }
+            else
+            {
+                aStart=((QPlainTextEdit*)aWidget)->textCursor().position();
+            }
+
+            int index;
+
+            if (aStart<0)
+            {
+                index=-1;
+            }
+            else
+            {
+                if (isForward)
+                {
+                    index=aText.indexOf(lastSearch, aStart, Qt::CaseInsensitive);
+                }
+                else
+                {
+                    if (aStart==aText.length())
+                    {
+                        aStart=aText.length()-1;
+                    }
+
+                    index=aText.lastIndexOf(lastSearch, aStart, Qt::CaseInsensitive);
+                }
+            }
+
+            if (index>=0)
+            {
+                QTextCursor aCursor=((QPlainTextEdit*)aWidget)->textCursor();
+
+                aCursor.setPosition(index);
+                aCursor.setPosition(index+lastSearch.length(), QTextCursor::KeepAnchor);
+
+                ((QPlainTextEdit*)aWidget)->setTextCursor(aCursor);
+                aWidget->activateWindow();
+                aWidget->setFocus();
+                return true;
+            }
+            else
+            {
+                ((QPlainTextEdit*)aWidget)->moveCursor(QTextCursor::Start);
             }
         }
 
