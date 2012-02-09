@@ -95,6 +95,19 @@ void PageComponent::setWidgetCursor(QWidget* aWidget, bool isForward)
             ((QLineEdit*)aWidget)->setCursorPosition(((QLineEdit*)aWidget)->text().length());
         }
     }
+    else
+    if (
+        aWidget->inherits("QSpinBox")
+        ||
+        aWidget->inherits("QDoubleSpinBox")
+        ||
+        aWidget->inherits("QDateEdit")
+        ||
+        aWidget->inherits("QTimeEdit")
+       )
+    {
+        ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
+    }
 }
 
 bool PageComponent::find(bool isForward)
@@ -215,12 +228,150 @@ bool PageComponent::find(bool isForward)
             if (index>=0)
             {
                 ((QLineEdit*)aWidget)->setSelection(index, lastSearch.length());
+                aWidget->window()->setFocus();
                 aWidget->setFocus();
                 return true;
             }
             else
             {
                 ((QLineEdit*)aWidget)->setCursorPosition(0);
+            }
+        }
+        else
+        if (aWidget->inherits("QSpinBox"))
+        {
+            QString aText=((MySpinBox*)aWidget)->lineEdit()->text();
+
+            if (aText==lastSearch)
+            {
+                if (((MySpinBox*)aWidget)->lineEdit()->selectedText()==lastSearch)
+                {
+                    if (isReplace)
+                    {
+                        bool ok;
+                        int aValue=lastReplace.toInt(&ok);
+
+                        if (ok)
+                        {
+                            ((QSpinBox*)aWidget)->setValue(aValue);
+                        }
+                    }
+
+                    ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
+                }
+                else
+                {
+                    ((MySpinBox*)aWidget)->selectAll();
+                    aWidget->window()->setFocus();
+                    aWidget->setFocus();
+                    return true;
+                }
+            }
+            else
+            {
+                ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
+            }
+        }
+        else
+        if (aWidget->inherits("QDoubleSpinBox"))
+        {
+            bool ok;
+            double searchValue=lastSearch.toDouble(&ok);
+
+            if (ok)
+            {
+                if (((QDoubleSpinBox*)aWidget)->value()==searchValue)
+                {
+                    if (((MySpinBox*)aWidget)->lineEdit()->selectedText()!="")
+                    {
+                        if (isReplace)
+                        {
+                            double aValue=lastReplace.toDouble(&ok);
+
+                            if (ok)
+                            {
+                                ((QDoubleSpinBox*)aWidget)->setValue(aValue);
+                            }
+                        }
+
+                        ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
+                    }
+                    else
+                    {
+                        ((MySpinBox*)aWidget)->selectAll();
+                        aWidget->window()->setFocus();
+                        aWidget->setFocus();
+                        return true;
+                    }
+                }
+            }
+        }
+        else
+        if (aWidget->inherits("QDateEdit"))
+        {
+            QString aText=((MySpinBox*)aWidget)->lineEdit()->text();
+
+            if (aText==lastSearch)
+            {
+                if (((MySpinBox*)aWidget)->lineEdit()->selectedText()==lastSearch)
+                {
+                    if (isReplace)
+                    {
+                        QDate aValue=QDate::fromString(lastReplace, "dd.MM.yyyy");
+
+                        if (aValue.isValid())
+                        {
+                            ((QDateEdit*)aWidget)->setDate(aValue);
+                        }
+                    }
+
+                    ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
+                }
+                else
+                {
+                    ((MySpinBox*)aWidget)->selectAll();
+                    aWidget->window()->setFocus();
+                    aWidget->setFocus();
+                    return true;
+                }
+            }
+            else
+            {
+                ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
+            }
+        }
+        else
+        if (aWidget->inherits("QTimeEdit"))
+        {
+            QString aText=((MySpinBox*)aWidget)->lineEdit()->text();
+
+            if (aText==lastSearch)
+            {
+                if (((MySpinBox*)aWidget)->lineEdit()->selectedText()==lastSearch)
+                {
+                    if (isReplace)
+                    {
+                        QTime aValue=QTime::fromString(lastReplace, "hh:mm:ss");
+
+                        if (aValue.isValid())
+                        {
+                            ((QTimeEdit*)aWidget)->setTime(aValue);
+                        }
+                    }
+
+                    ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
+                }
+                else
+                {
+                    ((MySpinBox*)aWidget)->selectAll();
+                    aWidget->window()->setFocus();
+                    aWidget->setFocus();
+                    return true;
+                }
+            }
+            else
+            {
+                ((MySpinBox*)aWidget)->lineEdit()->setCursorPosition(0);
             }
         }
 
@@ -242,4 +393,9 @@ bool PageComponent::find(bool isForward)
     } while(true);
 
     return false;
+}
+
+QLineEdit* MySpinBox::lineEdit()
+{
+    return QAbstractSpinBox::lineEdit();
 }

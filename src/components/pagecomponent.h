@@ -2,8 +2,15 @@
 #define PAGECOMPONENT_H
 
 #include <QWidget>
+#include <QAbstractSpinBox>
 
 #include <QVariant>
+
+class MySpinBox : public QAbstractSpinBox
+{
+public:
+    QLineEdit* lineEdit();
+};
 
 class PageComponent : public QWidget
 {
