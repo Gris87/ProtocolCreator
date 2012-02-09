@@ -144,6 +144,27 @@ void PageComponent::setWidgetCursor(QWidget* aWidget, bool isForward)
             ((QComboBox*)aWidget)->lineEdit()->setCursorPosition(((QComboBox*)aWidget)->currentText().length());
         }
     }
+    else
+    if (aWidget->inherits("DataTable"))
+    {
+        VariableExtendedListFrame *aTable=(VariableExtendedListFrame*)((DataTable*)aWidget)->mTable;
+
+        if (
+            aTable->ui->dataTableWidget->rowCount()>0
+            &&
+            aTable->ui->dataTableWidget->columnCount()>0
+           )
+        {
+            if (isForward)
+            {
+                aTable->ui->dataTableWidget->setCurrentCell(0, 0, QItemSelectionModel::ClearAndSelect);
+            }
+            else
+            {
+                aTable->ui->dataTableWidget->setCurrentCell(aTable->ui->dataTableWidget->rowCount()-1, aTable->ui->dataTableWidget->columnCount()-1, QItemSelectionModel::ClearAndSelect);
+            }
+        }
+    }
 }
 
 bool PageComponent::find(bool isForward)
@@ -684,6 +705,11 @@ bool PageComponent::find(bool isForward)
             {
                 ((QComboBox*)aWidget)->lineEdit()->setCursorPosition(0);
             }
+        }
+        else
+        if (aWidget->inherits("DataTable"))
+        {
+            VariableExtendedListFrame *aTable=(VariableExtendedListFrame*)((DataTable*)aWidget)->mTable;
         }
 
         if (isForward)
