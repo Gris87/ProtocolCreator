@@ -312,9 +312,6 @@
    </property>
   </action>
   <action name="actionFindNext">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>Искать вперед</string>
    </property>
@@ -323,9 +320,6 @@
    </property>
   </action>
   <action name="actionFindPrev">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>Искать назад</string>
    </property>

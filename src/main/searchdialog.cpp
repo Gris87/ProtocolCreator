@@ -106,9 +106,6 @@ void SearchDialog::find(int mode)
     lastSearch=ui->findComboBox->currentText();
     lastReplace=ui->replaceComboBox->currentText();
 
-    mainWindow->ui->actionFindNext->setEnabled(lastSearch!="");
-    mainWindow->ui->actionFindPrev->setEnabled(lastSearch!="");
-
     if (lastSearch!="")
     {
         QDir(dir).mkpath(dir+"data");
