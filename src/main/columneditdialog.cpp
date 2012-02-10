@@ -582,7 +582,7 @@ void ColumnEditDialog::applyChanges()
                     continue;
                 }
 
-                QTime aTime=QTime::fromString(mTable->ui->dataTableWidget->item(i, mColumnIndex)->text(), "hh:mm:ss");
+                QTime aTime=QTime::fromString(mTable->ui->dataTableWidget->item(i, mColumnIndex)->text(), "h:mm:ss");
 
                 if (!aTime.isValid())
                 {

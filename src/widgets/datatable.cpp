@@ -361,11 +361,11 @@ void DataTable::pasteData()
                     break;
                     case ctTime:
                     {
-                        QTime aTime=QTime::fromString(aText, "hh:mm:ss");
+                        QTime aTime=QTime::fromString(aText, "h:mm:ss");
 
                         if (aTime.isValid())
                         {
-                            aItem->setText(aText);
+                            aItem->setText(aTime.toString("hh:mm:ss"));
                         }
                     }
                     break;

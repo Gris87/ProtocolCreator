@@ -1834,7 +1834,7 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
                 return aDateValue;
             }
 
-            QTime aTimeValue=QTime::fromString(aExpression, "hh:mm:ss");
+            QTime aTimeValue=QTime::fromString(aExpression, "h:mm:ss");
 
             if (aTimeValue.isValid())
             {

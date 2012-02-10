@@ -232,7 +232,7 @@ void InsertLinkTableDialog::on_addButton_clicked()
                 else
                 if (aDestColumnType==ctTime)
                 {
-                    QTime aTime=QTime::fromString(ui->sourceTableWidget->item(aSourceRow, j)->text(), "hh:mm:ss");
+                    QTime aTime=QTime::fromString(ui->sourceTableWidget->item(aSourceRow, j)->text(), "h:mm:ss");
 
                     if (aTime.isValid())
                     {

@@ -1186,7 +1186,7 @@ QVariant VariableExtendedListFrame::calculate()
                 {
                     for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
                     {
-                        mCellResults[i][j]=QTime::fromString(ui->dataTableWidget->item(i,j)->text(), "hh:mm:ss");
+                        mCellResults[i][j]=QTime::fromString(ui->dataTableWidget->item(i,j)->text(), "h:mm:ss");
                     }
                 }
                 break;
