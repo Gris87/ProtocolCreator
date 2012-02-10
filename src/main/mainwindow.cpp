@@ -742,6 +742,12 @@ void MainWindow::on_actionReplace_triggered()
 
 void MainWindow::on_actionFindNext_triggered()
 {
+    if (lastSearch=="")
+    {
+        on_actionFind_triggered();
+        return;
+    }
+
     int startPage;
     int varIndex;
     int compIndex;
@@ -952,6 +958,12 @@ void MainWindow::on_actionFindNext_triggered()
 
 void MainWindow::on_actionFindPrev_triggered()
 {
+    if (lastSearch=="")
+    {
+        on_actionFind_triggered();
+        return;
+    }
+
     int startPage;
     int varIndex;
     int compIndex;
