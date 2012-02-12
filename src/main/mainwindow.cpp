@@ -750,45 +750,63 @@ void MainWindow::on_actionFindNext_triggered()
 
     if (isFindAll)
     {
-        if (globalDialog->isVisible() && globalDialog->variables.length()>0)
-        {
-            QList<QWidget *> widgets;
-            globalDialog->variables.at(0)->getWidgetList(widgets);
+        bool good=false;
 
-            if (widgets.length()>0)
+        if (globalDialog->isVisible())
+        {
+            for (int i=0; i<globalDialog->variables.length(); i++)
             {
-                widgets.at(0)->setFocus();
+                QList<QWidget *> widgets;
+                globalDialog->variables.at(i)->getWidgetList(widgets);
+
+                if (widgets.length()>0)
+                {
+                    widgets.at(0)->setFocus();
+                    good=true;
+                    break;
+                }
             }
         }
-        else
+
+        if (!good)
         {
             for (int i=0; i<ui->pagesTabWidget->count(); i++)
             {
                 PageFrame *aPage=(PageFrame*)ui->pagesTabWidget->widget(i);
 
-                if (aPage->variables.length()>0)
+                for (int j=0; j<aPage->variables.length(); j++)
                 {
                     QList<QWidget *> widgets;
-                    aPage->variables.at(0)->getWidgetList(widgets);
+                    aPage->variables.at(j)->getWidgetList(widgets);
 
                     if (widgets.length()>0)
                     {
                         widgets.at(0)->setFocus();
+                        good=true;
+                        break;
                     }
+                }
 
+                if (good)
+                {
                     break;
                 }
 
-                if (aPage->components.length()>0)
+                for (int j=0; j<aPage->components.length(); j++)
                 {
                     QList<QWidget *> widgets;
-                    aPage->components.at(0)->getWidgetList(widgets);
+                    aPage->components.at(j)->getWidgetList(widgets);
 
                     if (widgets.length()>0)
                     {
                         widgets.at(0)->setFocus();
+                        good=true;
+                        break;
                     }
+                }
 
+                if (good)
+                {
                     break;
                 }
             }
