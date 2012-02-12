@@ -748,6 +748,53 @@ void MainWindow::on_actionFindNext_triggered()
         return;
     }
 
+    if (isFindAll)
+    {
+        if (globalDialog->isVisible() && globalDialog->variables.length()>0)
+        {
+            QList<QWidget *> widgets;
+            globalDialog->variables.at(0)->getWidgetList(widgets);
+
+            if (widgets.length()>0)
+            {
+                widgets.at(0)->setFocus();
+            }
+        }
+        else
+        {
+            for (int i=0; i<ui->pagesTabWidget->count(); i++)
+            {
+                PageFrame *aPage=(PageFrame*)ui->pagesTabWidget->widget(i);
+
+                if (aPage->variables.length()>0)
+                {
+                    QList<QWidget *> widgets;
+                    aPage->variables.at(0)->getWidgetList(widgets);
+
+                    if (widgets.length()>0)
+                    {
+                        widgets.at(0)->setFocus();
+                    }
+
+                    break;
+                }
+
+                if (aPage->components.length()>0)
+                {
+                    QList<QWidget *> widgets;
+                    aPage->components.at(0)->getWidgetList(widgets);
+
+                    if (widgets.length()>0)
+                    {
+                        widgets.at(0)->setFocus();
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
     int startPage;
     int varIndex;
     int compIndex;

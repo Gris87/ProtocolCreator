@@ -737,6 +737,12 @@ bool PageComponent::find(bool isForward)
                             else
                             {
                                 aTableWidget->setCurrentCell(curRow, 0, QItemSelectionModel::ClearAndSelect);
+
+                                if (!isFindAll)
+                                {
+                                    aTableWidget->scrollToItem(aTableWidget->item(curRow, 0));
+                                }
+
                                 aWidget->activateWindow();
                                 aWidget->setFocus();
                                 return true;
@@ -769,6 +775,12 @@ bool PageComponent::find(bool isForward)
                                         if (!aTableWidget->item(curRow, curCol)->isSelected())
                                         {
                                             aTableWidget->setCurrentCell(curRow, curCol, QItemSelectionModel::ClearAndSelect);
+
+                                            if (!isFindAll)
+                                            {
+                                                aTableWidget->scrollToItem(aTableWidget->item(curRow, curCol));
+                                            }
+
                                             aWidget->activateWindow();
                                             aWidget->setFocus();
                                             return true;
@@ -811,6 +823,12 @@ bool PageComponent::find(bool isForward)
                                                 else
                                                 {
                                                     aTableWidget->setCurrentCell(curRow, curCol, QItemSelectionModel::ClearAndSelect);
+
+                                                    if (!isFindAll)
+                                                    {
+                                                        aTableWidget->scrollToItem(aTableWidget->item(curRow, curCol));
+                                                    }
+
                                                     aWidget->activateWindow();
                                                     aWidget->setFocus();
                                                     return true;
@@ -839,6 +857,12 @@ bool PageComponent::find(bool isForward)
                                     else
                                     {
                                         aTableWidget->setCurrentCell(curRow, curCol, QItemSelectionModel::ClearAndSelect);
+
+                                        if (!isFindAll)
+                                        {
+                                            aTableWidget->scrollToItem(aTableWidget->item(curRow, curCol));
+                                        }
+
                                         aWidget->activateWindow();
                                         aWidget->setFocus();
                                         return true;
@@ -870,6 +894,12 @@ bool PageComponent::find(bool isForward)
                                     else
                                     {
                                         aTableWidget->setCurrentCell(curRow, curCol, QItemSelectionModel::ClearAndSelect);
+
+                                        if (!isFindAll)
+                                        {
+                                            aTableWidget->scrollToItem(aTableWidget->item(curRow, curCol));
+                                        }
+
                                         aWidget->activateWindow();
                                         aWidget->setFocus();
                                         return true;
@@ -899,6 +929,12 @@ bool PageComponent::find(bool isForward)
                                     else
                                     {
                                         aTableWidget->setCurrentCell(curRow, curCol, QItemSelectionModel::ClearAndSelect);
+
+                                        if (!isFindAll)
+                                        {
+                                            aTableWidget->scrollToItem(aTableWidget->item(curRow, curCol));
+                                        }
+
                                         aWidget->activateWindow();
                                         aWidget->setFocus();
                                         return true;
