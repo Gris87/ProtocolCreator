@@ -242,7 +242,17 @@ QVariant ComponentTextFrame::calculate()
 
 void ComponentTextFrame::getWidgetList(QList<QWidget*> &aList)
 {
-    aList.append(ui->nameEdit);
-    aList.append(ui->varNameEdit);
-    aList.append(wordEdit->ui->valueEdit);
+    if (isAdmin || isEditable())
+    {
+        if (isAdmin)
+        {
+            aList.append(ui->nameEdit);
+            aList.append(ui->varNameEdit);
+        }
+
+        if (ui->useCheckBox->isChecked())
+        {
+            aList.append(wordEdit->ui->valueEdit);
+        }
+    }
 }

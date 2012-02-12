@@ -209,8 +209,15 @@ QVariant VariableIntegerFrame::calculate()
 
 void VariableIntegerFrame::getWidgetList(QList<QWidget*> &aList)
 {
-    aList.append(ui->nameEdit);
-    aList.append(ui->varNameEdit);
-    aList.append(ui->decimalsSpinBox);
-    aList.append(ui->valueSpinBox);
+    if (isAdmin || isEditable())
+    {
+        if (isAdmin)
+        {
+            aList.append(ui->nameEdit);
+            aList.append(ui->varNameEdit);
+            aList.append(ui->decimalsSpinBox);
+        }
+
+        aList.append(ui->valueSpinBox);
+    }
 }

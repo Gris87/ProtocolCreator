@@ -191,7 +191,14 @@ QVariant VariableTimeFrame::calculate()
 
 void VariableTimeFrame::getWidgetList(QList<QWidget*> &aList)
 {
-    aList.append(ui->nameEdit);
-    aList.append(ui->varNameEdit);
-    aList.append(ui->valueEdit);
+    if (isAdmin || isEditable())
+    {
+        if (isAdmin)
+        {
+            aList.append(ui->nameEdit);
+            aList.append(ui->varNameEdit);
+        }
+
+        aList.append(ui->valueEdit);
+    }
 }
