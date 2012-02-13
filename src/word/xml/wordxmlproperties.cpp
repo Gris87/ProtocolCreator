@@ -11,8 +11,6 @@ WordXMLProperties::~WordXMLProperties()
 
 void WordXMLProperties::writeToStream(QTextStream &aStream)
 {
-    lastSaved=QDateTime::currentDateTime();
-
     if (needToGenerate)
     {
         aStream<<" <o:DocumentProperties>\r\n";
@@ -31,6 +29,7 @@ void WordXMLProperties::writeToStream(QTextStream &aStream)
         customProperties.writeToStream(aStream);
 
         aStream<<" </o:DocumentProperties>\r\n";
+        aStream<<"\r\n";
     }
 }
 

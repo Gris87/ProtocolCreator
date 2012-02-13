@@ -78,7 +78,9 @@ SOURCES += src/main.cpp\
     src/main/searchdialog.cpp \
     src/word/xml/wordxml.cpp \
     src/word/xml/wordxmlproperties.cpp \
-    src/word/xml/wordxmlcustomproperties.cpp
+    src/word/xml/wordxmlcustomproperties.cpp \
+    src/word/xml/wordxmlfonts.cpp \
+    src/word/xml/wordxmlfont.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -144,7 +146,9 @@ HEADERS  += src/main/mainwindow.h \
     src/main/searchdialog.h \
     src/word/xml/wordxml.h \
     src/word/xml/wordxmlproperties.h \
-    src/word/xml/wordxmlcustomproperties.h
+    src/word/xml/wordxmlcustomproperties.h \
+    src/word/xml/wordxmlfonts.h \
+    src/word/xml/wordxmlfont.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

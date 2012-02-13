@@ -39,6 +39,7 @@ void WordXML::saveToFile(QString aFileName)
              "\r\n";
 
     properties.writeToStream(aStream);
+    fonts.writeToStream(aStream);
 
     aStream<<"</w:wordDocument>\r\n";
 }
@@ -46,4 +47,5 @@ void WordXML::saveToFile(QString aFileName)
 void WordXML::reset()
 {
     properties.reset();
+    fonts.reset();
 }

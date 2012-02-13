@@ -5,11 +5,13 @@
 #include <QFile>
 
 #include "wordxmlproperties.h"
+#include "wordxmlfonts.h"
 
 class WordXML
 {
 public:
     WordXMLProperties properties;
+    WordXMLFonts fonts;
 
     explicit WordXML();
     ~WordXML();

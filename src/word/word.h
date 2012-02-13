@@ -17,6 +17,8 @@
 #include "xml/wordxml.h"
 #include "xml/wordxmlproperties.h"
 #include "xml/wordxmlcustomproperties.h"
+#include "xml/wordxmlfonts.h"
+#include "xml/wordxmlfont.h"
 
 #define WORD_MAX_RETRIES 3
 
