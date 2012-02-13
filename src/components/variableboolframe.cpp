@@ -191,6 +191,9 @@ QVariant VariableBoolFrame::calculate()
 
 void VariableBoolFrame::getWidgetList(QList<QWidget*> &aList)
 {
-    aList.append(ui->nameEdit);
-    aList.append(ui->varNameEdit);
+    if (isAdmin)
+    {
+        aList.append(ui->nameEdit);
+        aList.append(ui->varNameEdit);
+    }
 }

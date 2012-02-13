@@ -257,8 +257,15 @@ QVariant VariableListFrame::calculate()
 
 void VariableListFrame::getWidgetList(QList<QWidget*> &aList)
 {
-    aList.append(ui->nameEdit);
-    aList.append(ui->varNameEdit);
-    aList.append(ui->linesTextEdit);
-    aList.append(ui->valueComboBox);
+    if (isAdmin || isEditable())
+    {
+        if (isAdmin)
+        {
+            aList.append(ui->nameEdit);
+            aList.append(ui->varNameEdit);
+            aList.append(ui->linesTextEdit);
+        }
+
+        aList.append(ui->valueComboBox);
+    }
 }

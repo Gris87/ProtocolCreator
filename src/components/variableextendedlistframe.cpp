@@ -1290,9 +1290,19 @@ QVariant VariableExtendedListFrame::calculate()
 
 void VariableExtendedListFrame::getWidgetList(QList<QWidget*> &aList)
 {
-    aList.append(ui->nameEdit);
-    aList.append(ui->varNameEdit);
-    aList.append(ui->dataTableWidget);
+    if (isAdmin || isEditable())
+    {
+        if (isAdmin)
+        {
+            aList.append(ui->nameEdit);
+            aList.append(ui->varNameEdit);
+        }
+
+        if (ui->useCheckBox->isChecked())
+        {
+            aList.append(ui->dataTableWidget);
+        }
+    }
 }
 
 void VariableExtendedListFrame::on_expandButton_clicked()
