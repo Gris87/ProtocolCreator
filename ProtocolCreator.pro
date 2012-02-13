@@ -75,7 +75,10 @@ SOURCES += src/main.cpp\
     src/column_types/expressioncolumn.cpp \
     src/main/listselectiondialog.cpp \
     src/main/insertlinktabledialog.cpp \
-    src/main/searchdialog.cpp
+    src/main/searchdialog.cpp \
+    src/word/xml/wordxml.cpp \
+    src/word/xml/wordxmlproperties.cpp \
+    src/word/xml/wordxmlcustomproperties.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -138,7 +141,10 @@ HEADERS  += src/main/mainwindow.h \
     src/column_types/expressioncolumn.h \
     src/main/listselectiondialog.h \
     src/main/insertlinktabledialog.h \
-    src/main/searchdialog.h
+    src/main/searchdialog.h \
+    src/word/xml/wordxml.h \
+    src/word/xml/wordxmlproperties.h \
+    src/word/xml/wordxmlcustomproperties.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

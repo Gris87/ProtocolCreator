@@ -34,6 +34,8 @@ public:
 
     void closeEvent(QCloseEvent *event);
 
+    void exportToWord(bool isFull);
+
     void addPage(QString aName, QString aVarName);
 
     void addError(QString aText);

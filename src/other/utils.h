@@ -6,6 +6,8 @@
 
 #include <math.h>
 
+void moveFile(const QString aSourceFileName, const QString aDestFileName);
+void copyFile(const QString aSourceFileName, const QString aDestFileName);
 void setGeometryInDesktop(QWidget* aWidget, int aX, int aY, int aWidthSize, int aHeightSize);
 void findFocus(int &pageIndex, int &varIndex, int &compIndex);
 void copyVariable(PageComponent *aComponent);

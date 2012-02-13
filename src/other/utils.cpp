@@ -1,5 +1,33 @@
 #include "src/other/global.h"
 
+void moveFile(const QString aSourceFileName, const QString aDestFileName)
+{
+    copyFile(aSourceFileName, aDestFileName);
+
+    QFile::remove(aSourceFileName);
+}
+
+void copyFile(const QString aSourceFileName, const QString aDestFileName)
+{
+    QFile aFile(aSourceFileName);
+
+    if (aFile.exists())
+    {
+        QFile aFile2(aDestFileName);
+
+        aFile.open(QIODevice::ReadOnly);
+        aFile2.open(QIODevice::WriteOnly);
+
+        while (!aFile.atEnd())
+        {
+            aFile2.write(aFile.read(4096));
+        }
+
+        aFile.close();
+        aFile2.close();
+    }
+}
+
 void setGeometryInDesktop(QWidget* aWidget, int aX, int aY, int aWidthSize, int aHeightSize)
 {
     QDesktopWidget *desktop = QApplication::desktop();

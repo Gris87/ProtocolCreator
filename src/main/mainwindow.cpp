@@ -96,7 +96,7 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    QFileDialog dialog(this, protocolCreatorVersion, currentName, "*.pcr");
+    QFileDialog dialog(this, protocolCreatorVersion, currentName, "Protocol creator file (*.pcr)");
 
     if (dialog.exec())
     {
@@ -316,7 +316,7 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::on_actionSaveAs_triggered()
 {
-    QFileDialog dialog(this, protocolCreatorVersion, currentName, "*.pcr");
+    QFileDialog dialog(this, protocolCreatorVersion, currentName, "Protocol creator file (*.pcr)");
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setDefaultSuffix("pcr");
 
@@ -1194,24 +1194,124 @@ void MainWindow::on_actionSectionControl_triggered()
     dialog.exec();
 }
 
-void MainWindow::on_actionExport_triggered()
+void MainWindow::exportToWord(bool isFull)
 {
     on_actionCheckDocument_triggered();
 
-    if (!errorHappened)
+    if (errorHappened)
     {
         return;
     }
+
+    QFileDialog dialog(this, QString(), QString(), "Word document (*.doc *.docx *.xml)");
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setWindowTitle("Сохранить документ Word");
+    dialog.setConfirmOverwrite(false);
+
+    QString aFileName;
+
+    do
+    {
+        if (dialog.exec())
+        {
+            aFileName=dialog.selectedFiles().at(0);
+
+            if (aFileName.endsWith(".doc"))
+            {
+                aFileName.remove(aFileName.length()-4,4);
+            }
+            else
+            if (aFileName.endsWith(".docx"))
+            {
+                aFileName.remove(aFileName.length()-5,5);
+            }
+            else
+            if (aFileName.endsWith(".xml"))
+            {
+                if (QFile::exists(aFileName))
+                {
+                    if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите заменить \""+QDir::toNativeSeparators(aFileName)+"\"?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::No)
+                    {
+                        continue;
+                    }
+                }
+
+                break;
+            }
+
+            if (QFile::exists(aFileName+".doc"))
+            {
+                if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите заменить \""+QDir::toNativeSeparators(aFileName)+".doc\"?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::No)
+                {
+                    continue;
+                }
+            }
+
+            if (QFile::exists(aFileName+".docx"))
+            {
+                if (QMessageBox::question(this, protocolCreatorVersion, "Вы хотите заменить \""+QDir::toNativeSeparators(aFileName)+".docx\"?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::No)
+                {
+                    continue;
+                }
+            }
+
+            break;
+        }
+        else
+        {
+            return;
+        }
+    } while (true);
+
+    QString aTempPath=QDir::fromNativeSeparators(QString(getenv("Temp")));
+
+    if (!aTempPath.endsWith("/"))
+    {
+        aTempPath.append("/");
+    }
+
+    {
+        WordXML word;
+
+        word.saveToFile(aTempPath+"TempFile.xml");
+    }
+
+    WordApp wordApp(this);
+    wordApp.setVisible(true);
+
+    WordDocument *document;
+
+    if (aFileName.endsWith(".xml"))
+    {
+        moveFile(aTempPath+"TempFile.xml", aFileName);
+        document=wordApp.documents()->open(aFileName);
+    }
+    else
+    {
+        document=wordApp.documents()->open(aTempPath+"TempFile.xml");
+
+        if (QFile::exists(aFileName+".doc"))
+        {
+            QFile::remove(aFileName+".doc");
+        }
+
+        if (QFile::exists(aFileName+".docx"))
+        {
+            QFile::remove(aFileName+".docx");
+        }
+
+        document->saveAs(aFileName, wordApp.defaultFileFormat());
+    }
+}
+
+void MainWindow::on_actionExport_triggered()
+{
+    exportToWord(false);
 }
 
 void MainWindow::on_actionGenerateWord_triggered()
 {
-    on_actionCheckDocument_triggered();
-
-    if (!errorHappened)
-    {
-        return;
-    }
+    exportToWord(true);
 }
 
 void MainWindow::on_actionLogin_triggered()
