@@ -6,12 +6,14 @@
 
 #include "wordxmlproperties.h"
 #include "wordxmlfonts.h"
+#include "wordxmlstyles.h"
 
 class WordXML
 {
 public:
     WordXMLProperties properties;
     WordXMLFonts fonts;
+    WordXMLStyles styles;
 
     explicit WordXML();
     ~WordXML();

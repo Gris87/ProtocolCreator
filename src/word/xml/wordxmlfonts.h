@@ -3,9 +3,7 @@
 
 #include <QTextStream>
 
-#include "wordxmlfont.h"
-
-class WordXMLFonts : public QList<WordXMLFont>
+class WordXMLFonts
 {
 public:
     QString defaultAsciiFont;

@@ -80,7 +80,8 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmlproperties.cpp \
     src/word/xml/wordxmlcustomproperties.cpp \
     src/word/xml/wordxmlfonts.cpp \
-    src/word/xml/wordxmlfont.cpp
+    src/word/xml/wordxmlstyles.cpp \
+    src/word/xml/wordxmlstyle.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -148,7 +149,8 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmlproperties.h \
     src/word/xml/wordxmlcustomproperties.h \
     src/word/xml/wordxmlfonts.h \
-    src/word/xml/wordxmlfont.h
+    src/word/xml/wordxmlstyles.h \
+    src/word/xml/wordxmlstyle.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
