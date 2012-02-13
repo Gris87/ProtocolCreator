@@ -3,6 +3,7 @@
 
 #include <QTextStream>
 #include <QDateTime>
+#include <QVariant>
 
 enum ECustomPropertyType
 {
@@ -22,7 +23,7 @@ struct SCustomProperty
     bool booleanValue;
 };
 
-class WordXMLCustomProperties : public QList<SCustomProperty>
+class WordXMLCustomProperties
 {
 public:
     explicit WordXMLCustomProperties();
@@ -31,6 +32,29 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    QVariant getValue(SCustomProperty* aProperty);
+    void setValue(SCustomProperty* aProperty, QVariant aValue);
+
+    SCustomProperty* add(QString aName, QVariant aValue);
+
+    SCustomProperty* copy(QString aName, QString aSecondName);
+    SCustomProperty* copy(int index, QString aSecondName);
+    SCustomProperty* copy(SCustomProperty* aProperty, QString aSecondName);
+
+    SCustomProperty* get(QString aName);
+    SCustomProperty* get(int index);
+
+    void remove(QString aName);
+    void remove(int index);
+    void remove(SCustomProperty* aProperty);
+
+    int count();
+
+private:
+    QList<SCustomProperty*> propList;
+
+    void clear();
 };
 
 #endif // WORDXMLCUSTOMPROPERTIES_H
