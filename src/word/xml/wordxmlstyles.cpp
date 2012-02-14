@@ -1,6 +1,6 @@
 #include "wordxmlstyles.h"
 
-WordXMLStyles::WordXMLStyles() : QList<WordXMLStyle>()
+WordXMLStyles::WordXMLStyles()
 {
     reset();
 }
@@ -29,6 +29,46 @@ void WordXMLStyles::writeToStream(QTextStream &aStream)
 void WordXMLStyles::reset()
 {
     clear();
+}
+
+void WordXMLStyles::addDefaultStyles2003()
+{
+    WordXMLStyle *aStyle;
+
+    aStyle=add("Normal", stParagraph, true);
+    aStyle->name="Normal";
+    //aStyle->rsid="008F1615";
+
+    aStyle->runProperties.font="Times New Roman";
+    aStyle->runProperties.fontSize=12;
+    // Additional fiedls:
+    //    <w:sz-cs w:val="24"/>
+    //    <w:lang w:val="RU" w:fareast="KO" w:bidi="AR-SA"/>
+
+    //---------------------------------------
+
+    aStyle=add("DefaultParagraphFont", stCharacter, true);
+    aStyle->name="Default Paragraph Font";
+    aStyle->isSemiHidden=true;
+
+    //---------------------------------------
+
+    aStyle=add("TableNormal", stTable, true);
+    aStyle->name="Normal Table";
+    aStyle->uiName="Table Normal";
+    aStyle->isSemiHidden=true;
+    aStyle->runProperties.font="Times New Roman";
+    aStyle->tableProperties.indentation=0;
+    aStyle->tableProperties.cellMargin.setMargin(0, 108, 0, 108);
+
+    //---------------------------------------
+
+
+    aStyle=add("NoList", stList, true);
+    aStyle->name="No List";
+    aStyle->isSemiHidden=true;
+
+    //---------------------------------------
 }
 
 WordXMLStyle* WordXMLStyles::add(QString aStyleID, EStyleType aType, bool isDefault)

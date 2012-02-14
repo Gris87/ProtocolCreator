@@ -1341,6 +1341,8 @@ void MainWindow::exportToWord(bool isFull)
     {
         WordXML word;
 
+        word.styles.addDefaultStyles2003();
+
         word.saveToFile(aTempPath+"TempFile.xml");
     }
     catch(...)

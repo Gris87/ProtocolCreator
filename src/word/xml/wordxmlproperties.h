@@ -15,8 +15,6 @@ public:
     explicit WordXMLProperties();
     ~WordXMLProperties();
 
-    bool needToGenerate;
-
     QString title;
     QString subject;
     QString author;

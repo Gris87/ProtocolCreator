@@ -3,6 +3,10 @@
 
 #include <QTextStream>
 
+#include "wordxmlrunproperties.h"
+#include "wordxmlparagraphproperties.h"
+#include "wordxmltableproperties.h"
+
 enum EStyleType
 {
     stParagraph,
@@ -11,13 +15,20 @@ enum EStyleType
     stList
 };
 
-
 class WordXMLStyle
 {
 public:
     EStyleType type;
     bool isDefault;
     QString styleID;
+    QString name;
+    QString uiName;
+    QString basedOn;
+    QString rsid;
+    WordXMLRunProperties runProperties;
+    WordXMLParagraphProperties paragraphProperties;
+    WordXMLTableProperties tableProperties;
+    bool isSemiHidden;
 
     explicit WordXMLStyle();
     ~WordXMLStyle();
