@@ -1335,37 +1335,78 @@ void MainWindow::exportToWord(bool isFull)
         aTempPath.append("/");
     }
 
+    bool good=true;
+
+    try
     {
         WordXML word;
 
         word.saveToFile(aTempPath+"TempFile.xml");
     }
-
-    WordApp wordApp(this);
-    wordApp.setVisible(true);
-
-    WordDocument *document;
-
-    if (aFileName.endsWith(".xml"))
+    catch(...)
     {
-        moveFile(aTempPath+"TempFile.xml", aFileName);
-        document=wordApp.documents()->open(aFileName);
+        addError("Не удалось сохранить документ Word");
+        good=false;
     }
-    else
+
+    if (good)
     {
-        document=wordApp.documents()->open(aTempPath+"TempFile.xml");
+        WordApp wordApp(this);
+        wordApp.setVisible(true);
 
-        if (QFile::exists(aFileName+".doc"))
+        WordDocument *document=0;
+
+        try
         {
-            QFile::remove(aFileName+".doc");
+            if (aFileName.endsWith(".xml"))
+            {
+                copyFile(aTempPath+"TempFile.xml", aFileName);
+                document=wordApp.documents()->open(aFileName);
+            }
+            else
+            {
+                document=wordApp.documents()->open(aTempPath+"TempFile.xml");
+
+                if (QFile::exists(aFileName+".doc"))
+                {
+                    QFile::remove(aFileName+".doc");
+                }
+
+                if (QFile::exists(aFileName+".docx"))
+                {
+                    QFile::remove(aFileName+".docx");
+                }
+
+                document->saveAs(aFileName, wordApp.defaultFileFormat());
+            }
+        }
+        catch(...)
+        {
+            if (document)
+            {
+                document->close();
+            }
+
+            wordApp.quit();
+
+            copyFile(aTempPath+"TempFile.xml", "C:/TempFile.xml");
+            addError("Не удалось открыть созданный документ Word. Создана копия XML файла (C:\\TempFile.xml)");
+        }
+    }
+
+    if (ui->logListWidget->count()>0)
+    {
+        if (ui->logListWidget->height()==0)
+        {
+            QList<int> aSizes;
+
+            aSizes.append(ui->pagesTabWidget->height()*0.9);
+            aSizes.append(ui->pagesTabWidget->height()*0.1);
+
+            dividerSplitter->setSizes(aSizes);
         }
 
-        if (QFile::exists(aFileName+".docx"))
-        {
-            QFile::remove(aFileName+".docx");
-        }
-
-        document->saveAs(aFileName, wordApp.defaultFileFormat());
+        QMessageBox::warning(this, protocolCreatorVersion, "Возникли проблемы при сохранении документа Word.\nПожалуйста, проверьте логи");
     }
 }
 

@@ -5,23 +5,7 @@
 #include <QDateTime>
 #include <QVariant>
 
-enum ECustomPropertyType
-{
-    cptText,
-    cptDate,
-    cptNumber,
-    cptYesNo
-};
-
-struct SCustomProperty
-{
-    QString name;
-    ECustomPropertyType type;
-    QString textValue;
-    QDateTime dateValue;
-    double floatValue;
-    bool booleanValue;
-};
+#include "wordxmlcustomproperty.h"
 
 class WordXMLCustomProperties
 {
@@ -33,26 +17,23 @@ public:
 
     void reset();
 
-    QVariant getValue(SCustomProperty* aProperty);
-    void setValue(SCustomProperty* aProperty, QVariant aValue);
+    WordXMLCustomProperty* add(QString aName, QVariant aValue);
 
-    SCustomProperty* add(QString aName, QVariant aValue);
+    WordXMLCustomProperty* copy(QString aName, QString aSecondName);
+    WordXMLCustomProperty* copy(int index, QString aSecondName);
+    WordXMLCustomProperty* copy(WordXMLCustomProperty* aProperty, QString aSecondName);
 
-    SCustomProperty* copy(QString aName, QString aSecondName);
-    SCustomProperty* copy(int index, QString aSecondName);
-    SCustomProperty* copy(SCustomProperty* aProperty, QString aSecondName);
-
-    SCustomProperty* get(QString aName);
-    SCustomProperty* get(int index);
+    WordXMLCustomProperty* get(QString aName);
+    WordXMLCustomProperty* get(int index);
 
     void remove(QString aName);
     void remove(int index);
-    void remove(SCustomProperty* aProperty);
+    void remove(WordXMLCustomProperty* aProperty);
 
     int count();
 
 private:
-    QList<SCustomProperty*> propList;
+    QList<WordXMLCustomProperty*> propList;
 
     void clear();
 };
