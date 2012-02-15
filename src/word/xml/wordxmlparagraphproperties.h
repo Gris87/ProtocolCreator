@@ -3,9 +3,14 @@
 
 #include <QTextStream>
 
+#include "wordxmltabs.h"
+
 class WordXMLParagraphProperties
 {
 public:
+    QString paragraphStyle;
+    WordXMLTabs tabs;
+
     explicit WordXMLParagraphProperties();
     ~WordXMLParagraphProperties();
 

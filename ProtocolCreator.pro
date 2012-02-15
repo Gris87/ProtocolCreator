@@ -86,7 +86,9 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmlrunproperties.cpp \
     src/word/xml/wordxmlparagraphproperties.cpp \
     src/word/xml/wordxmltableproperties.cpp \
-    src/word/xml/wordxmltablecellmargin.cpp
+    src/word/xml/wordxmltablecellmargin.cpp \
+    src/word/xml/wordxmltabs.cpp \
+    src/word/xml/wordxmltab.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -160,7 +162,9 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmlrunproperties.h \
     src/word/xml/wordxmlparagraphproperties.h \
     src/word/xml/wordxmltableproperties.h \
-    src/word/xml/wordxmltablecellmargin.h
+    src/word/xml/wordxmltablecellmargin.h \
+    src/word/xml/wordxmltabs.h \
+    src/word/xml/wordxmltab.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

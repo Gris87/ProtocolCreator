@@ -41,9 +41,10 @@ void WordXMLStyles::addDefaultStyles2003()
 
     aStyle->runProperties.font="Times New Roman";
     aStyle->runProperties.fontSize=12;
-    // Additional fiedls:
-    //    <w:sz-cs w:val="24"/>
-    //    <w:lang w:val="RU" w:fareast="KO" w:bidi="AR-SA"/>
+    aStyle->runProperties.fontSizeCS=12;
+    aStyle->runProperties.language="RU";
+    aStyle->runProperties.languageFarEast="KO";
+    aStyle->runProperties.languageBIDI="AR-SA";
 
     //---------------------------------------
 
@@ -69,6 +70,24 @@ void WordXMLStyles::addDefaultStyles2003()
     aStyle->isSemiHidden=true;
 
     //---------------------------------------
+
+    aStyle=add("Footer", stParagraph, false);
+    aStyle->name="footer";
+    aStyle->uiName="Footer";
+    aStyle->basedOn="Normal";
+    //aStyle->rsid="00857F11";
+    aStyle->paragraphProperties.paragraphStyle="Footer";
+    aStyle->paragraphProperties.tabs.add(tlCenter, 4677);
+    aStyle->paragraphProperties.tabs.add(tlRight, 9355);
+    aStyle->runProperties.font="Times New Roman";
+
+    //---------------------------------------
+
+    aStyle=add("PageNumber", stCharacter, false);
+    aStyle->name="page number";
+    aStyle->uiName="Page Number";
+    aStyle->basedOn="DefaultParagraphFont";
+    //aStyle->rsid="00857F11";
 }
 
 WordXMLStyle* WordXMLStyles::add(QString aStyleID, EStyleType aType, bool isDefault)

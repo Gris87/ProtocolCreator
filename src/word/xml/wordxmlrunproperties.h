@@ -8,6 +8,10 @@ class WordXMLRunProperties
 public:
     QString font;
     int fontSize;
+    int fontSizeCS;
+    QString language;
+    QString languageFarEast;
+    QString languageBIDI;
 
     explicit WordXMLRunProperties();
     ~WordXMLRunProperties();

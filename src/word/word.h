@@ -23,6 +23,8 @@
 #include "xml/wordxmlstyle.h"
 #include "xml/wordxmlrunproperties.h"
 #include "xml/wordxmlparagraphproperties.h"
+#include "xml/wordxmltabs.h"
+#include "xml/wordxmltab.h"
 #include "xml/wordxmltableproperties.h"
 #include "xml/wordxmltablecellmargin.h"
 
