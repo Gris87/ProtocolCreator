@@ -1,6 +1,6 @@
 #include "wordxmldocumentproperties.h"
 
-WordXMLDocumentProperties::WordXMLDocumentProperties()
+WordXMLDocumentProperties::WordXMLDocumentProperties() : WordXMLBase()
 {
     reset();
 }
@@ -11,9 +11,9 @@ WordXMLDocumentProperties::~WordXMLDocumentProperties()
 
 void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
 {
-    aStream<<"  <w:docPr>\r\n";
+    aStream<<" <w:docPr>\r\n";
 
-    aStream<<"   <w:view w:val=\"";
+    aStream<<"  <w:view w:val=\"";
 
     switch(view)
     {
@@ -48,17 +48,17 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
 
     if (zoom>=0)
     {
-        aStream<<"   <w:zoom w:percent=\""+QString::number(zoom)+"\"/>\r\n";
+        aStream<<"  <w:zoom w:percent=\""+QString::number(zoom)+"\"/>\r\n";
     }
 
     if (isDoNotEmbedSystemFonts)
     {
-        aStream<<"   <w:doNotEmbedSystemFonts/>\r\n";
+        aStream<<"  <w:doNotEmbedSystemFonts/>\r\n";
     }
 
     if (proofStateSpelling!="" || proofStateGrammar!="")
     {
-        aStream<<"   <w:proofState";
+        aStream<<"  <w:proofState";
 
         if (proofStateSpelling!="")
         {
@@ -73,19 +73,19 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
         aStream<<"/>\r\n";
     }
 
-    aStream<<"   <w:attachedTemplate w:val=\""+attachedTemplate+"\"/>\r\n";
+    aStream<<"  <w:attachedTemplate w:val=\""+attachedTemplate+"\"/>\r\n";
 
     if (defaultTabStop>=0)
     {
-        aStream<<"   <w:defaultTabStop w:val=\""+QString::number(defaultTabStop)+"\"/>\r\n";
+        aStream<<"  <w:defaultTabStop w:val=\""+QString::number(defaultTabStop)+"\"/>\r\n";
     }
 
     if (isPunctuationKerning)
     {
-        aStream<<"   <w:punctuationKerning/>\r\n";
+        aStream<<"  <w:punctuationKerning/>\r\n";
     }
 
-    aStream<<"   <w:characterSpacingControl w:val=\"";
+    aStream<<"  <w:characterSpacingControl w:val=\"";
 
     switch(characterSpacingControl)
     {
@@ -110,17 +110,17 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
 
     if (isOptimizeForBrowser)
     {
-        aStream<<"   <w:optimizeForBrowser/>\r\n";
+        aStream<<"  <w:optimizeForBrowser/>\r\n";
     }
 
     if (isValidateAgainstSchema)
     {
-        aStream<<"   <w:validateAgainstSchema/>\r\n";
+        aStream<<"  <w:validateAgainstSchema/>\r\n";
     }
 
     if (saveInvalidXML!=tsNone)
     {
-        aStream<<"   <w:saveInvalidXML w:val=\"";
+        aStream<<"  <w:saveInvalidXML w:val=\"";
 
         if (saveInvalidXML==tsOn)
         {
@@ -136,7 +136,7 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
 
     if (ignoreMixedContent!=tsNone)
     {
-        aStream<<"   <w:ignoreMixedContent w:val=\"";
+        aStream<<"  <w:ignoreMixedContent w:val=\"";
 
         if (ignoreMixedContent==tsOn)
         {
@@ -152,7 +152,7 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
 
     if (alwaysShowPlaceholderText!=tsNone)
     {
-        aStream<<"   <w:alwaysShowPlaceholderText w:val=\"";
+        aStream<<"  <w:alwaysShowPlaceholderText w:val=\"";
 
         if (alwaysShowPlaceholderText==tsOn)
         {
@@ -166,32 +166,46 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
         aStream<<"\"/>\r\n";
     }
 
-    footnoteProperties.writeToStream(aStream);
-    endnoteProperties.writeToStream(aStream);
-    compatibility.writeToStream(aStream);
+    if (footnoteProperties.isModified())
+    {
+        aStream<<"\r\n";
+        footnoteProperties.writeToStream(aStream);
+    }
+
+    if (endnoteProperties.isModified())
+    {
+        aStream<<"\r\n";
+        endnoteProperties.writeToStream(aStream);
+    }
+
+    if (compatibility.isModified())
+    {
+        aStream<<"\r\n";
+        compatibility.writeToStream(aStream);
+    }
 
     if (rsidsList.length()>0)
     {
-        aStream<<"   <wsp:rsids>\r\n";
+        aStream<<"  <wsp:rsids>\r\n";
 
         for (int i=0; i<rsidsList.length(); i++)
         {
             if (i==0)
             {
-                aStream<<"    <wsp:rsidRoot";
+                aStream<<"   <wsp:rsidRoot";
             }
             else
             {
-                aStream<<"    <wsp:rsid";
+                aStream<<"   <wsp:rsid";
             }
 
             aStream<<" wsp:val=\""+rsidsList.at(i)+"\"/>\r\n";
         }
 
-        aStream<<"   </wsp:rsids>\r\n";
+        aStream<<"  </wsp:rsids>\r\n";
     }
 
-    aStream<<"  </w:docPr>\r\n";
+    aStream<<" </w:docPr>\r\n";
 }
 
 void WordXMLDocumentProperties::reset()

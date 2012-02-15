@@ -1,6 +1,6 @@
 #include "wordxmlendnote.h"
 
-WordXMLEndnote::WordXMLEndnote()
+WordXMLEndnote::WordXMLEndnote() : WordXMLBase()
 {
     reset();
 }
@@ -11,11 +11,11 @@ WordXMLEndnote::~WordXMLEndnote()
 
 void WordXMLEndnote::writeToStream(QTextStream &aStream)
 {
-    aStream<<"    <w:endnote w:type=\""+type+"\">\r\n";
+    aStream<<"   <w:endnote w:type=\""+type+"\">\r\n";
 
     paragraph.writeToStream(aStream);
 
-    aStream<<"    </w:endnote>\r\n";
+    aStream<<"   </w:endnote>\r\n";
 }
 
 void WordXMLEndnote::reset()

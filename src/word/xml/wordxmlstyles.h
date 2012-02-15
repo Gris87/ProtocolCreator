@@ -1,11 +1,11 @@
 #ifndef WORDXMLSTYLES_H
 #define WORDXMLSTYLES_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 #include "wordxmlstyle.h"
 
-class WordXMLStyles
+class WordXMLStyles : public WordXMLBase
 {
 public:
     explicit WordXMLStyles();

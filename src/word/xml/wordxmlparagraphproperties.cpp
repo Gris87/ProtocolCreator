@@ -1,6 +1,6 @@
 #include "wordxmlparagraphproperties.h"
 
-WordXMLParagraphProperties::WordXMLParagraphProperties()
+WordXMLParagraphProperties::WordXMLParagraphProperties() : WordXMLBase()
 {
     reset();
 }

@@ -1,6 +1,6 @@
 #include "wordxmltableproperties.h"
 
-WordXMLTableProperties::WordXMLTableProperties()
+WordXMLTableProperties::WordXMLTableProperties() : WordXMLBase()
 {
     reset();
 }

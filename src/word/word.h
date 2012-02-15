@@ -14,6 +14,7 @@
 #include "wordtablecell.h"
 #include "wordrange.h"
 
+#include "xml/wordxmlbase.h"
 #include "xml/wordxml.h"
 #include "xml/wordxmlproperties.h"
 #include "xml/wordxmlcustomproperties.h"

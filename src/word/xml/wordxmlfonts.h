@@ -1,9 +1,9 @@
 #ifndef WORDXMLFONTS_H
 #define WORDXMLFONTS_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
-class WordXMLFonts
+class WordXMLFonts : public WordXMLBase
 {
 public:
     QString defaultAsciiFont;

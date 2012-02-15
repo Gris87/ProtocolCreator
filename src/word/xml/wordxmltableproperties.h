@@ -1,11 +1,11 @@
 #ifndef WORDXMLTABLEPROPERTIES_H
 #define WORDXMLTABLEPROPERTIES_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 #include "wordxmltablecellmargin.h"
 
-class WordXMLTableProperties
+class WordXMLTableProperties : public WordXMLBase
 {
 public:
     double indentation;

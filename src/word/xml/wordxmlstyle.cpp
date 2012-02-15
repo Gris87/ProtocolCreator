@@ -1,6 +1,6 @@
 #include "wordxmlstyle.h"
 
-WordXMLStyle::WordXMLStyle()
+WordXMLStyle::WordXMLStyle() : WordXMLBase()
 {
     reset();
 }

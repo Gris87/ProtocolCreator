@@ -1,15 +1,16 @@
 #ifndef WORDXML_H
 #define WORDXML_H
 
-#include <QTextStream>
 #include <QFile>
+
+#include "wordxmlbase.h"
 
 #include "wordxmlproperties.h"
 #include "wordxmlfonts.h"
 #include "wordxmlstyles.h"
 #include "wordxmldocumentproperties.h"
 
-class WordXML
+class WordXML : public WordXMLBase
 {
 public:
     int wordVersion;
@@ -23,6 +24,8 @@ public:
     ~WordXML();
 
     void saveToFile(QString aFileName);
+
+    void writeToStream(QTextStream &aStream);
 
     void reset();
 };

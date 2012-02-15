@@ -1,9 +1,9 @@
 #ifndef WORDXMLRUNPROPERTIES_H
 #define WORDXMLRUNPROPERTIES_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
-class WordXMLRunProperties
+class WordXMLRunProperties : public WordXMLBase
 {
 public:
     QString font;

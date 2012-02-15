@@ -1,6 +1,6 @@
 #include "wordxmlfonts.h"
 
-WordXMLFonts::WordXMLFonts()
+WordXMLFonts::WordXMLFonts() : WordXMLBase()
 {
     reset();
 }

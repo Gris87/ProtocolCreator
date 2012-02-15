@@ -95,7 +95,8 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmlfootnote.cpp \
     src/word/xml/wordxmlparagraph.cpp \
     src/word/xml/wordxmlendnoteproperties.cpp \
-    src/word/xml/wordxmlendnote.cpp
+    src/word/xml/wordxmlendnote.cpp \
+    src/word/xml/wordxmlbase.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -178,7 +179,8 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmlfootnoteproperties.h \
     src/word/xml/wordxmlparagraph.h \
     src/word/xml/wordxmlendnote.h \
-    src/word/xml/wordxmlendnoteproperties.h
+    src/word/xml/wordxmlendnoteproperties.h \
+    src/word/xml/wordxmlbase.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

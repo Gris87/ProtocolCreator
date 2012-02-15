@@ -1,6 +1,6 @@
 #include "wordxmlfootnoteproperties.h"
 
-WordXMLFootnoteProperties::WordXMLFootnoteProperties()
+WordXMLFootnoteProperties::WordXMLFootnoteProperties() : WordXMLBase()
 {
     reset();
 }

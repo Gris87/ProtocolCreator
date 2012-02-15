@@ -1,6 +1,6 @@
 #include "wordxmlproperties.h"
 
-WordXMLProperties::WordXMLProperties()
+WordXMLProperties::WordXMLProperties() : WordXMLBase()
 {
     reset();
 }

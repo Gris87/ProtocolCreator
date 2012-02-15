@@ -1,6 +1,6 @@
 #include "wordxmlcompatibility.h"
 
-WordXMLCompatibility::WordXMLCompatibility()
+WordXMLCompatibility::WordXMLCompatibility() : WordXMLBase()
 {
     reset();
 }
@@ -11,53 +11,41 @@ WordXMLCompatibility::~WordXMLCompatibility()
 
 void WordXMLCompatibility::writeToStream(QTextStream &aStream)
 {
-    if (
-        isBreakWrappedTables
-        ||
-        isSnapToGridInCell
-        ||
-        isWrapTextWithPunct
-        ||
-        isUseAsianBreakRules
-        ||
-        isDontGrowAutofit
-        ||
-        isUseFELayout
-       )
+    if (isModified())
     {
-        aStream<<"   <w:compat>\r\n";
+        aStream<<"  <w:compat>\r\n";
 
         if (isBreakWrappedTables)
         {
-            aStream<<"    <w:breakWrappedTables/>\r\n";
+            aStream<<"   <w:breakWrappedTables/>\r\n";
         }
 
         if (isSnapToGridInCell)
         {
-            aStream<<"    <w:snapToGridInCell/>\r\n";
+            aStream<<"   <w:snapToGridInCell/>\r\n";
         }
 
         if (isWrapTextWithPunct)
         {
-            aStream<<"    <w:wrapTextWithPunct/>\r\n";
+            aStream<<"   <w:wrapTextWithPunct/>\r\n";
         }
 
         if (isUseAsianBreakRules)
         {
-            aStream<<"    <w:useAsianBreakRules/>\r\n";
+            aStream<<"   <w:useAsianBreakRules/>\r\n";
         }
 
         if (isDontGrowAutofit)
         {
-            aStream<<"    <w:dontGrowAutofit/>\r\n";
+            aStream<<"   <w:dontGrowAutofit/>\r\n";
         }
 
         if (isUseFELayout)
         {
-            aStream<<"    <w:useFELayout/>\r\n";
+            aStream<<"   <w:useFELayout/>\r\n";
         }
 
-        aStream<<"   </w:compat>\r\n";
+        aStream<<"  </w:compat>\r\n";
     }
 }
 
@@ -69,4 +57,19 @@ void WordXMLCompatibility::reset()
     isUseAsianBreakRules=false;
     isDontGrowAutofit=false;
     isUseFELayout=false;
+}
+
+bool WordXMLCompatibility::isModified()
+{
+    return isBreakWrappedTables
+           ||
+           isSnapToGridInCell
+           ||
+           isWrapTextWithPunct
+           ||
+           isUseAsianBreakRules
+           ||
+           isDontGrowAutofit
+           ||
+           isUseFELayout;
 }

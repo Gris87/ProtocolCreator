@@ -1,7 +1,7 @@
 #ifndef WORDXMLTAB_H
 #define WORDXMLTAB_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 enum ETabLocation
 {
@@ -10,7 +10,7 @@ enum ETabLocation
     tlRight
 };
 
-class WordXMLTab
+class WordXMLTab : public WordXMLBase
 {
 public:
     ETabLocation location;

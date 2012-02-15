@@ -1,11 +1,11 @@
 #ifndef WORDXMLENDNOTEPROPERTIES_H
 #define WORDXMLENDNOTEPROPERTIES_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 #include "wordxmlendnote.h"
 
-class WordXMLEndnoteProperties
+class WordXMLEndnoteProperties : public WordXMLBase
 {
 public:
     explicit WordXMLEndnoteProperties();

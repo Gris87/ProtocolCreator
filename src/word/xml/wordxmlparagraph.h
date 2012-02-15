@@ -1,9 +1,9 @@
 #ifndef     WORDXMLPARAGRAPH_H
 #define     WORDXMLPARAGRAPH_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
-class WordXMLParagraph
+class WordXMLParagraph : public WordXMLBase
 {
 public:
     explicit WordXMLParagraph();
@@ -12,6 +12,8 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    bool isModified();
 };
 
 #endif //     WORDXMLPARAGRAPH_H

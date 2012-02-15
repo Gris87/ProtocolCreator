@@ -1,8 +1,9 @@
 #ifndef WORDXMLDOCUMENTPROPERTIES_H
 #define WORDXMLDOCUMENTPROPERTIES_H
 
-#include <QTextStream>
 #include <QStringList>
+
+#include "wordxmlbase.h"
 
 #include "wordxmlfootnoteproperties.h"
 #include "wordxmlendnoteproperties.h"
@@ -31,7 +32,7 @@ enum ETripleState
     tsOff
 };
 
-class WordXMLDocumentProperties
+class WordXMLDocumentProperties : public WordXMLBase
 {
 public:
     EViewType view;

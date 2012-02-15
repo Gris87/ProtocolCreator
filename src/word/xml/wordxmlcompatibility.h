@@ -1,9 +1,9 @@
 #ifndef WORDXMLCOMPATIBILITY_H
 #define WORDXMLCOMPATIBILITY_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
-class WordXMLCompatibility
+class WordXMLCompatibility : public WordXMLBase
 {
 public:
     bool isBreakWrappedTables;
@@ -19,6 +19,8 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    bool isModified();
 };
 
 #endif // WORDXMLCOMPATIBILITY_H

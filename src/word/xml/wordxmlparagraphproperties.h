@@ -1,11 +1,11 @@
 #ifndef WORDXMLPARAGRAPHPROPERTIES_H
 #define WORDXMLPARAGRAPHPROPERTIES_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 #include "wordxmltabs.h"
 
-class WordXMLParagraphProperties
+class WordXMLParagraphProperties : public WordXMLBase
 {
 public:
     QString paragraphStyle;

@@ -1,11 +1,11 @@
 #ifndef WORDXMLFOOTNOTEPROPERTIES_H
 #define WORDXMLFOOTNOTEPROPERTIES_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 #include "wordxmlfootnote.h"
 
-class WordXMLFootnoteProperties
+class WordXMLFootnoteProperties : public WordXMLBase
 {
 public:
     explicit WordXMLFootnoteProperties();

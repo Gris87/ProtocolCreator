@@ -1,13 +1,14 @@
 #ifndef WORDXMLPROPERTIES_H
 #define WORDXMLPROPERTIES_H
 
-#include <QTextStream>
 #include <QDateTime>
 #include <stdlib.h>
 
+#include "wordxmlbase.h"
+
 #include "wordxmlcustomproperties.h"
 
-class WordXMLProperties
+class WordXMLProperties : public WordXMLBase
 {
 public:
     WordXMLCustomProperties customProperties;

@@ -1,11 +1,11 @@
 #ifndef     WORDXMLFOOTNOTE_H
 #define     WORDXMLFOOTNOTE_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 #include "wordxmlparagraph.h"
 
-class WordXMLFootnote
+class WordXMLFootnote : public WordXMLBase
 {
 public:
     QString type;

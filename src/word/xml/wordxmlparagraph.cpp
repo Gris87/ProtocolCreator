@@ -1,6 +1,6 @@
-#include "WordXMLParagraph.h"
+#include "wordxmlparagraph.h"
 
-WordXMLParagraph::WordXMLParagraph()
+WordXMLParagraph::WordXMLParagraph() : WordXMLBase()
 {
     reset();
 }
@@ -15,4 +15,9 @@ void WordXMLParagraph::writeToStream(QTextStream &aStream)
 
 void WordXMLParagraph::reset()
 {
+}
+
+bool WordXMLParagraph::isModified()
+{
+    return true;
 }

@@ -1,11 +1,11 @@
 #ifndef     WORDXMLENDNOTE_H
 #define     WORDXMLENDNOTE_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 #include "wordxmlparagraph.h"
 
-class WordXMLEndnote
+class WordXMLEndnote : public WordXMLBase
 {
 public:
     QString type;

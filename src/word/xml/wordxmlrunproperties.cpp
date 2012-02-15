@@ -1,6 +1,6 @@
 #include "wordxmlrunproperties.h"
 
-WordXMLRunProperties::WordXMLRunProperties()
+WordXMLRunProperties::WordXMLRunProperties() : WordXMLBase()
 {
     reset();
 }

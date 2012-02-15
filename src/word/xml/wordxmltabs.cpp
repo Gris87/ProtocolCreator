@@ -1,6 +1,6 @@
 #include "wordxmltabs.h"
 
-WordXMLTabs::WordXMLTabs()
+WordXMLTabs::WordXMLTabs() : WordXMLBase()
 {
     reset();
 }

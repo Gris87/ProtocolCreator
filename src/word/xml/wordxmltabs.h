@@ -1,13 +1,14 @@
 #ifndef WORDXMLTABS_H
 #define WORDXMLTABS_H
 
-#include <QTextStream>
 #include <QDateTime>
 #include <QVariant>
 
+#include "wordxmlbase.h"
+
 #include "wordxmltab.h"
 
-class WordXMLTabs
+class WordXMLTabs : public WordXMLBase
 {
 public:
     explicit WordXMLTabs();

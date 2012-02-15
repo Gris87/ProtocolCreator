@@ -1,9 +1,9 @@
 #ifndef WORDXMLTABLECELLMARGIN_H
 #define WORDXMLTABLECELLMARGIN_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
-class WordXMLTableCellMargin
+class WordXMLTableCellMargin : public WordXMLBase
 {
 public:
     double top;

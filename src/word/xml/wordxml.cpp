@@ -1,6 +1,6 @@
 #include "wordxml.h"
 
-WordXML::WordXML(int aWordVersion)
+WordXML::WordXML(int aWordVersion) : WordXMLBase()
 {
     wordVersion=aWordVersion;
 
@@ -34,6 +34,11 @@ void WordXML::saveToFile(QString aFileName)
     QTextStream aStream(&aFile);
     aStream.setCodec("UTF-8");
 
+    writeToStream(aStream);
+}
+
+void WordXML::writeToStream(QTextStream &aStream)
+{
     aStream<<"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n"
              "<?mso-application progid=\"Word.Document\"?>\r\n";
 

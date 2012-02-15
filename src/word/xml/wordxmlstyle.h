@@ -1,7 +1,7 @@
 #ifndef WORDXMLSTYLE_H
 #define WORDXMLSTYLE_H
 
-#include <QTextStream>
+#include "wordxmlbase.h"
 
 #include "wordxmlrunproperties.h"
 #include "wordxmlparagraphproperties.h"
@@ -15,7 +15,7 @@ enum EStyleType
     stList
 };
 
-class WordXMLStyle
+class WordXMLStyle : public WordXMLBase
 {
 public:
     EStyleType type;

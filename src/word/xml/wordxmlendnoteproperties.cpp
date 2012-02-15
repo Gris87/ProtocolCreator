@@ -1,6 +1,6 @@
 #include "wordxmlendnoteproperties.h"
 
-WordXMLEndnoteProperties::WordXMLEndnoteProperties()
+WordXMLEndnoteProperties::WordXMLEndnoteProperties() : WordXMLBase()
 {
     reset();
 }

@@ -1,6 +1,6 @@
 #include "wordxmltablecellmargin.h"
 
-WordXMLTableCellMargin::WordXMLTableCellMargin()
+WordXMLTableCellMargin::WordXMLTableCellMargin() : WordXMLBase()
 {
     reset();
 }

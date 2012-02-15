@@ -1,9 +1,10 @@
 #ifndef WORDXMLCUSTOMPROPERTY_H
 #define WORDXMLCUSTOMPROPERTY_H
 
-#include <QTextStream>
 #include <QDateTime>
 #include <QVariant>
+
+#include "wordxmlbase.h"
 
 enum ECustomPropertyType
 {
@@ -13,7 +14,7 @@ enum ECustomPropertyType
     cptYesNo
 };
 
-class WordXMLCustomProperty
+class WordXMLCustomProperty : public WordXMLBase
 {
 public:
     QString name;
