@@ -73,7 +73,7 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
         aStream<<"/>\r\n";
     }
 
-    aStream<<"   <w:attachedTemplate w:val=\""+attachedTemplate+"\"";
+    aStream<<"   <w:attachedTemplate w:val=\""+attachedTemplate+"\"/>\r\n";
 
     if (defaultTabStop>=0)
     {
@@ -166,6 +166,10 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
         aStream<<"\"/>\r\n";
     }
 
+    footnoteProperties.writeToStream(aStream);
+    endnoteProperties.writeToStream(aStream);
+    compatibility.writeToStream(aStream);
+
     if (rsidsList.length()>0)
     {
         aStream<<"   <wsp:rsids>\r\n";
@@ -207,6 +211,10 @@ void WordXMLDocumentProperties::reset()
     ignoreMixedContent=tsNone;
     alwaysShowPlaceholderText=tsNone;
 
+    footnoteProperties.reset();
+    endnoteProperties.reset();
+    compatibility.reset();
+
     rsidsList.clear();
 }
 
@@ -228,4 +236,17 @@ void WordXMLDocumentProperties::setDefaultProperties2003()
     saveInvalidXML=tsOff;
     ignoreMixedContent=tsOff;
     alwaysShowPlaceholderText=tsOff;
+
+    WordXMLFootnote* footnote=footnoteProperties.add("separator");
+    footnote=footnoteProperties.add("continuation-separator");
+
+    WordXMLEndnote* endnote=endnoteProperties.add("separator");
+    endnote=endnoteProperties.add("continuation-separator");
+
+    compatibility.isBreakWrappedTables=true;
+    compatibility.isSnapToGridInCell=true;
+    compatibility.isWrapTextWithPunct=true;
+    compatibility.isUseAsianBreakRules=true;
+    compatibility.isDontGrowAutofit=true;
+    compatibility.isUseFELayout=true;
 }

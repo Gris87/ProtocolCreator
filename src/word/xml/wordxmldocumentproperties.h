@@ -4,6 +4,10 @@
 #include <QTextStream>
 #include <QStringList>
 
+#include "wordxmlfootnoteproperties.h"
+#include "wordxmlendnoteproperties.h"
+#include "wordxmlcompatibility.h"
+
 enum EViewType
 {
     vtPrint,
@@ -44,6 +48,9 @@ public:
     ETripleState saveInvalidXML;
     ETripleState ignoreMixedContent;
     ETripleState alwaysShowPlaceholderText;
+    WordXMLFootnoteProperties footnoteProperties;
+    WordXMLEndnoteProperties endnoteProperties;
+    WordXMLCompatibility compatibility;
     QStringList rsidsList;
 
     explicit WordXMLDocumentProperties();

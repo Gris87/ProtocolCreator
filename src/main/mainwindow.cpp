@@ -1339,9 +1339,7 @@ void MainWindow::exportToWord(bool isFull)
 
     try
     {
-        WordXML word;
-
-        word.styles.setDefaultStyles2003();
+        WordXML word(2003);
 
         word.saveToFile(aTempPath+"TempFile.xml");
     }

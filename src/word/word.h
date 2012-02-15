@@ -27,6 +27,13 @@
 #include "xml/wordxmltab.h"
 #include "xml/wordxmltableproperties.h"
 #include "xml/wordxmltablecellmargin.h"
+#include "xml/wordxmldocumentproperties.h"
+#include "xml/wordxmlfootnoteproperties.h"
+#include "xml/wordxmlfootnote.h"
+#include "xml/wordxmlendnoteproperties.h"
+#include "xml/wordxmlendnote.h"
+#include "xml/wordxmlcompatibility.h"
+#include "xml/wordxmlparagraph.h"
 
 #define WORD_MAX_RETRIES 3
 
