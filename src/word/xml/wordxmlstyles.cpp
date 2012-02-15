@@ -31,8 +31,10 @@ void WordXMLStyles::reset()
     clear();
 }
 
-void WordXMLStyles::addDefaultStyles2003()
+void WordXMLStyles::setDefaultStyles2003()
 {
+    clear();
+
     WordXMLStyle *aStyle;
 
     aStyle=add("Normal", stParagraph, true);

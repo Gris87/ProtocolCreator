@@ -7,15 +7,19 @@
 #include "wordxmlproperties.h"
 #include "wordxmlfonts.h"
 #include "wordxmlstyles.h"
+#include "wordxmldocumentproperties.h"
 
 class WordXML
 {
 public:
+    int wordVersion;
+
     WordXMLProperties properties;
     WordXMLFonts fonts;
     WordXMLStyles styles;
+    WordXMLDocumentProperties documentProperties;
 
-    explicit WordXML();
+    explicit WordXML(int aWordVersion=-1);
     ~WordXML();
 
     void saveToFile(QString aFileName);
