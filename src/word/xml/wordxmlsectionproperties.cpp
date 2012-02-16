@@ -11,36 +11,41 @@ WordXMLSectionProperties::~WordXMLSectionProperties()
 
 void WordXMLSectionProperties::writeToStream(QTextStream &aStream)
 {
-    aStream<<space<<"<w:sectPr";
-
-    if (rsidR!="")
+    if (isModified())
     {
-        aStream<<" wsp:rsidR=\""+rsidR+"\"";
+        aStream<<space<<"<w:sectPr";
+
+        if (rsidR!="")
+        {
+            aStream<<" wsp:rsidR=\""+rsidR+"\"";
+        }
+
+        aStream<<">\r\n";
+
+        aStream<<space<<" <w:pgSz w:w=\""+QString::number(pageSizeWidth)+"\"\r\n"
+               <<space<<       "  w:h=\""+QString::number(pageSizeHeight)+"\"/>\r\n";
+
+        aStream<<space<<" <w:pgMar w:top=\""+QString::number(pageMarginTop)+"\"\r\n"
+               <<space<<        "  w:left=\""+QString::number(pageMarginLeft)+"\"\r\n"
+               <<space<<        "  w:bottom=\""+QString::number(pageMarginBottom)+"\"\r\n"
+               <<space<<        "  w:right=\""+QString::number(pageMarginRight)+"\"\r\n"
+               <<space<<        "  w:header=\""+QString::number(pageMarginHeader)+"\"\r\n"
+               <<space<<        "  w:footer=\""+QString::number(pageMarginFooter)+"\"\r\n"
+               <<space<<        "  w:gooter=\""+QString::number(pageMarginGooter)+"\"/>\r\n";
+
+        aStream<<space<<" <w:cols w:space=\""+QString::number(colsSpace)+"\"/>\r\n";
+
+        aStream<<space<<" <w:docGrid w:line-pitch=\""+QString::number(docGridLinePitch)+"\"/>\r\n";
+
+        aStream<<space<<"</w:sectPr>\r\n";
     }
-
-    aStream<<">\r\n";
-
-    aStream<<space<<" <w:pgSz w:w=\""+QString::number(pageSizeWidth)+"\"\r\n"
-           <<space<<       "  w:h=\""+QString::number(pageSizeHeight)+"\"/>\r\n";
-
-    aStream<<space<<" <w:pgMar w:top=\""+QString::number(pageMarginTop)+"\"\r\n"
-           <<space<<        "  w:left=\""+QString::number(pageMarginLeft)+"\"\r\n"
-           <<space<<        "  w:bottom=\""+QString::number(pageMarginBottom)+"\"\r\n"
-           <<space<<        "  w:right=\""+QString::number(pageMarginRight)+"\"\r\n"
-           <<space<<        "  w:header=\""+QString::number(pageMarginHeader)+"\"\r\n"
-           <<space<<        "  w:footer=\""+QString::number(pageMarginFooter)+"\"\r\n"
-           <<space<<        "  w:gooter=\""+QString::number(pageMarginGooter)+"\"/>\r\n";
-
-    aStream<<space<<" <w:cols w:space=\""+QString::number(colsSpace)+"\"/>\r\n";
-
-    aStream<<space<<" <w:docGrid w:line-pitch=\""+QString::number(docGridLinePitch)+"\"/>\r\n";
-
-    aStream<<space<<"</w:sectPr>\r\n";
 }
 
 void WordXMLSectionProperties::reset()
 {
     WordXMLBase::reset();
+
+    needToGenerate=true;
 
     rsidR="";
 
@@ -55,6 +60,11 @@ void WordXMLSectionProperties::reset()
     pageMarginGooter=0;
     colsSpace=720;
     docGridLinePitch=360;
+}
+
+bool WordXMLSectionProperties::isModified()
+{
+    return needToGenerate;
 }
 
 void WordXMLSectionProperties::setPageSize(int aWidth, int aHeight)

@@ -210,6 +210,7 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
     }
 
     aStream<<space<<"</w:docPr>\r\n";
+    aStream<<"\r\n";
 }
 
 void WordXMLDocumentProperties::reset()

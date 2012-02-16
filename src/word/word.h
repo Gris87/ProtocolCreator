@@ -37,6 +37,7 @@
 #include "xml/wordxmlcompatibility.h"
 #include "xml/wordxmlparagraph.h"
 #include "xml/wordxmlrun.h"
+#include "xml/wordxmltext.h"
 #include "xml/wordxmlseparator.h"
 #include "xml/wordxmlcontinuationseparator.h"
 #include "xml/wordxmlbreak.h"

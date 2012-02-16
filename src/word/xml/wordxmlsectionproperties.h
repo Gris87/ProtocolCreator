@@ -6,6 +6,8 @@
 class WordXMLSectionProperties : public WordXMLBase
 {
 public:
+    bool needToGenerate;
+
     QString rsidR;
     int pageSizeWidth;
     int pageSizeHeight;
@@ -25,6 +27,8 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    bool isModified();
 
     void setPageSize(int aWidth, int aHeight);
     void setPageMargin(int aTop, int aLeft, int aBottom, int aRight, int aHeader=720, int aFooter=720, int aGooter=0);

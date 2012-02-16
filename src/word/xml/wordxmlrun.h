@@ -5,6 +5,7 @@
 
 #include "wordxmlrunproperties.h"
 
+#include "wordxmltext.h"
 #include "wordxmlseparator.h"
 #include "wordxmlcontinuationseparator.h"
 #include "wordxmlbreak.h"
@@ -26,6 +27,7 @@ public:
 
     bool isModified();
 
+    WordXMLText* addText(QString aText);
     WordXMLSeparator* addSeparator();
     WordXMLContinuationSeparator* addContinuationSeparator();
     WordXMLBreak* addBreak();

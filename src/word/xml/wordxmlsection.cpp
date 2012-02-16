@@ -14,7 +14,7 @@ WordXMLSection::~WordXMLSection()
 
 void WordXMLSection::writeToStream(QTextStream &aStream)
 {
-    aStream<<space<<"<w:sect>\r\n";
+    aStream<<space<<"<wx:sect>\r\n";
 
     properties.writeToStream(aStream);
 
@@ -23,7 +23,7 @@ void WordXMLSection::writeToStream(QTextStream &aStream)
         mList.at(i)->writeToStream(aStream);
     }
 
-    aStream<<space<<"</w:sect>\r\n";
+    aStream<<space<<"</wx:sect>\r\n";
 }
 
 void WordXMLSection::reset()

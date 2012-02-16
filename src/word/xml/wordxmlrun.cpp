@@ -52,6 +52,14 @@ bool WordXMLRun::isModified()
            mList.length()>0;
 }
 
+WordXMLText* WordXMLRun::addText(QString aText)
+{
+    WordXMLText *aNewComponent=new WordXMLText(this);
+    aNewComponent->text=aText;
+    mList.append(aNewComponent);
+    return aNewComponent;
+}
+
 WordXMLSeparator* WordXMLRun::addSeparator()
 {
     WordXMLSeparator *aNewComponent=new WordXMLSeparator(this);

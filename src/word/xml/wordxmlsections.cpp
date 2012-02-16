@@ -18,6 +18,11 @@ void WordXMLSections::writeToStream(QTextStream &aStream)
 
         for (int i=0; i<mList.length(); i++)
         {
+            if (i>0)
+            {
+                aStream<<"\r\n";
+            }
+
             mList.at(i)->writeToStream(aStream);
         }
 

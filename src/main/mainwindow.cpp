@@ -1355,10 +1355,23 @@ void MainWindow::exportToWord(bool isFull)
             stop=start;
         }
 
+        WordXMLSection *section=0;
+
         for (int i=start; i<=stop; i++)
         {
-            WordXMLSection *section=word.sections.add();
-            section->addParagraph();
+            if (!isFull || ((PageFrame*)ui->pagesTabWidget->widget(i))->ui->useCheckBox->isChecked())
+            {
+                if (section)
+                {
+                    WordXMLParagraph *paragraph=section->addParagraph();
+                    paragraph->properties.sectionProperties=section->properties;
+                    paragraph->properties.sectionProperties.needToGenerate=true;
+                    section->properties.needToGenerate=false;
+                }
+
+                section=word.sections.add();
+                section->properties.setPageMargin(1000,1000,1000,1000);
+            }
         }
 
         word.saveToFile(aTempPath+"TempFile.xml");

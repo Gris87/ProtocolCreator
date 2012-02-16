@@ -4,6 +4,7 @@ WordXMLParagraphProperties::WordXMLParagraphProperties(WordXMLBase* aParent) : W
 {
     tabs.parent=this;
     runProperties.parent=this;
+    sectionProperties.parent=this;
 
     reset();
 }
@@ -25,6 +26,7 @@ void WordXMLParagraphProperties::writeToStream(QTextStream &aStream)
 
         tabs.writeToStream(aStream);
         runProperties.writeToStream(aStream);
+        sectionProperties.writeToStream(aStream);
 
         aStream<<space<<"</w:pPr>\r\n";
     }
@@ -37,6 +39,8 @@ void WordXMLParagraphProperties::reset()
     paragraphStyle="";
     tabs.reset();
     runProperties.reset();
+    sectionProperties.reset();
+    sectionProperties.needToGenerate=false;
 }
 
 bool WordXMLParagraphProperties::isModified()
@@ -45,5 +49,7 @@ bool WordXMLParagraphProperties::isModified()
            ||
            tabs.isModified()
            ||
-           runProperties.isModified();
+           runProperties.isModified()
+           ||
+           sectionProperties.isModified();
 }
