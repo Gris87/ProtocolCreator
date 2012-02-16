@@ -16,9 +16,9 @@ void WordXMLCustomProperties::writeToStream(QTextStream &aStream)
     {
         aStream<<"  <o:CustomDocumentProperties>\r\n";
 
-        for (int i=0; i<propList.length(); i++)
+        for (int i=0; i<mList.length(); i++)
         {
-            propList.at(i)->writeToStream(aStream);
+            mList.at(i)->writeToStream(aStream);
         }
 
         aStream<<"  </o:CustomDocumentProperties>\r\n";
@@ -32,7 +32,7 @@ void WordXMLCustomProperties::reset()
 
 bool WordXMLCustomProperties::isModified()
 {
-    return propList.length()>0;
+    return mList.length()>0;
 }
 
 WordXMLCustomProperty* WordXMLCustomProperties::add(QString aName, QVariant aValue)
@@ -42,7 +42,7 @@ WordXMLCustomProperty* WordXMLCustomProperties::add(QString aName, QVariant aVal
     aNewProperty->name=aName;
     aNewProperty->setValue(aValue);
 
-    propList.append(aNewProperty);
+    mList.append(aNewProperty);
 
     return aNewProperty;
 }
@@ -54,7 +54,7 @@ WordXMLCustomProperty* WordXMLCustomProperties::copy(QString aName, QString aSec
 
 WordXMLCustomProperty* WordXMLCustomProperties::copy(int index, QString aSecondName)
 {
-    return copy(propList.at(index), aSecondName);
+    return copy(mList.at(index), aSecondName);
 }
 
 WordXMLCustomProperty* WordXMLCustomProperties::copy(WordXMLCustomProperty* aProperty, QString aSecondName)
@@ -64,18 +64,18 @@ WordXMLCustomProperty* WordXMLCustomProperties::copy(WordXMLCustomProperty* aPro
     *aNewProperty=*aProperty;
     aNewProperty->name=aSecondName;
 
-    propList.append(aNewProperty);
+    mList.append(aNewProperty);
 
     return aNewProperty;
 }
 
 WordXMLCustomProperty* WordXMLCustomProperties::get(QString aName)
 {
-    for (int i=0; i<propList.length(); i++)
+    for (int i=0; i<mList.length(); i++)
     {
-        if (propList.at(i)->name==aName)
+        if (mList.at(i)->name==aName)
         {
-            return propList.at(i);
+            return mList.at(i);
         }
     }
 
@@ -84,35 +84,35 @@ WordXMLCustomProperty* WordXMLCustomProperties::get(QString aName)
 
 WordXMLCustomProperty* WordXMLCustomProperties::get(int index)
 {
-    return propList.at(index);
+    return mList.at(index);
 }
 
 void WordXMLCustomProperties::remove(QString aName)
 {
-    propList.removeOne(get(aName));
+    mList.removeOne(get(aName));
 }
 
 void WordXMLCustomProperties::remove(int index)
 {
-    propList.removeAt(index);
+    mList.removeAt(index);
 }
 
 void WordXMLCustomProperties::remove(WordXMLCustomProperty* aProperty)
 {
-    propList.removeOne(aProperty);
+    mList.removeOne(aProperty);
 }
 
 int WordXMLCustomProperties::count()
 {
-    return propList.length();
+    return mList.length();
 }
 
 void WordXMLCustomProperties::clear()
 {
-    for (int i=0; i<propList.length(); i++)
+    for (int i=0; i<mList.length(); i++)
     {
-        delete propList[i];
+        delete mList[i];
     }
 
-    propList.clear();
+    mList.clear();
 }

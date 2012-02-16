@@ -14,6 +14,7 @@
 #include "wordtablecell.h"
 #include "wordrange.h"
 
+#include "xml/wordxmltypes.h"
 #include "xml/wordxmlbase.h"
 #include "xml/wordxml.h"
 #include "xml/wordxmlproperties.h"
@@ -35,6 +36,7 @@
 #include "xml/wordxmlendnote.h"
 #include "xml/wordxmlcompatibility.h"
 #include "xml/wordxmlparagraph.h"
+#include "xml/wordxmlrun.h"
 
 #define WORD_MAX_RETRIES 3
 

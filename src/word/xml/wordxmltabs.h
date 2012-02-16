@@ -33,7 +33,7 @@ public:
     int count();
 
 private:
-    QList<WordXMLTab*> tabsList;
+    QList<WordXMLTab*> mList;
 
     void clear();
 };

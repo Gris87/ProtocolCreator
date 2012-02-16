@@ -5,6 +5,7 @@
 
 #include "wordxmlbase.h"
 
+#include "wordxmltypes.h"
 #include "wordxmlfootnoteproperties.h"
 #include "wordxmlendnoteproperties.h"
 #include "wordxmlcompatibility.h"
@@ -23,13 +24,6 @@ enum ECharacterSpacingControl
     cscDontCompress,
     cscCompressPunctuation,
     cscCompressPunctuationAndJapaneseKana
-};
-
-enum ETripleState
-{
-    tsNone,
-    tsOn,
-    tsOff
 };
 
 class WordXMLDocumentProperties : public WordXMLBase

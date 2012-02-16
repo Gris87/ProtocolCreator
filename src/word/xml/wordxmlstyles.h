@@ -35,7 +35,7 @@ public:
     int count();
 
 private:
-    QList<WordXMLStyle*> stylesList;
+    QList<WordXMLStyle*> mList;
 
     void clear();
 };

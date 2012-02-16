@@ -16,10 +16,10 @@ void WordXMLStyles::writeToStream(QTextStream &aStream)
     aStream<<"  <w:versionOfBuiltInStylenames w:val=\"4\"/>\r\n";
     aStream<<"  <w:latentStyles w:defLockedState=\"off\" w:latentStyleCount=\"156\"/>\r\n";
 
-    for (int i=0; i<stylesList.length(); i++)
+    for (int i=0; i<mList.length(); i++)
     {
         aStream<<"\r\n";
-        stylesList.at(i)->writeToStream(aStream);
+        mList.at(i)->writeToStream(aStream);
     }
 
     aStream<<" </w:styles>\r\n";
@@ -33,7 +33,7 @@ void WordXMLStyles::reset()
 
 bool WordXMLStyles::isModified()
 {
-    return stylesList.length()>0;
+    return mList.length()>0;
 }
 
 void WordXMLStyles::setDefaultStyles2003()
@@ -105,7 +105,7 @@ WordXMLStyle* WordXMLStyles::add(QString aStyleID, EStyleType aType, bool isDefa
     aNewStyle->type=aType;
     aNewStyle->isDefault=isDefault;
 
-    stylesList.append(aNewStyle);
+    mList.append(aNewStyle);
 
     return aNewStyle;
 }
@@ -117,7 +117,7 @@ WordXMLStyle* WordXMLStyles::copy(QString aStyleID, QString aSecondStyleID)
 
 WordXMLStyle* WordXMLStyles::copy(int index, QString aSecondStyleID)
 {
-    return copy(stylesList.at(index), aSecondStyleID);
+    return copy(mList.at(index), aSecondStyleID);
 }
 
 WordXMLStyle* WordXMLStyles::copy(WordXMLStyle* aStyle, QString aSecondStyleID)
@@ -128,18 +128,18 @@ WordXMLStyle* WordXMLStyles::copy(WordXMLStyle* aStyle, QString aSecondStyleID)
     aNewStyle->styleID=aSecondStyleID;
     aNewStyle->isDefault=false;
 
-    stylesList.append(aNewStyle);
+    mList.append(aNewStyle);
 
     return aNewStyle;
 }
 
 WordXMLStyle* WordXMLStyles::get(QString aStyleID)
 {
-    for (int i=0; i<stylesList.length(); i++)
+    for (int i=0; i<mList.length(); i++)
     {
-        if (stylesList.at(i)->styleID==aStyleID)
+        if (mList.at(i)->styleID==aStyleID)
         {
-            return stylesList.at(i);
+            return mList.at(i);
         }
     }
 
@@ -148,35 +148,35 @@ WordXMLStyle* WordXMLStyles::get(QString aStyleID)
 
 WordXMLStyle* WordXMLStyles::get(int index)
 {
-    return stylesList.at(index);
+    return mList.at(index);
 }
 
 void WordXMLStyles::remove(QString aStyleID)
 {
-    stylesList.removeOne(get(aStyleID));
+    mList.removeOne(get(aStyleID));
 }
 
 void WordXMLStyles::remove(int index)
 {
-    stylesList.removeAt(index);
+    mList.removeAt(index);
 }
 
 void WordXMLStyles::remove(WordXMLStyle* aStyle)
 {
-    stylesList.removeOne(aStyle);
+    mList.removeOne(aStyle);
 }
 
 int WordXMLStyles::count()
 {
-    return stylesList.length();
+    return mList.length();
 }
 
 void WordXMLStyles::clear()
 {
-    for (int i=0; i<stylesList.length(); i++)
+    for (int i=0; i<mList.length(); i++)
     {
-        delete stylesList[i];
+        delete mList[i];
     }
 
-    stylesList.clear();
+    mList.clear();
 }

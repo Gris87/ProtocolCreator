@@ -291,10 +291,16 @@ void WordXMLDocumentProperties::setDefaultProperties2003()
     alwaysShowPlaceholderText=tsOff;
 
     WordXMLFootnote* footnote=footnoteProperties.add("separator");
+    footnote->paragraph.addRun();
+
     footnote=footnoteProperties.add("continuation-separator");
+    footnote->paragraph.addRun();
 
     WordXMLEndnote* endnote=endnoteProperties.add("separator");
+    endnote->paragraph.addRun();
+
     endnote=endnoteProperties.add("continuation-separator");
+    endnote->paragraph.addRun();
 
     compatibility.isBreakWrappedTables=true;
     compatibility.isSnapToGridInCell=true;

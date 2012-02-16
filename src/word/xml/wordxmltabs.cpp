@@ -16,9 +16,9 @@ void WordXMLTabs::writeToStream(QTextStream &aStream)
     {
         aStream<<"    <w:tabs>\r\n";
 
-        for (int i=0; i<tabsList.length(); i++)
+        for (int i=0; i<mList.length(); i++)
         {
-            tabsList.at(i)->writeToStream(aStream);
+            mList.at(i)->writeToStream(aStream);
         }
 
         aStream<<"    </w:tabs>\r\n";
@@ -32,7 +32,7 @@ void WordXMLTabs::reset()
 
 bool WordXMLTabs::isModified()
 {
-    return tabsList.length()>0;
+    return mList.length()>0;
 }
 
 WordXMLTab* WordXMLTabs::add(ETabLocation aLocation, int aPosition)
@@ -42,14 +42,14 @@ WordXMLTab* WordXMLTabs::add(ETabLocation aLocation, int aPosition)
     aNewTab->location=aLocation;
     aNewTab->position=aPosition;
 
-    tabsList.append(aNewTab);
+    mList.append(aNewTab);
 
     return aNewTab;
 }
 
 WordXMLTab* WordXMLTabs::copy(int index, int aPosition)
 {
-    return copy(tabsList.at(index), aPosition);
+    return copy(mList.at(index), aPosition);
 }
 
 WordXMLTab* WordXMLTabs::copy(WordXMLTab* aTab, int aPosition)
@@ -59,37 +59,37 @@ WordXMLTab* WordXMLTabs::copy(WordXMLTab* aTab, int aPosition)
     *aNewTab=*aTab;
     aNewTab->position=aPosition;
 
-    tabsList.append(aNewTab);
+    mList.append(aNewTab);
 
     return aNewTab;
 }
 
 WordXMLTab* WordXMLTabs::get(int index)
 {
-    return tabsList.at(index);
+    return mList.at(index);
 }
 
 void WordXMLTabs::remove(int index)
 {
-    tabsList.removeAt(index);
+    mList.removeAt(index);
 }
 
 void WordXMLTabs::remove(WordXMLTab* aTab)
 {
-    tabsList.removeOne(aTab);
+    mList.removeOne(aTab);
 }
 
 int WordXMLTabs::count()
 {
-    return tabsList.length();
+    return mList.length();
 }
 
 void WordXMLTabs::clear()
 {
-    for (int i=0; i<tabsList.length(); i++)
+    for (int i=0; i<mList.length(); i++)
     {
-        delete tabsList[i];
+        delete mList[i];
     }
 
-    tabsList.clear();
+    mList.clear();
 }

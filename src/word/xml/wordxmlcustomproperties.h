@@ -36,7 +36,7 @@ public:
     int count();
 
 private:
-    QList<WordXMLCustomProperty*> propList;
+    QList<WordXMLCustomProperty*> mList;
 
     void clear();
 };
