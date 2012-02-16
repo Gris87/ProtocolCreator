@@ -92,6 +92,11 @@ void WordXMLCustomProperty::reset()
     booleanValue=false;
 }
 
+bool WordXMLCustomProperty::isModified()
+{
+    return name!="";
+}
+
 QVariant WordXMLCustomProperty::getValue()
 {
     switch (type)

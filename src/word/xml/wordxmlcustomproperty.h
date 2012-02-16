@@ -31,6 +31,8 @@ public:
 
     void reset();
 
+    bool isModified();
+
     QVariant getValue();
     void setValue(QVariant aValue);
 };

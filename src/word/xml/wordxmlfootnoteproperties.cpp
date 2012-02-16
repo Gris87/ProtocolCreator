@@ -12,7 +12,7 @@ WordXMLFootnoteProperties::~WordXMLFootnoteProperties()
 
 void WordXMLFootnoteProperties::writeToStream(QTextStream &aStream)
 {
-    if (mList.length()>0)
+    if (isModified())
     {
         aStream<<"  <w:footnotePr>\r\n";
 
@@ -33,6 +33,11 @@ void WordXMLFootnoteProperties::writeToStream(QTextStream &aStream)
 void WordXMLFootnoteProperties::reset()
 {
     clear();
+}
+
+bool WordXMLFootnoteProperties::isModified()
+{
+    return mList.length()>0;
 }
 
 WordXMLFootnote* WordXMLFootnoteProperties::add(QString aType)

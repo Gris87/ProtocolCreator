@@ -15,6 +15,8 @@ public:
 
     void reset();
 
+    bool isModified();
+
     WordXMLEndnote* add(QString aType);
 
     WordXMLEndnote* copy(QString aType, QString aSecondType);

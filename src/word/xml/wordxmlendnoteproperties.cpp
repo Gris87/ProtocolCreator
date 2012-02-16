@@ -12,7 +12,7 @@ WordXMLEndnoteProperties::~WordXMLEndnoteProperties()
 
 void WordXMLEndnoteProperties::writeToStream(QTextStream &aStream)
 {
-    if (mList.length()>0)
+    if (isModified())
     {
         aStream<<"  <w:endnotePr>\r\n";
 
@@ -33,6 +33,11 @@ void WordXMLEndnoteProperties::writeToStream(QTextStream &aStream)
 void WordXMLEndnoteProperties::reset()
 {
     clear();
+}
+
+bool WordXMLEndnoteProperties::isModified()
+{
+    return mList.length()>0;
 }
 
 WordXMLEndnote* WordXMLEndnoteProperties::add(QString aType)

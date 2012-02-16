@@ -87,3 +87,14 @@ void WordXML::reset()
     styles.reset();
     documentProperties.reset();
 }
+
+bool WordXML::isModified()
+{
+    return properties.isModified()
+           ||
+           fonts.isModified()
+           ||
+           styles.isModified()
+           ||
+           documentProperties.isModified();
+}

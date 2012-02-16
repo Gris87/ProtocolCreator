@@ -11,11 +11,7 @@ WordXMLParagraphProperties::~WordXMLParagraphProperties()
 
 void WordXMLParagraphProperties::writeToStream(QTextStream &aStream)
 {
-    if (
-        paragraphStyle!=""
-        ||
-        tabs.isModified()
-       )
+    if (isModified())
     {
         aStream<<"   <w:pPr>\r\n";
 
@@ -34,4 +30,11 @@ void WordXMLParagraphProperties::reset()
 {
     paragraphStyle="";
     tabs.reset();
+}
+
+bool WordXMLParagraphProperties::isModified()
+{
+    return paragraphStyle!=""
+           ||
+           tabs.isModified();
 }

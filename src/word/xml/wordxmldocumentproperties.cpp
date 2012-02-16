@@ -232,6 +232,45 @@ void WordXMLDocumentProperties::reset()
     rsidsList.clear();
 }
 
+bool WordXMLDocumentProperties::isModified()
+{
+    return view!=vtNormal
+           ||
+           zoom>=0
+           ||
+           isDoNotEmbedSystemFonts
+           ||
+           proofStateSpelling!=""
+           ||
+           proofStateGrammar!=""
+           ||
+           attachedTemplate!=""
+           ||
+           defaultTabStop>=0
+           ||
+           isPunctuationKerning
+           ||
+           characterSpacingControl!=cscDontCompress
+           ||
+           isOptimizeForBrowser
+           ||
+           isValidateAgainstSchema
+           ||
+           saveInvalidXML!=tsNone
+           ||
+           ignoreMixedContent!=tsNone
+           ||
+           alwaysShowPlaceholderText!=tsNone
+           ||
+           footnoteProperties.isModified()
+           ||
+           endnoteProperties.isModified()
+           ||
+           compatibility.isModified()
+           ||
+           rsidsList.length()>0;
+}
+
 void WordXMLDocumentProperties::setDefaultProperties2003()
 {
     reset();

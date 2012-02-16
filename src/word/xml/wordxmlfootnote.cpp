@@ -23,3 +23,10 @@ void WordXMLFootnote::reset()
     type="";
     paragraph.reset();
 }
+
+bool WordXMLFootnote::isModified()
+{
+    return type!=""
+           ||
+           paragraph.isModified();
+}

@@ -98,3 +98,28 @@ void WordXMLStyle::reset()
 
     isSemiHidden=false;
 }
+
+bool WordXMLStyle::isModified()
+{
+    return type!=stParagraph
+           ||
+           !isDefault
+           ||
+           styleID!=""
+           ||
+           name!=""
+           ||
+           uiName!=""
+           ||
+           basedOn!=""
+           ||
+           rsid!=""
+           ||
+           runProperties.isModified()
+           ||
+           paragraphProperties.isModified()
+           ||
+           tableProperties.isModified()
+           ||
+           isSemiHidden;
+}

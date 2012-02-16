@@ -61,6 +61,8 @@ public:
 
     void reset();
 
+    bool isModified();
+
     void setDefaultProperties2003();
 };
 

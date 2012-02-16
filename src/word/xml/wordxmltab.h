@@ -22,6 +22,8 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    bool isModified();
 };
 
 #endif // WORDXMLTAB_H

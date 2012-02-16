@@ -30,6 +30,8 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    bool isModified();
 };
 
 #endif // WORDXMLPROPERTIES_H

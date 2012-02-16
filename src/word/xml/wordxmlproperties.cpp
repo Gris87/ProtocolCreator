@@ -86,3 +86,28 @@ void WordXMLProperties::reset()
 
     customProperties.reset();
 }
+
+bool WordXMLProperties::isModified()
+{
+    return title!=""
+           ||
+           subject!=""
+           ||
+           author!=QString(getenv("USERNAME"))
+           ||
+           keywords!=""
+           ||
+           description!=""
+           ||
+           lastAuthor!=author
+           ||
+           category!=""
+           ||
+           manager!=""
+           ||
+           company!=""
+           ||
+           hyperlinkBase!=""
+           ||
+           customProperties.isModified();
+}

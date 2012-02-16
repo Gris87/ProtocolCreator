@@ -11,11 +11,7 @@ WordXMLTableProperties::~WordXMLTableProperties()
 
 void WordXMLTableProperties::writeToStream(QTextStream &aStream)
 {
-    if (
-        indentation>=0
-        ||
-        cellMargin.isModified()
-       )
+    if (isModified())
     {
         aStream<<"   <w:tblPr>\r\n";
 
@@ -34,4 +30,11 @@ void WordXMLTableProperties::reset()
 {
     indentation=-1;
     cellMargin.reset();
+}
+
+bool WordXMLTableProperties::isModified()
+{
+    return indentation>=0
+           ||
+           cellMargin.isModified();
 }

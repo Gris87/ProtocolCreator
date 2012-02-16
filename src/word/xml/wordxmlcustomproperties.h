@@ -18,6 +18,8 @@ public:
 
     void reset();
 
+    bool isModified();
+
     WordXMLCustomProperty* add(QString aName, QVariant aValue);
 
     WordXMLCustomProperty* copy(QString aName, QString aSecondName);

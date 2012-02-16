@@ -19,6 +19,8 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    bool isModified();
 };
 
 #endif // WORDXMLRUNPROPERTIES_H

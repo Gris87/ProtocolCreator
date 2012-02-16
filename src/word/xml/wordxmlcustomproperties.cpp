@@ -12,7 +12,7 @@ WordXMLCustomProperties::~WordXMLCustomProperties()
 
 void WordXMLCustomProperties::writeToStream(QTextStream &aStream)
 {
-    if (propList.length()>0)
+    if (isModified())
     {
         aStream<<"  <o:CustomDocumentProperties>\r\n";
 
@@ -28,6 +28,11 @@ void WordXMLCustomProperties::writeToStream(QTextStream &aStream)
 void WordXMLCustomProperties::reset()
 {
     clear();
+}
+
+bool WordXMLCustomProperties::isModified()
+{
+    return propList.length()>0;
 }
 
 WordXMLCustomProperty* WordXMLCustomProperties::add(QString aName, QVariant aValue)

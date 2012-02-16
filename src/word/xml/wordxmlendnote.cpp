@@ -23,3 +23,10 @@ void WordXMLEndnote::reset()
     type="";
     paragraph.reset();
 }
+
+bool WordXMLEndnote::isModified()
+{
+    return type!=""
+           ||
+           paragraph.isModified();
+}

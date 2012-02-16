@@ -24,3 +24,14 @@ void WordXMLFonts::reset()
     defaultHAsciiFont="Times New Roman";
     defaultCSFont="Times New Roman";
 }
+
+bool WordXMLFonts::isModified()
+{
+    return defaultAsciiFont!="Times New Roman"
+           ||
+           defaultFarEastFont!="Times New Roman"
+           ||
+           defaultHAsciiFont!="Times New Roman"
+           ||
+           defaultCSFont!="Times New Roman";
+}

@@ -15,6 +15,8 @@ public:
 
     void reset();
 
+    bool isModified();
+
     WordXMLFootnote* add(QString aType);
 
     WordXMLFootnote* copy(QString aType, QString aSecondType);

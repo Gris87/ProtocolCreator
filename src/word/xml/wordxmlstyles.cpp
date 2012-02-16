@@ -31,6 +31,11 @@ void WordXMLStyles::reset()
     clear();
 }
 
+bool WordXMLStyles::isModified()
+{
+    return stylesList.length()>0;
+}
+
 void WordXMLStyles::setDefaultStyles2003()
 {
     clear();

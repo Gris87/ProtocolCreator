@@ -11,19 +11,7 @@ WordXMLRunProperties::~WordXMLRunProperties()
 
 void WordXMLRunProperties::writeToStream(QTextStream &aStream)
 {
-    if (
-        font!=""
-        ||
-        fontSize>=0
-        ||
-        fontSizeCS>=0
-        ||
-        language!=""
-        ||
-        languageFarEast!=""
-        ||
-        languageBIDI!=""
-       )
+    if (isModified())
     {
         aStream<<"   <w:rPr>\r\n";
 
@@ -78,4 +66,19 @@ void WordXMLRunProperties::reset()
     language="";
     languageFarEast="";
     languageBIDI="";
+}
+
+bool WordXMLRunProperties::isModified()
+{
+    return font!=""
+           ||
+           fontSize>=0
+           ||
+           fontSizeCS>=0
+           ||
+           language!=""
+           ||
+           languageFarEast!=""
+           ||
+           languageBIDI!="";
 }

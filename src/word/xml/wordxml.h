@@ -28,6 +28,8 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    bool isModified();
 };
 
 #endif // WORDXML_H

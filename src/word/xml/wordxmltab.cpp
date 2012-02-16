@@ -40,3 +40,10 @@ void WordXMLTab::reset()
     location=tlLeft;
     position=0;
 }
+
+bool WordXMLTab::isModified()
+{
+    return location!=tlLeft
+           ||
+           position!=0;
+}

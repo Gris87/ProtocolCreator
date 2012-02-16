@@ -15,6 +15,8 @@ public:
 
     void reset();
 
+    bool isModified();
+
     void setDefaultStyles2003();
 
     WordXMLStyle* add(QString aStyleID, EStyleType aType, bool isDefault);
