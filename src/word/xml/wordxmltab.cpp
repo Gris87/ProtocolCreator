@@ -11,7 +11,7 @@ WordXMLTab::~WordXMLTab()
 
 void WordXMLTab::writeToStream(QTextStream &aStream)
 {
-    aStream<<"     <w:tab w:val=\"";
+    aStream<<space<<"<w:tab w:val=\"";
 
     switch (location)
     {

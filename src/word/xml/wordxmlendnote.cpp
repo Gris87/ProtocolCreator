@@ -13,11 +13,11 @@ WordXMLEndnote::~WordXMLEndnote()
 
 void WordXMLEndnote::writeToStream(QTextStream &aStream)
 {
-    aStream<<"   <w:endnote w:type=\""+type+"\">\r\n";
+    aStream<<space<<"<w:endnote w:type=\""+type+"\">\r\n";
 
     paragraph.writeToStream(aStream);
 
-    aStream<<"   </w:endnote>\r\n";
+    aStream<<space<<"</w:endnote>\r\n";
 }
 
 void WordXMLEndnote::reset()

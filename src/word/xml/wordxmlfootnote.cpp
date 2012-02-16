@@ -13,11 +13,11 @@ WordXMLFootnote::~WordXMLFootnote()
 
 void WordXMLFootnote::writeToStream(QTextStream &aStream)
 {
-    aStream<<"   <w:footnote w:type=\""+type+"\">\r\n";
+    aStream<<space<<"<w:footnote w:type=\""+type+"\">\r\n";
 
     paragraph.writeToStream(aStream);
 
-    aStream<<"   </w:footnote>\r\n";
+    aStream<<space<<"</w:footnote>\r\n";
 }
 
 void WordXMLFootnote::reset()

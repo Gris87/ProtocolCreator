@@ -14,14 +14,14 @@ void WordXMLTabs::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<"    <w:tabs>\r\n";
+        aStream<<space<<"<w:tabs>\r\n";
 
         for (int i=0; i<mList.length(); i++)
         {
             mList.at(i)->writeToStream(aStream);
         }
 
-        aStream<<"    </w:tabs>\r\n";
+        aStream<<space<<"</w:tabs>\r\n";
     }
 }
 

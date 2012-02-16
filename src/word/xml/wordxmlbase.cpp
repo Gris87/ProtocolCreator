@@ -21,7 +21,7 @@ void WordXMLBase::reset()
 {
     if (parent)
     {
-        space=parent->space+" ";
+        space=parent->space+"  ";
     }
     else
     {

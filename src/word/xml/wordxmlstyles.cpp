@@ -12,9 +12,9 @@ WordXMLStyles::~WordXMLStyles()
 
 void WordXMLStyles::writeToStream(QTextStream &aStream)
 {
-    aStream<<" <w:styles>\r\n";
-    aStream<<"  <w:versionOfBuiltInStylenames w:val=\"4\"/>\r\n";
-    aStream<<"  <w:latentStyles w:defLockedState=\"off\" w:latentStyleCount=\"156\"/>\r\n";
+    aStream<<space<<"<w:styles>\r\n";
+    aStream<<space<<" <w:versionOfBuiltInStylenames w:val=\"4\"/>\r\n";
+    aStream<<space<<" <w:latentStyles w:defLockedState=\"off\" w:latentStyleCount=\"156\"/>\r\n";
 
     for (int i=0; i<mList.length(); i++)
     {
@@ -22,7 +22,7 @@ void WordXMLStyles::writeToStream(QTextStream &aStream)
         mList.at(i)->writeToStream(aStream);
     }
 
-    aStream<<" </w:styles>\r\n";
+    aStream<<space<<"</w:styles>\r\n";
     aStream<<"\r\n";
 }
 

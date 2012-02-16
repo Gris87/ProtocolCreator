@@ -13,26 +13,26 @@ void WordXMLRunProperties::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<"   <w:rPr>\r\n";
+        aStream<<space<<"<w:rPr>\r\n";
 
         if (font!="")
         {
-            aStream<<"    <wx:font wx:val=\""+font+"\"/>\r\n";
+            aStream<<space<<" <wx:font wx:val=\""+font+"\"/>\r\n";
         }
 
         if (fontSize>=0)
         {
-            aStream<<"    <w:sz w:val=\""+QString::number(fontSize*2)+"\"/>\r\n";
+            aStream<<space<<" <w:sz w:val=\""+QString::number(fontSize*2)+"\"/>\r\n";
         }
 
         if (fontSizeCS>=0)
         {
-            aStream<<"    <w:sz-cs w:val=\""+QString::number(fontSizeCS*2)+"\"/>\r\n";
+            aStream<<space<<" <w:sz-cs w:val=\""+QString::number(fontSizeCS*2)+"\"/>\r\n";
         }
 
         if (language!="" || languageFarEast!="" || languageBIDI!="")
         {
-            aStream<<"    <w:lang";
+            aStream<<space<<" <w:lang";
 
             if (language!="")
             {
@@ -54,7 +54,7 @@ void WordXMLRunProperties::writeToStream(QTextStream &aStream)
 
 
 
-        aStream<<"   </w:rPr>\r\n";
+        aStream<<space<<"</w:rPr>\r\n";
     }
 }
 

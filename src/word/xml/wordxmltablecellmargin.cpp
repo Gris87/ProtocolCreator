@@ -13,29 +13,29 @@ void WordXMLTableCellMargin::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<"    <w:tblCellMar>\r\n";
+        aStream<<space<<"<w:tblCellMar>\r\n";
 
         if (top>=0)
         {
-            aStream<<"     <w:top w:w=\""+QString::number(top)+"\" w:type=\"dxa\"/>\r\n";
+            aStream<<space<<" <w:top w:w=\""+QString::number(top)+"\" w:type=\"dxa\"/>\r\n";
         }
 
         if (left>=0)
         {
-            aStream<<"     <w:left w:w=\""+QString::number(left)+"\" w:type=\"dxa\"/>\r\n";
+            aStream<<space<<" <w:left w:w=\""+QString::number(left)+"\" w:type=\"dxa\"/>\r\n";
         }
 
         if (bottom>=0)
         {
-            aStream<<"     <w:bottom w:w=\""+QString::number(bottom)+"\" w:type=\"dxa\"/>\r\n";
+            aStream<<space<<" <w:bottom w:w=\""+QString::number(bottom)+"\" w:type=\"dxa\"/>\r\n";
         }
 
         if (right>=0)
         {
-            aStream<<"     <w:right w:w=\""+QString::number(right)+"\" w:type=\"dxa\"/>\r\n";
+            aStream<<space<<" <w:right w:w=\""+QString::number(right)+"\" w:type=\"dxa\"/>\r\n";
         }
 
-        aStream<<"    </w:tblCellMar>\r\n";
+        aStream<<space<<"</w:tblCellMar>\r\n";
     }
 }
 

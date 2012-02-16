@@ -14,7 +14,7 @@ void WordXMLFootnoteProperties::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<"  <w:footnotePr>\r\n";
+        aStream<<space<<"<w:footnotePr>\r\n";
 
         for (int i=0; i<mList.length(); i++)
         {
@@ -26,7 +26,7 @@ void WordXMLFootnoteProperties::writeToStream(QTextStream &aStream)
             mList.at(i)->writeToStream(aStream);
         }
 
-        aStream<<"  </w:footnotePr>\r\n";
+        aStream<<space<<"</w:footnotePr>\r\n";
     }
 }
 

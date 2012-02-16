@@ -15,7 +15,7 @@ WordXMLStyle::~WordXMLStyle()
 
 void WordXMLStyle::writeToStream(QTextStream &aStream)
 {
-    aStream<<"  <w:style w:type=\"";
+    aStream<<space<<"<w:style w:type=\"";
 
     switch (type)
     {
@@ -56,22 +56,22 @@ void WordXMLStyle::writeToStream(QTextStream &aStream)
 
     if (name!="")
     {
-        aStream<<"   <w:name w:val=\""+name+"\"/>\r\n";
+        aStream<<space<<" <w:name w:val=\""+name+"\"/>\r\n";
     }
 
     if (uiName!="")
     {
-        aStream<<"   <w:uiName w:val=\""+uiName+"\"/>\r\n";
+        aStream<<space<<" <w:uiName w:val=\""+uiName+"\"/>\r\n";
     }
 
     if (basedOn!="")
     {
-        aStream<<"   <w:basedOn w:val=\""+basedOn+"\"/>\r\n";
+        aStream<<space<<" <w:basedOn w:val=\""+basedOn+"\"/>\r\n";
     }
 
     if (rsid!="")
     {
-        aStream<<"   <w:rsid w:val=\""+rsid+"\"/>\r\n";
+        aStream<<space<<" <w:rsid w:val=\""+rsid+"\"/>\r\n";
     }
 
     runProperties.writeToStream(aStream);
@@ -80,10 +80,10 @@ void WordXMLStyle::writeToStream(QTextStream &aStream)
 
     if (isSemiHidden)
     {
-        aStream<<"   <w:semiHidden/>\r\n";
+        aStream<<space<<" <w:semiHidden/>\r\n";
     }
 
-    aStream<<"  </w:style>\r\n";
+    aStream<<space<<"</w:style>\r\n";
 }
 
 void WordXMLStyle::reset()

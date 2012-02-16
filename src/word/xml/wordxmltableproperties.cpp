@@ -15,16 +15,16 @@ void WordXMLTableProperties::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<"   <w:tblPr>\r\n";
+        aStream<<space<<"<w:tblPr>\r\n";
 
         if (indentation>=0)
         {
-            aStream<<"    <w:tblInd w:w=\""+QString::number(indentation)+"\" w:type=\"dxa\"/>\r\n";
+            aStream<<space<<" <w:tblInd w:w=\""+QString::number(indentation)+"\" w:type=\"dxa\"/>\r\n";
         }
 
         cellMargin.writeToStream(aStream);
 
-        aStream<<"   </w:tblPr>\r\n";
+        aStream<<space<<"</w:tblPr>\r\n";
     }
 }
 

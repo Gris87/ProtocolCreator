@@ -11,9 +11,9 @@ WordXMLFonts::~WordXMLFonts()
 
 void WordXMLFonts::writeToStream(QTextStream &aStream)
 {
-    aStream<<" <w:fonts>\r\n";
-    aStream<<"  <w:defaultFonts w:ascii=\""+defaultAsciiFont+"\" w:fareast=\""+defaultFarEastFont+"\" w:h-ansi=\""+defaultHAsciiFont+"\" w:cs=\""+defaultCSFont+"\"/>\r\n";
-    aStream<<" </w:fonts>\r\n";
+    aStream<<space<<"<w:fonts>\r\n";
+    aStream<<space<<" <w:defaultFonts w:ascii=\""+defaultAsciiFont+"\" w:fareast=\""+defaultFarEastFont+"\" w:h-ansi=\""+defaultHAsciiFont+"\" w:cs=\""+defaultCSFont+"\"/>\r\n";
+    aStream<<space<<"</w:fonts>\r\n";
     aStream<<"\r\n";
 }
 

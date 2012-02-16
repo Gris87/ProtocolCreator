@@ -13,39 +13,39 @@ void WordXMLCompatibility::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<"  <w:compat>\r\n";
+        aStream<<space<<"<w:compat>\r\n";
 
         if (isBreakWrappedTables)
         {
-            aStream<<"   <w:breakWrappedTables/>\r\n";
+            aStream<<space<<" <w:breakWrappedTables/>\r\n";
         }
 
         if (isSnapToGridInCell)
         {
-            aStream<<"   <w:snapToGridInCell/>\r\n";
+            aStream<<space<<" <w:snapToGridInCell/>\r\n";
         }
 
         if (isWrapTextWithPunct)
         {
-            aStream<<"   <w:wrapTextWithPunct/>\r\n";
+            aStream<<space<<" <w:wrapTextWithPunct/>\r\n";
         }
 
         if (isUseAsianBreakRules)
         {
-            aStream<<"   <w:useAsianBreakRules/>\r\n";
+            aStream<<space<<" <w:useAsianBreakRules/>\r\n";
         }
 
         if (isDontGrowAutofit)
         {
-            aStream<<"   <w:dontGrowAutofit/>\r\n";
+            aStream<<space<<" <w:dontGrowAutofit/>\r\n";
         }
 
         if (isUseFELayout)
         {
-            aStream<<"   <w:useFELayout/>\r\n";
+            aStream<<space<<" <w:useFELayout/>\r\n";
         }
 
-        aStream<<"  </w:compat>\r\n";
+        aStream<<space<<"</w:compat>\r\n";
     }
 }
 

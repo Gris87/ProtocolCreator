@@ -14,14 +14,14 @@ void WordXMLCustomProperties::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<"  <o:CustomDocumentProperties>\r\n";
+        aStream<<space<<"<o:CustomDocumentProperties>\r\n";
 
         for (int i=0; i<mList.length(); i++)
         {
             mList.at(i)->writeToStream(aStream);
         }
 
-        aStream<<"  </o:CustomDocumentProperties>\r\n";
+        aStream<<space<<"</o:CustomDocumentProperties>\r\n";
     }
 }
 

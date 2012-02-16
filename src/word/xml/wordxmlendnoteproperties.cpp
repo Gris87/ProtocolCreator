@@ -14,7 +14,7 @@ void WordXMLEndnoteProperties::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<"  <w:endnotePr>\r\n";
+        aStream<<space<<"<w:endnotePr>\r\n";
 
         for (int i=0; i<mList.length(); i++)
         {
@@ -26,7 +26,7 @@ void WordXMLEndnoteProperties::writeToStream(QTextStream &aStream)
             mList.at(i)->writeToStream(aStream);
         }
 
-        aStream<<"  </w:endnotePr>\r\n";
+        aStream<<space<<"</w:endnotePr>\r\n";
     }
 }
 

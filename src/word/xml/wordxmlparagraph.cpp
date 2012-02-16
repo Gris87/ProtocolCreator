@@ -13,7 +13,7 @@ WordXMLParagraph::~WordXMLParagraph()
 
 void WordXMLParagraph::writeToStream(QTextStream &aStream)
 {
-    aStream<<"   <w:p";
+    aStream<<space<<"<w:p";
 
     if (rsidR!="")
     {
@@ -44,7 +44,7 @@ void WordXMLParagraph::writeToStream(QTextStream &aStream)
         mList.at(i)->writeToStream(aStream);
     }
 
-    aStream<<"   </w:p>\r\n";
+    aStream<<space<<"</w:p>\r\n";
 }
 
 void WordXMLParagraph::reset()

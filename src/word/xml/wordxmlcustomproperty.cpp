@@ -44,7 +44,7 @@ void WordXMLCustomProperty::writeToStream(QTextStream &aStream)
         }
     }
 
-    aStream<<"   <o:"+resName+" dt:dt=\"";
+    aStream<<space<<"<o:"+resName+" dt:dt=\"";
 
     switch (type)
     {
