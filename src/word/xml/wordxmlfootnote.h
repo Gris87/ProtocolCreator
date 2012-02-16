@@ -11,7 +11,7 @@ public:
     QString type;
     WordXMLParagraph paragraph;
 
-    explicit WordXMLFootnote();
+    explicit WordXMLFootnote(WordXMLBase* aParent=0);
     ~WordXMLFootnote();
 
     void writeToStream(QTextStream &aStream);

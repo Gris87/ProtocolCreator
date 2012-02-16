@@ -1,8 +1,13 @@
 #include "wordxml.h"
 
-WordXML::WordXML(int aWordVersion) : WordXMLBase()
+WordXML::WordXML(int aWordVersion, WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     wordVersion=aWordVersion;
+
+    properties.parent=this;
+    fonts.parent=this;
+    styles.parent=this;
+    documentProperties.parent=this;
 
     reset();
 
@@ -82,6 +87,8 @@ void WordXML::writeToStream(QTextStream &aStream)
 
 void WordXML::reset()
 {
+    WordXMLBase::reset();
+
     properties.reset();
     fonts.reset();
     styles.reset();

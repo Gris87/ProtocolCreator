@@ -20,7 +20,7 @@ public:
     WordXMLStyles styles;
     WordXMLDocumentProperties documentProperties;
 
-    explicit WordXML(int aWordVersion=-1);
+    explicit WordXML(int aWordVersion=-1, WordXMLBase* aParent=0);
     ~WordXML();
 
     void saveToFile(QString aFileName);

@@ -1,6 +1,6 @@
 #include "wordxmltablecellmargin.h"
 
-WordXMLTableCellMargin::WordXMLTableCellMargin() : WordXMLBase()
+WordXMLTableCellMargin::WordXMLTableCellMargin(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -41,6 +41,8 @@ void WordXMLTableCellMargin::writeToStream(QTextStream &aStream)
 
 void WordXMLTableCellMargin::reset()
 {
+    WordXMLBase::reset();
+
     top=-1;
     left=-1;
     bottom=-1;

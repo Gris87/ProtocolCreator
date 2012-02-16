@@ -10,7 +10,7 @@ class WordXMLRun : public WordXMLBase
 public:
     WordXMLRunProperties properties;
 
-    explicit WordXMLRun();
+    explicit WordXMLRun(WordXMLBase* aParent=0);
     ~WordXMLRun();
 
     void writeToStream(QTextStream &aStream);

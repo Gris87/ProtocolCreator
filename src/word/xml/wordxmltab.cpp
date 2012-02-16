@@ -1,6 +1,6 @@
 #include "wordxmltab.h"
 
-WordXMLTab::WordXMLTab() : WordXMLBase()
+WordXMLTab::WordXMLTab(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -37,6 +37,8 @@ void WordXMLTab::writeToStream(QTextStream &aStream)
 
 void WordXMLTab::reset()
 {
+    WordXMLBase::reset();
+
     location=tlLeft;
     position=0;
 }

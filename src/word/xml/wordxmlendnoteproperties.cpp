@@ -1,6 +1,6 @@
 #include "wordxmlendnoteproperties.h"
 
-WordXMLEndnoteProperties::WordXMLEndnoteProperties() : WordXMLBase()
+WordXMLEndnoteProperties::WordXMLEndnoteProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -32,6 +32,8 @@ void WordXMLEndnoteProperties::writeToStream(QTextStream &aStream)
 
 void WordXMLEndnoteProperties::reset()
 {
+    WordXMLBase::reset();
+
     clear();
 }
 
@@ -42,7 +44,7 @@ bool WordXMLEndnoteProperties::isModified()
 
 WordXMLEndnote* WordXMLEndnoteProperties::add(QString aType)
 {
-    WordXMLEndnote* aNewEndnote=new WordXMLEndnote();
+    WordXMLEndnote* aNewEndnote=new WordXMLEndnote(this);
 
     aNewEndnote->type=aType;
 
@@ -63,7 +65,7 @@ WordXMLEndnote* WordXMLEndnoteProperties::copy(int index, QString aSecondType)
 
 WordXMLEndnote* WordXMLEndnoteProperties::copy(WordXMLEndnote* aEndnote, QString aSecondType)
 {
-    WordXMLEndnote* aNewEndnote=new WordXMLEndnote();
+    WordXMLEndnote* aNewEndnote=new WordXMLEndnote(this);
 
     *aNewEndnote=*aEndnote;
     aNewEndnote->type=aSecondType;

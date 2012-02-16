@@ -1,6 +1,6 @@
 #include "wordxmlstyles.h"
 
-WordXMLStyles::WordXMLStyles() : WordXMLBase()
+WordXMLStyles::WordXMLStyles(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -28,6 +28,8 @@ void WordXMLStyles::writeToStream(QTextStream &aStream)
 
 void WordXMLStyles::reset()
 {
+    WordXMLBase::reset();
+
     clear();
 }
 
@@ -99,7 +101,7 @@ void WordXMLStyles::setDefaultStyles2003()
 
 WordXMLStyle* WordXMLStyles::add(QString aStyleID, EStyleType aType, bool isDefault)
 {
-    WordXMLStyle* aNewStyle=new WordXMLStyle();
+    WordXMLStyle* aNewStyle=new WordXMLStyle(this);
 
     aNewStyle->styleID=aStyleID;
     aNewStyle->type=aType;
@@ -122,7 +124,7 @@ WordXMLStyle* WordXMLStyles::copy(int index, QString aSecondStyleID)
 
 WordXMLStyle* WordXMLStyles::copy(WordXMLStyle* aStyle, QString aSecondStyleID)
 {
-    WordXMLStyle* aNewStyle=new WordXMLStyle();
+    WordXMLStyle* aNewStyle=new WordXMLStyle(this);
 
     *aNewStyle=*aStyle;
     aNewStyle->styleID=aSecondStyleID;

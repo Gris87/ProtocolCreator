@@ -1,6 +1,6 @@
 #include "wordxmltabs.h"
 
-WordXMLTabs::WordXMLTabs() : WordXMLBase()
+WordXMLTabs::WordXMLTabs(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -27,6 +27,8 @@ void WordXMLTabs::writeToStream(QTextStream &aStream)
 
 void WordXMLTabs::reset()
 {
+    WordXMLBase::reset();
+
     clear();
 }
 
@@ -37,7 +39,7 @@ bool WordXMLTabs::isModified()
 
 WordXMLTab* WordXMLTabs::add(ETabLocation aLocation, int aPosition)
 {
-    WordXMLTab* aNewTab=new WordXMLTab();
+    WordXMLTab* aNewTab=new WordXMLTab(this);
 
     aNewTab->location=aLocation;
     aNewTab->position=aPosition;
@@ -54,7 +56,7 @@ WordXMLTab* WordXMLTabs::copy(int index, int aPosition)
 
 WordXMLTab* WordXMLTabs::copy(WordXMLTab* aTab, int aPosition)
 {
-    WordXMLTab* aNewTab=new WordXMLTab();
+    WordXMLTab* aNewTab=new WordXMLTab(this);
 
     *aNewTab=*aTab;
     aNewTab->position=aPosition;

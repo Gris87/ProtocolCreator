@@ -15,7 +15,7 @@ public:
     QString rsidP;
     WordXMLParagraphProperties properties;
 
-    explicit WordXMLParagraph();
+    explicit WordXMLParagraph(WordXMLBase* aParent=0);
     ~WordXMLParagraph();
 
     void writeToStream(QTextStream &aStream);

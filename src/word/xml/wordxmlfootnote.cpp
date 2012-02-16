@@ -1,7 +1,9 @@
 #include "wordxmlfootnote.h"
 
-WordXMLFootnote::WordXMLFootnote() : WordXMLBase()
+WordXMLFootnote::WordXMLFootnote(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    paragraph.parent=this;
+
     reset();
 }
 
@@ -20,6 +22,8 @@ void WordXMLFootnote::writeToStream(QTextStream &aStream)
 
 void WordXMLFootnote::reset()
 {    
+    WordXMLBase::reset();
+
     type="";
     paragraph.reset();
 }

@@ -1,6 +1,6 @@
 #include "wordxmlrunproperties.h"
 
-WordXMLRunProperties::WordXMLRunProperties() : WordXMLBase()
+WordXMLRunProperties::WordXMLRunProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -60,6 +60,8 @@ void WordXMLRunProperties::writeToStream(QTextStream &aStream)
 
 void WordXMLRunProperties::reset()
 {
+    WordXMLBase::reset();
+
     font="";
     fontSize=-1;
     fontSizeCS=-1;

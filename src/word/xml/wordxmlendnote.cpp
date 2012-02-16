@@ -1,7 +1,9 @@
 #include "wordxmlendnote.h"
 
-WordXMLEndnote::WordXMLEndnote() : WordXMLBase()
+WordXMLEndnote::WordXMLEndnote(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    paragraph.parent=this;
+
     reset();
 }
 
@@ -20,6 +22,8 @@ void WordXMLEndnote::writeToStream(QTextStream &aStream)
 
 void WordXMLEndnote::reset()
 {    
+    WordXMLBase::reset();
+
     type="";
     paragraph.reset();
 }

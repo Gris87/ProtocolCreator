@@ -1,6 +1,6 @@
 #include "wordxmlfootnoteproperties.h"
 
-WordXMLFootnoteProperties::WordXMLFootnoteProperties() : WordXMLBase()
+WordXMLFootnoteProperties::WordXMLFootnoteProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -32,6 +32,8 @@ void WordXMLFootnoteProperties::writeToStream(QTextStream &aStream)
 
 void WordXMLFootnoteProperties::reset()
 {
+    WordXMLBase::reset();
+
     clear();
 }
 
@@ -42,7 +44,7 @@ bool WordXMLFootnoteProperties::isModified()
 
 WordXMLFootnote* WordXMLFootnoteProperties::add(QString aType)
 {
-    WordXMLFootnote* aNewFootnote=new WordXMLFootnote();
+    WordXMLFootnote* aNewFootnote=new WordXMLFootnote(this);
 
     aNewFootnote->type=aType;
 
@@ -63,7 +65,7 @@ WordXMLFootnote* WordXMLFootnoteProperties::copy(int index, QString aSecondType)
 
 WordXMLFootnote* WordXMLFootnoteProperties::copy(WordXMLFootnote* aFootnote, QString aSecondType)
 {
-    WordXMLFootnote* aNewFootnote=new WordXMLFootnote();
+    WordXMLFootnote* aNewFootnote=new WordXMLFootnote(this);
 
     *aNewFootnote=*aFootnote;
     aNewFootnote->type=aSecondType;

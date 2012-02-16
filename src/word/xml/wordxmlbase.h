@@ -6,7 +6,10 @@
 class WordXMLBase
 {
 public:
-    explicit WordXMLBase();
+    QString space;
+    WordXMLBase *parent;
+
+    explicit WordXMLBase(WordXMLBase* aParent=0);
     ~WordXMLBase();
 
     virtual void writeToStream(QTextStream &aStream);

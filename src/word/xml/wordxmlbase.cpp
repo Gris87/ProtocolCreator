@@ -1,8 +1,10 @@
 #include "wordxmlbase.h"
 
-WordXMLBase::WordXMLBase()
+WordXMLBase::WordXMLBase(WordXMLBase* aParent)
 {
-    // Nothing
+    parent=aParent;
+
+    space="";
 }
 
 WordXMLBase::~WordXMLBase()
@@ -17,7 +19,14 @@ void WordXMLBase::writeToStream(QTextStream &aStream)
 
 void WordXMLBase::reset()
 {
-    // Nothing
+    if (parent)
+    {
+        space=parent->space+" ";
+    }
+    else
+    {
+        space="";
+    }
 }
 
 bool WordXMLBase::isModified()

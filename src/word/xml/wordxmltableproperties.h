@@ -11,7 +11,7 @@ public:
     double indentation;
     WordXMLTableCellMargin cellMargin;
 
-    explicit WordXMLTableProperties();
+    explicit WordXMLTableProperties(WordXMLBase* aParent=0);
     ~WordXMLTableProperties();
 
     void writeToStream(QTextStream &aStream);

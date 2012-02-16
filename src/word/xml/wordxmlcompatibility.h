@@ -13,7 +13,7 @@ public:
     bool isDontGrowAutofit;
     bool isUseFELayout;
 
-    explicit WordXMLCompatibility();
+    explicit WordXMLCompatibility(WordXMLBase* aParent=0);
     ~WordXMLCompatibility();
 
     void writeToStream(QTextStream &aStream);

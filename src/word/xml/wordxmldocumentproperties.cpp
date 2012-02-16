@@ -1,7 +1,11 @@
 #include "wordxmldocumentproperties.h"
 
-WordXMLDocumentProperties::WordXMLDocumentProperties() : WordXMLBase()
+WordXMLDocumentProperties::WordXMLDocumentProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    footnoteProperties.parent=this;
+    endnoteProperties.parent=this;
+    compatibility.parent=this;
+
     reset();
 }
 
@@ -210,6 +214,8 @@ void WordXMLDocumentProperties::writeToStream(QTextStream &aStream)
 
 void WordXMLDocumentProperties::reset()
 {
+    WordXMLBase::reset();
+
     view=vtNormal;
     zoom=-1;
     isDoNotEmbedSystemFonts=false;

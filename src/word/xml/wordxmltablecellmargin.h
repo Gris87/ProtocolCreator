@@ -11,7 +11,7 @@ public:
     double bottom;
     double right;
 
-    explicit WordXMLTableCellMargin();
+    explicit WordXMLTableCellMargin(WordXMLBase* aParent=0);
     ~WordXMLTableCellMargin();
 
     void writeToStream(QTextStream &aStream);

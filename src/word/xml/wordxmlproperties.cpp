@@ -1,7 +1,9 @@
 #include "wordxmlproperties.h"
 
-WordXMLProperties::WordXMLProperties() : WordXMLBase()
+WordXMLProperties::WordXMLProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    customProperties.parent=this;
+
     reset();
 }
 
@@ -73,6 +75,8 @@ void WordXMLProperties::writeToStream(QTextStream &aStream)
 
 void WordXMLProperties::reset()
 {
+    WordXMLBase::reset();
+
     title="";
     subject="";
     author=QString(getenv("USERNAME"));

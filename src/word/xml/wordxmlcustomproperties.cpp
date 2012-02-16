@@ -1,6 +1,6 @@
 #include "wordxmlcustomproperties.h"
 
-WordXMLCustomProperties::WordXMLCustomProperties() : WordXMLBase()
+WordXMLCustomProperties::WordXMLCustomProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -27,6 +27,8 @@ void WordXMLCustomProperties::writeToStream(QTextStream &aStream)
 
 void WordXMLCustomProperties::reset()
 {
+    WordXMLBase::reset();
+
     clear();
 }
 
@@ -37,7 +39,7 @@ bool WordXMLCustomProperties::isModified()
 
 WordXMLCustomProperty* WordXMLCustomProperties::add(QString aName, QVariant aValue)
 {
-    WordXMLCustomProperty* aNewProperty=new WordXMLCustomProperty();
+    WordXMLCustomProperty* aNewProperty=new WordXMLCustomProperty(this);
 
     aNewProperty->name=aName;
     aNewProperty->setValue(aValue);
@@ -59,7 +61,7 @@ WordXMLCustomProperty* WordXMLCustomProperties::copy(int index, QString aSecondN
 
 WordXMLCustomProperty* WordXMLCustomProperties::copy(WordXMLCustomProperty* aProperty, QString aSecondName)
 {
-    WordXMLCustomProperty* aNewProperty=new WordXMLCustomProperty();
+    WordXMLCustomProperty* aNewProperty=new WordXMLCustomProperty(this);
 
     *aNewProperty=*aProperty;
     aNewProperty->name=aSecondName;

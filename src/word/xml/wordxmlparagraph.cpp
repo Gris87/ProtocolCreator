@@ -1,7 +1,9 @@
 #include "wordxmlparagraph.h"
 
-WordXMLParagraph::WordXMLParagraph() : WordXMLBase()
+WordXMLParagraph::WordXMLParagraph(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    properties.parent=this;
+
     reset();
 }
 
@@ -47,6 +49,8 @@ void WordXMLParagraph::writeToStream(QTextStream &aStream)
 
 void WordXMLParagraph::reset()
 {
+    WordXMLBase::reset();
+
     rsidR="";
     rsidRPr="";
     rsidRDefault="";
@@ -69,7 +73,7 @@ bool WordXMLParagraph::isModified()
 
 WordXMLRun* WordXMLParagraph::addRun()
 {
-    WordXMLRun* aNewRun=new WordXMLRun();
+    WordXMLRun* aNewRun=new WordXMLRun(this);
 
     mList.append(aNewRun);
 
@@ -83,7 +87,7 @@ WordXMLRun* WordXMLParagraph::copyRun(int index)
 
 WordXMLRun* WordXMLParagraph::copyRun(WordXMLRun* aRun)
 {
-    WordXMLRun* aNewRun=new WordXMLRun();
+    WordXMLRun* aNewRun=new WordXMLRun(this);
 
     *aNewRun=*aRun;
 

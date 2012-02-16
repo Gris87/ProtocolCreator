@@ -11,7 +11,7 @@ public:
     QString paragraphStyle;
     WordXMLTabs tabs;
 
-    explicit WordXMLParagraphProperties();
+    explicit WordXMLParagraphProperties(WordXMLBase* aParent=0);
     ~WordXMLParagraphProperties();
 
     void writeToStream(QTextStream &aStream);

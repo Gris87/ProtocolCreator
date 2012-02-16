@@ -13,7 +13,7 @@ class WordXMLProperties : public WordXMLBase
 public:
     WordXMLCustomProperties customProperties;
 
-    explicit WordXMLProperties();
+    explicit WordXMLProperties(WordXMLBase* aParent=0);
     ~WordXMLProperties();
 
     QString title;

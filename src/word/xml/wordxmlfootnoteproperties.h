@@ -8,7 +8,7 @@
 class WordXMLFootnoteProperties : public WordXMLBase
 {
 public:
-    explicit WordXMLFootnoteProperties();
+    explicit WordXMLFootnoteProperties(WordXMLBase* aParent=0);
     ~WordXMLFootnoteProperties();
 
     void writeToStream(QTextStream &aStream);

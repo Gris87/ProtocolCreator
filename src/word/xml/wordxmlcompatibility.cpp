@@ -1,6 +1,6 @@
 #include "wordxmlcompatibility.h"
 
-WordXMLCompatibility::WordXMLCompatibility() : WordXMLBase()
+WordXMLCompatibility::WordXMLCompatibility(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -51,6 +51,8 @@ void WordXMLCompatibility::writeToStream(QTextStream &aStream)
 
 void WordXMLCompatibility::reset()
 {
+    WordXMLBase::reset();
+
     isBreakWrappedTables=false;
     isSnapToGridInCell=false;
     isWrapTextWithPunct=false;

@@ -16,7 +16,7 @@ public:
     ETabLocation location;
     int position;
 
-    explicit WordXMLTab();
+    explicit WordXMLTab(WordXMLBase* aParent=0);
     ~WordXMLTab();
 
     void writeToStream(QTextStream &aStream);

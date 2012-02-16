@@ -24,7 +24,7 @@ public:
     double floatValue;
     bool booleanValue;
 
-    explicit WordXMLCustomProperty();
+    explicit WordXMLCustomProperty(WordXMLBase* aParent=0);
     ~WordXMLCustomProperty();
 
     void writeToStream(QTextStream &aStream);

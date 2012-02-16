@@ -1,7 +1,11 @@
 #include "wordxmlstyle.h"
 
-WordXMLStyle::WordXMLStyle() : WordXMLBase()
+WordXMLStyle::WordXMLStyle(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    runProperties.parent=this;
+    paragraphProperties.parent=this;
+    tableProperties.parent=this;
+
     reset();
 }
 
@@ -84,6 +88,8 @@ void WordXMLStyle::writeToStream(QTextStream &aStream)
 
 void WordXMLStyle::reset()
 {
+    WordXMLBase::reset();
+
     type=stParagraph;
     isDefault=true;
     styleID="";

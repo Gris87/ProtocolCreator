@@ -11,7 +11,7 @@ public:
     QString defaultHAsciiFont;
     QString defaultCSFont;
 
-    explicit WordXMLFonts();
+    explicit WordXMLFonts(WordXMLBase* aParent=0);
     ~WordXMLFonts();
 
     void writeToStream(QTextStream &aStream);

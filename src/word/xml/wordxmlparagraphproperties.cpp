@@ -1,7 +1,9 @@
 #include "wordxmlparagraphproperties.h"
 
-WordXMLParagraphProperties::WordXMLParagraphProperties() : WordXMLBase()
+WordXMLParagraphProperties::WordXMLParagraphProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    tabs.parent=this;
+
     reset();
 }
 
@@ -28,6 +30,8 @@ void WordXMLParagraphProperties::writeToStream(QTextStream &aStream)
 
 void WordXMLParagraphProperties::reset()
 {
+    WordXMLBase::reset();
+
     paragraphStyle="";
     tabs.reset();
 }

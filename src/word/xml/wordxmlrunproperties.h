@@ -13,7 +13,7 @@ public:
     QString languageFarEast;
     QString languageBIDI;
 
-    explicit WordXMLRunProperties();
+    explicit WordXMLRunProperties(WordXMLBase* aParent=0);
     ~WordXMLRunProperties();
 
     void writeToStream(QTextStream &aStream);

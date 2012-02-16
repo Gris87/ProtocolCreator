@@ -1,6 +1,6 @@
 #include "wordxmlfonts.h"
 
-WordXMLFonts::WordXMLFonts() : WordXMLBase()
+WordXMLFonts::WordXMLFonts(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -19,6 +19,8 @@ void WordXMLFonts::writeToStream(QTextStream &aStream)
 
 void WordXMLFonts::reset()
 {
+    WordXMLBase::reset();
+
     defaultAsciiFont="Times New Roman";
     defaultFarEastFont="Times New Roman";
     defaultHAsciiFont="Times New Roman";

@@ -8,7 +8,7 @@
 class WordXMLStyles : public WordXMLBase
 {
 public:
-    explicit WordXMLStyles();
+    explicit WordXMLStyles(WordXMLBase* aParent=0);
     ~WordXMLStyles();
 
     void writeToStream(QTextStream &aStream);

@@ -11,7 +11,7 @@
 class WordXMLCustomProperties : public WordXMLBase
 {
 public:
-    explicit WordXMLCustomProperties();
+    explicit WordXMLCustomProperties(WordXMLBase* aParent=0);
     ~WordXMLCustomProperties();
 
     void writeToStream(QTextStream &aStream);

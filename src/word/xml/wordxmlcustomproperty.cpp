@@ -1,6 +1,6 @@
 #include "wordxmlcustomproperty.h"
 
-WordXMLCustomProperty::WordXMLCustomProperty() : WordXMLBase()
+WordXMLCustomProperty::WordXMLCustomProperty(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     reset();
 }
@@ -84,6 +84,8 @@ void WordXMLCustomProperty::writeToStream(QTextStream &aStream)
 
 void WordXMLCustomProperty::reset()
 {
+    WordXMLBase::reset();
+
     name="";
     type=cptText;
     textValue="";

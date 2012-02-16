@@ -11,7 +11,7 @@
 class WordXMLTabs : public WordXMLBase
 {
 public:
-    explicit WordXMLTabs();
+    explicit WordXMLTabs(WordXMLBase* aParent=0);
     ~WordXMLTabs();
 
     void writeToStream(QTextStream &aStream);

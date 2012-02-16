@@ -48,7 +48,7 @@ public:
     WordXMLCompatibility compatibility;
     QStringList rsidsList;
 
-    explicit WordXMLDocumentProperties();
+    explicit WordXMLDocumentProperties(WordXMLBase* aParent=0);
     ~WordXMLDocumentProperties();
 
     void writeToStream(QTextStream &aStream);

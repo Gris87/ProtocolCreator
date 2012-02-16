@@ -1,7 +1,9 @@
 #include "wordxmltableproperties.h"
 
-WordXMLTableProperties::WordXMLTableProperties() : WordXMLBase()
+WordXMLTableProperties::WordXMLTableProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    cellMargin.parent=this;
+
     reset();
 }
 
@@ -28,6 +30,8 @@ void WordXMLTableProperties::writeToStream(QTextStream &aStream)
 
 void WordXMLTableProperties::reset()
 {
+    WordXMLBase::reset();
+
     indentation=-1;
     cellMargin.reset();
 }

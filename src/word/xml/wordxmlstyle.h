@@ -30,7 +30,7 @@ public:
     WordXMLTableProperties tableProperties;
     bool isSemiHidden;
 
-    explicit WordXMLStyle();
+    explicit WordXMLStyle(WordXMLBase* aParent=0);
     ~WordXMLStyle();
 
     void writeToStream(QTextStream &aStream);
