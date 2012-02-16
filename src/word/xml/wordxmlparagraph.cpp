@@ -9,6 +9,7 @@ WordXMLParagraph::WordXMLParagraph(WordXMLBase* aParent) : WordXMLBase(aParent)
 
 WordXMLParagraph::~WordXMLParagraph()
 {
+    clear();
 }
 
 void WordXMLParagraph::writeToStream(QTextStream &aStream)
@@ -56,6 +57,8 @@ void WordXMLParagraph::reset()
     rsidRDefault="";
     rsidP="";
     properties.reset();
+
+    clear();
 }
 
 bool WordXMLParagraph::isModified()
@@ -68,7 +71,9 @@ bool WordXMLParagraph::isModified()
            ||
            rsidP!=""
            ||
-           properties.isModified();
+           properties.isModified()
+           ||
+           mList.length()>0;
 }
 
 WordXMLRun* WordXMLParagraph::addRun()

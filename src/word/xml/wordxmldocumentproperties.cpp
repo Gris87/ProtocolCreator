@@ -296,17 +296,22 @@ void WordXMLDocumentProperties::setDefaultProperties2003()
     ignoreMixedContent=tsOff;
     alwaysShowPlaceholderText=tsOff;
 
+    WordXMLRun *aRun;
     WordXMLFootnote* footnote=footnoteProperties.add("separator");
-    footnote->paragraph.addRun();
+    aRun=footnote->paragraph.addRun();
+    aRun->addSeparator();
 
     footnote=footnoteProperties.add("continuation-separator");
-    footnote->paragraph.addRun();
+    aRun=footnote->paragraph.addRun();
+    aRun->addContinuationSeparator();
 
     WordXMLEndnote* endnote=endnoteProperties.add("separator");
-    endnote->paragraph.addRun();
+    aRun=endnote->paragraph.addRun();
+    aRun->addSeparator();
 
     endnote=endnoteProperties.add("continuation-separator");
-    endnote->paragraph.addRun();
+    aRun=endnote->paragraph.addRun();
+    aRun->addContinuationSeparator();
 
     compatibility.isBreakWrappedTables=true;
     compatibility.isSnapToGridInCell=true;

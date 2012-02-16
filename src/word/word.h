@@ -37,6 +37,11 @@
 #include "xml/wordxmlcompatibility.h"
 #include "xml/wordxmlparagraph.h"
 #include "xml/wordxmlrun.h"
+#include "xml/wordxmlseparator.h"
+#include "xml/wordxmlcontinuationseparator.h"
+#include "xml/wordxmlbreak.h"
+#include "xml/wordxmltabchar.h"
+#include "xml/wordxmlpagenumber.h"
 
 #define WORD_MAX_RETRIES 3
 
