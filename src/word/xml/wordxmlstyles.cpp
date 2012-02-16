@@ -73,7 +73,6 @@ void WordXMLStyles::setDefaultStyles2003()
 
     //---------------------------------------
 
-
     aStyle=add("NoList", stList, true);
     aStyle->name="No List";
     aStyle->isSemiHidden=true;

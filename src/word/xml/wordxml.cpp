@@ -8,6 +8,7 @@ WordXML::WordXML(int aWordVersion, WordXMLBase* aParent) : WordXMLBase(aParent)
     fonts.parent=this;
     styles.parent=this;
     documentProperties.parent=this;
+    sections.parent=this;
 
     reset();
 
@@ -81,6 +82,7 @@ void WordXML::writeToStream(QTextStream &aStream)
     fonts.writeToStream(aStream);
     styles.writeToStream(aStream);
     documentProperties.writeToStream(aStream);
+    sections.writeToStream(aStream);
 
     aStream<<"</w:wordDocument>\r\n";
 }
@@ -93,6 +95,7 @@ void WordXML::reset()
     fonts.reset();
     styles.reset();
     documentProperties.reset();
+    sections.reset();
 }
 
 bool WordXML::isModified()
@@ -103,5 +106,7 @@ bool WordXML::isModified()
            ||
            styles.isModified()
            ||
-           documentProperties.isModified();
+           documentProperties.isModified()
+           ||
+           sections.isModified();
 }

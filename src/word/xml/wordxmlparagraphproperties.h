@@ -4,12 +4,14 @@
 #include "wordxmlbase.h"
 
 #include "wordxmltabs.h"
+#include "wordxmlrunproperties.h"
 
 class WordXMLParagraphProperties : public WordXMLBase
 {
 public:
     QString paragraphStyle;
     WordXMLTabs tabs;
+    WordXMLRunProperties runProperties;
 
     explicit WordXMLParagraphProperties(WordXMLBase* aParent=0);
     ~WordXMLParagraphProperties();

@@ -9,6 +9,7 @@
 #include "wordxmlfonts.h"
 #include "wordxmlstyles.h"
 #include "wordxmldocumentproperties.h"
+#include "wordxmlsections.h"
 
 class WordXML : public WordXMLBase
 {
@@ -19,6 +20,7 @@ public:
     WordXMLFonts fonts;
     WordXMLStyles styles;
     WordXMLDocumentProperties documentProperties;
+    WordXMLSections sections;
 
     explicit WordXML(int aWordVersion=-1, WordXMLBase* aParent=0);
     ~WordXML();

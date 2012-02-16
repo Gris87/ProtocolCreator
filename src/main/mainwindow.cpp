@@ -1341,6 +1341,26 @@ void MainWindow::exportToWord(bool isFull)
     {
         WordXML word(2003);
 
+        int start;
+        int stop;
+
+        if (isFull)
+        {
+            start=0;
+            stop=ui->pagesTabWidget->count()-1;
+        }
+        else
+        {
+            start=ui->pagesTabWidget->currentIndex();
+            stop=start;
+        }
+
+        for (int i=start; i<=stop; i++)
+        {
+            WordXMLSection *section=word.sections.add();
+            section->addParagraph();
+        }
+
         word.saveToFile(aTempPath+"TempFile.xml");
     }
     catch(...)

@@ -42,6 +42,9 @@
 #include "xml/wordxmlbreak.h"
 #include "xml/wordxmltabchar.h"
 #include "xml/wordxmlpagenumber.h"
+#include "xml/wordxmlsections.h"
+#include "xml/wordxmlsection.h"
+#include "xml/wordxmlsectionproperties.h"
 
 #define WORD_MAX_RETRIES 3
 

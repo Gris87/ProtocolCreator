@@ -102,7 +102,10 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmltabchar.cpp \
     src/word/xml/wordxmlpagenumber.cpp \
     src/word/xml/wordxmlcontinuationseparator.cpp \
-    src/word/xml/wordxmlbreak.cpp
+    src/word/xml/wordxmlbreak.cpp \
+    src/word/xml/wordxmlsections.cpp \
+    src/word/xml/wordxmlsection.cpp \
+    src/word/xml/wordxmlsectionproperties.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -193,7 +196,10 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmlpagenumber.h \
     src/word/xml/wordxmlcontinuationseparator.h \
     src/word/xml/wordxmlbreak.h \
-    src/word/xml/wordxmltabchar.h
+    src/word/xml/wordxmltabchar.h \
+    src/word/xml/wordxmlsection.h \
+    src/word/xml/wordxmlsections.h \
+    src/word/xml/wordxmlsectionproperties.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
