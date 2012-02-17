@@ -1,6 +1,6 @@
 #include "wordxmlsection.h"
 
-WordXMLSection::WordXMLSection(WordXMLBase* aParent) : WordXMLBase(aParent)
+WordXMLSection::WordXMLSection(WordXMLBase* aParent) : WordXMLMultiPart(aParent)
 {
     properties.parent=this;
 
@@ -9,7 +9,6 @@ WordXMLSection::WordXMLSection(WordXMLBase* aParent) : WordXMLBase(aParent)
 
 WordXMLSection::~WordXMLSection()
 {
-    clear();
 }
 
 void WordXMLSection::writeToStream(QTextStream &aStream)
@@ -17,72 +16,21 @@ void WordXMLSection::writeToStream(QTextStream &aStream)
     aStream<<space<<"<wx:sect>\r\n";
 
     properties.writeToStream(aStream);
-
-    for (int i=0; i<mList.length(); i++)
-    {
-        mList.at(i)->writeToStream(aStream);
-    }
+    WordXMLMultiPart::writeToStream(aStream);
 
     aStream<<space<<"</wx:sect>\r\n";
 }
 
 void WordXMLSection::reset()
 {
-    WordXMLBase::reset();
+    WordXMLMultiPart::reset();
 
     properties.reset();
-
-    clear();
 }
 
 bool WordXMLSection::isModified()
 {
     return properties.isModified()
            ||
-           mList.length()>0;
+           WordXMLMultiPart::isModified();
 }
-
-WordXMLParagraph* WordXMLSection::addParagraph()
-{
-    WordXMLParagraph *aNewComponent=new WordXMLParagraph(this);
-    mList.append(aNewComponent);
-    return aNewComponent;
-}
-
-WordXMLTable* WordXMLSection::addTable()
-{
-    WordXMLTable *aNewComponent=new WordXMLTable(this);
-    mList.append(aNewComponent);
-    return aNewComponent;
-}
-
-WordXMLBase* WordXMLSection::get(int index)
-{
-    return mList.at(index);
-}
-
-void WordXMLSection::remove(int index)
-{
-    mList.removeAt(index);
-}
-
-void WordXMLSection::remove(WordXMLBase* aXMLComponent)
-{
-    mList.removeOne(aXMLComponent);
-}
-
-int WordXMLSection::count()
-{
-    return mList.length();
-}
-
-void WordXMLSection::clear()
-{
-    for (int i=0; i<mList.length(); i++)
-    {
-        delete mList[i];
-    }
-
-    mList.clear();
-}
-

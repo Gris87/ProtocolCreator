@@ -45,6 +45,7 @@
 #include "xml/wordxmltabchar.h"
 #include "xml/wordxmlpagenumber.h"
 #include "xml/wordxmlfieldchar.h"
+#include "xml/wordxmlmultipart.h"
 #include "xml/wordxmlsections.h"
 #include "xml/wordxmlsection.h"
 #include "xml/wordxmlsectionproperties.h"

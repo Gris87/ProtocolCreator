@@ -35,8 +35,8 @@ public:
     void setPageSize(int aWidth, int aHeight);
     void setPageMargin(int aTop, int aLeft, int aBottom, int aRight, int aHeader=720, int aFooter=720, int aGooter=0);
 
-    WordXMLHeaderFooter* addHeader();
-    WordXMLHeaderFooter* addFooter();
+    WordXMLHeaderFooter* addHeader(EHeaderType aType=htNone);
+    WordXMLHeaderFooter* addFooter(EHeaderType aType=htNone);
 
     WordXMLHeaderFooter* copyHeader(int index);
     WordXMLHeaderFooter* copyHeader(WordXMLHeaderFooter* aHeader);

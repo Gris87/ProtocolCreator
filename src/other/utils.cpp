@@ -281,7 +281,7 @@ PageComponent* variableByName(QString aVariableName, PageComponent *aComponent)
     }
     else
     {
-        if (aComponent->superParent!=globalDialog)
+        if (aComponent && aComponent->superParent!=globalDialog)
         {
             PageFrame *aPage=(PageFrame*)aComponent->superParent;
 
@@ -1989,4 +1989,81 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
     }
 
     return 0;
+}
+
+void replaceLinksInText(QTextEdit *aTextEdit)
+{
+    QTextCursor aCursor=aTextEdit->textCursor();
+
+    QTextDocument *doc=aTextEdit->document();
+
+    for (QTextBlock it=doc->begin(); it!=doc->end(); it=it.next())
+    {
+        aCursor.setPosition(it.position());
+
+        while (
+               !aCursor.atEnd()
+               &&
+               it.contains(aCursor.position())
+              )
+        {
+            aCursor.setPosition(aCursor.position()+1, QTextCursor::KeepAnchor);
+
+            if (aCursor.selectedText()=="[")
+            {
+                while (
+                       !aCursor.atEnd()
+                       &&
+                       it.contains(aCursor.position())
+                       &&
+                       !aCursor.selectedText().endsWith("]")
+                      )
+                {
+                    aCursor.setPosition(aCursor.position()+1, QTextCursor::KeepAnchor);
+                }
+
+                QString aSelection=aCursor.selectedText();
+
+                if (aSelection.endsWith("]"))
+                {
+                    aSelection.remove(aSelection.length()-1, 1);
+                    aSelection.remove(0, 1);
+
+                    PageComponent* aComponent=variableByName(aSelection, 0);
+
+                    if (aComponent)
+                    {
+                        aCursor.insertText(variantToText(aComponent->calculate()));
+                    }
+                }
+            }
+
+            aCursor.setPosition(aCursor.position());
+        }
+    }
+}
+
+QString variantToText(const QVariant &aVariant)
+{
+    switch (aVariant.type())
+    {
+        case QVariant::Double: return QString::number(aVariant.toDouble());
+        case QVariant::String: return aVariant.toString();
+        case QVariant::Bool:
+        {
+            if (aVariant.toBool())
+            {
+                return "1";
+            }
+            else
+            {
+                return "0";
+            }
+        }
+        case QVariant::Date: return aVariant.toDate().toString("dd.MM.yyyy");
+        case QVariant::Time: return aVariant.toTime().toString("hh:mm:ss");
+        default: return "!!!NOT_SUPPORTED!!!";
+    }
+
+    return "!!!NOT_SUPPORTED!!!";
 }

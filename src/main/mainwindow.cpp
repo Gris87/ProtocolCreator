@@ -1376,6 +1376,16 @@ void MainWindow::exportToWord(bool isFull)
                                                   (int)(aPage->leftLimit*CM_TO_TWIPS),
                                                   (int)(aPage->bottomLimit*CM_TO_TWIPS),
                                                   (int)(aPage->rightLimit*CM_TO_TWIPS));
+
+                QTextEdit aTextEdit;
+
+                aTextEdit.setHtml(aPage->headerText);
+                replaceLinksInText(&aTextEdit);
+                section->properties.addHeader()->insertFromText(&aTextEdit);
+
+                aTextEdit.setHtml(aPage->footerText);
+                replaceLinksInText(&aTextEdit);
+                section->properties.addFooter()->insertFromText(&aTextEdit);
             }
         }
 

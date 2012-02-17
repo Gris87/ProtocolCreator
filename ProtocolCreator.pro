@@ -109,7 +109,8 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmltext.cpp \
     src/word/xml/wordxmlheaderfooter.cpp \
     src/word/xml/wordxmltable.cpp \
-    src/word/xml/wordxmlfieldchar.cpp
+    src/word/xml/wordxmlfieldchar.cpp \
+    src/word/xml/wordxmlmultipart.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -207,7 +208,8 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmltext.h \
     src/word/xml/wordxmlheaderfooter.h \
     src/word/xml/wordxmltable.h \
-    src/word/xml/wordxmlfieldchar.h
+    src/word/xml/wordxmlfieldchar.h \
+    src/word/xml/wordxmlmultipart.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

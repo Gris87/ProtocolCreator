@@ -87,18 +87,20 @@ void WordXMLSectionProperties::setPageMargin(int aTop, int aLeft, int aBottom, i
     pageMarginGooter=aGooter;
 }
 
-WordXMLHeaderFooter* WordXMLSectionProperties::addHeader()
+WordXMLHeaderFooter* WordXMLSectionProperties::addHeader(EHeaderType aType)
 {
     WordXMLHeaderFooter* aNewHeader=new WordXMLHeaderFooter(this);
     aNewHeader->isHeader=true;
+    aNewHeader->type=aType;
     mList.append(aNewHeader);
     return aNewHeader;
 }
 
-WordXMLHeaderFooter* WordXMLSectionProperties::addFooter()
+WordXMLHeaderFooter* WordXMLSectionProperties::addFooter(EHeaderType aType)
 {
     WordXMLHeaderFooter* aNewHeader=new WordXMLHeaderFooter(this);
     aNewHeader->isHeader=false;
+    aNewHeader->type=aType;
     mList.append(aNewHeader);
     return aNewHeader;
 }

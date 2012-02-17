@@ -1,14 +1,11 @@
 #ifndef WORDXMLSECTION_H
 #define WORDXMLSECTION_H
 
-#include "wordxmlbase.h"
+#include "wordxmlmultipart.h"
 
 #include "wordxmlsectionproperties.h"
 
-#include "wordxmlparagraph.h"
-#include "wordxmltable.h"
-
-class WordXMLSection : public WordXMLBase
+class WordXMLSection : public WordXMLMultiPart
 {
 public:
     WordXMLSectionProperties properties;
@@ -21,21 +18,6 @@ public:
     void reset();
 
     bool isModified();
-
-    WordXMLParagraph* addParagraph();
-    WordXMLTable* addTable();
-
-    WordXMLBase* get(int index);
-
-    void remove(int index);
-    void remove(WordXMLBase* aXMLComponent);
-
-    int count();
-
-    void clear();
-
-private:
-    QList<WordXMLBase*> mList;
 };
 
 #endif // WORDXMLSECTION_H

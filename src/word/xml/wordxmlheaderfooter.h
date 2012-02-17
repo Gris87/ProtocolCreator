@@ -1,13 +1,7 @@
 #ifndef WORDXMLHEADERFOOTER_H
 #define WORDXMLHEADERFOOTER_H
 
-#include "wordxmlbase.h"
-
-//#include "wordxmlparagraph.h"
-//#include "wordxmltable.h"
-
-class WordXMLParagraph;
-class WordXMLTable;
+#include "wordxmlmultipart.h"
 
 enum EHeaderType
 {
@@ -16,7 +10,7 @@ enum EHeaderType
     htEven
 };
 
-class WordXMLHeaderFooter : public WordXMLBase
+class WordXMLHeaderFooter : public WordXMLMultiPart
 {
 public:
     bool isHeader;
@@ -28,23 +22,6 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
-
-    bool isModified();
-
-    WordXMLParagraph* addParagraph();
-    WordXMLTable* addTable();
-
-    WordXMLBase* get(int index);
-
-    void remove(int index);
-    void remove(WordXMLBase* aXMLComponent);
-
-    int count();
-
-    void clear();
-
-private:
-    QList<WordXMLBase*> mList;
 };
 
 #endif // WORDXMLHEADERFOOTER_H
