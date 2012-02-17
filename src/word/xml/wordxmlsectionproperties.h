@@ -3,6 +3,8 @@
 
 #include "wordxmlbase.h"
 
+#include "wordxmlheaderfooter.h"
+
 class WordXMLSectionProperties : public WordXMLBase
 {
 public:
@@ -32,6 +34,26 @@ public:
 
     void setPageSize(int aWidth, int aHeight);
     void setPageMargin(int aTop, int aLeft, int aBottom, int aRight, int aHeader=720, int aFooter=720, int aGooter=0);
+
+    WordXMLHeaderFooter* addHeader();
+    WordXMLHeaderFooter* addFooter();
+
+    WordXMLHeaderFooter* copyHeader(int index);
+    WordXMLHeaderFooter* copyHeader(WordXMLHeaderFooter* aHeader);
+    WordXMLHeaderFooter* copyFooter(int index);
+    WordXMLHeaderFooter* copyFooter(WordXMLHeaderFooter* aHeader);
+
+    WordXMLHeaderFooter* get(int index);
+
+    void remove(int index);
+    void remove(WordXMLHeaderFooter* aHeader);
+
+    int count();
+
+    void clear();
+
+private:
+    QList<WordXMLHeaderFooter*> mList;
 };
 
 #endif // WORDXMLSECTIONPROPERTIES_H

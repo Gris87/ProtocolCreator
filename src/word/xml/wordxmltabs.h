@@ -32,10 +32,10 @@ public:
 
     int count();
 
+    void clear();
+
 private:
     QList<WordXMLTab*> mList;
-
-    void clear();
 };
 
 #endif // WORDXMLTABS_H

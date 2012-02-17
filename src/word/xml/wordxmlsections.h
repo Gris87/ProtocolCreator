@@ -29,10 +29,10 @@ public:
 
     int count();
 
+    void clear();
+
 private:
     QList<WordXMLSection*> mList;
-
-    void clear();
 };
 
 #endif // WORDXMLSECTIONS_H

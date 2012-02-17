@@ -49,6 +49,12 @@ void WordXMLParagraphProperties::writeToStream(QTextStream &aStream)
                 {
                     aStream<<"both";
                 }
+                break;
+                case paNone:
+                {
+                    //Nothing
+                }
+                break;
             }
 
             aStream<<"\"/>\r\n";

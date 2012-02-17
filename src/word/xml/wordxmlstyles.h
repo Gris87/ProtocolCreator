@@ -34,10 +34,10 @@ public:
 
     int count();
 
+    void clear();
+
 private:
     QList<WordXMLStyle*> mList;
-
-    void clear();
 };
 
 #endif // WORDXMLSTYLES_H

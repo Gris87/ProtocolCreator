@@ -36,10 +36,10 @@ public:
 
     int count();
 
+    void clear();
+
 private:
     QList<WordXMLBase*> mList;
-
-    void clear();
 };
 
 #endif //     WORDXMLPARAGRAPH_H

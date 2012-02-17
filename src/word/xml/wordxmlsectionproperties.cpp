@@ -7,6 +7,7 @@ WordXMLSectionProperties::WordXMLSectionProperties(WordXMLBase* aParent) : WordX
 
 WordXMLSectionProperties::~WordXMLSectionProperties()
 {
+    clear();
 }
 
 void WordXMLSectionProperties::writeToStream(QTextStream &aStream)
@@ -60,6 +61,8 @@ void WordXMLSectionProperties::reset()
     pageMarginGooter=0;
     colsSpace=720;
     docGridLinePitch=360;
+
+    clear();
 }
 
 bool WordXMLSectionProperties::isModified()
@@ -83,3 +86,78 @@ void WordXMLSectionProperties::setPageMargin(int aTop, int aLeft, int aBottom, i
     pageMarginFooter=aFooter;
     pageMarginGooter=aGooter;
 }
+
+WordXMLHeaderFooter* WordXMLSectionProperties::addHeader()
+{
+    WordXMLHeaderFooter* aNewHeader=new WordXMLHeaderFooter(this);
+    aNewHeader->isHeader=true;
+    mList.append(aNewHeader);
+    return aNewHeader;
+}
+
+WordXMLHeaderFooter* WordXMLSectionProperties::addFooter()
+{
+    WordXMLHeaderFooter* aNewHeader=new WordXMLHeaderFooter(this);
+    aNewHeader->isHeader=false;
+    mList.append(aNewHeader);
+    return aNewHeader;
+}
+
+WordXMLHeaderFooter* WordXMLSectionProperties::copyHeader(int index)
+{
+    return copyHeader(mList.at(index));
+}
+
+WordXMLHeaderFooter* WordXMLSectionProperties::copyHeader(WordXMLHeaderFooter* aHeader)
+{
+    WordXMLHeaderFooter* aNewHeader=new WordXMLHeaderFooter(this);
+    *aNewHeader=*aHeader;
+    aNewHeader->isHeader=true;
+    mList.append(aNewHeader);
+    return aNewHeader;
+}
+
+WordXMLHeaderFooter* WordXMLSectionProperties::copyFooter(int index)
+{
+    return copyFooter(mList.at(index));
+}
+
+WordXMLHeaderFooter* WordXMLSectionProperties::copyFooter(WordXMLHeaderFooter* aHeader)
+{
+    WordXMLHeaderFooter* aNewHeader=new WordXMLHeaderFooter(this);
+    *aNewHeader=*aHeader;
+    aNewHeader->isHeader=false;
+    mList.append(aNewHeader);
+    return aNewHeader;
+}
+
+WordXMLHeaderFooter* WordXMLSectionProperties::get(int index)
+{
+    return mList.at(index);
+}
+
+void WordXMLSectionProperties::remove(int index)
+{
+    mList.removeAt(index);
+}
+
+void WordXMLSectionProperties::remove(WordXMLHeaderFooter* aHeader)
+{
+    mList.removeOne(aHeader);
+}
+
+int WordXMLSectionProperties::count()
+{
+    return mList.length();
+}
+
+void WordXMLSectionProperties::clear()
+{
+    for (int i=0; i<mList.length(); i++)
+    {
+        delete mList[i];
+    }
+
+    mList.clear();
+}
+

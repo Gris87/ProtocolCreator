@@ -49,6 +49,13 @@ WordXMLParagraph* WordXMLSection::addParagraph()
     return aNewComponent;
 }
 
+WordXMLTable* WordXMLSection::addTable()
+{
+    WordXMLTable *aNewComponent=new WordXMLTable(this);
+    mList.append(aNewComponent);
+    return aNewComponent;
+}
+
 WordXMLBase* WordXMLSection::get(int index)
 {
     return mList.at(index);

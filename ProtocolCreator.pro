@@ -106,7 +106,10 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmlsections.cpp \
     src/word/xml/wordxmlsection.cpp \
     src/word/xml/wordxmlsectionproperties.cpp \
-    src/word/xml/wordxmltext.cpp
+    src/word/xml/wordxmltext.cpp \
+    src/word/xml/wordxmlheaderfooter.cpp \
+    src/word/xml/wordxmltable.cpp \
+    src/word/xml/wordxmlfieldchar.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -201,7 +204,10 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmlsection.h \
     src/word/xml/wordxmlsections.h \
     src/word/xml/wordxmlsectionproperties.h \
-    src/word/xml/wordxmltext.h
+    src/word/xml/wordxmltext.h \
+    src/word/xml/wordxmlheaderfooter.h \
+    src/word/xml/wordxmltable.h \
+    src/word/xml/wordxmlfieldchar.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

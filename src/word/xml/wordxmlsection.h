@@ -6,6 +6,7 @@
 #include "wordxmlsectionproperties.h"
 
 #include "wordxmlparagraph.h"
+#include "wordxmltable.h"
 
 class WordXMLSection : public WordXMLBase
 {
@@ -22,6 +23,7 @@ public:
     bool isModified();
 
     WordXMLParagraph* addParagraph();
+    WordXMLTable* addTable();
 
     WordXMLBase* get(int index);
 
@@ -30,10 +32,10 @@ public:
 
     int count();
 
+    void clear();
+
 private:
     QList<WordXMLBase*> mList;
-
-    void clear();
 };
 
 #endif // WORDXMLSECTION_H

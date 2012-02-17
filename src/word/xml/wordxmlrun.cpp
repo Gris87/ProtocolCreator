@@ -95,6 +95,14 @@ WordXMLPageNumber* WordXMLRun::addPageNumber()
     return aNewComponent;
 }
 
+WordXMLFieldChar* WordXMLRun::addFieldChar(EFieldCharType aType)
+{
+    WordXMLFieldChar *aNewComponent=new WordXMLFieldChar(this);
+    aNewComponent->type=aType;
+    mList.append(aNewComponent);
+    return aNewComponent;
+}
+
 WordXMLBase* WordXMLRun::get(int index)
 {
     return mList.at(index);

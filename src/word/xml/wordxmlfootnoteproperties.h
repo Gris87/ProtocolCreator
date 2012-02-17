@@ -32,10 +32,10 @@ public:
 
     int count();
 
+    void clear();
+
 private:
     QList<WordXMLFootnote*> mList;
-
-    void clear();
 };
 
 #endif // WORDXMLFOOTNOTEPROPERTIES_H

@@ -35,10 +35,10 @@ public:
 
     int count();
 
+    void clear();
+
 private:
     QList<WordXMLCustomProperty*> mList;
-
-    void clear();
 };
 
 #endif // WORDXMLCUSTOMPROPERTIES_H

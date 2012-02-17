@@ -11,6 +11,7 @@
 #include "wordxmlbreak.h"
 #include "wordxmltabchar.h"
 #include "wordxmlpagenumber.h"
+#include "wordxmlfieldchar.h"
 
 class WordXMLRun : public WordXMLBase
 {
@@ -33,6 +34,7 @@ public:
     WordXMLBreak* addBreak();
     WordXMLTabChar* addTabChar();
     WordXMLPageNumber* addPageNumber();
+    WordXMLFieldChar* addFieldChar(EFieldCharType aType);
 
     WordXMLBase* get(int index);
 
@@ -41,10 +43,10 @@ public:
 
     int count();
 
+    void clear();
+
 private:
     QList<WordXMLBase*> mList;
-
-    void clear();
 };
 
 #endif //     WORDXMLRUN_H
