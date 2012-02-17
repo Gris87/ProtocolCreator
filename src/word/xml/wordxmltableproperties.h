@@ -4,11 +4,14 @@
 #include "wordxmlbase.h"
 
 #include "wordxmltablecellmargin.h"
+#include "wordxmltableborders.h"
 
 class WordXMLTableProperties : public WordXMLBase
 {
 public:
+    QString tableStyle;
     double indentation;
+    WordXMLTableBorders borders;
     WordXMLTableCellMargin cellMargin;
 
     explicit WordXMLTableProperties(WordXMLBase* aParent=0);

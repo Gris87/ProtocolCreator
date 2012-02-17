@@ -13,6 +13,7 @@ public:
     QString rsidR;
     int pageSizeWidth;
     int pageSizeHeight;
+    bool landscape;
     int pageMarginTop;
     int pageMarginLeft;
     int pageMarginBottom;

@@ -172,6 +172,19 @@ void SectionControlDialog::on_pagesListWidget_itemSelectionChanged()
 
 void SectionControlDialog::on_bookButton_clicked()
 {
+    if (ui->bookButton->isFlat())
+    {
+        double tempTop=ui->topSpinBox->value();
+        double tempLeft=ui->leftSpinBox->value();
+        double tempBottom=ui->bottomSpinBox->value();
+        double tempRight=ui->rightSpinBox->value();
+
+        ui->topSpinBox->setValue(tempLeft);
+        ui->leftSpinBox->setValue(tempBottom);
+        ui->bottomSpinBox->setValue(tempRight);
+        ui->rightSpinBox->setValue(tempTop);
+    }
+
     ui->bookButton->setFlat(false);
     ui->albumButton->setFlat(true);
 
@@ -183,6 +196,19 @@ void SectionControlDialog::on_bookButton_clicked()
 
 void SectionControlDialog::on_albumButton_clicked()
 {
+    if (ui->albumButton->isFlat())
+    {
+        double tempTop=ui->topSpinBox->value();
+        double tempLeft=ui->leftSpinBox->value();
+        double tempBottom=ui->bottomSpinBox->value();
+        double tempRight=ui->rightSpinBox->value();
+
+        ui->topSpinBox->setValue(tempRight);
+        ui->leftSpinBox->setValue(tempTop);
+        ui->bottomSpinBox->setValue(tempLeft);
+        ui->rightSpinBox->setValue(tempBottom);
+    }
+
     ui->bookButton->setFlat(true);
     ui->albumButton->setFlat(false);
 

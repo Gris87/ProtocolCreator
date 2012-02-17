@@ -23,8 +23,19 @@ void WordXMLSectionProperties::writeToStream(QTextStream &aStream)
 
         aStream<<">\r\n";
 
-        aStream<<space<<" <w:pgSz w:w=\""+QString::number(pageSizeWidth)+"\"\r\n"
-               <<space<<       "  w:h=\""+QString::number(pageSizeHeight)+"\"/>\r\n";
+
+
+        if (landscape)
+        {
+            aStream<<space<<" <w:pgSz w:w=\""+QString::number(pageSizeHeight)+"\"\r\n"
+                   <<space<<       "  w:h=\""+QString::number(pageSizeWidth)+"\"\r\n"
+                   <<space<<   "  w:orient=\"landscape\"/>\r\n";
+        }
+        else
+        {
+            aStream<<space<<" <w:pgSz w:w=\""+QString::number(pageSizeWidth)+"\"\r\n"
+                   <<space<<       "  w:h=\""+QString::number(pageSizeHeight)+"\"/>\r\n";
+        }
 
         aStream<<space<<" <w:pgMar w:top=\""+QString::number(pageMarginTop)+"\"\r\n"
                <<space<<        "  w:left=\""+QString::number(pageMarginLeft)+"\"\r\n"
@@ -52,6 +63,7 @@ void WordXMLSectionProperties::reset()
 
     pageSizeWidth=11906;
     pageSizeHeight=16838;
+    landscape=false;
     pageMarginTop=1134;
     pageMarginLeft=1701;
     pageMarginBottom=1134;

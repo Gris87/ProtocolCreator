@@ -1372,6 +1372,7 @@ void MainWindow::exportToWord(bool isFull)
                 }
 
                 section=word.sections.add();
+                section->properties.landscape=!aPage->isPortaitOrientation;
                 section->properties.setPageMargin((int)(aPage->topLimit*CM_TO_TWIPS),
                                                   (int)(aPage->leftLimit*CM_TO_TWIPS),
                                                   (int)(aPage->bottomLimit*CM_TO_TWIPS),

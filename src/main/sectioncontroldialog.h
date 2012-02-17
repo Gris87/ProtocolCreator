@@ -24,6 +24,7 @@ public:
 
     explicit SectionControlDialog(QWidget *parent = 0);
     ~SectionControlDialog();
+
 private slots:
     void topSpinBox_valueChanged(double aValue);
     void leftSpinBox_valueChanged(double aValue);

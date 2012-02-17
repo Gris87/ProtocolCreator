@@ -33,6 +33,7 @@
 #include "xml/wordxmlcompatibility.h"
 #include "xml/wordxmltable.h"
 #include "xml/wordxmltableproperties.h"
+#include "xml/wordxmltableborders.h"
 #include "xml/wordxmltablecellmargin.h"
 #include "xml/wordxmlparagraph.h"
 #include "xml/wordxmlparagraphproperties.h"
