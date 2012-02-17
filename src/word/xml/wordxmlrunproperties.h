@@ -3,12 +3,23 @@
 
 #include "wordxmlbase.h"
 
+#include "wordxmltypes.h"
+
+enum EUnderlineType
+{
+    utNone,
+    utSingle
+};
+
 class WordXMLRunProperties : public WordXMLBase
 {
 public:
     QString font;
     int fontSize;
     int fontSizeCS;
+    ETripleState bold;
+    ETripleState italic;
+    EUnderlineType underline;
     QString language;
     QString languageFarEast;
     QString languageBIDI;

@@ -7,10 +7,33 @@
 #include "wordxmlrunproperties.h"
 #include "wordxmlsectionproperties.h"
 
+enum EParagraphAlignment
+{
+    paNone,
+    paLeft,
+    paCenter,
+    paRight,
+    paBoth
+};
+
+enum ESpacingLineRule
+{
+    slrAuto,
+    slrExact,
+    slrAtLeast
+};
+
 class WordXMLParagraphProperties : public WordXMLBase
 {
 public:
     QString paragraphStyle;
+    EParagraphAlignment alignment;
+    int spacingLine;
+    ESpacingLineRule spacingLineRule;
+    int indentLeft;
+    int indentRight;
+    int indentFirtsLine;
+    int indentHanging;
     WordXMLTabs tabs;
     WordXMLRunProperties runProperties;
     WordXMLSectionProperties sectionProperties;

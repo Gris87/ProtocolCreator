@@ -30,6 +30,51 @@ void WordXMLRunProperties::writeToStream(QTextStream &aStream)
             aStream<<space<<" <w:sz-cs w:val=\""+QString::number(fontSizeCS*2)+"\"/>\r\n";
         }
 
+        if (bold!=tsNone)
+        {
+            if (bold==tsOn)
+            {
+                aStream<<space<<" <w:b w:val=\"on\"/>\r\n";
+            }
+            else
+            {
+                aStream<<space<<" <w:b w:val=\"off\"/>\r\n";
+            }
+        }
+
+        if (italic!=tsNone)
+        {
+            if (italic==tsOn)
+            {
+                aStream<<space<<" <w:i w:val=\"on\"/>\r\n";
+            }
+            else
+            {
+                aStream<<space<<" <w:i w:val=\"off\"/>\r\n";
+            }
+        }
+
+        if (underline!=utNone)
+        {
+            aStream<<space<<" <w:u w:val=\"";
+
+            switch(underline)
+            {
+                case utSingle:
+                {
+                    aStream<<"single";
+                }
+                break;
+                default:
+                {
+                    throw "unknown underline type";
+                }
+                break;
+            }
+
+            aStream<<"\"/>\r\n";
+        }
+
         if (language!="" || languageFarEast!="" || languageBIDI!="")
         {
             aStream<<space<<" <w:lang";
@@ -52,8 +97,6 @@ void WordXMLRunProperties::writeToStream(QTextStream &aStream)
             aStream<<"/>\r\n";
         }
 
-
-
         aStream<<space<<"</w:rPr>\r\n";
     }
 }
@@ -65,6 +108,9 @@ void WordXMLRunProperties::reset()
     font="";
     fontSize=-1;
     fontSizeCS=-1;
+    bold=tsNone;
+    italic=tsNone;
+    underline=utNone;
     language="";
     languageFarEast="";
     languageBIDI="";
@@ -77,6 +123,12 @@ bool WordXMLRunProperties::isModified()
            fontSize>=0
            ||
            fontSizeCS>=0
+           ||
+           bold!=tsNone
+           ||
+           italic!=tsNone
+           ||
+           underline!=utNone
            ||
            language!=""
            ||
