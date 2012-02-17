@@ -1359,7 +1359,9 @@ void MainWindow::exportToWord(bool isFull)
 
         for (int i=start; i<=stop; i++)
         {
-            if (!isFull || ((PageFrame*)ui->pagesTabWidget->widget(i))->ui->useCheckBox->isChecked())
+            PageFrame* aPage=(PageFrame*)ui->pagesTabWidget->widget(i);
+
+            if (!isFull || aPage->ui->useCheckBox->isChecked())
             {
                 if (section)
                 {
@@ -1370,7 +1372,10 @@ void MainWindow::exportToWord(bool isFull)
                 }
 
                 section=word.sections.add();
-                section->properties.setPageMargin(1000,1000,1000,1000);
+                section->properties.setPageMargin((int)(aPage->topLimit*CM_TO_TWIPS),
+                                                  (int)(aPage->leftLimit*CM_TO_TWIPS),
+                                                  (int)(aPage->bottomLimit*CM_TO_TWIPS),
+                                                  (int)(aPage->rightLimit*CM_TO_TWIPS));
             }
         }
 

@@ -52,6 +52,6 @@
 
 #define WORD_MAX_RETRIES 3
 
-#define SM_TO_TWIPS 123
+#define CM_TO_TWIPS 566.929133858
 
 #endif // WORD_H
