@@ -3,7 +3,7 @@
 
 #include "wordxmlbase.h"
 
-#include <QTextEdit>
+#include <QTextFrame>
 
 class WordXMLParagraph;
 class WordXMLTable;
@@ -20,7 +20,7 @@ public:
 
     bool isModified();
 
-    void insertFromText(QTextEdit *aTextEdit);
+    void insertFromText(QTextFrame *aFrame);
 
     WordXMLParagraph* addParagraph();
     WordXMLTable* addTable();

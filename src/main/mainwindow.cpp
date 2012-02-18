@@ -1383,11 +1383,11 @@ void MainWindow::exportToWord(bool isFull)
 
                 aTextEdit.setHtml(aPage->headerText);
                 replaceLinksInText(&aTextEdit);
-                section->properties.addHeader()->insertFromText(&aTextEdit);
+                section->properties.addHeader()->insertFromText(aTextEdit.document()->rootFrame());
 
                 aTextEdit.setHtml(aPage->footerText);
                 replaceLinksInText(&aTextEdit);
-                section->properties.addFooter()->insertFromText(&aTextEdit);
+                section->properties.addFooter()->insertFromText(aTextEdit.document()->rootFrame());
             }
         }
 

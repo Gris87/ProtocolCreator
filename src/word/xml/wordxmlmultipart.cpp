@@ -35,7 +35,7 @@ bool WordXMLMultiPart::isModified()
     return mList.length()>0;
 }
 
-void WordXMLMultiPart::insertFromText(QTextEdit *aTextEdit)
+void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
 {
 
 }
