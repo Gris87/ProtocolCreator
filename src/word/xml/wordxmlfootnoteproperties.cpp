@@ -2,6 +2,8 @@
 
 WordXMLFootnoteProperties::WordXMLFootnoteProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtFootnoteProperties;
+
     reset();
 }
 
@@ -121,4 +123,18 @@ void WordXMLFootnoteProperties::clear()
     }
 
     mList.clear();
+}
+
+WordXMLFootnoteProperties& WordXMLFootnoteProperties::operator=(const WordXMLFootnoteProperties &another)
+{
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLFootnote* aNewObject=new WordXMLFootnote(this);
+        *aNewObject=*(another.mList.at(i));
+        mList.append(aNewObject);
+    }
+
+    return *this;
 }

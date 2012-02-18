@@ -2,6 +2,8 @@
 
 WordXMLSectionProperties::WordXMLSectionProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtSectionProperties;
+
     reset();
 }
 
@@ -180,6 +182,21 @@ void WordXMLSectionProperties::clear()
 
 WordXMLSectionProperties& WordXMLSectionProperties::operator=(const WordXMLSectionProperties &another)
 {
+    needToGenerate=another.needToGenerate;
+    rsidR=another.rsidR;
+    pageSizeWidth=another.pageSizeWidth;
+    pageSizeHeight=another.pageSizeHeight;
+    landscape=another.landscape;
+    pageMarginTop=another.pageMarginTop;
+    pageMarginLeft=another.pageMarginLeft;
+    pageMarginBottom=another.pageMarginBottom;
+    pageMarginRight=another.pageMarginRight;
+    pageMarginHeader=another.pageMarginHeader;
+    pageMarginFooter=another.pageMarginFooter;
+    pageMarginGooter=another.pageMarginGooter;
+    colsSpace=another.colsSpace;
+    docGridLinePitch=another.docGridLinePitch;
+
     clear();
 
     for (int i=0; i<another.mList.length(); i++)

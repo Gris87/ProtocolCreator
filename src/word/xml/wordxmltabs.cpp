@@ -2,6 +2,8 @@
 
 WordXMLTabs::WordXMLTabs(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtTabs;
+
     reset();
 }
 
@@ -94,4 +96,18 @@ void WordXMLTabs::clear()
     }
 
     mList.clear();
+}
+
+WordXMLTabs& WordXMLTabs::operator=(const WordXMLTabs &another)
+{
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLTab* aNewObject=new WordXMLTab(this);
+        *aNewObject=*(another.mList.at(i));
+        mList.append(aNewObject);
+    }
+
+    return *this;
 }

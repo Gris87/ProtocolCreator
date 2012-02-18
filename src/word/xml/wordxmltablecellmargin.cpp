@@ -2,6 +2,8 @@
 
 WordXMLTableCellMargin::WordXMLTableCellMargin(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtTableCellmargin;
+
     reset();
 }
 
@@ -60,6 +62,16 @@ bool WordXMLTableCellMargin::isModified()
             ||
             (right>=0)
            );
+}
+
+WordXMLTableCellMargin& WordXMLTableCellMargin::operator=(const WordXMLTableCellMargin &another)
+{
+    top=another.top;
+    left=another.left;
+    bottom=another.bottom;
+    right=another.right;
+
+    return *this;
 }
 
 void WordXMLTableCellMargin::setMargin(double aTop, double aLeft, double aBottom, double aRight)

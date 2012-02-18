@@ -2,6 +2,8 @@
 
 WordXMLCustomProperties::WordXMLCustomProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtCustomProperties;
+
     reset();
 }
 

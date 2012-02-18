@@ -24,6 +24,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLTab& operator=(const WordXMLTab &another);
 };
 
 #endif // WORDXMLTAB_H

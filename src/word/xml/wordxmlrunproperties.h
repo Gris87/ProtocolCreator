@@ -32,6 +32,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLRunProperties& operator=(const WordXMLRunProperties &another);
 };
 
 #endif // WORDXMLRUNPROPERTIES_H

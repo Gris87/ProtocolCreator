@@ -2,6 +2,8 @@
 
 WordXMLTab::WordXMLTab(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtTab;
+
     reset();
 }
 
@@ -49,3 +51,12 @@ bool WordXMLTab::isModified()
            ||
            position!=0;
 }
+
+WordXMLTab& WordXMLTab::operator=(const WordXMLTab &another)
+{
+    location=another.location;
+    position=another.position;
+
+    return *this;
+}
+

@@ -2,6 +2,8 @@
 
 WordXMLText::WordXMLText(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtText;
+
     reset();
 }
 
@@ -25,4 +27,11 @@ void WordXMLText::reset()
 bool WordXMLText::isModified()
 {
     return text!="";
+}
+
+WordXMLText& WordXMLText::operator=(const WordXMLText &another)
+{
+    text=another.text;
+
+    return *this;
 }

@@ -14,6 +14,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLTable& operator=(const WordXMLTable &another);
 };
 
 #endif // WORDXMLTABLE_H

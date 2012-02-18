@@ -19,6 +19,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLEndnote& operator=(const WordXMLEndnote &another);
 };
 
 #endif //     WORDXMLENDNOTE_H

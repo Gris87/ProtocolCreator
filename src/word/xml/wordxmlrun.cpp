@@ -2,6 +2,8 @@
 
 WordXMLRun::WordXMLRun(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtRun;
+
     properties.parent=this;
 
     reset();
@@ -133,3 +135,69 @@ void WordXMLRun::clear()
     mList.clear();
 }
 
+WordXMLRun& WordXMLRun::operator=(const WordXMLRun &another)
+{
+    rsidR=another.rsidR;
+    properties=another.properties;
+
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLBase* aNewObject;
+
+        switch (another.mList.at(i)->getComponentType())
+        {
+            case wxtText:
+            {
+                aNewObject=new WordXMLText(this);
+                *((WordXMLText*)aNewObject)=*((WordXMLText*)(another.mList.at(i)));
+            }
+            break;
+            case wxtSeparator:
+            {
+                aNewObject=new WordXMLSeparator(this);
+                *((WordXMLSeparator*)aNewObject)=*((WordXMLSeparator*)(another.mList.at(i)));
+            }
+            break;
+            case wxtContinuationSeparator:
+            {
+                aNewObject=new WordXMLContinuationSeparator(this);
+                *((WordXMLContinuationSeparator*)aNewObject)=*((WordXMLContinuationSeparator*)(another.mList.at(i)));
+            }
+            break;
+            case wxtBreak:
+            {
+                aNewObject=new WordXMLBreak(this);
+                *((WordXMLBreak*)aNewObject)=*((WordXMLBreak*)(another.mList.at(i)));
+            }
+            break;
+            case wxtTabChar:
+            {
+                aNewObject=new WordXMLTabChar(this);
+                *((WordXMLTabChar*)aNewObject)=*((WordXMLTabChar*)(another.mList.at(i)));
+            }
+            break;
+            case wxtPageNumber:
+            {
+                aNewObject=new WordXMLPageNumber(this);
+                *((WordXMLPageNumber*)aNewObject)=*((WordXMLPageNumber*)(another.mList.at(i)));
+            }
+            break;
+            case wxtFieldChar:
+            {
+                aNewObject=new WordXMLFieldChar(this);
+                *((WordXMLFieldChar*)aNewObject)=*((WordXMLFieldChar*)(another.mList.at(i)));
+            }
+            break;
+            default:
+            {
+                throw "Wrong component type";
+            }
+        }
+
+        mList.append(aNewObject);
+    }
+
+    return *this;
+}

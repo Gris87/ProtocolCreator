@@ -2,6 +2,8 @@
 
 WordXMLTableProperties::WordXMLTableProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtTableProperties;
+
     borders.parent=this;
     cellMargin.parent=this;
 
@@ -54,4 +56,14 @@ bool WordXMLTableProperties::isModified()
            borders.isModified()
            ||
            cellMargin.isModified();
+}
+
+WordXMLTableProperties& WordXMLTableProperties::operator=(const WordXMLTableProperties &another)
+{
+    tableStyle=another.tableStyle;
+    indentation=another.indentation;
+    borders=another.borders;
+    cellMargin=another.cellMargin;
+
+    return *this;
 }

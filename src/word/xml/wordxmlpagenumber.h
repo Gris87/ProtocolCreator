@@ -10,6 +10,8 @@ public:
     ~WordXMLPageNumber();
 
     void writeToStream(QTextStream &aStream);
+
+    WordXMLPageNumber& operator=(const WordXMLPageNumber &another);
 };
 
 #endif // WORDXMLPAGENUMBER_H

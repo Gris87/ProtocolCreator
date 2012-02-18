@@ -2,6 +2,8 @@
 
 WordXMLContinuationSeparator::WordXMLContinuationSeparator(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtContinuationSeparator;
+
     reset();
 }
 

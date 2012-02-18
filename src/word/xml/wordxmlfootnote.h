@@ -19,6 +19,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLFootnote& operator=(const WordXMLFootnote &another);
 };
 
 #endif //     WORDXMLFOOTNOTE_H

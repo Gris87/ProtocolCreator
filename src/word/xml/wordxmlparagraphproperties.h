@@ -46,6 +46,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLParagraphProperties& operator=(const WordXMLParagraphProperties &another);
 };
 
 #endif // WORDXMLPARAGRAPHPROPERTIES_H

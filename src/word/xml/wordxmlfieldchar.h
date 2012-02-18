@@ -23,6 +23,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLFieldChar& operator=(const WordXMLFieldChar &another);
 };
 
 #endif // WORDXMLFIELDCHAR_H

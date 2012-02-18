@@ -19,6 +19,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLFonts& operator=(const WordXMLFonts &another);
 };
 
 #endif // WORDXMLFONTS_H

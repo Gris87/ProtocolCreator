@@ -2,6 +2,8 @@
 
 WordXMLParagraphProperties::WordXMLParagraphProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtParagraphProperties;
+
     tabs.parent=this;
     runProperties.parent=this;
     sectionProperties.parent=this;
@@ -168,3 +170,21 @@ bool WordXMLParagraphProperties::isModified()
            ||
            sectionProperties.isModified();
 }
+
+WordXMLParagraphProperties& WordXMLParagraphProperties::operator=(const WordXMLParagraphProperties &another)
+{
+    paragraphStyle=another.paragraphStyle;
+    alignment=another.alignment;
+    spacingLine=another.spacingLine;
+    spacingLineRule=another.spacingLineRule;
+    indentLeft=another.indentLeft;
+    indentRight=another.indentRight;
+    indentFirtsLine=another.indentFirtsLine;
+    indentHanging=another.indentHanging;
+    tabs=another.tabs;
+    runProperties=another.runProperties;
+    sectionProperties=another.sectionProperties;
+
+    return *this;
+}
+

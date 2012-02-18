@@ -38,6 +38,8 @@ public:
 
     void clear();
 
+    WordXMLParagraph& operator=(const WordXMLParagraph &another);
+
 private:
     QList<WordXMLBase*> mList;
 };

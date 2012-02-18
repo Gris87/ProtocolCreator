@@ -2,6 +2,8 @@
 
 WordXMLFootnote::WordXMLFootnote(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtFootnote;
+
     paragraph.parent=this;
 
     reset();
@@ -33,4 +35,12 @@ bool WordXMLFootnote::isModified()
     return type!=""
            ||
            paragraph.isModified();
+}
+
+WordXMLFootnote& WordXMLFootnote::operator=(const WordXMLFootnote &another)
+{
+    type=another.type;
+    paragraph=another.paragraph;
+
+    return *this;
 }

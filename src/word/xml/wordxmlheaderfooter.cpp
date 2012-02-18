@@ -2,6 +2,8 @@
 
 WordXMLHeaderFooter::WordXMLHeaderFooter(WordXMLBase* aParent) : WordXMLMultiPart(aParent)
 {
+    componentType=wxtHeaderFooter;
+
     isHeader=true;
 
     reset();
@@ -60,4 +62,12 @@ void WordXMLHeaderFooter::reset()
     WordXMLMultiPart::reset();
 
     type=htNone;
+}
+
+WordXMLHeaderFooter& WordXMLHeaderFooter::operator=(const WordXMLHeaderFooter &another)
+{
+    isHeader=another.isHeader;
+    type=another.type;
+
+    return *this;
 }

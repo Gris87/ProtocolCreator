@@ -2,6 +2,8 @@
 
 WordXMLDocumentProperties::WordXMLDocumentProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtDocumentProperties;
+
     footnoteProperties.parent=this;
     endnoteProperties.parent=this;
     compatibility.parent=this;

@@ -2,6 +2,8 @@
 
 WordXMLFonts::WordXMLFonts(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtFonts;
+
     reset();
 }
 
@@ -36,4 +38,14 @@ bool WordXMLFonts::isModified()
            defaultHAsciiFont!="Times New Roman"
            ||
            defaultCSFont!="Times New Roman";
+}
+
+WordXMLFonts& WordXMLFonts::operator=(const WordXMLFonts &another)
+{
+    defaultAsciiFont=another.defaultAsciiFont;
+    defaultFarEastFont=another.defaultFarEastFont;
+    defaultHAsciiFont=another.defaultHAsciiFont;
+    defaultCSFont=another.defaultCSFont;
+
+    return *this;
 }

@@ -10,6 +10,8 @@ public:
     ~WordXMLTabChar();
 
     void writeToStream(QTextStream &aStream);
+
+    WordXMLTabChar& operator=(const WordXMLTabChar &another);
 };
 
 #endif // WORDXMLTABCHAR_H

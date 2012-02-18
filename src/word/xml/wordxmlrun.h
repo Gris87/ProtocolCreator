@@ -45,6 +45,8 @@ public:
 
     void clear();
 
+    WordXMLRun& operator=(const WordXMLRun &another);
+
 private:
     QList<WordXMLBase*> mList;
 };

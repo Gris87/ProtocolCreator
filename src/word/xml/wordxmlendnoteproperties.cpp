@@ -2,6 +2,8 @@
 
 WordXMLEndnoteProperties::WordXMLEndnoteProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtEndnoteProperties;
+
     reset();
 }
 
@@ -121,4 +123,18 @@ void WordXMLEndnoteProperties::clear()
     }
 
     mList.clear();
+}
+
+WordXMLEndnoteProperties& WordXMLEndnoteProperties::operator=(const WordXMLEndnoteProperties &another)
+{
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLEndnote* aNewObject=new WordXMLEndnote(this);
+        *aNewObject=*(another.mList.at(i));
+        mList.append(aNewObject);
+    }
+
+    return *this;
 }

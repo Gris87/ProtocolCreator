@@ -10,6 +10,8 @@ public:
     ~WordXMLSeparator();
 
     void writeToStream(QTextStream &aStream);
+
+    WordXMLSeparator& operator=(const WordXMLSeparator &another);
 };
 
 #endif // WORDXMLSEPARATOR_H

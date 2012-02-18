@@ -2,6 +2,8 @@
 
 WordXMLSection::WordXMLSection(WordXMLBase* aParent) : WordXMLMultiPart(aParent)
 {
+    componentType=wxtSection;
+
     properties.parent=this;
 
     reset();
@@ -33,4 +35,11 @@ bool WordXMLSection::isModified()
     return properties.isModified()
            ||
            WordXMLMultiPart::isModified();
+}
+
+WordXMLSection& WordXMLSection::operator=(const WordXMLSection &another)
+{
+    properties=another.properties;
+
+    return *this;
 }

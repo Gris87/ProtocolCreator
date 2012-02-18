@@ -16,6 +16,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLText& operator=(const WordXMLText &another);
 };
 
 #endif // WORDXMLTEXT_H

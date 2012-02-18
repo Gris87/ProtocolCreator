@@ -5,6 +5,8 @@
 
 WordXMLMultiPart::WordXMLMultiPart(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtMultiPart;
+
     reset();
 }
 
@@ -82,3 +84,36 @@ void WordXMLMultiPart::clear()
     mList.clear();
 }
 
+WordXMLMultiPart& WordXMLMultiPart::operator=(const WordXMLMultiPart &another)
+{
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLBase* aNewObject;
+
+        switch (another.mList.at(i)->getComponentType())
+        {
+            case wxtParagraph:
+            {
+                aNewObject=new WordXMLParagraph(this);
+                *((WordXMLParagraph*)aNewObject)=*((WordXMLParagraph*)(another.mList.at(i)));
+            }
+            break;
+            case wxtTable:
+            {
+                aNewObject=new WordXMLTable(this);
+                *((WordXMLTable*)aNewObject)=*((WordXMLTable*)(another.mList.at(i)));
+            }
+            break;
+            default:
+            {
+                throw "Wrong component type";
+            }
+        }
+
+        mList.append(aNewObject);
+    }
+
+    return *this;
+}

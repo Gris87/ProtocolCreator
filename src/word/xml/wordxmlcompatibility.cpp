@@ -2,6 +2,8 @@
 
 WordXMLCompatibility::WordXMLCompatibility(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtCompatibility;
+
     reset();
 }
 

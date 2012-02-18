@@ -2,6 +2,8 @@
 
 WordXMLParagraph::WordXMLParagraph(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtParagraph;
+
     properties.parent=this;
 
     reset();
@@ -129,4 +131,38 @@ void WordXMLParagraph::clear()
     }
 
     mList.clear();
+}
+
+WordXMLParagraph& WordXMLParagraph::operator=(const WordXMLParagraph &another)
+{
+    rsidR=another.rsidR;
+    rsidRPr=another.rsidRPr;
+    rsidRDefault=another.rsidRDefault;
+    rsidP=another.rsidP;
+    properties=another.properties;
+
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLBase* aNewObject;
+
+        switch (another.mList.at(i)->getComponentType())
+        {
+            case wxtRun:
+            {
+                aNewObject=new WordXMLRun(this);
+                *((WordXMLRun*)aNewObject)=*((WordXMLRun*)(another.mList.at(i)));
+            }
+            break;
+            default:
+            {
+                throw "Wrong component type";
+            }
+        }
+
+        mList.append(aNewObject);
+    }
+
+    return *this;
 }

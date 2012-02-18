@@ -2,6 +2,8 @@
 
 WordXMLProperties::WordXMLProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtProperties;
+
     customProperties.parent=this;
 
     reset();
@@ -114,4 +116,21 @@ bool WordXMLProperties::isModified()
            hyperlinkBase!=""
            ||
            customProperties.isModified();
+}
+
+WordXMLProperties& WordXMLProperties::operator=(const WordXMLProperties &another)
+{
+    title=another.title;
+    subject=another.subject;
+    author=another.author;
+    keywords=another.keywords;
+    description=another.description;
+    lastAuthor=another.lastAuthor;
+    category=another.category;
+    manager=another.manager;
+    company=another.company;
+    hyperlinkBase=another.hyperlinkBase;
+    customProperties=another.customProperties;
+
+    return *this;
 }

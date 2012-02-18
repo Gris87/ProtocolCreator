@@ -2,6 +2,8 @@
 
 WordXMLTableBorders::WordXMLTableBorders(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtTableBorders;
+
     reset();
 }
 
@@ -167,3 +169,16 @@ bool WordXMLTableBorders::isModified()
             (insideV!=tbNone)
            );
 }
+
+WordXMLTableBorders& WordXMLTableBorders::operator=(const WordXMLTableBorders &another)
+{
+    top=another.top;
+    left=another.left;
+    bottom=another.bottom;
+    right=another.right;
+    insideH=another.insideH;
+    insideV=another.insideV;
+
+    return *this;
+}
+

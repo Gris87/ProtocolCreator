@@ -22,6 +22,8 @@ public:
     void writeToStream(QTextStream &aStream);
 
     void reset();
+
+    WordXMLHeaderFooter& operator=(const WordXMLHeaderFooter &another);
 };
 
 #endif // WORDXMLHEADERFOOTER_H

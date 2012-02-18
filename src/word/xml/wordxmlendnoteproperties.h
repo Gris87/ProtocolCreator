@@ -34,6 +34,8 @@ public:
 
     void clear();
 
+    WordXMLEndnoteProperties& operator=(const WordXMLEndnoteProperties &another);
+
 private:
     QList<WordXMLEndnote*> mList;
 };

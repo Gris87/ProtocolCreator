@@ -2,6 +2,8 @@
 
 WordXMLStyles::WordXMLStyles(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtStyles;
+
     reset();
 }
 
@@ -180,4 +182,18 @@ void WordXMLStyles::clear()
     }
 
     mList.clear();
+}
+
+WordXMLStyles& WordXMLStyles::operator=(const WordXMLStyles &another)
+{
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLStyle* aNewObject=new WordXMLStyle(this);
+        *aNewObject=*(another.mList.at(i));
+        mList.append(aNewObject);
+    }
+
+    return *this;
 }

@@ -18,6 +18,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLSection& operator=(const WordXMLSection &another);
 };
 
 #endif // WORDXMLSECTION_H

@@ -36,6 +36,8 @@ public:
 
     void clear();
 
+    WordXMLStyles& operator=(const WordXMLStyles &another);
+
 private:
     QList<WordXMLStyle*> mList;
 };

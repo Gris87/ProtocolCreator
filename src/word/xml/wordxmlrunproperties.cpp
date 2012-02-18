@@ -2,6 +2,8 @@
 
 WordXMLRunProperties::WordXMLRunProperties(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtRunProperties;
+
     reset();
 }
 
@@ -135,4 +137,19 @@ bool WordXMLRunProperties::isModified()
            languageFarEast!=""
            ||
            languageBIDI!="";
+}
+
+WordXMLRunProperties& WordXMLRunProperties::operator=(const WordXMLRunProperties &another)
+{
+    font=another.font;
+    fontSize=another.fontSize;
+    fontSizeCS=another.fontSizeCS;
+    bold=another.bold;
+    italic=another.italic;
+    underline=another.underline;
+    language=another.language;
+    languageFarEast=another.languageFarEast;
+    languageBIDI=another.languageBIDI;
+
+    return *this;
 }

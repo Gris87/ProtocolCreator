@@ -3,7 +3,7 @@
 WordXMLBase::WordXMLBase(WordXMLBase* aParent)
 {
     parent=aParent;
-
+    componentType=wxtUnknown;
     space="";
 }
 
@@ -21,7 +21,7 @@ void WordXMLBase::reset()
 {
     if (parent)
     {
-        space=parent->space+"  ";
+        space=parent->space+" ";
     }
     else
     {
@@ -32,4 +32,9 @@ void WordXMLBase::reset()
 bool WordXMLBase::isModified()
 {
     return true;
+}
+
+EWordXMLType WordXMLBase::getComponentType()
+{
+    return componentType;
 }

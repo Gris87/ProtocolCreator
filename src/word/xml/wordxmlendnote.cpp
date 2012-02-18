@@ -2,6 +2,8 @@
 
 WordXMLEndnote::WordXMLEndnote(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtEndnote;
+
     paragraph.parent=this;
 
     reset();
@@ -33,4 +35,12 @@ bool WordXMLEndnote::isModified()
     return type!=""
            ||
            paragraph.isModified();
+}
+
+WordXMLEndnote& WordXMLEndnote::operator=(const WordXMLEndnote &another)
+{
+    type=another.type;
+    paragraph=another.paragraph;
+
+    return *this;
 }

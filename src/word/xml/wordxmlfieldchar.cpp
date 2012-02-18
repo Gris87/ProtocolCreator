@@ -2,6 +2,8 @@
 
 WordXMLFieldChar::WordXMLFieldChar(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtFieldChar;
+
     reset();
 }
 
@@ -45,4 +47,11 @@ void WordXMLFieldChar::reset()
 bool WordXMLFieldChar::isModified()
 {
     return true;
+}
+
+WordXMLFieldChar& WordXMLFieldChar::operator=(const WordXMLFieldChar &another)
+{
+    type=another.type;
+
+    return *this;
 }

@@ -31,6 +31,8 @@ public:
 
     void clear();
 
+    WordXMLSections& operator=(const WordXMLSections &another);
+
 private:
     QList<WordXMLSection*> mList;
 };

@@ -2,6 +2,8 @@
 
 WordXMLStyle::WordXMLStyle(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtStyle;
+
     runProperties.parent=this;
     paragraphProperties.parent=this;
     tableProperties.parent=this;
@@ -128,4 +130,21 @@ bool WordXMLStyle::isModified()
            tableProperties.isModified()
            ||
            isSemiHidden;
+}
+
+WordXMLStyle& WordXMLStyle::operator=(const WordXMLStyle &another)
+{
+    type=another.type;
+    isDefault=another.isDefault;
+    styleID=another.styleID;
+    name=another.name;
+    uiName=another.uiName;
+    basedOn=another.basedOn;
+    rsid=another.rsid;
+    runProperties=another.runProperties;
+    paragraphProperties=another.paragraphProperties;
+    tableProperties=another.tableProperties;
+    isSemiHidden=another.isSemiHidden;
+
+    return *this;
 }

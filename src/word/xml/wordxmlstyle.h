@@ -38,6 +38,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLStyle& operator=(const WordXMLStyle &another);
 };
 
 #endif // WORDXMLSTYLE_H

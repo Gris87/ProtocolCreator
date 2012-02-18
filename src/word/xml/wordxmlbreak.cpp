@@ -2,6 +2,8 @@
 
 WordXMLBreak::WordXMLBreak(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtBreak;
+
     reset();
 }
 

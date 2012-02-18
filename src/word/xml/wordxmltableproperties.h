@@ -22,6 +22,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLTableProperties& operator=(const WordXMLTableProperties &another);
 };
 
 #endif // WORDXMLTABLEPROPERTIES_H

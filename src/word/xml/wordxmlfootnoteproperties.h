@@ -34,6 +34,8 @@ public:
 
     void clear();
 
+    WordXMLFootnoteProperties& operator=(const WordXMLFootnoteProperties &another);
+
 private:
     QList<WordXMLFootnote*> mList;
 };

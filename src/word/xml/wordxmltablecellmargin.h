@@ -20,6 +20,8 @@ public:
 
     bool isModified();
 
+    WordXMLTableCellMargin& operator=(const WordXMLTableCellMargin &another);
+
     void setMargin(double aTop, double aLeft, double aBottom, double aRight);
 };
 

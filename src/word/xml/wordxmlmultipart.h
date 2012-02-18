@@ -34,6 +34,8 @@ public:
 
     void clear();
 
+    WordXMLMultiPart& operator=(const WordXMLMultiPart &another);
+
 protected:
     QList<WordXMLBase*> mList;
 };

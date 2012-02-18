@@ -11,11 +11,6 @@
 class WordXMLProperties : public WordXMLBase
 {
 public:
-    WordXMLCustomProperties customProperties;
-
-    explicit WordXMLProperties(WordXMLBase* aParent=0);
-    ~WordXMLProperties();
-
     QString title;
     QString subject;
     QString author;
@@ -26,12 +21,18 @@ public:
     QString manager;
     QString company;
     QString hyperlinkBase;
+    WordXMLCustomProperties customProperties;
+
+    explicit WordXMLProperties(WordXMLBase* aParent=0);
+    ~WordXMLProperties();    
 
     void writeToStream(QTextStream &aStream);
 
     void reset();
 
     bool isModified();
+
+    WordXMLProperties& operator=(const WordXMLProperties &another);
 };
 
 #endif // WORDXMLPROPERTIES_H

@@ -27,6 +27,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLTableBorders& operator=(const WordXMLTableBorders &another);
 };
 
 #endif // WORDXMLTABLEBORDERS_H

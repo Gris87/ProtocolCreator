@@ -34,6 +34,8 @@ public:
 
     void clear();
 
+    WordXMLTabs& operator=(const WordXMLTabs &another);
+
 private:
     QList<WordXMLTab*> mList;
 };

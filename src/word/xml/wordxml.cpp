@@ -2,6 +2,8 @@
 
 WordXML::WordXML(int aWordVersion, WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtMain;
+
     wordVersion=aWordVersion;
 
     properties.parent=this;

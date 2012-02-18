@@ -2,6 +2,8 @@
 
 WordXMLSections::WordXMLSections(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtSections;
+
     reset();
 }
 
@@ -93,4 +95,18 @@ void WordXMLSections::clear()
     }
 
     mList.clear();
+}
+
+WordXMLSections& WordXMLSections::operator=(const WordXMLSections &another)
+{
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLSection* aNewObject=new WordXMLSection(this);
+        *aNewObject=*(another.mList.at(i));
+        mList.append(aNewObject);
+    }
+
+    return *this;
 }

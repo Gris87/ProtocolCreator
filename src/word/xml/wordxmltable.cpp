@@ -2,6 +2,8 @@
 
 WordXMLTable::WordXMLTable(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
+    componentType=wxtTable;
+
     reset();
 }
 
@@ -21,4 +23,9 @@ void WordXMLTable::reset()
 bool WordXMLTable::isModified()
 {
     return true;
+}
+
+WordXMLTable& WordXMLTable::operator=(const WordXMLTable &another)
+{
+    return *this;
 }
