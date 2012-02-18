@@ -99,6 +99,18 @@ bool WordXMLCustomProperty::isModified()
     return name!="";
 }
 
+WordXMLCustomProperty& WordXMLCustomProperty::operator=(const WordXMLCustomProperty &another)
+{
+    name=another.name;
+    type=another.type;
+    textValue=another.textValue;
+    dateValue=another.dateValue;
+    floatValue=another.floatValue;
+    booleanValue=another.booleanValue;
+
+    return *this;
+}
+
 QVariant WordXMLCustomProperty::getValue()
 {
     switch (type)

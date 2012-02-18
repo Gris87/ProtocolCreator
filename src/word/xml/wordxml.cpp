@@ -110,3 +110,15 @@ bool WordXML::isModified()
            ||
            sections.isModified();
 }
+
+WordXML& WordXML::operator=(const WordXML &another)
+{
+    wordVersion=another.wordVersion;
+    properties=another.properties;
+    fonts=another.fonts;
+    styles=another.styles;
+    documentProperties=another.documentProperties;
+    sections=another.sections;
+
+    return *this;
+}

@@ -10,6 +10,8 @@ public:
     ~WordXMLBreak();
 
     void writeToStream(QTextStream &aStream);
+
+    WordXMLBreak& operator=(const WordXMLBreak &another);
 };
 
 #endif // WORDXMLBREAK_H

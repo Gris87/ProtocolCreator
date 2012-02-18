@@ -37,6 +37,8 @@ public:
 
     void clear();
 
+    WordXMLCustomProperties& operator=(const WordXMLCustomProperties &another);
+
 private:
     QList<WordXMLCustomProperty*> mList;
 };

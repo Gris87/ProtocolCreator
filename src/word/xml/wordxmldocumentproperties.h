@@ -57,6 +57,8 @@ public:
 
     bool isModified();
 
+    WordXMLDocumentProperties& operator=(const WordXMLDocumentProperties &another);
+
     void setDefaultProperties2003();
 };
 

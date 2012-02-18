@@ -278,6 +278,30 @@ bool WordXMLDocumentProperties::isModified()
            rsidsList.length()>0;
 }
 
+WordXMLDocumentProperties& WordXMLDocumentProperties::operator=(const WordXMLDocumentProperties &another)
+{
+    view=another.view;
+    zoom=another.zoom;
+    isDoNotEmbedSystemFonts=another.isDoNotEmbedSystemFonts;
+    proofStateSpelling=another.proofStateSpelling;
+    proofStateGrammar=another.proofStateGrammar;
+    attachedTemplate=another.attachedTemplate;
+    defaultTabStop=another.defaultTabStop;
+    isPunctuationKerning=another.isPunctuationKerning;
+    characterSpacingControl=another.characterSpacingControl;
+    isOptimizeForBrowser=another.isOptimizeForBrowser;
+    isValidateAgainstSchema=another.isValidateAgainstSchema;
+    saveInvalidXML=another.saveInvalidXML;
+    ignoreMixedContent=another.ignoreMixedContent;
+    alwaysShowPlaceholderText=another.alwaysShowPlaceholderText;
+    footnoteProperties=another.footnoteProperties;
+    endnoteProperties=another.endnoteProperties;
+    compatibility=another.compatibility;
+    rsidsList=another.rsidsList;
+
+    return *this;
+}
+
 void WordXMLDocumentProperties::setDefaultProperties2003()
 {
     reset();

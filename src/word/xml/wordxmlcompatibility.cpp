@@ -75,3 +75,15 @@ bool WordXMLCompatibility::isModified()
            ||
            isUseFELayout;
 }
+
+WordXMLCompatibility& WordXMLCompatibility::operator=(const WordXMLCompatibility &another)
+{
+    isBreakWrappedTables=another.isBreakWrappedTables;
+    isSnapToGridInCell=another.isSnapToGridInCell;
+    isWrapTextWithPunct=another.isWrapTextWithPunct;
+    isUseAsianBreakRules=another.isUseAsianBreakRules;
+    isDontGrowAutofit=another.isDontGrowAutofit;
+    isUseFELayout=another.isUseFELayout;
+
+    return *this;
+}

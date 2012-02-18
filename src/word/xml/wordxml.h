@@ -32,6 +32,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXML& operator=(const WordXML &another);
 };
 
 #endif // WORDXML_H

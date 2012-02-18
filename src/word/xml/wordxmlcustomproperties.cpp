@@ -118,3 +118,17 @@ void WordXMLCustomProperties::clear()
 
     mList.clear();
 }
+
+WordXMLCustomProperties& WordXMLCustomProperties::operator=(const WordXMLCustomProperties &another)
+{
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLCustomProperty* aNewObject=new WordXMLCustomProperty(this);
+        *aNewObject=*(another.mList.at(i));
+        mList.append(aNewObject);
+    }
+
+    return *this;
+}

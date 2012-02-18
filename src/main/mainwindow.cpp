@@ -1367,6 +1367,7 @@ void MainWindow::exportToWord(bool isFull)
                 {
                     WordXMLParagraph *paragraph=section->addParagraph();
                     paragraph->properties.sectionProperties=section->properties;
+                    section->properties.clear();
                     paragraph->properties.sectionProperties.needToGenerate=true;
                     section->properties.needToGenerate=false;
                 }

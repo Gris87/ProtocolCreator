@@ -21,6 +21,8 @@ public:
     void reset();
 
     bool isModified();
+
+    WordXMLCompatibility& operator=(const WordXMLCompatibility &another);
 };
 
 #endif // WORDXMLCOMPATIBILITY_H

@@ -23,7 +23,10 @@ void WordXMLSectionProperties::writeToStream(QTextStream &aStream)
 
         aStream<<">\r\n";
 
-
+        for (int i=0; i<mList.length(); i++)
+        {
+            mList.at(i)->writeToStream(aStream);
+        }
 
         if (landscape)
         {
@@ -175,3 +178,16 @@ void WordXMLSectionProperties::clear()
     mList.clear();
 }
 
+WordXMLSectionProperties& WordXMLSectionProperties::operator=(const WordXMLSectionProperties &another)
+{
+    clear();
+
+    for (int i=0; i<another.mList.length(); i++)
+    {
+        WordXMLHeaderFooter* aNewObject=new WordXMLHeaderFooter(this);
+        *aNewObject=*(another.mList.at(i));
+        mList.append(aNewObject);
+    }
+
+    return *this;
+}

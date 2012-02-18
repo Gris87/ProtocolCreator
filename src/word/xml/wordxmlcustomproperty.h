@@ -33,6 +33,8 @@ public:
 
     bool isModified();
 
+    WordXMLCustomProperty& operator=(const WordXMLCustomProperty &another);
+
     QVariant getValue();
     void setValue(QVariant aValue);
 };

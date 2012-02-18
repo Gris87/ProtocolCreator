@@ -53,6 +53,8 @@ public:
 
     void clear();
 
+    WordXMLSectionProperties& operator=(const WordXMLSectionProperties &another);
+
 private:
     QList<WordXMLHeaderFooter*> mList;
 };
