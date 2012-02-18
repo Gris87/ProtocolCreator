@@ -49,11 +49,11 @@ void WordXMLHeaderFooter::writeToStream(QTextStream &aStream)
 
     if (isHeader)
     {
-        aStream<<space<<"</w:hdr>";
+        aStream<<space<<"</w:hdr>\r\n";
     }
     else
     {
-        aStream<<space<<"</w:ftr>";
+        aStream<<space<<"</w:ftr>\r\n";
     }
 }
 
