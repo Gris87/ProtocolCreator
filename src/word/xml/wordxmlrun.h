@@ -3,6 +3,8 @@
 
 #include "wordxmlbase.h"
 
+#include <QTextCharFormat>
+
 #include "wordxmlrunproperties.h"
 
 #include "wordxmltext.h"
@@ -27,6 +29,8 @@ public:
     void reset();
 
     bool isModified();
+
+    void setFont(QTextCharFormat aFormat);
 
     WordXMLText* addText(QString aText);
     WordXMLSeparator* addSeparator();

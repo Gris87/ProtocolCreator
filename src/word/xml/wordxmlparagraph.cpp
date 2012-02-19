@@ -78,6 +78,17 @@ bool WordXMLParagraph::isModified()
            mList.length()>0;
 }
 
+void WordXMLParagraph::setFont(QTextCharFormat aFormat)
+{
+    for (int i=0; i<mList.length(); i++)
+    {
+        if (mList.at(i)->getComponentType()==wxtRun)
+        {
+            ((WordXMLRun*)mList.at(i))->setFont(aFormat);
+        }
+    }
+}
+
 WordXMLRun* WordXMLParagraph::addRun()
 {
     WordXMLRun* aNewRun=new WordXMLRun(this);

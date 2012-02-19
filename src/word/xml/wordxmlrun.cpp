@@ -54,6 +54,11 @@ bool WordXMLRun::isModified()
            mList.length()>0;
 }
 
+void WordXMLRun::setFont(QTextCharFormat aFormat)
+{
+
+}
+
 WordXMLText* WordXMLRun::addText(QString aText)
 {
     WordXMLText *aNewComponent=new WordXMLText(this);

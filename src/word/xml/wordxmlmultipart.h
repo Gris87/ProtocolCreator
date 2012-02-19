@@ -5,6 +5,7 @@
 
 #include <QTextFrame>
 #include <QTextTable>
+#include <QTextCursor>
 
 class WordXMLParagraph;
 class WordXMLTable;
@@ -40,7 +41,7 @@ public:
 protected:
     QList<WordXMLBase*> mList;
 
-    void insertTextDocument(QTextDocument *document, int start, int end);
+    void insertByTextCursor(QTextCursor cursor, const int start, const int end);
 };
 
 #endif // WORDXMLMULTIPART_H

@@ -102,7 +102,7 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
                 // Current frame (Text)
                 case 0:
                 {
-                    insertTextDocument(startRange.at(i), endRange.at(i));
+                    insertByTextCursor(aFrame->firstCursorPosition(), startRange.at(i), endRange.at(i));
                 }
                 break;
                 case 1:
@@ -120,11 +120,73 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
     }
 }
 
-void WordXMLMultiPart::insertTextDocument(QTextDocument *document, int start, int end)
+void WordXMLMultiPart::insertByTextCursor(QTextCursor cursor, const int start, const int end)
 {
-    for (int i=start; i<=end; i++)
-    {
+    WordXMLParagraph *paragraph=addParagraph();
+    WordXMLRun *run=paragraph->addRun();
 
+    QTextCharFormat aTextFormat;
+    QString aTextPart="";
+
+    for (int i=start; i<end; i++)
+    {
+        cursor.setPosition(i);
+        cursor.setPosition(i+1, QTextCursor::KeepAnchor);
+
+        QString aSelectedText=cursor.selectedText();
+
+        if (aTextPart=="")
+        {
+            aTextFormat=cursor.charFormat();
+            aTextPart=aSelectedText;
+
+            if (aTextPart==QChar(8233) || aTextPart=="\n")
+            {
+                run->setFont(aTextFormat);
+                aTextPart="";
+
+                paragraph=addParagraph();
+                run=paragraph->addRun();
+            }
+        }
+        else
+        {
+            if (aSelectedText==QChar(8233) || aSelectedText=="\n")
+            {
+                run->setFont(aTextFormat);
+                run->addText(aTextPart);
+
+                paragraph=addParagraph();
+                run=paragraph->addRun();
+
+                aTextPart="";
+            }
+            else
+            {
+                QTextCharFormat aNextFormat=cursor.charFormat();
+
+                if (aNextFormat==aTextFormat)
+                {
+                    aTextPart.append(aSelectedText);
+                }
+                else
+                {
+                    run->setFont(aTextFormat);
+                    run->addText(aTextPart);
+
+                    run=paragraph->addRun();
+
+                    aTextFormat=aNextFormat;
+                    aTextPart=aSelectedText;
+                }
+            }
+        }
+    }
+
+    if (aTextPart!="")
+    {
+        run->setFont(aTextFormat);
+        run->addText(aTextPart);
     }
 }
 

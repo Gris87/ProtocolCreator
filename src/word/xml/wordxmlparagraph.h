@@ -3,6 +3,8 @@
 
 #include "wordxmlbase.h"
 
+#include <QTextCharFormat>
+
 #include "wordxmlparagraphproperties.h"
 #include "wordxmlrun.h"
 
@@ -23,6 +25,8 @@ public:
     void reset();
 
     bool isModified();
+
+    void setFont(QTextCharFormat aFormat);
 
     WordXMLRun* addRun();
 
