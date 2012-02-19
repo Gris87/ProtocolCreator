@@ -4,6 +4,7 @@
 #include "wordxmlbase.h"
 
 #include <QTextFrame>
+#include <QTextTable>
 
 class WordXMLParagraph;
 class WordXMLTable;
@@ -38,6 +39,8 @@ public:
 
 protected:
     QList<WordXMLBase*> mList;
+
+    void insertTextDocument(QTextDocument *document, int start, int end);
 };
 
 #endif // WORDXMLMULTIPART_H

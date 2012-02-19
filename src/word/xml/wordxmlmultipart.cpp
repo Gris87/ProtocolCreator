@@ -3,6 +3,8 @@
 #include "wordxmlparagraph.h"
 #include "wordxmltable.h"
 
+#include <qdebug.h>
+
 WordXMLMultiPart::WordXMLMultiPart(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     componentType=wxtMultiPart;
@@ -37,7 +39,93 @@ bool WordXMLMultiPart::isModified()
 
 void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
 {
+    // Range types
+    // 0 - Current frame
+    // 1 - QTextTable
+    QList<int> types;
+    QList<int> startRange;
+    QList<int> endRange;
 
+    QList<QTextFrame *> aChildren=aFrame->childFrames();
+
+    if (aChildren.length()==0)
+    {
+        types.append(0);
+        startRange.append(aFrame->firstPosition());
+        endRange.append(aFrame->lastPosition());
+    }
+    else
+    {
+        types.append(0);
+        startRange.append(aFrame->firstPosition());
+        endRange.append(aChildren.at(0)->firstPosition());
+
+        for (int i=0; i<aChildren.length(); i++)
+        {
+            if (aChildren.at(i)->inherits("QTextTable"))
+            {
+                types.append(1);
+            }
+            else
+            {
+                types.append(-1);
+            }
+
+            startRange.append(aChildren.at(i)->firstPosition());
+            endRange.append(aChildren.at(i)->lastPosition());
+
+            if (i<aChildren.length()-1)
+            {
+                types.append(0);
+                startRange.append(aChildren.at(i)->lastPosition());
+                endRange.append(aChildren.at(i+1)->firstPosition());
+            }
+        }
+
+        types.append(0);
+        startRange.append(aChildren.at(aChildren.length()-1)->lastPosition());
+        endRange.append(aFrame->lastPosition());
+    }
+
+    if (aFrame->inherits("QTextTable"))
+    {
+        //QTextTable *aTable=(QTextTable*)aFrame;
+    }
+    else
+    {
+        for (int i=0; i<types.length(); i++)
+        {
+            int aType=types.at(i);
+
+            switch(aType)
+            {
+                // Current frame (Text)
+                case 0:
+                {
+                    insertTextDocument(startRange.at(i), endRange.at(i));
+                }
+                break;
+                case 1:
+                {
+
+                }
+                break;
+                default:
+                {
+                    throw "Unknown frame type";
+                }
+                break;
+            }
+        }
+    }
+}
+
+void WordXMLMultiPart::insertTextDocument(QTextDocument *document, int start, int end)
+{
+    for (int i=start; i<=end; i++)
+    {
+
+    }
 }
 
 WordXMLParagraph* WordXMLMultiPart::addParagraph()
