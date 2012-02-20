@@ -69,5 +69,8 @@ WordXMLHeaderFooter& WordXMLHeaderFooter::operator=(const WordXMLHeaderFooter &a
     isHeader=another.isHeader;
     type=another.type;
 
+    WordXMLMultiPart *aThis=(WordXMLMultiPart*)this;
+    *aThis=another;
+
     return *this;
 }

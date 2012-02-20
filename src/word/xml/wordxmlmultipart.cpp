@@ -3,8 +3,6 @@
 #include "wordxmlparagraph.h"
 #include "wordxmltable.h"
 
-#include <qdebug.h>
-
 WordXMLMultiPart::WordXMLMultiPart(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
     componentType=wxtMultiPart;

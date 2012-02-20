@@ -89,6 +89,17 @@ void WordXMLParagraph::setFont(QTextCharFormat aFormat)
     }
 }
 
+void WordXMLParagraph::setFont(QFont aFont)
+{
+    for (int i=0; i<mList.length(); i++)
+    {
+        if (mList.at(i)->getComponentType()==wxtRun)
+        {
+            ((WordXMLRun*)mList.at(i))->setFont(aFont);
+        }
+    }
+}
+
 WordXMLRun* WordXMLParagraph::addRun()
 {
     WordXMLRun* aNewRun=new WordXMLRun(this);

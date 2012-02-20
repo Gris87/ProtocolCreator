@@ -3,6 +3,8 @@
 
 #include "wordxmlbase.h"
 
+#include <QTextCharFormat>
+
 #include "wordxmltypes.h"
 
 enum EUnderlineType
@@ -32,6 +34,9 @@ public:
     void reset();
 
     bool isModified();
+
+    void setFont(QTextCharFormat aFormat);
+    void setFont(QFont aFont);
 
     WordXMLRunProperties& operator=(const WordXMLRunProperties &another);
 };

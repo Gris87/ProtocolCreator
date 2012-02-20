@@ -41,5 +41,8 @@ WordXMLSection& WordXMLSection::operator=(const WordXMLSection &another)
 {
     properties=another.properties;
 
+    WordXMLMultiPart *aThis=(WordXMLMultiPart*)this;
+    *aThis=another;
+
     return *this;
 }

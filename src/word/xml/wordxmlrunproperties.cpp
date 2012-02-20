@@ -139,6 +139,44 @@ bool WordXMLRunProperties::isModified()
            languageBIDI!="";
 }
 
+void WordXMLRunProperties::setFont(QTextCharFormat aFormat)
+{
+    setFont(aFormat.font());
+}
+
+void WordXMLRunProperties::setFont(QFont aFont)
+{
+    font=aFont.family();
+    fontSize=aFont.pointSize();
+
+    if (aFont.bold())
+    {
+        bold=tsOn;
+    }
+    else
+    {
+        bold=tsOff;
+    }
+
+    if (aFont.italic())
+    {
+        italic=tsOn;
+    }
+    else
+    {
+        italic=tsOff;
+    }
+
+    if (aFont.underline())
+    {
+        underline=utSingle;
+    }
+    else
+    {
+        underline=utNone;
+    }
+}
+
 WordXMLRunProperties& WordXMLRunProperties::operator=(const WordXMLRunProperties &another)
 {
     font=another.font;

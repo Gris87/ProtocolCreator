@@ -31,6 +31,7 @@ public:
     bool isModified();
 
     void setFont(QTextCharFormat aFormat);
+    void setFont(QFont aFont);
 
     WordXMLText* addText(QString aText);
     WordXMLSeparator* addSeparator();

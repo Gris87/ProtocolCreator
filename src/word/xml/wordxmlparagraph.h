@@ -27,6 +27,7 @@ public:
     bool isModified();
 
     void setFont(QTextCharFormat aFormat);
+    void setFont(QFont aFont);
 
     WordXMLRun* addRun();
 
