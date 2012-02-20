@@ -19,6 +19,7 @@ void WordXMLRunProperties::writeToStream(QTextStream &aStream)
 
         if (font!="")
         {
+            aStream<<space<<" <w:rFonts w:ascii=\""+font+"\" w:h-ansi=\""+font+"\"/>\r\n";
             aStream<<space<<" <wx:font wx:val=\""+font+"\"/>\r\n";
         }
 
@@ -77,6 +78,16 @@ void WordXMLRunProperties::writeToStream(QTextStream &aStream)
             aStream<<"\"/>\r\n";
         }
 
+        if (caps)
+        {
+            aStream<<space<<" <w:caps/>\r\n";
+        }
+
+        if (strikeOut)
+        {
+            aStream<<space<<" <w:strike/>\r\n";
+        }
+
         if (language!="" || languageFarEast!="" || languageBIDI!="")
         {
             aStream<<space<<" <w:lang";
@@ -113,6 +124,8 @@ void WordXMLRunProperties::reset()
     bold=tsNone;
     italic=tsNone;
     underline=utNone;
+    caps=false;
+    strikeOut=false;
     language="";
     languageFarEast="";
     languageBIDI="";
@@ -131,6 +144,10 @@ bool WordXMLRunProperties::isModified()
            italic!=tsNone
            ||
            underline!=utNone
+           ||
+           caps
+           ||
+           strikeOut
            ||
            language!=""
            ||
@@ -175,6 +192,24 @@ void WordXMLRunProperties::setFont(QFont aFont)
     {
         underline=utNone;
     }
+
+    if (aFont.capitalization()==QFont::AllUppercase)
+    {
+        caps=true;
+    }
+    else
+    {
+        caps=false;
+    }
+
+    if (aFont.strikeOut())
+    {
+        strikeOut=true;
+    }
+    else
+    {
+        strikeOut=false;
+    }
 }
 
 WordXMLRunProperties& WordXMLRunProperties::operator=(const WordXMLRunProperties &another)
@@ -185,6 +220,8 @@ WordXMLRunProperties& WordXMLRunProperties::operator=(const WordXMLRunProperties
     bold=another.bold;
     italic=another.italic;
     underline=another.underline;
+    caps=another.caps;
+    strikeOut=another.strikeOut;
     language=another.language;
     languageFarEast=another.languageFarEast;
     languageBIDI=another.languageBIDI;

@@ -22,6 +22,8 @@ public:
     ETripleState bold;
     ETripleState italic;
     EUnderlineType underline;
+    bool caps;
+    bool strikeOut;
     QString language;
     QString languageFarEast;
     QString languageBIDI;

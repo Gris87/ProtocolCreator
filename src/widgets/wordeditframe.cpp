@@ -75,6 +75,22 @@ void WordEditFrame::on_fontButton_clicked()
     ui->valueEdit->setFocus();
 }
 
+void WordEditFrame::on_fontComboBox_currentIndexChanged(const QString &aFont)
+{
+    QTextCharFormat modifier;
+    modifier.setFontFamily(aFont);
+
+    ui->valueEdit->mergeCurrentCharFormat(modifier);
+}
+
+void WordEditFrame::on_fontSizeSpinBox_valueChanged(int aSize)
+{
+    QTextCharFormat modifier;
+    modifier.setFontPointSize(aSize);
+
+    ui->valueEdit->mergeCurrentCharFormat(modifier);
+}
+
 void WordEditFrame::on_boldButton_clicked()
 {
     ui->valueEdit->setFontWeight(125-ui->valueEdit->fontWeight());
@@ -92,6 +108,16 @@ void WordEditFrame::on_italicButton_clicked()
 void WordEditFrame::on_underlineButton_clicked()
 {
     ui->valueEdit->setFontUnderline(!ui->valueEdit->fontUnderline());
+
+    ui->valueEdit->setFocus();
+}
+
+void WordEditFrame::on_strikeOutButton_clicked()
+{
+    QTextCharFormat modifier;
+    modifier.setFontStrikeOut(!ui->valueEdit->currentCharFormat().fontStrikeOut());
+
+    ui->valueEdit->mergeCurrentCharFormat(modifier);
 
     ui->valueEdit->setFocus();
 }
@@ -149,6 +175,16 @@ void WordEditFrame::on_valueEdit_currentCharFormatChanged(const QTextCharFormat 
     ui->boldButton->setFlat(ui->valueEdit->fontWeight()==50);
     ui->italicButton->setFlat(!ui->valueEdit->fontItalic());
     ui->underlineButton->setFlat(!ui->valueEdit->fontUnderline());
+    ui->strikeOutButton->setFlat(!format.fontStrikeOut());
+
+    disconnect(ui->fontComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_fontComboBox_currentIndexChanged(QString)));
+    disconnect(ui->fontSizeSpinBox, SIGNAL(valueChanged(int)), this, SLOT(on_fontSizeSpinBox_valueChanged(int)));
+
+    ui->fontComboBox->setCurrentFont(format.font());
+    ui->fontSizeSpinBox->setValue((int)format.fontPointSize());
+
+    connect(ui->fontComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_fontComboBox_currentIndexChanged(QString)));
+    connect(ui->fontSizeSpinBox, SIGNAL(valueChanged(int)), this, SLOT(on_fontSizeSpinBox_valueChanged(int)));
 }
 
 void WordEditFrame::on_valueEdit_currentColorChanged(const QColor &aColor)

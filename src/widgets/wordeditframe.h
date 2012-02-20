@@ -29,9 +29,12 @@ private slots:
     void on_undoButton_clicked();
     void on_redoButton_clicked();
     void on_fontButton_clicked();
+    void on_fontComboBox_currentIndexChanged(const QString &aFont);
+    void on_fontSizeSpinBox_valueChanged(int aSize);
     void on_boldButton_clicked();
     void on_italicButton_clicked();
     void on_underlineButton_clicked();
+    void on_strikeOutButton_clicked();
     void on_leftButton_clicked();
     void on_centerButton_clicked();
     void on_rightButton_clicked();
