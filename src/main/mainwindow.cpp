@@ -1388,6 +1388,21 @@ void MainWindow::exportToWord(bool isFull)
                 aTextEdit.setHtml(aPage->footerText);
                 replaceLinksInText(&aTextEdit);
                 section->properties.addFooter()->insertFromText(aTextEdit.document()->rootFrame());
+
+                for (int i=0; i<aPage->components.length(); i++)
+                {
+                    if (aPage->components.at(i)->inherits("ComponentTextFrame"))
+                    {
+                        ComponentTextFrame *aComponent=(ComponentTextFrame*)aPage->components.at(i);
+
+                        if (aComponent->ui->useCheckBox->isChecked())
+                        {
+                            aTextEdit.setHtml(aComponent->wordEdit->ui->valueEdit->toHtml());
+                            replaceLinksInText(&aTextEdit);
+                            section->insertFromText(aTextEdit.document()->rootFrame());
+                        }
+                    }
+                }
             }
         }
 

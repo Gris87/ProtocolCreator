@@ -3,6 +3,8 @@
 
 #include <QTextStream>
 
+#include <qdebug.h>
+
 enum EWordXMLType
 {
     wxtUnknown,
@@ -23,6 +25,7 @@ enum EWordXMLType
     wxtMultiPart,
     wxtPageNumber,
     wxtParagraph,
+    wxtParagraphBorders,
     wxtParagraphProperties,
     wxtProperties,
     wxtRun,
@@ -31,6 +34,7 @@ enum EWordXMLType
     wxtSectionProperties,
     wxtSections,
     wxtSeparator,
+    wxtShading,
     wxtStyle,
     wxtStyles,
     wxtTab,

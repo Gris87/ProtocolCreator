@@ -78,6 +78,11 @@ bool WordXMLParagraph::isModified()
            mList.length()>0;
 }
 
+void WordXMLParagraph::setFormat(QTextBlockFormat aFormat)
+{
+    properties.setFormat(aFormat);
+}
+
 void WordXMLParagraph::setFont(QTextCharFormat aFormat)
 {
     for (int i=0; i<mList.length(); i++)

@@ -4,6 +4,8 @@ WordXMLParagraphProperties::WordXMLParagraphProperties(WordXMLBase* aParent) : W
 {
     componentType=wxtParagraphProperties;
 
+    borders.parent=this;
+    shading.parent=this;
     tabs.parent=this;
     runProperties.parent=this;
     sectionProperties.parent=this;
@@ -122,6 +124,8 @@ void WordXMLParagraphProperties::writeToStream(QTextStream &aStream)
             aStream<<"/>\r\n";
         }
 
+        borders.writeToStream(aStream);
+        shading.writeToStream(aStream);
         tabs.writeToStream(aStream);
         runProperties.writeToStream(aStream);
         sectionProperties.writeToStream(aStream);
@@ -142,6 +146,8 @@ void WordXMLParagraphProperties::reset()
     indentRight=0;
     indentFirtsLine=0;
     indentHanging=0;
+    borders.reset();
+    shading.reset();
     tabs.reset();
     runProperties.reset();
     sectionProperties.reset();
@@ -164,11 +170,52 @@ bool WordXMLParagraphProperties::isModified()
            ||
            indentHanging!=0
            ||
+           borders.isModified()
+           ||
+           shading.isModified()
+           ||
            tabs.isModified()
            ||
            runProperties.isModified()
            ||
            sectionProperties.isModified();
+}
+
+void WordXMLParagraphProperties::setFormat(QTextBlockFormat aFormat)
+{
+    if (aFormat.alignment() & Qt::AlignLeft)
+    {
+        alignment=paLeft;
+    }
+    else
+    if (aFormat.alignment() & Qt::AlignHCenter)
+    {
+        alignment=paCenter;
+    }
+    else
+    if (aFormat.alignment() & Qt::AlignRight)
+    {
+        alignment=paRight;
+    }
+    else
+    if (aFormat.alignment() & Qt::AlignJustify)
+    {
+        alignment=paBoth;
+    }
+    else
+    {
+        alignment=paNone;
+    }
+
+    QColor backgroundColor=aFormat.background().color();
+
+    if (aFormat.background().style()!=Qt::NoBrush && backgroundColor.isValid() && backgroundColor!=QColor(255, 255, 255))
+    {
+        shading.pattern="pct-20";
+        shading.setColor(backgroundColor);
+        shading.fillColor=shading.color;
+        shading.backgroundColor=shading.color;
+    }
 }
 
 WordXMLParagraphProperties& WordXMLParagraphProperties::operator=(const WordXMLParagraphProperties &another)
@@ -181,6 +228,8 @@ WordXMLParagraphProperties& WordXMLParagraphProperties::operator=(const WordXMLP
     indentRight=another.indentRight;
     indentFirtsLine=another.indentFirtsLine;
     indentHanging=another.indentHanging;
+    borders=another.borders;
+    shading=another.shading;
     tabs=another.tabs;
     runProperties=another.runProperties;
     sectionProperties=another.sectionProperties;

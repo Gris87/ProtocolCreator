@@ -120,8 +120,16 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
 
 void WordXMLMultiPart::insertByTextCursor(QTextCursor cursor, const int start, const int end)
 {
+    if (start>end)
+    {
+        return;
+    }
+
     WordXMLParagraph *paragraph=addParagraph();
     WordXMLRun *run=paragraph->addRun();
+
+    cursor.setPosition(start);
+    paragraph->setFormat(cursor.blockFormat());
 
     QTextCharFormat aTextFormat;
     QString aTextPart="";
@@ -145,17 +153,20 @@ void WordXMLMultiPart::insertByTextCursor(QTextCursor cursor, const int start, c
 
                 paragraph=addParagraph();
                 run=paragraph->addRun();
+
+                paragraph->setFormat(cursor.blockFormat());
             }
         }
         else
         {
             if (aSelectedText==QChar(8233) || aSelectedText=="\n")
             {
-                run->setFont(aTextFormat);
-                run->addText(aTextPart);
+                putTextWithFormat(paragraph, run, aTextPart, aTextFormat);
 
                 paragraph=addParagraph();
                 run=paragraph->addRun();
+
+                paragraph->setFormat(cursor.blockFormat());
 
                 aTextPart="";
             }
@@ -169,8 +180,7 @@ void WordXMLMultiPart::insertByTextCursor(QTextCursor cursor, const int start, c
                 }
                 else
                 {
-                    run->setFont(aTextFormat);
-                    run->addText(aTextPart);
+                    putTextWithFormat(paragraph, run, aTextPart, aTextFormat);
 
                     run=paragraph->addRun();
 
@@ -183,8 +193,76 @@ void WordXMLMultiPart::insertByTextCursor(QTextCursor cursor, const int start, c
 
     if (aTextPart!="")
     {
-        run->setFont(aTextFormat);
-        run->addText(aTextPart);
+        putTextWithFormat(paragraph, run, aTextPart, aTextFormat);
+    }
+}
+
+void WordXMLMultiPart::putTextWithFormat(WordXMLParagraph *paragraph, WordXMLRun *run, QString aText, QTextCharFormat aFormat)
+{
+    do
+    {
+        int index=aText.indexOf("#");
+
+        if (index<0)
+        {
+            break;
+        }
+
+        if (index<aText.length()-1 && aText.at(index+1)=='#')
+        {
+            run->setFont(aFormat);
+            run->addText(aText.left(index+1));
+
+            aText.remove(0, index+2);
+
+            if (aText!="")
+            {
+                run=paragraph->addRun();
+            }
+
+            continue;
+        }
+
+        int index2=aText.indexOf("#", index+1);
+
+        if (index2<0)
+        {
+            break;
+        }
+
+        run->setFont(aFormat);
+        run->addText(aText.left(index));
+
+        QString aAutoText=aText.mid(index+1, index2-index-1);
+
+        aText.remove(0, index2+1);
+
+        run=paragraph->addRun();
+
+        run->setFont(aFormat);
+        run->addFieldChar(fctBegin);
+
+        run=paragraph->addRun();
+
+        run->setFont(aFormat);
+        run->addText(aAutoText);
+
+        run=paragraph->addRun();
+
+        run->setFont(aFormat);
+        run->addFieldChar(fctEnd);
+
+        if (aText!="")
+        {
+            run=paragraph->addRun();
+        }
+
+    } while(true);
+
+    if (aText!="")
+    {
+        run->setFont(aFormat);
+        run->addText(aText);
     }
 }
 

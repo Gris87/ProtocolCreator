@@ -26,6 +26,7 @@ public:
 
     bool isModified();
 
+    void setFormat(QTextBlockFormat aFormat);
     void setFont(QTextCharFormat aFormat);
     void setFont(QFont aFont);
 

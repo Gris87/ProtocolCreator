@@ -3,6 +3,8 @@
 
 #include "wordxmlbase.h"
 
+#include "wordxmlparagraphborders.h"
+#include "wordxmlshading.h"
 #include "wordxmltabs.h"
 #include "wordxmlrunproperties.h"
 #include "wordxmlsectionproperties.h"
@@ -34,6 +36,8 @@ public:
     int indentRight;
     int indentFirtsLine;
     int indentHanging;
+    WordXMLParagraphBorders borders;
+    WordXMLShading shading;
     WordXMLTabs tabs;
     WordXMLRunProperties runProperties;
     WordXMLSectionProperties sectionProperties;
@@ -46,6 +50,8 @@ public:
     void reset();
 
     bool isModified();
+
+    void setFormat(QTextBlockFormat aFormat);
 
     WordXMLParagraphProperties& operator=(const WordXMLParagraphProperties &another);
 };
