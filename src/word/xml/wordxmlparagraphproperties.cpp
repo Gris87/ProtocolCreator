@@ -211,10 +211,17 @@ void WordXMLParagraphProperties::setFormat(QTextBlockFormat aFormat)
 
     if (aFormat.background().style()!=Qt::NoBrush && backgroundColor.isValid() && backgroundColor!=QColor(255, 255, 255))
     {
-        shading.pattern="pct-20";
+        shading.pattern="pct-25";
         shading.setColor(backgroundColor);
         shading.fillColor=shading.color;
         shading.backgroundColor=shading.color;
+
+        /*
+        borders.setTopBorder   (btSingle, 6, 15, 1, "auto");
+        borders.setLeftBorder  (btSingle, 6, 15, 1, "auto");
+        borders.setBottomBorder(btSingle, 6, 15, 1, "auto");
+        borders.setRightBorder (btSingle, 6, 15, 1, "auto");
+        */
     }
 }
 

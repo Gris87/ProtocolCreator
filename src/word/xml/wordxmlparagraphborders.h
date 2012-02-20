@@ -5,7 +5,7 @@
 
 #include <QColor>
 
-#include "wordutils.h"
+#include "../wordutils.h"
 
 enum EBorderType
 {
@@ -50,6 +50,11 @@ public:
     void setLeftColor(QColor aColor);
     void setBottomColor(QColor aColor);
     void setRightColor(QColor aColor);
+
+    void setTopBorder(EBorderType aType, int aSize, int aBorderWidth, int aSpace, QString aColor);
+    void setLeftBorder(EBorderType aType, int aSize, int aBorderWidth, int aSpace, QString aColor);
+    void setBottomBorder(EBorderType aType, int aSize, int aBorderWidth, int aSpace, QString aColor);
+    void setRightBorder(EBorderType aType, int aSize, int aBorderWidth, int aSpace, QString aColor);
 
     WordXMLParagraphBorders& operator=(const WordXMLParagraphBorders &another);
 };

@@ -49,5 +49,6 @@
         <file>images/LeftArrow.png</file>
         <file>images/RightArrow.png</file>
         <file>images/Full.png</file>
+        <file>images/StrikeOut.png</file>
     </qresource>
 </RCC>

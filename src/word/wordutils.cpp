@@ -4,7 +4,7 @@ QString colorToString(QColor aColor)
 {
     QString res="";
 
-    res=QString::number(aColor.red(), 16).toUpper();
+    res=QString::number(aColor.blue(), 16).toUpper();
 
     if (res.length()<2)
     {
@@ -18,7 +18,7 @@ QString colorToString(QColor aColor)
         res.insert(0, "0");
     }
 
-    res.insert(0, QString::number(aColor.blue(), 16).toUpper());
+    res.insert(0, QString::number(aColor.red(), 16).toUpper());
 
     if (res.length()<6)
     {

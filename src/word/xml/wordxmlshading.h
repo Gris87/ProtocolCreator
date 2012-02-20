@@ -5,7 +5,7 @@
 
 #include <QColor>
 
-#include "wordutils.h"
+#include "../wordutils.h"
 
 class WordXMLShading : public WordXMLBase
 {

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>139</height>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -383,6 +383,12 @@
    </item>
    <item>
     <widget class="QWidget" name="userWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>500</height>
+      </size>
+     </property>
      <layout class="QVBoxLayout" name="userLayout">
       <property name="spacing">
        <number>0</number>

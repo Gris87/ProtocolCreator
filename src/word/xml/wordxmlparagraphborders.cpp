@@ -15,18 +15,18 @@ void WordXMLParagraphBorders::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<space<<"<w:pBdr>";
+        aStream<<space<<"<w:pBdr>\r\n";
 
         if (
-            topType!=btNone
+            (topType!=btNone)
             ||
-            topSize>=0
+            (topSize>=0)
             ||
-            topBorderWidth>=0
+            (topBorderWidth>=0)
             ||
-            topSpace>=0
+            (topSpace>=0)
             ||
-            topColor=""
+            (topColor!="")
            )
         {
             aStream<<space<<" <w:top";
@@ -71,18 +71,20 @@ void WordXMLParagraphBorders::writeToStream(QTextStream &aStream)
             {
                 aStream<<" w:color=\""+topColor+"\"";
             }
+
+            aStream<<"/>\r\n";
         }
 
         if (
-            leftType!=btNone
+            (leftType!=btNone)
             ||
-            leftSize>=0
+            (leftSize>=0)
             ||
-            leftBorderWidth>=0
+            (leftBorderWidth>=0)
             ||
-            leftSpace>=0
+            (leftSpace>=0)
             ||
-            leftColor=""
+            (leftColor!="")
            )
         {
             aStream<<space<<" <w:left";
@@ -127,18 +129,20 @@ void WordXMLParagraphBorders::writeToStream(QTextStream &aStream)
             {
                 aStream<<" w:color=\""+leftColor+"\"";
             }
+
+            aStream<<"/>\r\n";
         }
 
         if (
-            bottomType!=btNone
+            (bottomType!=btNone)
             ||
-            bottomSize>=0
+            (bottomSize>=0)
             ||
-            bottomBorderWidth>=0
+            (bottomBorderWidth>=0)
             ||
-            bottomSpace>=0
+            (bottomSpace>=0)
             ||
-            bottomColor=""
+            (bottomColor!="")
            )
         {
             aStream<<space<<" <w:bottom";
@@ -183,18 +187,20 @@ void WordXMLParagraphBorders::writeToStream(QTextStream &aStream)
             {
                 aStream<<" w:color=\""+bottomColor+"\"";
             }
+
+            aStream<<"/>\r\n";
         }
 
         if (
-            rightType!=btNone
+            (rightType!=btNone)
             ||
-            rightSize>=0
+            (rightSize>=0)
             ||
-            rightBorderWidth>=0
+            (rightBorderWidth>=0)
             ||
-            rightSpace>=0
+            (rightSpace>=0)
             ||
-            rightColor=""
+            (rightColor!="")
            )
         {
             aStream<<space<<" <w:right";
@@ -239,9 +245,11 @@ void WordXMLParagraphBorders::writeToStream(QTextStream &aStream)
             {
                 aStream<<" w:color=\""+rightColor+"\"";
             }
+
+            aStream<<"/>\r\n";
         }
 
-        aStream<<space<<"</w:pBdr>";
+        aStream<<space<<"</w:pBdr>\r\n";
     }
 }
 
@@ -277,45 +285,45 @@ void WordXMLParagraphBorders::reset()
 bool WordXMLParagraphBorders::isModified()
 {
     return (
-            topType!=btNone
+            (topType!=btNone)
             ||
-            topSize>=0
+            (topSize>=0)
             ||
-            topBorderWidth>=0
+            (topBorderWidth>=0)
             ||
-            topSpace>=0
+            (topSpace>=0)
             ||
-            topColor=""
+            (topColor!="")
             ||
-            leftType!=btNone
+            (leftType!=btNone)
             ||
-            leftSize>=0
+            (leftSize>=0)
             ||
-            leftBorderWidth>=0
+            (leftBorderWidth>=0)
             ||
-            leftSpace>=0
+            (leftSpace>=0)
             ||
-            leftColor=""
+            (leftColor!="")
             ||
-            bottomType!=btNone
+            (bottomType!=btNone)
             ||
-            bottomSize>=0
+            (bottomSize>=0)
             ||
-            bottomBorderWidth>=0
+            (bottomBorderWidth>=0)
             ||
-            bottomSpace>=0
+            (bottomSpace>=0)
             ||
-            bottomColor=""
+            (bottomColor!="")
             ||
-            rightType!=btNone
+            (rightType!=btNone)
             ||
-            rightSize>=0
+            (rightSize>=0)
             ||
-            rightBorderWidth>=0
+            (rightBorderWidth>=0)
             ||
-            rightSpace>=0
+            (rightSpace>=0)
             ||
-            rightColor=""
+            (rightColor!="")
            );
 }
 
@@ -337,6 +345,42 @@ void WordXMLParagraphBorders::setBottomColor(QColor aColor)
 void WordXMLParagraphBorders::setRightColor(QColor aColor)
 {
     rightColor=colorToString(aColor);
+}
+
+void WordXMLParagraphBorders::setTopBorder(EBorderType aType, int aSize, int aBorderWidth, int aSpace, QString aColor)
+{
+    topType=aType;
+    topSize=aSize;
+    topBorderWidth=aBorderWidth;
+    topSpace=aSpace;
+    topColor=aColor;
+}
+
+void WordXMLParagraphBorders::setLeftBorder(EBorderType aType, int aSize, int aBorderWidth, int aSpace, QString aColor)
+{
+    leftType=aType;
+    leftSize=aSize;
+    leftBorderWidth=aBorderWidth;
+    leftSpace=aSpace;
+    leftColor=aColor;
+}
+
+void WordXMLParagraphBorders::setBottomBorder(EBorderType aType, int aSize, int aBorderWidth, int aSpace, QString aColor)
+{
+    bottomType=aType;
+    bottomSize=aSize;
+    bottomBorderWidth=aBorderWidth;
+    bottomSpace=aSpace;
+    bottomColor=aColor;
+}
+
+void WordXMLParagraphBorders::setRightBorder(EBorderType aType, int aSize, int aBorderWidth, int aSpace, QString aColor)
+{
+    rightType=aType;
+    rightSize=aSize;
+    rightBorderWidth=aBorderWidth;
+    rightSpace=aSpace;
+    rightColor=aColor;
 }
 
 WordXMLParagraphBorders& WordXMLParagraphBorders::operator=(const WordXMLParagraphBorders &another)
