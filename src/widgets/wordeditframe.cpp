@@ -224,7 +224,7 @@ void WordEditFrame::insertPage()
 
 void WordEditFrame::insertPageCount()
 {
-    ui->valueEdit->insertPlainText("#PAGENUM#");
+    ui->valueEdit->insertPlainText("#NUMPAGES#");
 }
 
 void WordEditFrame::on_contextButton_clicked()
