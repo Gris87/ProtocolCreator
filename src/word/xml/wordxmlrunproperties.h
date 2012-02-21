@@ -5,6 +5,7 @@
 
 #include <QTextCharFormat>
 
+#include "../wordutils.h"
 #include "wordxmltypes.h"
 
 enum EUnderlineType
@@ -24,6 +25,8 @@ public:
     EUnderlineType underline;
     bool caps;
     bool strikeOut;
+    QString highlightColor;
+    QString textColor;
     QString language;
     QString languageFarEast;
     QString languageBIDI;
@@ -39,6 +42,9 @@ public:
 
     void setFont(QTextCharFormat aFormat);
     void setFont(QFont aFont);
+
+    void setColor(QColor aColor);
+    void setHighlightColor(QColor aColor);
 
     WordXMLRunProperties& operator=(const WordXMLRunProperties &another);
 };

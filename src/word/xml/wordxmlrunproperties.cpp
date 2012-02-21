@@ -88,6 +88,16 @@ void WordXMLRunProperties::writeToStream(QTextStream &aStream)
             aStream<<space<<" <w:strike/>\r\n";
         }
 
+        if (textColor!="")
+        {
+            aStream<<space<<" <w:color w:val=\""+textColor+"\"/>\r\n";
+        }
+
+        if (highlightColor!="")
+        {
+            aStream<<space<<" <w:highlight w:val=\""+highlightColor+"\"/>\r\n";
+        }
+
         if (language!="" || languageFarEast!="" || languageBIDI!="")
         {
             aStream<<space<<" <w:lang";
@@ -126,6 +136,8 @@ void WordXMLRunProperties::reset()
     underline=utNone;
     caps=false;
     strikeOut=false;
+    textColor="";
+    highlightColor="";
     language="";
     languageFarEast="";
     languageBIDI="";
@@ -149,6 +161,10 @@ bool WordXMLRunProperties::isModified()
            ||
            strikeOut
            ||
+           textColor!=""
+           ||
+           highlightColor!=""
+           ||
            language!=""
            ||
            languageFarEast!=""
@@ -159,6 +175,16 @@ bool WordXMLRunProperties::isModified()
 void WordXMLRunProperties::setFont(QTextCharFormat aFormat)
 {
     setFont(aFormat.font());
+
+    if (aFormat.background().style()!=Qt::NoBrush)
+    {
+        setHighlightColor(aFormat.background().color());
+    }
+
+    if (aFormat.foreground().style()!=Qt::NoBrush)
+    {
+        setColor(aFormat.foreground().color());
+    }
 }
 
 void WordXMLRunProperties::setFont(QFont aFont)
@@ -212,6 +238,16 @@ void WordXMLRunProperties::setFont(QFont aFont)
     }
 }
 
+void WordXMLRunProperties::setColor(QColor aColor)
+{
+    textColor=colorToString(aColor);
+}
+
+void WordXMLRunProperties::setHighlightColor(QColor aColor)
+{
+    highlightColor=colorToStringWithRound(aColor);
+}
+
 WordXMLRunProperties& WordXMLRunProperties::operator=(const WordXMLRunProperties &another)
 {
     font=another.font;
@@ -222,6 +258,8 @@ WordXMLRunProperties& WordXMLRunProperties::operator=(const WordXMLRunProperties
     underline=another.underline;
     caps=another.caps;
     strikeOut=another.strikeOut;
+    textColor=another.textColor;
+    highlightColor=another.highlightColor;
     language=another.language;
     languageFarEast=another.languageFarEast;
     languageBIDI=another.languageBIDI;

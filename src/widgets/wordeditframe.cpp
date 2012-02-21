@@ -1,12 +1,15 @@
 #include "wordeditframe.h"
 
+#include "src/other/utils.h"
+
 WordEditFrame::WordEditFrame(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WordEditFrame)
 {
     ui->setupUi(this);
 
-    ui->colorArea->setColor(QColor(0, 0, 0));
+    ui->textColorArea->setColor(QColor(0, 0, 0));
+    ui->backgroundColorArea->setColor(QColor(255, 255, 255));
 
     connect(ui->valueEdit, SIGNAL(boldCombination()), this, SLOT(on_boldButton_clicked()));
     connect(ui->valueEdit, SIGNAL(italicCombination()), this, SLOT(on_italicButton_clicked()));
@@ -185,18 +188,59 @@ void WordEditFrame::on_valueEdit_currentCharFormatChanged(const QTextCharFormat 
 
     connect(ui->fontComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_fontComboBox_currentIndexChanged(QString)));
     connect(ui->fontSizeSpinBox, SIGNAL(valueChanged(int)), this, SLOT(on_fontSizeSpinBox_valueChanged(int)));
+
+    QPalette aPalette=ui->textColorArea->palette();
+    aPalette.setColor(QPalette::Window, format.foreground().color());
+    ui->textColorArea->setPalette(aPalette);
+
+    aPalette=ui->backgroundColorArea->palette();
+
+    if (format.background().style()==Qt::NoBrush)
+    {
+        aPalette.setColor(QPalette::Window, QColor(255, 255, 255));
+    }
+    else
+    {
+        aPalette.setColor(QPalette::Window, format.background().color());
+    }
+
+    ui->backgroundColorArea->setPalette(aPalette);
 }
 
-void WordEditFrame::on_valueEdit_currentColorChanged(const QColor &aColor)
-{
-    QPalette aPalette=ui->colorArea->palette();
-
-    aPalette.setColor(QPalette::Window, aColor);
-
-    ui->colorArea->setPalette(aPalette);
-}
-
-void WordEditFrame::on_colorArea_colorChanged(const QColor &aColor)
+void WordEditFrame::on_textColorArea_colorChanged(const QColor &aColor)
 {
     ui->valueEdit->setTextColor(aColor);
+}
+
+void WordEditFrame::on_backgroundColorArea_colorChanged(const QColor &aColor)
+{
+    ui->valueEdit->setTextBackgroundColor(aColor);
+}
+
+void WordEditFrame::insertPage()
+{
+    ui->valueEdit->insertPlainText("#PAGE#");
+}
+
+void WordEditFrame::insertPageCount()
+{
+    ui->valueEdit->insertPlainText("#PAGENUM#");
+}
+
+void WordEditFrame::on_contextButton_clicked()
+{
+    QMenu *contextMenu=new QMenu;
+
+    QMenu *autoTextMenu=contextMenu->addMenu("АвтоТекст");
+
+    autoTextMenu->addAction("Страница", this, SLOT(insertPage()));
+    autoTextMenu->addAction("Количество страниц", this, SLOT(insertPageCount()));
+
+    setGeometryInDesktop(contextMenu,
+                         cursor().pos().x(),
+                         cursor().pos().y(),
+                         contextMenu->sizeHint().width(),
+                         contextMenu->sizeHint().height());
+
+    contextMenu->show();
 }

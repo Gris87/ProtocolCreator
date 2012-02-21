@@ -6,6 +6,7 @@
 #include "ui_wordeditframe.h"
 
 #include <QFontDialog>
+#include <QMenu>
 
 namespace Ui {
     class WordEditFrame;
@@ -43,8 +44,11 @@ private slots:
     void on_valueEdit_undoAvailable(bool available);
     void on_valueEdit_redoAvailable(bool available);
     void on_valueEdit_currentCharFormatChanged(const QTextCharFormat &format);
-    void on_valueEdit_currentColorChanged(const QColor &aColor);
-    void on_colorArea_colorChanged(const QColor &aColor);
+    void on_textColorArea_colorChanged(const QColor &aColor);
+    void on_backgroundColorArea_colorChanged(const QColor &aColor);
+    void insertPage();
+    void insertPageCount();
+    void on_contextButton_clicked();
 };
 
 #endif // WORDEDITFRAME_H
