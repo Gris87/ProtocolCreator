@@ -2,3 +2,6 @@ Special functions needs to add
 Maybe sort columns
 Search in fullscreen mode
 Auto-save
+Conditional format (Change color)
+Zeros before numbers
+Lock will hide word components
