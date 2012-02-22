@@ -1991,7 +1991,7 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
     return 0;
 }
 
-void replaceLinksInText(QTextEdit *aTextEdit)
+void replaceLinksInText(QTextEdit *aTextEdit, PageComponent *aPage)
 {
     QTextCursor aCursor=aTextEdit->textCursor();
 
@@ -2029,7 +2029,7 @@ void replaceLinksInText(QTextEdit *aTextEdit)
                     aSelection.remove(aSelection.length()-1, 1);
                     aSelection.remove(0, 1);
 
-                    PageComponent* aComponent=variableByName(aSelection, 0);
+                    PageComponent* aComponent=variableByName(aSelection, aPage);
 
                     if (aComponent)
                     {

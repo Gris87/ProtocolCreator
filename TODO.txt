@@ -1,3 +1,4 @@
 Special functions needs to add
 Maybe sort columns
 Search in fullscreen mode
+Auto-save

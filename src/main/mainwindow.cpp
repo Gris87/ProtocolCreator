@@ -298,7 +298,7 @@ void MainWindow::on_actionSave_triggered()
             QString baseName=currentName.mid(currentName.lastIndexOf("/")+1);
             baseName=baseName.left(baseName.lastIndexOf("."));
 
-            QString backupName=dir+"backup/"+baseName+QFileInfo(aFile).lastModified().toString("yyyy_MM_dd_hh_mm_ss_zzz")+".pcr";
+            QString backupName=dir+"backup/"+baseName+"_"+QFileInfo(aFile).lastModified().toString("yyyy_MM_dd_hh_mm_ss_zzz")+".pcr";
 
             if (QFile::exists(backupName))
             {
@@ -1382,11 +1382,11 @@ void MainWindow::exportToWord(bool isFull)
                 QTextEdit aTextEdit;
 
                 aTextEdit.setHtml(aPage->headerText);
-                replaceLinksInText(&aTextEdit);
+                replaceLinksInText(&aTextEdit, 0);
                 section->properties.addHeader()->insertFromText(aTextEdit.document()->rootFrame());
 
                 aTextEdit.setHtml(aPage->footerText);
-                replaceLinksInText(&aTextEdit);
+                replaceLinksInText(&aTextEdit, 0);
                 section->properties.addFooter()->insertFromText(aTextEdit.document()->rootFrame());
 
                 for (int i=0; i<aPage->components.length(); i++)
@@ -1398,7 +1398,7 @@ void MainWindow::exportToWord(bool isFull)
                         if (aComponent->ui->useCheckBox->isChecked())
                         {
                             aTextEdit.setHtml(aComponent->wordEdit->ui->valueEdit->toHtml());
-                            replaceLinksInText(&aTextEdit);
+                            replaceLinksInText(&aTextEdit, aComponent);
                             section->insertFromText(aTextEdit.document()->rootFrame());
                         }
                     }

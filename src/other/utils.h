@@ -18,7 +18,7 @@ void checkVarName(QString aName, QStringList &aErrorList);
 PageComponent* variableByName(QString aVariableName, PageComponent *aComponent);
 PageComponent* getVariableOrThrow(QString aVariableName, PageComponent *aComponent);
 QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableExtendedListFrame *inFrame=0, int tableRow=-1);
-void replaceLinksInText(QTextEdit *aTextEdit);
+void replaceLinksInText(QTextEdit *aTextEdit, PageComponent *aPage);
 QString variantToText(const QVariant &aVariant);
 
 #endif // UTILS_H
