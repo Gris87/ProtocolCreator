@@ -13,7 +13,7 @@ PageSelectionDialog::PageSelectionDialog(QWidget *parent) :
         ui->pagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->nameEdit->text());
     }
 
-    ui->pagesListWidget->setCurrentRow(mainWindow->ui->pagesTabWidget->currentIndex()+1);
+    ui->pagesListWidget->setCurrentRow(globalDialog->isVisible()? 0 : mainWindow->ui->pagesTabWidget->currentIndex()+1);
 }
 
 PageSelectionDialog::~PageSelectionDialog()

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ListSelectionDialog</class>
- <widget class="QDialog" name="ListSelectionDialog">
+ <class>ComponentSelectionDialog</class>
+ <widget class="QDialog" name="ComponentSelectionDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>285</height>
+    <width>480</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Выбор списка</string>
+   <string>Выбор переменной</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -29,7 +29,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Выберите список:</string>
+      <string>Выберите переменную:</string>
      </property>
     </widget>
    </item>
@@ -45,17 +45,11 @@
       <property name="spacing">
        <number>4</number>
       </property>
-      <property name="margin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QListWidget" name="pagesListWidget"/>
       </item>
       <item>
        <widget class="QListWidget" name="variablesListWidget"/>
-      </item>
-      <item>
-       <widget class="QListWidget" name="columnListWidget"/>
       </item>
      </layout>
     </widget>

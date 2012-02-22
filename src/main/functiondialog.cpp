@@ -71,7 +71,7 @@ FunctionDialog::FunctionDialog(VariableExtendedListFrame *aExtList, QWidget *par
         ui->pagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text());
     }
 
-    ui->pagesListWidget->setCurrentRow(mainWindow->ui->pagesTabWidget->currentIndex()+1);
+    ui->pagesListWidget->setCurrentRow(globalDialog->isVisible()? 0 : mainWindow->ui->pagesTabWidget->currentIndex()+1);
 
     ui->functionsListWidget->setCurrentRow(0);
 }
@@ -236,7 +236,7 @@ void FunctionDialog::on_columnListWidget_itemDoubleClicked(QListWidgetItem *item
     if (
         mExtList
         &&
-        ui->pagesListWidget->currentRow()==mainWindow->ui->pagesTabWidget->currentIndex()+1
+        ui->pagesListWidget->currentRow()==(globalDialog->isVisible()? 0 : mainWindow->ui->pagesTabWidget->currentIndex()+1)
         &&
         ui->variablesListWidget->currentItem()->text()==mExtList->variableName()
        )

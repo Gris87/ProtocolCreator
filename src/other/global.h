@@ -33,6 +33,7 @@
 
 #include "src/main/columneditdialog.h"
 #include "src/main/columnsizedialog.h"
+#include "src/main/componentselectiondialog.h"
 #include "src/main/fulldialog.h"
 #include "src/main/functiondialog.h"
 #include "src/main/globaldialog.h"

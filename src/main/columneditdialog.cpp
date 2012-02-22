@@ -20,7 +20,7 @@ ColumnEditDialog::ColumnEditDialog(bool aEditMode, UnitedTable *aTableWidget, Va
         ui->listLinkPagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text());
     }
 
-    ui->listLinkPagesListWidget->setCurrentRow(mainWindow->ui->pagesTabWidget->currentIndex()+1);
+    ui->listLinkPagesListWidget->setCurrentRow(globalDialog->isVisible()? 0 : mainWindow->ui->pagesTabWidget->currentIndex()+1);
 
 
 
@@ -31,7 +31,7 @@ ColumnEditDialog::ColumnEditDialog(bool aEditMode, UnitedTable *aTableWidget, Va
         ui->extListLinkPagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text());
     }
 
-    ui->extListLinkPagesListWidget->setCurrentRow(mainWindow->ui->pagesTabWidget->currentIndex()+1);
+    ui->extListLinkPagesListWidget->setCurrentRow(globalDialog->isVisible()? 0 : mainWindow->ui->pagesTabWidget->currentIndex()+1);
 
 
 

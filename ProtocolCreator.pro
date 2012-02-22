@@ -118,7 +118,8 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmltablerow.cpp \
     src/word/xml/wordxmltablecell.cpp \
     src/word/xml/wordxmltablerowproperties.cpp \
-    src/word/xml/wordxmltablecellproperties.cpp
+    src/word/xml/wordxmltablecellproperties.cpp \
+    src/main/componentselectiondialog.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -225,7 +226,8 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmltablerow.h \
     src/word/xml/wordxmltablecell.h \
     src/word/xml/wordxmltablerowproperties.h \
-    src/word/xml/wordxmltablecellproperties.h
+    src/word/xml/wordxmltablecellproperties.h \
+    src/main/componentselectiondialog.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -251,7 +253,8 @@ FORMS    += src/main/mainwindow.ui \
     src/main/fulldialog.ui \
     src/main/listselectiondialog.ui \
     src/main/insertlinktabledialog.ui \
-    src/main/searchdialog.ui
+    src/main/searchdialog.ui \
+    src/main/componentselectiondialog.ui
 
 OTHER_FILES += \
     TODO.txt

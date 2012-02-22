@@ -48,6 +48,7 @@ private slots:
     void on_backgroundColorArea_colorChanged(const QColor &aColor);
     void insertPage();
     void insertPageCount();
+    void insertLink();
     void on_contextButton_clicked();
 };
 

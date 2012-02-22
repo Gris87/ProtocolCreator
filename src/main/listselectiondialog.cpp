@@ -59,7 +59,7 @@ ListSelectionDialog::ListSelectionDialog(bool aExtListOnly, QString aBaseList, Q
         ui->pagesListWidget->addItem(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text());
     }
 
-    ui->pagesListWidget->setCurrentRow(mainWindow->ui->pagesTabWidget->currentIndex()+1);
+    ui->pagesListWidget->setCurrentRow(globalDialog->isVisible()? 0 : mainWindow->ui->pagesTabWidget->currentIndex()+1);
 
     if (aBaseList!="")
     {

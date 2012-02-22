@@ -1,6 +1,4 @@
-#include "wordeditframe.h"
-
-#include "src/other/utils.h"
+#include "src/other/global.h"
 
 WordEditFrame::WordEditFrame(QWidget *parent) :
     QWidget(parent),
@@ -227,14 +225,43 @@ void WordEditFrame::insertPageCount()
     ui->valueEdit->insertPlainText("#NUMPAGES#");
 }
 
+void WordEditFrame::insertLink()
+{
+    ComponentSelectionDialog dialog(this);
+
+    if (dialog.exec())
+    {
+        QString aSection=dialog.mResult;
+
+        aSection=aSection.left(aSection.indexOf("."));
+
+        if (
+            aSection=="Global"
+            ||
+            (
+             !globalDialog->isVisible()
+             &&
+             aSection==((PageFrame*)mainWindow->ui->pagesTabWidget->currentWidget())->ui->varNameEdit->text()
+            )
+           )
+        {
+            dialog.mResult=dialog.mResult.mid(dialog.mResult.indexOf(".")+1);
+        }
+
+        ui->valueEdit->insertPlainText("["+dialog.mResult+"]");
+    }
+}
+
 void WordEditFrame::on_contextButton_clicked()
 {
     QMenu *contextMenu=new QMenu;
 
-    QMenu *autoTextMenu=contextMenu->addMenu("АвтоТекст");
+    QMenu *autoTextMenu=contextMenu->addMenu("Вставить авто-текст");
 
     autoTextMenu->addAction("Страница", this, SLOT(insertPage()));
     autoTextMenu->addAction("Количество страниц", this, SLOT(insertPageCount()));
+
+    contextMenu->addAction("Вставить переменную", this, SLOT(insertLink()));
 
     setGeometryInDesktop(contextMenu,
                          cursor().pos().x(),
