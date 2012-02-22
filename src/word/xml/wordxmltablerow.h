@@ -22,19 +22,19 @@ public:
 
     bool isModified();
 
-    WordXMLTableCell* add();
+    WordXMLTableCell* addCell();
 
-    WordXMLTableCell* copy(int index);
-    WordXMLTableCell* copy(WordXMLTableCell* aCell);
+    WordXMLTableCell* copyCell(int index);
+    WordXMLTableCell* copyCell(WordXMLTableCell* aCell);
 
-    WordXMLTableCell* get(int index);
+    WordXMLTableCell* getCell(int index);
 
-    void remove(int index);
-    void remove(WordXMLTableCell* aCell);
+    void removeCell(int index);
+    void removeCell(WordXMLTableCell* aCell);
 
-    int count();
+    int cellCount();
 
-    void clear();
+    void clearCells();
 
     WordXMLTableRow& operator=(const WordXMLTableRow &another);
 

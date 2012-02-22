@@ -11,7 +11,7 @@ WordXMLTableRow::WordXMLTableRow(WordXMLBase* aParent) : WordXMLBase(aParent)
 
 WordXMLTableRow::~WordXMLTableRow()
 {
-    clear();
+    clearCells();
 }
 
 void WordXMLTableRow::writeToStream(QTextStream &aStream)
@@ -49,7 +49,7 @@ void WordXMLTableRow::reset()
 
     properties.reset();
 
-    clear();
+    clearCells();
 }
 
 bool WordXMLTableRow::isModified()
@@ -63,7 +63,7 @@ bool WordXMLTableRow::isModified()
            mList.length()>0;
 }
 
-WordXMLTableCell* WordXMLTableRow::add()
+WordXMLTableCell* WordXMLTableRow::addCell()
 {
     WordXMLTableCell* aNewCell=new WordXMLTableCell(this);
 
@@ -72,12 +72,12 @@ WordXMLTableCell* WordXMLTableRow::add()
     return aNewCell;
 }
 
-WordXMLTableCell* WordXMLTableRow::copy(int index)
+WordXMLTableCell* WordXMLTableRow::copyCell(int index)
 {
-    return copy(mList.at(index));
+    return copyCell(mList.at(index));
 }
 
-WordXMLTableCell* WordXMLTableRow::copy(WordXMLTableCell* aCell)
+WordXMLTableCell* WordXMLTableRow::copyCell(WordXMLTableCell* aCell)
 {
     WordXMLTableCell* aNewCell=new WordXMLTableCell(this);
 
@@ -88,27 +88,27 @@ WordXMLTableCell* WordXMLTableRow::copy(WordXMLTableCell* aCell)
     return aNewCell;
 }
 
-WordXMLTableCell* WordXMLTableRow::get(int index)
+WordXMLTableCell* WordXMLTableRow::getCell(int index)
 {
     return mList.at(index);
 }
 
-void WordXMLTableRow::remove(int index)
+void WordXMLTableRow::removeCell(int index)
 {
     mList.removeAt(index);
 }
 
-void WordXMLTableRow::remove(WordXMLTableCell* aCell)
+void WordXMLTableRow::removeCell(WordXMLTableCell* aCell)
 {
     mList.removeOne(aCell);
 }
 
-int WordXMLTableRow::count()
+int WordXMLTableRow::cellCount()
 {
     return mList.length();
 }
 
-void WordXMLTableRow::clear()
+void WordXMLTableRow::clearCells()
 {
     for (int i=0; i<mList.length(); i++)
     {
@@ -125,7 +125,7 @@ WordXMLTableRow& WordXMLTableRow::operator=(const WordXMLTableRow &another)
 
     properties=another.properties;
 
-    clear();
+    clearCells();
 
     for (int i=0; i<another.mList.length(); i++)
     {

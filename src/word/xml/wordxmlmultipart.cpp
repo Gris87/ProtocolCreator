@@ -87,7 +87,23 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
 
     if (aFrame->inherits("QTextTable"))
     {
-        //QTextTable *aTable=(QTextTable*)aFrame;
+        QTextTable *aTableFrame=(QTextTable*)aFrame;
+        WordXMLTable *aTable=addTable();
+
+        for (int i=0; i<aTableFrame->rows(); i++)
+        {
+            WordXMLTableRow *aRow=aTable->addRow();
+
+            for (int i=0; i<aTableFrame->columns(); i++)
+            {
+                WordXMLTableCell *aCell=aRow->addCell();
+
+                if (aCell->count()==0)
+                {
+                    aCell->addParagraph();
+                }
+            }
+        }
     }
     else
     {
@@ -103,9 +119,10 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
                     insertByTextCursor(aFrame->firstCursorPosition(), startRange.at(i), endRange.at(i));
                 }
                 break;
+                // Table
                 case 1:
                 {
-
+                    insertFromText(aChildren.at(i>>1));
                 }
                 break;
                 default:

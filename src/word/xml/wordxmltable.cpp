@@ -11,7 +11,7 @@ WordXMLTable::WordXMLTable(WordXMLBase* aParent) : WordXMLBase(aParent)
 
 WordXMLTable::~WordXMLTable()
 {
-    clear();
+    clearRows();
 }
 
 void WordXMLTable::writeToStream(QTextStream &aStream)
@@ -34,7 +34,7 @@ void WordXMLTable::reset()
 
     properties.reset();
 
-    clear();
+    clearRows();
 }
 
 bool WordXMLTable::isModified()
@@ -44,7 +44,7 @@ bool WordXMLTable::isModified()
            mList.length()>0;
 }
 
-WordXMLTableRow* WordXMLTable::add()
+WordXMLTableRow* WordXMLTable::addRow()
 {
     WordXMLTableRow* aNewRow=new WordXMLTableRow(this);
 
@@ -53,12 +53,12 @@ WordXMLTableRow* WordXMLTable::add()
     return aNewRow;
 }
 
-WordXMLTableRow* WordXMLTable::copy(int index)
+WordXMLTableRow* WordXMLTable::copyRow(int index)
 {
-    return copy(mList.at(index));
+    return copyRow(mList.at(index));
 }
 
-WordXMLTableRow* WordXMLTable::copy(WordXMLTableRow* aRow)
+WordXMLTableRow* WordXMLTable::copyRow(WordXMLTableRow* aRow)
 {
     WordXMLTableRow* aNewRow=new WordXMLTableRow(this);
 
@@ -69,27 +69,27 @@ WordXMLTableRow* WordXMLTable::copy(WordXMLTableRow* aRow)
     return aNewRow;
 }
 
-WordXMLTableRow* WordXMLTable::get(int index)
+WordXMLTableRow* WordXMLTable::getRow(int index)
 {
     return mList.at(index);
 }
 
-void WordXMLTable::remove(int index)
+void WordXMLTable::removeRow(int index)
 {
     mList.removeAt(index);
 }
 
-void WordXMLTable::remove(WordXMLTableRow* aRow)
+void WordXMLTable::removeRow(WordXMLTableRow* aRow)
 {
     mList.removeOne(aRow);
 }
 
-int WordXMLTable::count()
+int WordXMLTable::rowCount()
 {
     return mList.length();
 }
 
-void WordXMLTable::clear()
+void WordXMLTable::clearRows()
 {
     for (int i=0; i<mList.length(); i++)
     {
@@ -103,7 +103,7 @@ WordXMLTable& WordXMLTable::operator=(const WordXMLTable &another)
 {
     properties=another.properties;
 
-    clear();
+    clearRows();
 
     for (int i=0; i<another.mList.length(); i++)
     {
