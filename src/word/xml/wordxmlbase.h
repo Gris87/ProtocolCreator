@@ -41,8 +41,12 @@ enum EWordXMLType
     wxtTabChar,
     wxtTable,
     wxtTableBorders,
-    wxtTableCellmargin,
+    wxtTableCell,
+    wxtTableCellMargin,
+    wxtTableCellProperties,
     wxtTableProperties,
+    wxtTableRow,
+    wxtTableRowProperties,
     wxtTabs,
     wxtText
 };

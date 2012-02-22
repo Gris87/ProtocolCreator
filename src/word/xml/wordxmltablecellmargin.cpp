@@ -2,7 +2,7 @@
 
 WordXMLTableCellMargin::WordXMLTableCellMargin(WordXMLBase* aParent) : WordXMLBase(aParent)
 {
-    componentType=wxtTableCellmargin;
+    componentType=wxtTableCellMargin;
 
     reset();
 }

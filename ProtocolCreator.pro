@@ -114,7 +114,11 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmltableborders.cpp \
     src/word/xml/wordxmlshading.cpp \
     src/word/xml/wordxmlparagraphborders.cpp \
-    src/word/wordutils.cpp
+    src/word/wordutils.cpp \
+    src/word/xml/wordxmltablerow.cpp \
+    src/word/xml/wordxmltablecell.cpp \
+    src/word/xml/wordxmltablerowproperties.cpp \
+    src/word/xml/wordxmltablecellproperties.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -217,7 +221,11 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmltableborders.h \
     src/word/xml/wordxmlshading.h \
     src/word/xml/wordxmlparagraphborders.h \
-    src/word/wordutils.h
+    src/word/wordutils.h \
+    src/word/xml/wordxmltablerow.h \
+    src/word/xml/wordxmltablecell.h \
+    src/word/xml/wordxmltablerowproperties.h \
+    src/word/xml/wordxmltablecellproperties.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
