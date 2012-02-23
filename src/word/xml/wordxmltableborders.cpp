@@ -170,6 +170,16 @@ bool WordXMLTableBorders::isModified()
            );
 }
 
+void WordXMLTableBorders::setBorders(ETableBorder type)
+{
+    top=type;
+    left=type;
+    bottom=type;
+    right=type;
+    insideH=type;
+    insideV=type;
+}
+
 WordXMLTableBorders& WordXMLTableBorders::operator=(const WordXMLTableBorders &another)
 {
     top=another.top;

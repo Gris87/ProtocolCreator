@@ -89,18 +89,57 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
     {
         QTextTable *aTableFrame=(QTextTable*)aFrame;
         WordXMLTable *aTable=addTable();
+        QVector<QTextLength> aWidthList=aTableFrame->format().columnWidthConstraints();
+
+        aTable->properties.borders.setBorders(tbSingle);
 
         for (int i=0; i<aTableFrame->rows(); i++)
         {
             WordXMLTableRow *aRow=aTable->addRow();
 
-            for (int i=0; i<aTableFrame->columns(); i++)
+            for (int j=0; j<aTableFrame->columns(); j++)
             {
                 WordXMLTableCell *aCell=aRow->addCell();
 
-                if (aCell->count()==0)
+                aCell->properties.width=aWidthList.at(j).rawValue()*15.044025;
+                aCell->properties.columnSpan=aTableFrame->cellAt(i, j).columnSpan();
+
+                if (aTableFrame->cellAt(i, j).format().background().style()!=Qt::NoBrush)
                 {
-                    aCell->addParagraph();
+                    aCell->properties.shading.pattern="pct-25";
+                    aCell->properties.shading.backgroundColor=colorToString(aTableFrame->cellAt(i, j).format().background().color());
+                    aCell->properties.shading.color=aCell->properties.shading.backgroundColor;
+                    aCell->properties.shading.fillColor=aCell->properties.shading.backgroundColor;
+                }
+
+                for (int k=1; k<aCell->properties.columnSpan; k++)
+                {
+                    aCell->properties.width+=aWidthList.at(j+k).rawValue()*15.044025;
+                }
+
+                bool writeCell=true;
+
+                if (aTableFrame->cellAt(i, j).rowSpan()>1)
+                {
+                    if (aTableFrame->cellAt(i, j).row()==i)
+                    {
+                        aCell->properties.vMergeType=mtRestart;
+                    }
+                    else
+                    {
+                        aCell->properties.vMergeType=mtContinue;
+                        writeCell=false;
+                    }
+                }
+
+                if (writeCell)
+                {
+
+                }
+
+                if (aCell->properties.columnSpan>1)
+                {
+                    j+=aCell->properties.columnSpan-1;
                 }
             }
         }
@@ -116,7 +155,20 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
                 // Current frame (Text)
                 case 0:
                 {
-                    insertByTextCursor(aFrame->firstCursorPosition(), startRange.at(i), endRange.at(i));
+                    int start=startRange.at(i);
+                    int end=endRange.at(i);
+
+                    if (i>0 && types.at(i-1)==1)
+                    {
+                        start++;
+                    }
+
+                    if (i<types.length()-1 && types.at(i+1)==1)
+                    {
+                        end--;
+                    }
+
+                    insertByTextCursor(aFrame->firstCursorPosition(), start, end);
                 }
                 break;
                 // Table
@@ -137,7 +189,7 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
 
 void WordXMLMultiPart::insertByTextCursor(QTextCursor cursor, const int start, const int end)
 {
-    if (start>end)
+    if (start>=end)
     {
         return;
     }

@@ -28,6 +28,8 @@ public:
 
     bool isModified();
 
+    void setBorders(ETableBorder type);
+
     WordXMLTableBorders& operator=(const WordXMLTableBorders &another);
 };
 

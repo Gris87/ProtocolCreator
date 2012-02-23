@@ -3,9 +3,23 @@
 
 #include "wordxmlbase.h"
 
+#include "wordxmlshading.h"
+
+enum EMergeType
+{
+    mtNone,
+    mtRestart,
+    mtContinue
+};
+
 class WordXMLTableCellProperties : public WordXMLBase
 {
 public:
+    int width;
+    EMergeType vMergeType;
+    int columnSpan;
+    WordXMLShading shading;
+
     explicit WordXMLTableCellProperties(WordXMLBase* aParent=0);
     ~WordXMLTableCellProperties();
 

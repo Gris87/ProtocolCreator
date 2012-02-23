@@ -4,6 +4,7 @@
 #include "wordxmlmultipart.h"
 
 #include "wordxmltablecellproperties.h"
+#include "wordxmlparagraph.h"
 
 class WordXMLTableCell : public WordXMLMultiPart
 {

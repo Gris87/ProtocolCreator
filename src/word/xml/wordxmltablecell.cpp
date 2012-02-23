@@ -20,6 +20,13 @@ void WordXMLTableCell::writeToStream(QTextStream &aStream)
     properties.writeToStream(aStream);
     WordXMLMultiPart::writeToStream(aStream);
 
+    if (mList.length()==0)
+    {
+        WordXMLParagraph *aParagraph=new WordXMLParagraph(this);
+        aParagraph->writeToStream(aStream);
+        delete aParagraph;
+    }
+
     aStream<<space<<"</w:tc>\r\n";
 }
 
