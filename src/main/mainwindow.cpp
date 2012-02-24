@@ -1538,6 +1538,65 @@ void MainWindow::exportToWord(bool isFull)
                                     }
                                 }
                             }
+
+                            for (int i=0; i<aComponent->ui->dataTableWidget->rowCount(); i++)
+                            {
+                                WordXMLTableRow *aRow=aTable->addRow();
+
+                                for (int j=0; j<aComponent->typeColumns.length(); j++)
+                                {
+                                    STableColumn aColumn=aComponent->typeColumns.at(j);
+
+                                    if (!aColumn.visible)
+                                    {
+                                        continue;
+                                    }
+
+                                    WordXMLTableCell *aCell=aRow->addCell();
+
+                                    aCell->properties.width=aComponent->headerColumnWidths.at(j)*10;
+                                    aCell->properties.columnSpan=aComponent->ui->dataTableWidget->columnSpan(i, j);
+
+                                    if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignTop)
+                                    {
+                                        aCell->properties.vAlign=caTop;
+                                    }
+                                    else
+                                    if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignVCenter)
+                                    {
+                                        aCell->properties.vAlign=caCenter;
+                                    }
+                                    else
+                                    if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignBottom)
+                                    {
+                                        aCell->properties.vAlign=caBottom;
+                                    }
+
+                                    if (aComponent->ui->dataTableWidget->item(i, j)->background().style()!=Qt::NoBrush)
+                                    {
+                                        aCell->properties.shading.pattern="pct-25";
+                                        aCell->properties.shading.setColor(aComponent->ui->dataTableWidget->item(i, j)->background().color());
+                                        aCell->properties.shading.backgroundColor=aCell->properties.shading.color;
+                                        aCell->properties.shading.fillColor=aCell->properties.shading.color;
+                                    }
+
+                                    for (int k=1; k<aCell->properties.columnSpan; k++)
+                                    {
+                                        aCell->properties.width+=aComponent->headerColumnWidths.at(j+k)*10;
+                                    }
+
+                                    bool writeCell=true;
+
+                                    if (writeCell)
+                                    {
+                                    }
+
+                                    if (aCell->properties.columnSpan>1)
+                                    {
+                                        j+=aCell->properties.columnSpan-1;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
