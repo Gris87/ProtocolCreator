@@ -8,6 +8,7 @@ WordEditFrame::WordEditFrame(QWidget *parent) :
 
     ui->textColorArea->setColor(QColor(0, 0, 0));
     ui->backgroundColorArea->setColor(QColor(255, 255, 255));
+    ui->frameColorArea->setColor(QColor(255, 255, 255));
 
     connect(ui->valueEdit, SIGNAL(boldCombination()), this, SLOT(on_boldButton_clicked()));
     connect(ui->valueEdit, SIGNAL(italicCombination()), this, SLOT(on_italicButton_clicked()));
@@ -25,6 +26,21 @@ void WordEditFrame::on_valueEdit_cursorPositionChanged()
     ui->centerButton->setFlat(ui->valueEdit->alignment()!=Qt::AlignCenter);
     ui->rightButton->setFlat(ui->valueEdit->alignment()!=Qt::AlignRight);
     ui->wholeButton->setFlat(ui->valueEdit->alignment()!=Qt::AlignJustify);
+
+
+
+    QPalette aPalette=ui->textColorArea->palette();
+
+    if (ui->valueEdit->textCursor().blockFormat().background().style()==Qt::NoBrush)
+    {
+        aPalette.setColor(QPalette::Window, QColor(255, 255, 255));
+    }
+    else
+    {
+        aPalette.setColor(QPalette::Window, ui->valueEdit->textCursor().blockFormat().background().color());
+    }
+
+    ui->frameColorArea->setPalette(aPalette);
 }
 
 void WordEditFrame::on_cutButton_clicked()
@@ -213,6 +229,23 @@ void WordEditFrame::on_textColorArea_colorChanged(const QColor &aColor)
 void WordEditFrame::on_backgroundColorArea_colorChanged(const QColor &aColor)
 {
     ui->valueEdit->setTextBackgroundColor(aColor);
+}
+
+void WordEditFrame::on_frameColorArea_colorChanged(const QColor &aColor)
+{
+    QTextCursor aCursor=ui->valueEdit->textCursor();
+
+    int start=aCursor.selectionStart();
+    int end=aCursor.selectionEnd();
+
+    for (int i=start; i<=end; i++)
+    {
+        aCursor.setPosition(i);
+
+        QTextBlockFormat aFormat=aCursor.blockFormat();
+        aFormat.setBackground(QBrush(aColor));
+        aCursor.setBlockFormat(aFormat);
+    }
 }
 
 void WordEditFrame::insertPage()

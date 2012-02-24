@@ -46,6 +46,7 @@ private slots:
     void on_valueEdit_currentCharFormatChanged(const QTextCharFormat &format);
     void on_textColorArea_colorChanged(const QColor &aColor);
     void on_backgroundColorArea_colorChanged(const QColor &aColor);
+    void on_frameColorArea_colorChanged(const QColor &aColor);
     void insertPage();
     void insertPageCount();
     void insertLink();
