@@ -134,7 +134,44 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
 
                 if (writeCell)
                 {
+                    int start=aTableFrame->cellAt(i, j).firstPosition();
+                    int end=aTableFrame->cellAt(i, j).lastPosition();
 
+                    if (types.length()>1)
+                    {
+                        int insideIndex=-1;
+
+                        for (int k=0; k<types.length(); k++)
+                        {
+                            int startBlock=startRange.at(k);
+                            int endBlock=endRange.at(k);
+
+                            if (startBlock>=start && endBlock<=end)
+                            {
+                                insideIndex=k;
+                                break;
+                            }
+                        }
+
+                        if (insideIndex>=0)
+                        {
+                            insideIndex++;
+
+                            do
+                            {
+                                int startBlock=startRange.at(insideIndex)-1;
+
+                                aCell->insertByTextCursor(aTableFrame->cellAt(i, j).firstCursorPosition(), start, startBlock);
+                                aCell->insertFromText(aChildren.at(insideIndex>>1));
+
+                                start=endRange.at(insideIndex)+2;
+
+                                insideIndex+=2;
+                            } while(insideIndex<types.length() && endRange.at(insideIndex)<=end);
+                        }
+                    }
+
+                    aCell->insertByTextCursor(aTableFrame->cellAt(i, j).firstCursorPosition(), start, end);
                 }
 
                 if (aCell->properties.columnSpan>1)
@@ -160,7 +197,7 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
 
                     if (i>0 && types.at(i-1)==1)
                     {
-                        start++;
+                        start+=2;
                     }
 
                     if (i<types.length()-1 && types.at(i+1)==1)
@@ -231,13 +268,12 @@ void WordXMLMultiPart::insertByTextCursor(QTextCursor cursor, const int start, c
             if (aSelectedText==QChar(8233) || aSelectedText=="\n")
             {
                 putTextWithFormat(paragraph, run, aTextPart, aTextFormat);
+                aTextPart="";
 
                 paragraph=addParagraph();
                 run=paragraph->addRun();
 
                 paragraph->setFormat(cursor.blockFormat());
-
-                aTextPart="";
             }
             else
             {

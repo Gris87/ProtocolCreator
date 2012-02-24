@@ -20,7 +20,7 @@ void WordXMLTableCell::writeToStream(QTextStream &aStream)
     properties.writeToStream(aStream);
     WordXMLMultiPart::writeToStream(aStream);
 
-    if (mList.length()==0)
+    if (mList.length()==0 || mList.at(mList.length()-1)->getComponentType()!=wxtParagraph)
     {
         WordXMLParagraph *aParagraph=new WordXMLParagraph(this);
         aParagraph->writeToStream(aStream);
