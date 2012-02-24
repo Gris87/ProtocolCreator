@@ -55,6 +55,37 @@ void WordXMLTableCellProperties::writeToStream(QTextStream &aStream)
             aStream<<space<<" <w:gridSpan w:val=\""+QString::number(columnSpan)+"\"/>\r\n";
         }
 
+        if (vAlign!=caNone)
+        {
+            aStream<<space<<" <w:vAlign w:val=\"";
+
+            switch(vAlign)
+            {
+                case caTop:
+                {
+                    aStream<<"top";
+                }
+                break;
+                case caCenter:
+                {
+                    aStream<<"center";
+                }
+                break;
+                case caBottom:
+                {
+                    aStream<<"bottom";
+                }
+                break;
+                case caNone:
+                {
+                    //Nothing
+                }
+                break;
+            }
+
+            aStream<<"\"/>\r\n";
+        }
+
         shading.writeToStream(aStream);
 
         aStream<<space<<"</w:tcPr>\r\n";
@@ -68,6 +99,7 @@ void WordXMLTableCellProperties::reset()
     width=-1;
     vMergeType=mtNone;
     columnSpan=1;
+    vAlign=caNone;
     shading.reset();
 }
 
@@ -80,6 +112,8 @@ bool WordXMLTableCellProperties::isModified()
             ||
             columnSpan>1
             ||
+            vAlign!=caNone
+            ||
             shading.isModified()
            );
 }
@@ -89,6 +123,7 @@ WordXMLTableCellProperties& WordXMLTableCellProperties::operator=(const WordXMLT
     width=another.width;
     vMergeType=another.vMergeType;
     columnSpan=another.columnSpan;
+    vAlign=another.vAlign;
     shading=another.shading;
 
     return *this;

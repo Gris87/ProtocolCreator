@@ -162,7 +162,7 @@ void ComponentTextFrame::on_nameEdit_textChanged(const QString &aName)
 
 void ComponentTextFrame::on_useCheckBox_toggled(bool checked)
 {
-    ui->userWidget->setVisible(checked && (isAdmin || isEditable()));
+    ui->userWidget->setVisible(ui->userWidget->isEnabled() && checked && (isAdmin || isEditable()));
 }
 
 void ComponentTextFrame::on_expandButton_clicked()
@@ -211,6 +211,8 @@ void ComponentTextFrame::updateLock()
     {
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
+
+    ui->userWidget->setVisible(ui->userWidget->isEnabled() && ui->useCheckBox->isChecked() && (isAdmin || isEditable()));
 }
 
 void ComponentTextFrame::on_editButton_clicked()

@@ -97,36 +97,71 @@ void GlobalDialog::variableDelete(PageComponent* aComponent)
 
 void GlobalDialog::on_numberButton_clicked()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     addVariable(new VariableIntegerFrame(this));
 }
 
 void GlobalDialog::on_stringButton_clicked()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     addVariable(new VariableStringFrame(this));
 }
 
 void GlobalDialog::on_boolButton_clicked()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     addVariable(new VariableBoolFrame(this));
 }
 
 void GlobalDialog::on_dateButton_clicked()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     addVariable(new VariableDateFrame(this));
 }
 
 void GlobalDialog::on_timeButton_clicked()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     addVariable(new VariableTimeFrame(this));
 }
 
 void GlobalDialog::on_listButton_clicked()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     addVariable(new VariableListFrame(this));
 }
 
 void GlobalDialog::on_extendedListButton_clicked()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     VariableExtendedListFrame *aVar=new VariableExtendedListFrame(this);
 
     aVar->mIsTable=false;
@@ -138,6 +173,11 @@ void GlobalDialog::on_extendedListButton_clicked()
 
 void GlobalDialog::on_expressionButton_clicked()
 {
+    if (!isAdmin)
+    {
+        return;
+    }
+
     addVariable(new VariableExpressionFrame(this));
 }
 

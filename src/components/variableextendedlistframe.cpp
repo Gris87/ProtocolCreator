@@ -859,7 +859,7 @@ void VariableExtendedListFrame::on_nameEdit_textChanged(const QString &aName)
 
 void VariableExtendedListFrame::on_useCheckBox_toggled(bool checked)
 {
-    ui->userWidget->setVisible(checked && (isAdmin || isEditable()));
+    ui->userWidget->setVisible(ui->userWidget->isEnabled() && checked && (isAdmin || isEditable()));
 }
 
 void VariableExtendedListFrame::on_lockButton_clicked()
@@ -882,6 +882,8 @@ void VariableExtendedListFrame::updateLock()
     {
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
+
+    ui->userWidget->setVisible(ui->userWidget->isEnabled() && ui->useCheckBox->isChecked() && (isAdmin || isEditable()));
 }
 
 void VariableExtendedListFrame::on_editButton_clicked()

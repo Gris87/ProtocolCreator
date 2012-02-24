@@ -12,12 +12,21 @@ enum EMergeType
     mtContinue
 };
 
+enum ECellAlignment
+{
+    caNone,
+    caTop,
+    caCenter,
+    caBottom
+};
+
 class WordXMLTableCellProperties : public WordXMLBase
 {
 public:
     int width;
     EMergeType vMergeType;
     int columnSpan;
+    ECellAlignment vAlign;
     WordXMLShading shading;
 
     explicit WordXMLTableCellProperties(WordXMLBase* aParent=0);

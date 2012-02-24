@@ -30,6 +30,42 @@ void WordXMLTableProperties::writeToStream(QTextStream &aStream)
             aStream<<space<<" <w:tblInd w:w=\""+QString::number(indentation)+"\" w:type=\"dxa\"/>\r\n";
         }
 
+        if (alignment!=taNone)
+        {
+            aStream<<space<<" <w:jc w:val=\"";
+
+            switch(alignment)
+            {
+                case taLeft:
+                {
+                    aStream<<"left";
+                }
+                break;
+                case taCenter:
+                {
+                    aStream<<"center";
+                }
+                break;
+                case taRight:
+                {
+                    aStream<<"right";
+                }
+                break;
+                case taBoth:
+                {
+                    aStream<<"both";
+                }
+                break;
+                case taNone:
+                {
+                    //Nothing
+                }
+                break;
+            }
+
+            aStream<<"\"/>\r\n";
+        }
+
         borders.writeToStream(aStream);
         cellMargin.writeToStream(aStream);
 
@@ -43,6 +79,7 @@ void WordXMLTableProperties::reset()
 
     tableStyle="";
     indentation=-1;
+    alignment=taNone;
     borders.reset();
     cellMargin.reset();
 }
@@ -53,6 +90,8 @@ bool WordXMLTableProperties::isModified()
            ||
            indentation>=0
            ||
+           alignment!=taNone
+           ||
            borders.isModified()
            ||
            cellMargin.isModified();
@@ -62,6 +101,7 @@ WordXMLTableProperties& WordXMLTableProperties::operator=(const WordXMLTableProp
 {
     tableStyle=another.tableStyle;
     indentation=another.indentation;
+    alignment=another.alignment;
     borders=another.borders;
     cellMargin=another.cellMargin;
 

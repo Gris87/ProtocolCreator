@@ -6,11 +6,21 @@
 #include "wordxmltablecellmargin.h"
 #include "wordxmltableborders.h"
 
+enum ETableAlignment
+{
+    taNone,
+    taLeft,
+    taCenter,
+    taRight,
+    taBoth
+};
+
 class WordXMLTableProperties : public WordXMLBase
 {
 public:
     QString tableStyle;
     double indentation;
+    ETableAlignment alignment;
     WordXMLTableBorders borders;
     WordXMLTableCellMargin cellMargin;
 

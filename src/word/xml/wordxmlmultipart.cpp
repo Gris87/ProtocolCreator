@@ -107,9 +107,10 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
                 if (aTableFrame->cellAt(i, j).format().background().style()!=Qt::NoBrush)
                 {
                     aCell->properties.shading.pattern="pct-25";
-                    aCell->properties.shading.backgroundColor=colorToString(aTableFrame->cellAt(i, j).format().background().color());
-                    aCell->properties.shading.color=aCell->properties.shading.backgroundColor;
-                    aCell->properties.shading.fillColor=aCell->properties.shading.backgroundColor;
+
+                    aCell->properties.shading.setColor(aTableFrame->cellAt(i, j).format().background().color());
+                    aCell->properties.shading.backgroundColor=aCell->properties.shading.color;
+                    aCell->properties.shading.fillColor=aCell->properties.shading.color;
                 }
 
                 for (int k=1; k<aCell->properties.columnSpan; k++)
