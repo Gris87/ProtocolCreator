@@ -70,8 +70,7 @@ QString IntegerColumn::typeDescription()
 {
     QString aTypeDescription;
 
-    aTypeDescription="Число ("+QString::number(mDefaultValue)+"; "+
-                               QString::number(mDecimals)+"; ";
+    aTypeDescription="Число (";
 
     if (mIsAutoInc)
     {
@@ -83,6 +82,8 @@ QString IntegerColumn::typeDescription()
     }
 
     aTypeDescription.append(
+                            QString::number(mDefaultValue)+"; "+
+                            QString::number(mDecimals)+"; "+
                             "; \""+mPrefix+"\"; "+
                             "\""+mPostfix+"\")"
                            );
