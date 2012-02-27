@@ -17,6 +17,11 @@ void WordXMLTableRowProperties::writeToStream(QTextStream &aStream)
     {
         aStream<<space<<"<w:trPr>\r\n";
 
+        if (height>=0)
+        {
+            aStream<<space<<" <w:trHeight w:val=\""+QString::number(height)+"\"/>\r\n";
+        }
+
         aStream<<space<<"</w:trPr>\r\n";
     }
 }
@@ -24,14 +29,18 @@ void WordXMLTableRowProperties::writeToStream(QTextStream &aStream)
 void WordXMLTableRowProperties::reset()
 {
     WordXMLBase::reset();
+
+    height=-1;
 }
 
 bool WordXMLTableRowProperties::isModified()
 {
-    return false;
+    return height>=0;
 }
 
 WordXMLTableRowProperties& WordXMLTableRowProperties::operator=(const WordXMLTableRowProperties &another)
 {
+    height=another.height;
+
     return *this;
 }

@@ -59,6 +59,8 @@
 
 #include "src/word/word.h"
 
+#define PIXEL_TO_SANTIMETER       0.0263921875
+
 // FORMS
 extern MainWindow                *mainWindow;
 extern SearchDialog              *searchDialog;
@@ -73,7 +75,6 @@ extern QString                    adminPass;
 // OTHERS
 extern QString                    dir;
 extern QStringList                functionsList;
-extern double                     pixelToSantimeter;
 
 extern QString                    protocolCreatorVersion;
 

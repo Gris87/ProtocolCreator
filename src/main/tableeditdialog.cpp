@@ -377,7 +377,7 @@ void TableEditDialog::headerColumnSize()
 {
     ColumnSizeDialog dialog(this);
 
-    dialog.ui->widthSpinBox->setValue(ui->headerTableWidget->columnWidth(ui->headerTableWidget->currentColumn())*pixelToSantimeter);
+    dialog.ui->widthSpinBox->setValue(ui->headerTableWidget->columnWidth(ui->headerTableWidget->currentColumn())*PIXEL_TO_SANTIMETER);
 
     if (dialog.exec())
     {
@@ -387,7 +387,7 @@ void TableEditDialog::headerColumnSize()
         {
             for (int j=aRanges.at(i).leftColumn(); j<=aRanges.at(i).rightColumn(); j++)
             {
-                ui->headerTableWidget->setColumnWidth(j, (int)(dialog.ui->widthSpinBox->value()/pixelToSantimeter));
+                ui->headerTableWidget->setColumnWidth(j, (int)(dialog.ui->widthSpinBox->value()/PIXEL_TO_SANTIMETER));
             }
         }
     }
