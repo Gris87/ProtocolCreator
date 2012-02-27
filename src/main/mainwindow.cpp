@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->dividerLayout->addWidget(dividerSplitter);
 
     connect(ui->pagesTabWidget->tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(pageMoved(int,int)));
+    connect(&autoSaveTimer, SIGNAL(timeout()), this, SLOT(autoSaveTick()));
+
+    autoSaveMode=false;
 
     loadState();
 
@@ -58,6 +61,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::on_actionNew_triggered()
 {
+    if (currentName!="")
+    {
+        autoSaveTick();
+    }
+
     currentName="";
     isAdmin=true;
     docPass="";
@@ -92,6 +100,8 @@ void MainWindow::on_actionNew_triggered()
     addPage("Содержание", "Section_Content");
 
     updateAdmin();
+
+    resetAutoSaveTimer();
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -152,6 +162,11 @@ void MainWindow::on_actionOpen_triggered()
         else
         {
             docPass="";
+        }
+
+        if (currentName!="")
+        {
+            autoSaveTick();
         }
 
         currentName=dialog.selectedFiles().at(0);
@@ -236,11 +251,32 @@ void MainWindow::on_actionOpen_triggered()
 
         updateHeader();
         updateAdmin();
+
+        resetAutoSaveTimer();
     }
 }
 
 void MainWindow::on_actionSave_triggered()
 {
+    QString oldCurrentName=currentName;
+
+    if (autoSaveMode)
+    {
+        QDir(dir).mkpath(dir+"autosave");
+
+        if (currentName=="")
+        {
+            currentName=dir+"autosave/Untitled.pcr";
+        }
+        else
+        {
+            QString baseName=currentName.mid(currentName.lastIndexOf("/")+1);
+            baseName=baseName.left(baseName.lastIndexOf("."));
+
+            currentName=dir+"autosave/"+baseName+".pcr";
+        }
+    }
+
     if (currentName=="")
     {
         on_actionSaveAs_triggered();
@@ -291,7 +327,7 @@ void MainWindow::on_actionSave_triggered()
         QFile aFile(currentName);
 
         // Backup existing file
-        if (aFile.exists())
+        if (!autoSaveMode && aFile.exists())
         {
             QDir(dir).mkpath(dir+"backup");
 
@@ -311,6 +347,16 @@ void MainWindow::on_actionSave_triggered()
         aFile.open(QIODevice::WriteOnly);
         aFile.write(aArray);
         aFile.close();
+
+        if (!autoSaveMode)
+        {
+            resetAutoSaveTimer();
+        }
+    }
+
+    if (autoSaveMode)
+    {
+        currentName=oldCurrentName;
     }
 }
 
@@ -1969,6 +2015,22 @@ void MainWindow::contentCheckBoxToggled(KnownCheckBox *aCheckBox, bool checked)
     ((PageFrame *)ui->pagesTabWidget->widget(pageIndex))->ui->useCheckBox->setChecked(checked);
 }
 
+void MainWindow::autoSaveTick()
+{
+    autoSaveMode=true;
+
+    try
+    {
+        on_actionSave_triggered();
+    }
+    catch(...)
+    {
+        QMessageBox::critical(this, protocolCreatorVersion, "Возникла проблема при автосохранении документа");
+    }
+
+    autoSaveMode=false;
+}
+
 void MainWindow::on_pagesTabWidget_tabCloseRequested(int index)
 {
     if (ui->pagesTabWidget->widget(index)!=contentPage)
@@ -2044,6 +2106,12 @@ void MainWindow::addLog(QString aFullVarName, QString aText)
     {
         addHint(aFullVarName+": "+aText);
     }
+}
+
+void MainWindow::resetAutoSaveTimer()
+{
+    autoSaveTimer.stop();
+    autoSaveTimer.start(300000);
 }
 
 void MainWindow::updateHeader()

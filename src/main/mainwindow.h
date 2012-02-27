@@ -28,6 +28,8 @@ public:
     QSplitter *dividerSplitter;
     PageFrame *contentPage;
     bool errorHappened;
+    bool autoSaveMode;
+    QTimer autoSaveTimer;
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -42,6 +44,7 @@ public:
     void addHint(QString aText);
     void addLog(QString aFullVarName, QString aText);
 
+    void resetAutoSaveTimer();
     void updateHeader();
     void updateAdmin();
 
@@ -57,6 +60,7 @@ private slots:
     void page_nameChanged(PageFrame *parentPage);
     void page_useToggled(PageFrame *parentPage);
     void contentCheckBoxToggled(KnownCheckBox *aCheckBox, bool checked);
+    void autoSaveTick();
 
     void on_pagesTabWidget_tabCloseRequested(int index);
 

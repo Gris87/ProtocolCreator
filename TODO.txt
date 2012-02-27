@@ -1,6 +1,6 @@
 Special functions needs to add
 Maybe sort columns
 Search in fullscreen mode
-Auto-save
 Conditional format (Change color)
+Logs for conditional format
 Zeros before numbers
