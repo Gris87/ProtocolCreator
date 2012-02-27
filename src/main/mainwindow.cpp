@@ -1553,9 +1553,7 @@ void MainWindow::exportToWord(bool isFull)
 
                                 for (int j=0; j<aComponent->typeColumns.length(); j++)
                                 {
-                                    STableColumn aColumn=aComponent->typeColumns.at(j);
-
-                                    if (!aColumn.visible)
+                                    if (!aComponent->typeColumns.at(j).visible)
                                     {
                                         continue;
                                     }
@@ -1590,7 +1588,10 @@ void MainWindow::exportToWord(bool isFull)
 
                                     for (int k=1; k<aCell->properties.columnSpan; k++)
                                     {
-                                        aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
+                                        if (aComponent->typeColumns.at(j+k).visible)
+                                        {
+                                            aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
+                                        }
                                     }
 
                                     aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
