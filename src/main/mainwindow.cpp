@@ -1586,11 +1586,17 @@ void MainWindow::exportToWord(bool isFull)
                                         aCell->properties.shading.fillColor=aCell->properties.shading.color;
                                     }
 
+                                    int invisibleColumns=0;
+
                                     for (int k=1; k<aCell->properties.columnSpan; k++)
                                     {
                                         if (aComponent->typeColumns.at(j+k).visible)
                                         {
                                             aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
+                                        }
+                                        else
+                                        {
+                                            invisibleColumns++;
                                         }
                                     }
 
@@ -1635,6 +1641,8 @@ void MainWindow::exportToWord(bool isFull)
                                     if (aCell->properties.columnSpan>1)
                                     {
                                         j+=aCell->properties.columnSpan-1;
+
+                                        aCell->properties.columnSpan-=invisibleColumns;
                                     }
                                 }
                             }

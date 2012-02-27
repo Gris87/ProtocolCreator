@@ -4,4 +4,3 @@ Search in fullscreen mode
 Auto-save
 Conditional format (Change color)
 Zeros before numbers
-Normal width in case of generating middle rows
