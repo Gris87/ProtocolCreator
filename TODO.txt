@@ -4,4 +4,4 @@ Search in fullscreen mode
 Auto-save
 Conditional format (Change color)
 Zeros before numbers
-Lock will hide word components
+Normal width in case of generating middle rows

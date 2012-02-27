@@ -101,7 +101,7 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
             {
                 WordXMLTableCell *aCell=aRow->addCell();
 
-                aCell->properties.width=aWidthList.at(j).rawValue()*15.044025;
+                aCell->properties.width=aWidthList.at(j).rawValue();
                 aCell->properties.columnSpan=aTableFrame->cellAt(i, j).columnSpan();
 
                 if (aTableFrame->cellAt(i, j).format().background().style()!=Qt::NoBrush)
@@ -115,8 +115,10 @@ void WordXMLMultiPart::insertFromText(QTextFrame *aFrame)
 
                 for (int k=1; k<aCell->properties.columnSpan; k++)
                 {
-                    aCell->properties.width+=aWidthList.at(j+k).rawValue()*15.044025;
+                    aCell->properties.width+=aWidthList.at(j+k).rawValue();
                 }
+
+                aCell->properties.width=aCell->properties.width*15.044025;
 
                 bool writeCell=true;
 

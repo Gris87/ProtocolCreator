@@ -1438,7 +1438,7 @@ void MainWindow::exportToWord(bool isFull)
                                     STableCell aTableCell=aComponent->headerCells.at(i).at(j);
                                     WordXMLTableCell *aCell=aRow->addCell();
 
-                                    aCell->properties.width=aComponent->headerColumnWidths.at(j)*PIXELS_TO_TWIPS;
+                                    aCell->properties.width=aComponent->headerColumnWidths.at(j);
                                     aCell->properties.columnSpan=aTableCell.spanX;
 
                                     if (aTableCell.alignment & Qt::AlignTop)
@@ -1463,8 +1463,10 @@ void MainWindow::exportToWord(bool isFull)
 
                                     for (int k=1; k<aCell->properties.columnSpan; k++)
                                     {
-                                        aCell->properties.width+=aComponent->headerColumnWidths.at(j+k)*PIXELS_TO_TWIPS;
+                                        aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
                                     }
+
+                                    aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
 
                                     bool writeCell=true;
 
@@ -1560,7 +1562,7 @@ void MainWindow::exportToWord(bool isFull)
 
                                     WordXMLTableCell *aCell=aRow->addCell();
 
-                                    aCell->properties.width=aComponent->headerColumnWidths.at(j)*PIXELS_TO_TWIPS;
+                                    aCell->properties.width=aComponent->headerColumnWidths.at(j);
                                     aCell->properties.columnSpan=aComponent->ui->dataTableWidget->columnSpan(i, j);
 
                                     if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignTop)
@@ -1588,8 +1590,10 @@ void MainWindow::exportToWord(bool isFull)
 
                                     for (int k=1; k<aCell->properties.columnSpan; k++)
                                     {
-                                        aCell->properties.width+=aComponent->headerColumnWidths.at(j+k)*PIXELS_TO_TWIPS;
+                                        aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
                                     }
+
+                                    aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
 
                                     bool writeCell=true;
 
