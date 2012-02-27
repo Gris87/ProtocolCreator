@@ -1142,12 +1142,19 @@ QVariant VariableExtendedListFrame::calculate()
 
                     for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
                     {
-                        QString aText=ui->dataTableWidget->item(i,j)->text();
+                        if (ui->dataTableWidget->itemDelegateForRow(i))
+                        {
+                            mCellResults[i][j]=ui->dataTableWidget->item(i,j)->text();
+                        }
+                        else
+                        {
+                            QString aText=ui->dataTableWidget->item(i,j)->text();
 
-                        aText.remove(aText.length()-removeAfter, removeAfter);
-                        aText.remove(0, removeBefore);
+                            aText.remove(aText.length()-removeAfter, removeAfter);
+                            aText.remove(0, removeBefore);
 
-                        mCellResults[i][j]=aText.toDouble();
+                            mCellResults[i][j]=aText.toDouble();
+                        }
                     }
                 }
                 break;
@@ -1165,13 +1172,20 @@ QVariant VariableExtendedListFrame::calculate()
                 {
                     for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
                     {
-                        if (ui->dataTableWidget->item(i,j)->checkState()==Qt::Checked)
+                        if (ui->dataTableWidget->itemDelegateForRow(i))
                         {
-                            mCellResults[i][j]=true;
+                            mCellResults[i][j]=ui->dataTableWidget->item(i,j)->text();
                         }
                         else
                         {
-                            mCellResults[i][j]=false;
+                            if (ui->dataTableWidget->item(i,j)->checkState()==Qt::Checked)
+                            {
+                                mCellResults[i][j]=true;
+                            }
+                            else
+                            {
+                                mCellResults[i][j]=false;
+                            }
                         }
                     }
                 }
@@ -1180,7 +1194,14 @@ QVariant VariableExtendedListFrame::calculate()
                 {
                     for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
                     {
-                        mCellResults[i][j]=QDate::fromString(ui->dataTableWidget->item(i,j)->text(), "dd.MM.yyyy");
+                        if (ui->dataTableWidget->itemDelegateForRow(i))
+                        {
+                            mCellResults[i][j]=ui->dataTableWidget->item(i,j)->text();
+                        }
+                        else
+                        {
+                            mCellResults[i][j]=QDate::fromString(ui->dataTableWidget->item(i,j)->text(), "dd.MM.yyyy");
+                        }
                     }
                 }
                 break;
@@ -1188,7 +1209,14 @@ QVariant VariableExtendedListFrame::calculate()
                 {
                     for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
                     {
-                        mCellResults[i][j]=QTime::fromString(ui->dataTableWidget->item(i,j)->text(), "h:mm:ss");
+                        if (ui->dataTableWidget->itemDelegateForRow(i))
+                        {
+                            mCellResults[i][j]=ui->dataTableWidget->item(i,j)->text();
+                        }
+                        else
+                        {
+                            mCellResults[i][j]=QTime::fromString(ui->dataTableWidget->item(i,j)->text(), "h:mm:ss");
+                        }
                     }
                 }
                 break;
@@ -1250,7 +1278,14 @@ QVariant VariableExtendedListFrame::calculate()
                     {
                         try
                         {
-                            mCellResults[i][j]=calculatePart(ui->dataTableWidget->item(i,j)->text(), this, this, i);
+                            if (ui->dataTableWidget->itemDelegateForRow(i))
+                            {
+                                mCellResults[i][j]=ui->dataTableWidget->item(i,j)->text();
+                            }
+                            else
+                            {
+                                mCellResults[i][j]=calculatePart(ui->dataTableWidget->item(i,j)->text(), this, this, i);
+                            }
                         }
                         catch(...)
                         {
