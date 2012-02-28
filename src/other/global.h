@@ -47,6 +47,7 @@
 #include "src/main/tableeditdialog.h"
 
 #include "src/other/encoder.h"
+#include "src/other/regeditthread.h"
 #include "src/other/types.h"
 #include "src/other/utils.h"
 

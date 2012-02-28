@@ -36,6 +36,8 @@ public:
 
     void closeEvent(QCloseEvent *event);
 
+    void openFile(QString aFileName);
+
     void exportToWord(bool isFull);
 
     void addPage(QString aName, QString aVarName);

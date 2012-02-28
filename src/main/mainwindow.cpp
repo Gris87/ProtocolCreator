@@ -115,150 +115,155 @@ void MainWindow::on_actionOpen_triggered()
 
     if (dialog.exec())
     {
-        QByteArray aArray;
+        openFile(dialog.selectedFiles().at(0));
+    }
+}
 
-        QFile aFile(dialog.selectedFiles().at(0));
-        aFile.open(QIODevice::ReadOnly);
-        aArray=aFile.readAll();
-        aFile.close();
+void MainWindow::openFile(QString aFileName)
+{
+    QByteArray aArray;
 
-        DecryptStream(aArray, "Thunderbolt");
+    QFile aFile(aFileName);
+    aFile.open(QIODevice::ReadOnly);
+    aArray=aFile.readAll();
+    aFile.close();
 
-        QDataStream aStream(&aArray, QIODevice::ReadOnly);
+    DecryptStream(aArray, "Thunderbolt");
 
-        QString aMagicWord;
-        aStream >> aMagicWord;
+    QDataStream aStream(&aArray, QIODevice::ReadOnly);
 
-        if (aMagicWord!="ProtocolCreator")
+    QString aMagicWord;
+    aStream >> aMagicWord;
+
+    if (aMagicWord!="ProtocolCreator")
+    {
+        QMessageBox::warning(this, "Открытие файла", "Неверный формат");
+        return;
+    }
+
+    aStream >> aMagicWord;
+
+    if (aMagicWord!="DocumentPassword")
+    {
+        QMessageBox::warning(this, "Открытие файла", "Неверный формат");
+        return;
+    }
+
+    QString oldDocPass=docPass;
+
+    aStream >> docPass;
+
+    if (docPass.length()>2)
+    {
+        PasswordDialog dialog(this);
+        dialog.ui->titleLabel->setText("Введите пароль на документ");
+
+        if (dialog.exec())
         {
-            QMessageBox::warning(this, "Открытие файла", "Неверный формат");
-            return;
-        }
-
-        aStream >> aMagicWord;
-
-        if (aMagicWord!="DocumentPassword")
-        {
-            QMessageBox::warning(this, "Открытие файла", "Неверный формат");
-            return;
-        }
-
-        QString oldDocPass=docPass;
-
-        aStream >> docPass;
-
-        if (docPass.length()>2)
-        {
-            PasswordDialog dialog(this);
-            dialog.ui->titleLabel->setText("Введите пароль на документ");
-
-            if (dialog.exec())
+            if (EncryptString(dialog.ui->passwordEdit->text(), "Earthquake")!=docPass)
             {
-                if (EncryptString(dialog.ui->passwordEdit->text(), "Earthquake")!=docPass)
+                QMessageBox::information(this, "Ввод пароля", "Неверный пароль");
+
+                docPass=oldDocPass;
+
+                return;
+            }
+        }
+    }
+    else
+    {
+        docPass="";
+    }
+
+    if (currentName!="")
+    {
+        autoSaveTick();
+    }
+
+    currentName=aFileName;
+    isAdmin=false;
+    adminPass="";
+
+    while (globalDialog->variables.length()>0)
+    {
+        QWidget* aWidget=globalDialog->variables.takeFirst();
+        globalDialog->ui->variableLayout->removeWidget(aWidget);
+        delete aWidget;
+    }
+
+    ui->progressBar->setMaximum(ui->pagesTabWidget->count());
+
+    while (ui->pagesTabWidget->count()>0)
+    {
+        ui->progressBar->setValue(ui->progressBar->maximum()-ui->pagesTabWidget->count());
+
+        QWidget *aWidget=ui->pagesTabWidget->widget(0);
+        ui->pagesTabWidget->removeTab(0);
+        delete aWidget;
+    }
+
+    ui->progressBar->setValue(0);
+
+    ui->progressBar->setMaximum(aArray.length());
+
+    contentPage=0;
+
+    while (!aStream.atEnd())
+    {
+        ui->progressBar->setValue(aStream.device()->pos());
+
+        aStream >> aMagicWord;
+
+        if (aMagicWord=="AdminPassword")
+        {
+            aStream >> adminPass;
+        }
+        else
+        if (aMagicWord=="Global")
+        {
+            globalDialog->loadFromStream(aStream);
+        }
+        else
+        if (aMagicWord=="Pages")
+        {
+            while (!aStream.atEnd())
+            {
+                ui->progressBar->setValue(aStream.device()->pos());
+
+                aStream >> aMagicWord;
+
+                if (aMagicWord=="Stop")
                 {
-                    QMessageBox::information(this, "Ввод пароля", "Неверный пароль");
-
-                    docPass=oldDocPass;
-
-                    return;
+                    break;
                 }
+
+                addPage("", "");
+
+                ((PageFrame*)ui->pagesTabWidget->widget(ui->pagesTabWidget->count()-1))->loadFromStream(aStream);
             }
         }
         else
+        if (aMagicWord=="ContentIndex")
         {
-            docPass="";
-        }
+            int pageIndex;
 
-        if (currentName!="")
-        {
-            autoSaveTick();
-        }
+            aStream >> pageIndex;
 
-        currentName=dialog.selectedFiles().at(0);
-        isAdmin=false;
-        adminPass="";
-
-        while (globalDialog->variables.length()>0)
-        {
-            QWidget* aWidget=globalDialog->variables.takeFirst();
-            globalDialog->ui->variableLayout->removeWidget(aWidget);
-            delete aWidget;
-        }
-
-        ui->progressBar->setMaximum(ui->pagesTabWidget->count());
-
-        while (ui->pagesTabWidget->count()>0)
-        {
-            ui->progressBar->setValue(ui->progressBar->maximum()-ui->pagesTabWidget->count());
-
-            QWidget *aWidget=ui->pagesTabWidget->widget(0);
-            ui->pagesTabWidget->removeTab(0);
-            delete aWidget;
-        }
-
-        ui->progressBar->setValue(0);
-
-        ui->progressBar->setMaximum(aArray.length());
-
-        contentPage=0;
-
-        while (!aStream.atEnd())
-        {
-            ui->progressBar->setValue(aStream.device()->pos());
-
-            aStream >> aMagicWord;
-
-            if (aMagicWord=="AdminPassword")
+            if (pageIndex>0)
             {
-                aStream >> adminPass;
-            }
-            else
-            if (aMagicWord=="Global")
-            {
-                globalDialog->loadFromStream(aStream);
-            }
-            else
-            if (aMagicWord=="Pages")
-            {
-                while (!aStream.atEnd())
-                {
-                    ui->progressBar->setValue(aStream.device()->pos());
-
-                    aStream >> aMagicWord;
-
-                    if (aMagicWord=="Stop")
-                    {
-                        break;
-                    }
-
-                    addPage("", "");
-
-                    ((PageFrame*)ui->pagesTabWidget->widget(ui->pagesTabWidget->count()-1))->loadFromStream(aStream);
-                }
-            }
-            else
-            if (aMagicWord=="ContentIndex")
-            {
-                int pageIndex;
-
-                aStream >> pageIndex;
-
-                if (pageIndex>0)
-                {
-                    ui->pagesTabWidget->tabBar()->moveTab(0, pageIndex);
-                    ui->pagesTabWidget->setCurrentIndex(0);
-                    ui->pagesTabWidget->setCurrentIndex(pageIndex);
-                }
+                ui->pagesTabWidget->tabBar()->moveTab(0, pageIndex);
+                ui->pagesTabWidget->setCurrentIndex(0);
+                ui->pagesTabWidget->setCurrentIndex(pageIndex);
             }
         }
-
-        ui->progressBar->setValue(0);
-
-        updateHeader();
-        updateAdmin();
-
-        resetAutoSaveTimer();
     }
+
+    ui->progressBar->setValue(0);
+
+    updateHeader();
+    updateAdmin();
+
+    resetAutoSaveTimer();
 }
 
 void MainWindow::on_actionSave_triggered()

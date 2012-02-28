@@ -89,6 +89,16 @@ int main(int argc, char *argv[])
     globalDialog=new GlobalDialog(mainWindow);
     mainWindow->show();
 
+    if (argc>1)
+    {
+        QStringList arguments=QApplication::arguments();
+
+        mainWindow->openFile(arguments.last());
+    }
+
+    RegEditThread aRegEditThread;
+    aRegEditThread.start(QThread::IdlePriority);
+
     // RUNNING
     int res=a.exec();
 
