@@ -1345,6 +1345,8 @@ void VariableExtendedListFrame::getWidgetList(QList<QWidget*> &aList)
 void VariableExtendedListFrame::on_expandButton_clicked()
 {
     fullDialog=new FullDialog(this);
+    fullDialog->pageComponent=this;
+
     fullDialog->setWindowTitle(ui->nameEdit->text());
 
     fullDialog->addAction(mainWindow->ui->actionFind);

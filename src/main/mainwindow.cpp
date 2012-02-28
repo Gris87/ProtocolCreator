@@ -821,34 +821,28 @@ void MainWindow::on_actionFindNext_triggered()
 
     if (isFindAll)
     {
-        bool good=false;
-
-        if (globalDialog->isVisible())
+        if (fullDialog && fullDialog->pageComponent)
         {
-            for (int i=0; i<globalDialog->variables.length(); i++)
-            {
-                QList<QWidget *> widgets;
-                globalDialog->variables.at(i)->getWidgetList(widgets);
+            QList<QWidget *> widgets;
+            fullDialog->pageComponent->getWidgetList(widgets);
 
-                if (widgets.length()>0)
-                {
-                    widgets.at(0)->setFocus();
-                    good=true;
-                    break;
-                }
+            if (widgets.length()>0)
+            {
+                widgets.at(0)->setFocus();
+                good=true;
+                break;
             }
         }
-
-        if (!good)
+        else
         {
-            for (int i=0; i<ui->pagesTabWidget->count(); i++)
+            bool good=false;
+
+            if (globalDialog->isVisible())
             {
-                PageFrame *aPage=(PageFrame*)ui->pagesTabWidget->widget(i);
-
-                for (int j=0; j<aPage->variables.length(); j++)
+                for (int i=0; i<globalDialog->variables.length(); i++)
                 {
                     QList<QWidget *> widgets;
-                    aPage->variables.at(j)->getWidgetList(widgets);
+                    globalDialog->variables.at(i)->getWidgetList(widgets);
 
                     if (widgets.length()>0)
                     {
@@ -857,28 +851,49 @@ void MainWindow::on_actionFindNext_triggered()
                         break;
                     }
                 }
+            }
 
-                if (good)
+            if (!good)
+            {
+                for (int i=0; i<ui->pagesTabWidget->count(); i++)
                 {
-                    break;
-                }
+                    PageFrame *aPage=(PageFrame*)ui->pagesTabWidget->widget(i);
 
-                for (int j=0; j<aPage->components.length(); j++)
-                {
-                    QList<QWidget *> widgets;
-                    aPage->components.at(j)->getWidgetList(widgets);
-
-                    if (widgets.length()>0)
+                    for (int j=0; j<aPage->variables.length(); j++)
                     {
-                        widgets.at(0)->setFocus();
-                        good=true;
+                        QList<QWidget *> widgets;
+                        aPage->variables.at(j)->getWidgetList(widgets);
+
+                        if (widgets.length()>0)
+                        {
+                            widgets.at(0)->setFocus();
+                            good=true;
+                            break;
+                        }
+                    }
+
+                    if (good)
+                    {
                         break;
                     }
-                }
 
-                if (good)
-                {
-                    break;
+                    for (int j=0; j<aPage->components.length(); j++)
+                    {
+                        QList<QWidget *> widgets;
+                        aPage->components.at(j)->getWidgetList(widgets);
+
+                        if (widgets.length()>0)
+                        {
+                            widgets.at(0)->setFocus();
+                            good=true;
+                            break;
+                        }
+                    }
+
+                    if (good)
+                    {
+                        break;
+                    }
                 }
             }
         }

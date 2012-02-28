@@ -6,6 +6,8 @@
 
 #include "ui_fulldialog.h"
 
+#include "src/components/pagecomponent.h"
+
 namespace Ui {
     class FullDialog;
 }
@@ -16,6 +18,7 @@ class FullDialog : public QDialog
 
 public:
     Ui::FullDialog *ui;
+    PageComponent *pageComponent;
 
     explicit FullDialog(QWidget *parent = 0);
     ~FullDialog();

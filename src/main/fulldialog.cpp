@@ -8,6 +8,8 @@ FullDialog::FullDialog(QWidget *parent) :
 
     setWindowFlags(Qt::Drawer);
     setWindowState(Qt::WindowMaximized);
+
+    pageComponent=0;
 }
 
 FullDialog::~FullDialog()
