@@ -828,9 +828,7 @@ void MainWindow::on_actionFindNext_triggered()
 
             if (widgets.length()>0)
             {
-                widgets.at(0)->setFocus();
-                good=true;
-                break;
+                widgets.first()->setFocus();
             }
         }
         else
@@ -846,7 +844,7 @@ void MainWindow::on_actionFindNext_triggered()
 
                     if (widgets.length()>0)
                     {
-                        widgets.at(0)->setFocus();
+                        widgets.first()->setFocus();
                         good=true;
                         break;
                     }
@@ -866,7 +864,7 @@ void MainWindow::on_actionFindNext_triggered()
 
                         if (widgets.length()>0)
                         {
-                            widgets.at(0)->setFocus();
+                            widgets.first()->setFocus();
                             good=true;
                             break;
                         }
@@ -884,7 +882,7 @@ void MainWindow::on_actionFindNext_triggered()
 
                         if (widgets.length()>0)
                         {
-                            widgets.at(0)->setFocus();
+                            widgets.first()->setFocus();
                             good=true;
                             break;
                         }
@@ -908,7 +906,12 @@ void MainWindow::on_actionFindNext_triggered()
     int startIndex;
     int totalCount;
 
-    if (startPage<0)
+    if (startPage==-2)
+    {
+        totalCount=0;
+    }
+    else
+    if (startPage==-1)
     {
         totalCount=globalDialog->variables.length();
     }
@@ -919,7 +922,7 @@ void MainWindow::on_actionFindNext_triggered()
         totalCount=aPage->variables.length()+aPage->components.length();
     }
 
-    if (varIndex>=0)
+    if (startPage==-2 || varIndex>=0)
     {
         startIndex=varIndex;
     }
@@ -946,27 +949,36 @@ void MainWindow::on_actionFindNext_triggered()
         {
             PageComponent *aComponent;
 
-            if (curPage<0)
+            if (fullDialog && fullDialog->pageComponent)
             {
-                aComponent=globalDialog->variables.at(curIndex);
+                aComponent=fullDialog->pageComponent;
             }
             else
             {
-                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
-
-                if (curIndex<aPage->variables.length())
+                if (curPage==-1)
                 {
-                    aComponent=aPage->variables.at(curIndex);
+                    aComponent=globalDialog->variables.at(curIndex);
                 }
                 else
                 {
-                    aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                    PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                    if (curIndex<aPage->variables.length())
+                    {
+                        aComponent=aPage->variables.at(curIndex);
+                    }
+                    else
+                    {
+                        aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                    }
                 }
             }
 
             if (
+                curPage==-2
+                ||
                 (
-                 curPage<0
+                 curPage==-1
                  &&
                  aComponent->isVisibleTo(globalDialog)
                 )
@@ -986,7 +998,11 @@ void MainWindow::on_actionFindNext_triggered()
                     }
                     else
                     {
-                        if (curPage<0)
+                        if (curPage==-2)
+                        {
+                        }
+                        else
+                        if (curPage==-1)
                         {
                             globalDialog->ui->scrollArea->ensureWidgetVisible(globalDialog->focusWidget());
 
@@ -1028,27 +1044,30 @@ void MainWindow::on_actionFindNext_triggered()
             }
         }
 
-        curIndex++;
-
-        if (curIndex>=totalCount)
+        if (curPage>=-1)
         {
-            curIndex=0;
-            curPage++;
+            curIndex++;
 
-            if (curPage>=ui->pagesTabWidget->count())
+            if (curIndex>=totalCount)
             {
-                curPage=-1;
-            }
+                curIndex=0;
+                curPage++;
 
-            if (curPage<0)
-            {
-                totalCount=globalDialog->variables.length();
-            }
-            else
-            {
-                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+                if (curPage>=ui->pagesTabWidget->count())
+                {
+                    curPage=-1;
+                }
 
-                totalCount=aPage->variables.length()+aPage->components.length();
+                if (curPage==-1)
+                {
+                    totalCount=globalDialog->variables.length();
+                }
+                else
+                {
+                    PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                    totalCount=aPage->variables.length()+aPage->components.length();
+                }
             }
         }
 
@@ -1061,27 +1080,36 @@ void MainWindow::on_actionFindNext_triggered()
         {
             PageComponent *aComponent;
 
-            if (curPage<0)
+            if (fullDialog && fullDialog->pageComponent)
             {
-                aComponent=globalDialog->variables.at(curIndex);
+                aComponent=fullDialog->pageComponent;
             }
             else
             {
-                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
-
-                if (curIndex<aPage->variables.length())
+                if (curPage==-1)
                 {
-                    aComponent=aPage->variables.at(curIndex);
+                    aComponent=globalDialog->variables.at(curIndex);
                 }
                 else
                 {
-                    aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                    PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                    if (curIndex<aPage->variables.length())
+                    {
+                        aComponent=aPage->variables.at(curIndex);
+                    }
+                    else
+                    {
+                        aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                    }
                 }
             }
 
             if (
+                curPage==-2
+                ||
                 (
-                 curPage<0
+                 curPage==-1
                  &&
                  aComponent->isVisibleTo(globalDialog)
                 )
@@ -1098,8 +1126,8 @@ void MainWindow::on_actionFindNext_triggered()
 
                 if (widgets.length()>0)
                 {
-                    widgets.at(0)->setFocus();
-                    aComponent->setWidgetCursor(widgets.at(0), true);
+                    widgets.first()->setFocus();
+                    aComponent->setWidgetCursor(widgets.first(), true);
                 }
             }
         }
@@ -1115,6 +1143,84 @@ void MainWindow::on_actionFindPrev_triggered()
         return;
     }
 
+    if (isFindAll)
+    {
+        if (fullDialog && fullDialog->pageComponent)
+        {
+            QList<QWidget *> widgets;
+            fullDialog->pageComponent->getWidgetList(widgets);
+
+            if (widgets.length()>0)
+            {
+                widgets.last()->setFocus();
+            }
+        }
+        else
+        {
+            bool good=false;
+
+            if (globalDialog->isVisible())
+            {
+                for (int i=0; i<globalDialog->variables.length(); i++)
+                {
+                    QList<QWidget *> widgets;
+                    globalDialog->variables.at(i)->getWidgetList(widgets);
+
+                    if (widgets.length()>0)
+                    {
+                        widgets.last()->setFocus();
+                        good=true;
+                        break;
+                    }
+                }
+            }
+
+            if (!good)
+            {
+                for (int i=0; i<ui->pagesTabWidget->count(); i++)
+                {
+                    PageFrame *aPage=(PageFrame*)ui->pagesTabWidget->widget(i);
+
+                    for (int j=0; j<aPage->variables.length(); j++)
+                    {
+                        QList<QWidget *> widgets;
+                        aPage->variables.at(j)->getWidgetList(widgets);
+
+                        if (widgets.length()>0)
+                        {
+                            widgets.last()->setFocus();
+                            good=true;
+                            break;
+                        }
+                    }
+
+                    if (good)
+                    {
+                        break;
+                    }
+
+                    for (int j=0; j<aPage->components.length(); j++)
+                    {
+                        QList<QWidget *> widgets;
+                        aPage->components.at(j)->getWidgetList(widgets);
+
+                        if (widgets.length()>0)
+                        {
+                            widgets.last()->setFocus();
+                            good=true;
+                            break;
+                        }
+                    }
+
+                    if (good)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     int startPage;
     int varIndex;
     int compIndex;
@@ -1124,7 +1230,12 @@ void MainWindow::on_actionFindPrev_triggered()
     int startIndex;
     int totalCount;
 
-    if (startPage<0)
+    if (startPage==-2)
+    {
+        totalCount=0;
+    }
+    else
+    if (startPage==-1)
     {
         totalCount=globalDialog->variables.length();
     }
@@ -1135,7 +1246,7 @@ void MainWindow::on_actionFindPrev_triggered()
         totalCount=aPage->variables.length()+aPage->components.length();
     }
 
-    if (varIndex>=0)
+    if (startPage==-2 || varIndex>=0)
     {
         startIndex=varIndex;
     }
@@ -1167,27 +1278,36 @@ void MainWindow::on_actionFindPrev_triggered()
         {
             PageComponent *aComponent;
 
-            if (curPage<0)
+            if (fullDialog && fullDialog->pageComponent)
             {
-                aComponent=globalDialog->variables.at(curIndex);
+                aComponent=fullDialog->pageComponent;
             }
             else
             {
-                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
-
-                if (curIndex<aPage->variables.length())
+                if (curPage==-1)
                 {
-                    aComponent=aPage->variables.at(curIndex);
+                    aComponent=globalDialog->variables.at(curIndex);
                 }
                 else
                 {
-                    aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                    PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                    if (curIndex<aPage->variables.length())
+                    {
+                        aComponent=aPage->variables.at(curIndex);
+                    }
+                    else
+                    {
+                        aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                    }
                 }
             }
 
             if (
+                curPage==-2
+                ||
                 (
-                 curPage<0
+                 curPage==-1
                  &&
                  aComponent->isVisibleTo(globalDialog)
                 )
@@ -1207,7 +1327,11 @@ void MainWindow::on_actionFindPrev_triggered()
                     }
                     else
                     {
-                        if (curPage<0)
+                        if (curPage==-2)
+                        {
+                        }
+                        else
+                        if (curPage==-1)
                         {
                             globalDialog->ui->scrollArea->ensureWidgetVisible(globalDialog->focusWidget());
 
@@ -1249,33 +1373,36 @@ void MainWindow::on_actionFindPrev_triggered()
             }
         }
 
-        curIndex--;
-
-        if (curIndex<0)
+        if (curPage>=-1)
         {
-            curPage--;
-
-            if (curPage<-1)
-            {
-                curPage=ui->pagesTabWidget->count()-1;
-            }
-
-            if (curPage<0)
-            {
-                totalCount=globalDialog->variables.length();
-            }
-            else
-            {
-                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
-
-                totalCount=aPage->variables.length()+aPage->components.length();
-            }
-
-            curIndex=totalCount-1;
+            curIndex--;
 
             if (curIndex<0)
             {
-                curIndex=0;
+                curPage--;
+
+                if (curPage<-1)
+                {
+                    curPage=ui->pagesTabWidget->count()-1;
+                }
+
+                if (curPage==-1)
+                {
+                    totalCount=globalDialog->variables.length();
+                }
+                else
+                {
+                    PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                    totalCount=aPage->variables.length()+aPage->components.length();
+                }
+
+                curIndex=totalCount-1;
+
+                if (curIndex<0)
+                {
+                    curIndex=0;
+                }
             }
         }
 
@@ -1288,27 +1415,36 @@ void MainWindow::on_actionFindPrev_triggered()
         {
             PageComponent *aComponent;
 
-            if (curPage<0)
+            if (fullDialog && fullDialog->pageComponent)
             {
-                aComponent=globalDialog->variables.at(curIndex);
+                aComponent=fullDialog->pageComponent;
             }
             else
             {
-                PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
-
-                if (curIndex<aPage->variables.length())
+                if (curPage==-1)
                 {
-                    aComponent=aPage->variables.at(curIndex);
+                    aComponent=globalDialog->variables.at(curIndex);
                 }
                 else
                 {
-                    aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                    PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(curPage);
+
+                    if (curIndex<aPage->variables.length())
+                    {
+                        aComponent=aPage->variables.at(curIndex);
+                    }
+                    else
+                    {
+                        aComponent=aPage->components.at(curIndex-aPage->variables.length());
+                    }
                 }
             }
 
             if (
+                curPage==-2
+                ||
                 (
-                 curPage<0
+                 curPage==-1
                  &&
                  aComponent->isVisibleTo(globalDialog)
                 )
@@ -1325,8 +1461,8 @@ void MainWindow::on_actionFindPrev_triggered()
 
                 if (widgets.length()>0)
                 {
-                    widgets.at(widgets.length()-1)->setFocus();
-                    aComponent->setWidgetCursor(widgets.at(widgets.length()-1), false);
+                    widgets.last()->setFocus();
+                    aComponent->setWidgetCursor(widgets.last(), false);
                 }
             }
         }

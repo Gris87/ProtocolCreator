@@ -63,6 +63,12 @@ void findFocus(int &pageIndex, int &varIndex, int &compIndex)
     varIndex=-1;
     compIndex=-1;
 
+    if (fullDialog)
+    {
+        pageIndex=-2;
+        return;
+    }
+
     if (globalDialog->isVisible())
     {
         QWidget* aFocusWidget=globalDialog->focusWidget();
