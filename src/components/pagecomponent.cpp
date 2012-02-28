@@ -163,14 +163,29 @@ bool PageComponent::find(bool isForward)
 
     int selectIndex=-1;
 
-    QWidget *aLastWidget=focusWidget();
-
-    for (int i=0; i<widgets.length(); i++)
+    if (fullDialog && fullDialog->pageComponent)
     {
-        if (widgets.at(i)==aLastWidget)
+        if (fullDialog->pageComponent->inherits("ComponentTextFrame"))
         {
-            selectIndex=i;
-            break;
+            selectIndex=widgets.indexOf(((ComponentTextFrame*)(fullDialog->pageComponent))->wordEdit->ui->valueEdit);
+        }
+        else
+        if (fullDialog->pageComponent->inherits("VariableExtendedListFrame"))
+        {
+            selectIndex=widgets.indexOf(((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget);
+        }
+    }
+    else
+    {
+        QWidget *aLastWidget=focusWidget();
+
+        for (int i=0; i<widgets.length(); i++)
+        {
+            if (widgets.at(i)==aLastWidget)
+            {
+                selectIndex=i;
+                break;
+            }
         }
     }
 
@@ -976,21 +991,28 @@ bool PageComponent::find(bool isForward)
             }
         }
 
-        if (isForward)
+        if (fullDialog && fullDialog->pageComponent)
         {
-            selectIndex++;
+            setWidgetCursor(aWidget, isForward);
         }
         else
         {
-            selectIndex--;
-        }
+            if (isForward)
+            {
+                selectIndex++;
+            }
+            else
+            {
+                selectIndex--;
+            }
 
-        if (selectIndex<0 || selectIndex>=widgets.length())
-        {
-            break;
-        }
+            if (selectIndex<0 || selectIndex>=widgets.length())
+            {
+                break;
+            }
 
-        setWidgetCursor(widgets.at(selectIndex), isForward);
+            setWidgetCursor(widgets.at(selectIndex), isForward);
+        }
     } while(true);
 
     return false;
