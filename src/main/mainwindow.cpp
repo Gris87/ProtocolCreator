@@ -51,6 +51,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
     else
     if (aAnswer==QMessageBox::No)
     {
+        if (currentName!="")
+        {
+            autoSaveTick();
+        }
+
         event->accept();
     }
     else
@@ -327,7 +332,8 @@ void MainWindow::on_actionSave_triggered()
         QFile aFile(currentName);
 
         // Backup existing file
-        if (!autoSaveMode && aFile.exists())
+//        if (!autoSaveMode && aFile.exists())
+        if (aFile.exists()) // Temp
         {
             QDir(dir).mkpath(dir+"backup");
 
