@@ -4,6 +4,7 @@
 MainWindow                *mainWindow=0;
 SearchDialog              *searchDialog=0;
 GlobalDialog              *globalDialog=0;
+FullDialog                *fullDialog=0;
 
 // GENERAL
 bool                       isAdmin=true;

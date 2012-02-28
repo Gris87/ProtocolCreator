@@ -765,13 +765,20 @@ void MainWindow::on_actionFind_triggered()
         delete searchDialog;
     }
 
-    if (globalDialog->isVisible())
+    if (fullDialog)
     {
-        searchDialog = new SearchDialog(globalDialog);
+        searchDialog = new SearchDialog(fullDialog);
     }
     else
     {
-        searchDialog = new SearchDialog(this);
+        if (globalDialog->isVisible())
+        {
+            searchDialog = new SearchDialog(globalDialog);
+        }
+        else
+        {
+            searchDialog = new SearchDialog(this);
+        }
     }
 
     searchDialog->show();
@@ -784,13 +791,20 @@ void MainWindow::on_actionReplace_triggered()
         delete searchDialog;
     }
 
-    if (globalDialog->isVisible())
+    if (fullDialog)
     {
-        searchDialog = new SearchDialog(globalDialog);
+        searchDialog = new SearchDialog(fullDialog);
     }
     else
     {
-        searchDialog = new SearchDialog(this);
+        if (globalDialog->isVisible())
+        {
+            searchDialog = new SearchDialog(globalDialog);
+        }
+        else
+        {
+            searchDialog = new SearchDialog(this);
+        }
     }
 
     searchDialog->ui->replaceGroupBox->setChecked(true);

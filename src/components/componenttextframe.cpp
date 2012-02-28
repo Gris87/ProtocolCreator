@@ -167,8 +167,13 @@ void ComponentTextFrame::on_useCheckBox_toggled(bool checked)
 
 void ComponentTextFrame::on_expandButton_clicked()
 {
-    FullDialog dialog(this);
-    dialog.setWindowTitle(ui->nameEdit->text());
+    fullDialog=new FullDialog(this);
+    fullDialog->setWindowTitle(ui->nameEdit->text());
+
+    fullDialog->addAction(mainWindow->ui->actionFind);
+    fullDialog->addAction(mainWindow->ui->actionReplace);
+    fullDialog->addAction(mainWindow->ui->actionFindNext);
+    fullDialog->addAction(mainWindow->ui->actionFindPrev);
 
     //------------------------------------------
 
@@ -177,11 +182,11 @@ void ComponentTextFrame::on_expandButton_clicked()
     bool wasVisible=ui->useCheckBox->isChecked();
     ui->useCheckBox->setChecked(true);
 
-    ui->userWidget->setParent(&dialog);
+    ui->userWidget->setParent(fullDialog);
     ui->userWidget->show();
-    dialog.ui->verticalLayout->addWidget(ui->userWidget);
+    fullDialog->ui->verticalLayout->addWidget(ui->userWidget);
 
-    dialog.exec();
+    fullDialog->exec();
 
     //------------------------------------------
 
@@ -190,6 +195,9 @@ void ComponentTextFrame::on_expandButton_clicked()
     ui->userWidget->setParent(this);
     ui->userWidget->show();
     ui->mainVerticalLayout->addWidget(ui->userWidget);
+
+    delete fullDialog;
+    fullDialog=0;
 }
 
 void ComponentTextFrame::on_lockButton_clicked()

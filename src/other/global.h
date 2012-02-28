@@ -66,6 +66,7 @@
 extern MainWindow                *mainWindow;
 extern SearchDialog              *searchDialog;
 extern GlobalDialog              *globalDialog;
+extern FullDialog                *fullDialog;
 
 // GENERAL
 extern bool                       isAdmin;

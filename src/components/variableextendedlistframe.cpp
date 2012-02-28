@@ -1344,8 +1344,13 @@ void VariableExtendedListFrame::getWidgetList(QList<QWidget*> &aList)
 
 void VariableExtendedListFrame::on_expandButton_clicked()
 {
-    FullDialog dialog(this);
-    dialog.setWindowTitle(ui->nameEdit->text());
+    fullDialog=new FullDialog(this);
+    fullDialog->setWindowTitle(ui->nameEdit->text());
+
+    fullDialog->addAction(mainWindow->ui->actionFind);
+    fullDialog->addAction(mainWindow->ui->actionReplace);
+    fullDialog->addAction(mainWindow->ui->actionFindNext);
+    fullDialog->addAction(mainWindow->ui->actionFindPrev);
 
     //------------------------------------------
 
@@ -1359,11 +1364,11 @@ void VariableExtendedListFrame::on_expandButton_clicked()
     ui->useCheckBox->setVisible(false);
     ui->titleLabel->setVisible(false);
 
-    ui->expandedWidget->setParent(&dialog);
+    ui->expandedWidget->setParent(fullDialog);
     ui->expandedWidget->show();
-    dialog.ui->verticalLayout->addWidget(ui->expandedWidget);
+    fullDialog->ui->verticalLayout->addWidget(ui->expandedWidget);
 
-    dialog.exec();
+    fullDialog->exec();
 
     //------------------------------------------
 
@@ -1377,6 +1382,9 @@ void VariableExtendedListFrame::on_expandButton_clicked()
     ui->expandedWidget->setParent(this);
     ui->expandedWidget->show();
     ui->mainVerticalLayout->addWidget(ui->expandedWidget);
+
+    delete fullDialog;
+    fullDialog=0;
 }
 
 void VariableExtendedListFrame::on_configButton_clicked()
