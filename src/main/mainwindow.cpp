@@ -823,13 +823,20 @@ void MainWindow::on_actionFindNext_triggered()
     {
         if (fullDialog && fullDialog->pageComponent)
         {
-            QList<QWidget *> widgets;
-            fullDialog->pageComponent->getWidgetList(widgets);
+            QWidget *aWidget=0;
 
-            if (widgets.length()>0)
+            if (fullDialog->pageComponent->inherits("ComponentTextFrame"))
             {
-                widgets.first()->setFocus();
+                aWidget=((ComponentTextFrame*)(fullDialog->pageComponent))->wordEdit->ui->valueEdit;
             }
+            else
+            if (fullDialog->pageComponent->inherits("VariableExtendedListFrame"))
+            {
+                aWidget=((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget;
+            }
+
+            aWidget->setFocus();
+            fullDialog->pageComponent->setWidgetCursor(aWidget, true);
         }
         else
         {
@@ -845,6 +852,7 @@ void MainWindow::on_actionFindNext_triggered()
                     if (widgets.length()>0)
                     {
                         widgets.first()->setFocus();
+                        globalDialog->variables.at(i)->setWidgetCursor(widgets.first(), true);
                         good=true;
                         break;
                     }
@@ -865,6 +873,7 @@ void MainWindow::on_actionFindNext_triggered()
                         if (widgets.length()>0)
                         {
                             widgets.first()->setFocus();
+                            aPage->variables.at(j)->setWidgetCursor(widgets.first(), true);
                             good=true;
                             break;
                         }
@@ -883,6 +892,7 @@ void MainWindow::on_actionFindNext_triggered()
                         if (widgets.length()>0)
                         {
                             widgets.first()->setFocus();
+                            aPage->components.at(j)->setWidgetCursor(widgets.first(), true);
                             good=true;
                             break;
                         }
@@ -1147,13 +1157,20 @@ void MainWindow::on_actionFindPrev_triggered()
     {
         if (fullDialog && fullDialog->pageComponent)
         {
-            QList<QWidget *> widgets;
-            fullDialog->pageComponent->getWidgetList(widgets);
+            QWidget *aWidget=0;
 
-            if (widgets.length()>0)
+            if (fullDialog->pageComponent->inherits("ComponentTextFrame"))
             {
-                widgets.last()->setFocus();
+                aWidget=((ComponentTextFrame*)(fullDialog->pageComponent))->wordEdit->ui->valueEdit;
             }
+            else
+            if (fullDialog->pageComponent->inherits("VariableExtendedListFrame"))
+            {
+                aWidget=((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget;
+            }
+
+            aWidget->setFocus();
+            fullDialog->pageComponent->setWidgetCursor(aWidget, false);
         }
         else
         {
@@ -1169,6 +1186,7 @@ void MainWindow::on_actionFindPrev_triggered()
                     if (widgets.length()>0)
                     {
                         widgets.last()->setFocus();
+                        globalDialog->variables.at(i)->setWidgetCursor(widgets.first(), true);
                         good=true;
                         break;
                     }
@@ -1189,6 +1207,7 @@ void MainWindow::on_actionFindPrev_triggered()
                         if (widgets.length()>0)
                         {
                             widgets.last()->setFocus();
+                            aPage->variables.at(j)->setWidgetCursor(widgets.first(), true);
                             good=true;
                             break;
                         }
@@ -1207,6 +1226,7 @@ void MainWindow::on_actionFindPrev_triggered()
                         if (widgets.length()>0)
                         {
                             widgets.last()->setFocus();
+                            aPage->components.at(j)->setWidgetCursor(widgets.first(), true);
                             good=true;
                             break;
                         }
