@@ -44,7 +44,7 @@ public:
 
     virtual void getWidgetList(QList<QWidget*> &aList);
     void setWidgetCursor(QWidget* aWidget, bool isForward);
-    bool find(bool isForward);
+    bool find(bool isForward, int startX, int startY);
 
 signals:
     void upPressed(PageComponent *aComponent);

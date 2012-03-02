@@ -151,7 +151,7 @@ void PageComponent::setWidgetCursor(QWidget* aWidget, bool isForward)
     }
 }
 
-bool PageComponent::find(bool isForward)
+bool PageComponent::find(bool isForward, int startX, int startY)
 {
     QList<QWidget*> widgets;
     getWidgetList(widgets);
@@ -737,6 +737,7 @@ bool PageComponent::find(bool isForward)
                 {
                     if (aTableWidget->itemDelegateForRow(curRow))
                     {
+                        aTableWidget->closePersistentEditor(aTableWidget->item(curRow, 0));
                         QString aText=aTableWidget->item(curRow, 0)->text();
 
                         if (aText.contains(lastSearch, Qt::CaseInsensitive))
@@ -777,6 +778,7 @@ bool PageComponent::find(bool isForward)
                     }
                     else
                     {
+                        aTableWidget->closePersistentEditor(aTableWidget->item(curRow, curCol));
                         QString aText=aTableWidget->item(curRow, curCol)->text();
 
                         switch (aTable->typeColumns.at(curCol).column->type())
@@ -985,9 +987,19 @@ bool PageComponent::find(bool isForward)
                             }
                         }
                     }
+
+                    if (fullDialog && fullDialog->pageComponent && curCol==startX && curRow==startY)
+                    {
+                        return false;
+                    }
                 } while (curRow>=0 && curRow<rowCount);
 
                 aTableWidget->setCurrentCell(-1, -1, QItemSelectionModel::Clear);
+
+                if ((isForward && startX==0 && startY==0) || (!isForward && startX==columnCount-1 && startY==rowCount-1))
+                {
+                    break;
+                }
             }
         }
 

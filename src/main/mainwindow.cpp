@@ -916,9 +916,33 @@ void MainWindow::on_actionFindNext_triggered()
     int startIndex;
     int totalCount;
 
+    int componentStartX=-1;
+    int componentStartY=-1;
+
     if (startPage==-2)
     {
         totalCount=0;
+
+        if (fullDialog->pageComponent->inherits("ComponentTextFrame"))
+        {
+            componentStartX=((ComponentTextFrame*)(fullDialog->pageComponent))->wordEdit->ui->valueEdit->textCursor().position();
+        }
+        else
+        if (fullDialog->pageComponent->inherits("VariableExtendedListFrame"))
+        {
+            componentStartX=((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget->currentColumn();
+            componentStartY=((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget->currentRow();
+        }
+
+        if (componentStartX<0)
+        {
+            componentStartX=0;
+        }
+
+        if (componentStartY<0)
+        {
+            componentStartY=0;
+        }
     }
     else
     if (startPage==-1)
@@ -1000,7 +1024,7 @@ void MainWindow::on_actionFindNext_triggered()
                 )
                )
             {
-                if (aComponent->find(true))
+                if (aComponent->find(true, componentStartX, componentStartY))
                 {
                     if (isFindAll)
                     {
@@ -1250,9 +1274,39 @@ void MainWindow::on_actionFindPrev_triggered()
     int startIndex;
     int totalCount;
 
+    int componentStartX=-1;
+    int componentStartY=-1;
+
     if (startPage==-2)
     {
         totalCount=0;
+
+        if (fullDialog->pageComponent->inherits("ComponentTextFrame"))
+        {
+            componentStartX=((ComponentTextFrame*)(fullDialog->pageComponent))->wordEdit->ui->valueEdit->textCursor().position();
+            componentStartY=0;
+
+            if (componentStartX<0)
+            {
+                componentStartX=((ComponentTextFrame*)(fullDialog->pageComponent))->wordEdit->ui->valueEdit->document()->rootFrame()->lastCursorPosition().position();
+            }
+        }
+        else
+        if (fullDialog->pageComponent->inherits("VariableExtendedListFrame"))
+        {
+            componentStartX=((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget->currentColumn();
+            componentStartY=((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget->currentRow();
+
+            if (componentStartX<0)
+            {
+                componentStartX=((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget->columnCount()-1;
+            }
+
+            if (componentStartY<0)
+            {
+                componentStartY=((VariableExtendedListFrame*)(fullDialog->pageComponent))->ui->dataTableWidget->rowCount()-1;
+            }
+        }
     }
     else
     if (startPage==-1)
@@ -1339,7 +1393,7 @@ void MainWindow::on_actionFindPrev_triggered()
                 )
                )
             {
-                if (aComponent->find(false))
+                if (aComponent->find(false, componentStartX, componentStartY))
                 {
                     if (isFindAll)
                     {
