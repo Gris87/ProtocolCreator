@@ -1472,6 +1472,47 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
                 return aResults.at(0).toStringList().join(aResults.at(1).toString());
             }
             else
+            if (aFunction=="Это_число")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                bool ok;
+                aResults.at(0).toDouble(&ok);
+
+                return ok;
+            }
+            else
+            if (aFunction=="Нули_слева")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                bool ok;
+                double aArg1=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                QString aRes=aResults.at(0).toString();
+
+                while (aRes.length()<aArg1)
+                {
+                    aRes.insert(0, "0");
+                }
+
+                return aRes;
+            }
+            else
             if (aFunction=="Случайный")
             {
                 bool ok;

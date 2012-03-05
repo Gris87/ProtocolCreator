@@ -59,6 +59,8 @@ int main(int argc, char *argv[])
     functionsList.append("Дата_в_Строку_2");
     functionsList.append("Время_в_Строку_2");
     functionsList.append("Список_в_Строку_2");
+    functionsList.append("Это_число_1");
+    functionsList.append("Нули_слева_2");
     functionsList.append("Случайный_2");
     functionsList.append("Округление_2");
     functionsList.append("Sin_1");

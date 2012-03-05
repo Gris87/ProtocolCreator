@@ -1,4 +1,3 @@
 Special functions needs to add
 Conditional format (Change color)
 Logs for conditional format
-Zeros before numbers
