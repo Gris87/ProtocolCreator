@@ -611,11 +611,65 @@ bool PageComponent::find(bool isForward, int startX, int startY)
                 ((QTextEdit*)aWidget)->setTextCursor(aCursor);
                 aWidget->activateWindow();
                 aWidget->setFocus();
-                return true;
+
+                if (fullDialog==0 || fullDialog->pageComponent==0)
+                {
+                    return true;
+                }
             }
             else
             {
                 ((QTextEdit*)aWidget)->moveCursor(QTextCursor::Start);
+            }
+
+            if (fullDialog && fullDialog->pageComponent)
+            {
+                if (index<0)
+                {
+                    if (
+                        isFindAll
+                        ||
+                        (aStart<=0 && isForward)
+                        ||
+                        (aStart>=aText.length()-1 && !isForward)
+                       )
+                    {
+                        QTextCursor aCursor=((QTextEdit*)aWidget)->textCursor();
+
+                        aCursor.setPosition(startX);
+
+                        ((QTextEdit*)aWidget)->setTextCursor(aCursor);
+                        aWidget->activateWindow();
+                        aWidget->setFocus();
+
+                        break;
+                    }
+                }
+                else
+                {
+                    if (
+                        (aSelection.length()>0 && index>=aStart && index<=startX && isForward)
+                        ||
+                        (aSelection.length()==0 && index>aStart && index<=startX && isForward)
+                        ||
+                        (aSelection.length()>0 && index>=startX && index<=aStart && !isForward)
+                        ||
+                        (aSelection.length()==0 && index>=aStart && index<=startX && !isForward)
+                       )
+                    {
+                        QTextCursor aCursor=((QTextEdit*)aWidget)->textCursor();
+
+                        aCursor.setPosition(startX);
+
+                        ((QTextEdit*)aWidget)->setTextCursor(aCursor);
+                        aWidget->activateWindow();
+                        aWidget->setFocus();
+
+                        break;
+                    }
+
+                    return true;
+                }
             }
         }
         else

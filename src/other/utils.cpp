@@ -1,5 +1,38 @@
 #include "src/other/global.h"
 
+void myMessageOutput(QtMsgType type, const char *msg)
+{
+    FILE *file;
+    file = fopen("ProtocolCreator.log", "a");
+
+    QString aRow=QDateTime::currentDateTime().toString("MM-dd hh:mm:ss.zzz");
+
+    aRow.append(": ");
+
+    switch (type)
+    {
+        case QtDebugMsg:
+            aRow.append("DEBUG");
+        break;
+        case QtWarningMsg:
+            aRow.append("INFO");
+        break;
+        case QtCriticalMsg:
+            aRow.append("WARN");
+        break;
+        case QtFatalMsg:
+            aRow.append("ERROR");
+        break;
+    }
+
+    aRow.append("/ProtocolCreator(9999): ");
+    aRow.append(QString::fromLocal8Bit(msg));
+
+    fprintf(file, "%s\n", aRow.toUtf8().data());
+
+    fclose(file);
+}
+
 void moveFile(const QString aSourceFileName, const QString aDestFileName)
 {
     copyFile(aSourceFileName, aDestFileName);

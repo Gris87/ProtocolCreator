@@ -36,7 +36,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QProgressBar" name="progressBar"/>
+     <widget class="AutoUpdateProgressBar" name="progressBar"/>
     </item>
    </layout>
   </widget>
@@ -343,6 +343,11 @@
    <extends>QTabWidget</extends>
    <header>src/widgets/movabletabwidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AutoUpdateProgressBar</class>
+   <extends>QProgressBar</extends>
+   <header>src/widgets/autoupdateprogressbar.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

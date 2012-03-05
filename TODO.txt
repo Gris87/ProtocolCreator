@@ -1,6 +1,4 @@
 Special functions needs to add
-Maybe sort columns
-Search in fullscreen mode
 Conditional format (Change color)
 Logs for conditional format
 Zeros before numbers

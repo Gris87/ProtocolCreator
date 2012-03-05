@@ -1387,6 +1387,8 @@ void VariableExtendedListFrame::on_expandButton_clicked()
 
     delete fullDialog;
     fullDialog=0;
+
+    searchDialog=0;
 }
 
 void VariableExtendedListFrame::on_configButton_clicked()

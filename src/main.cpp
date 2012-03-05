@@ -4,6 +4,8 @@
 
 int main(int argc, char *argv[])
 {
+    qInstallMsgHandler(myMessageOutput);
+
     QApplication a(argc, argv);
 
     Q_INIT_RESOURCE(Resources);

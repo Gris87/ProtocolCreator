@@ -200,6 +200,8 @@ void ComponentTextFrame::on_expandButton_clicked()
 
     delete fullDialog;
     fullDialog=0;
+
+    searchDialog=0;
 }
 
 void ComponentTextFrame::on_lockButton_clicked()

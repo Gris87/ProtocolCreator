@@ -9,6 +9,7 @@
 #include <QTextEdit>
 #include <QTextTable>
 
+void myMessageOutput(QtMsgType type, const char *msg);
 void moveFile(const QString aSourceFileName, const QString aDestFileName);
 void copyFile(const QString aSourceFileName, const QString aDestFileName);
 void setGeometryInDesktop(QWidget* aWidget, int aX, int aY, int aWidthSize, int aHeightSize);
