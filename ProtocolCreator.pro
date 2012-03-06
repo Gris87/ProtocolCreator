@@ -121,7 +121,8 @@ SOURCES += src/main.cpp\
     src/word/xml/wordxmltablecellproperties.cpp \
     src/main/componentselectiondialog.cpp \
     src/other/regeditthread.cpp \
-    src/widgets/autoupdateprogressbar.cpp
+    src/widgets/autoupdateprogressbar.cpp \
+    src/widgets/conditionalformatframe.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -231,7 +232,8 @@ HEADERS  += src/main/mainwindow.h \
     src/word/xml/wordxmltablecellproperties.h \
     src/main/componentselectiondialog.h \
     src/other/regeditthread.h \
-    src/widgets/autoupdateprogressbar.h
+    src/widgets/autoupdateprogressbar.h \
+    src/widgets/conditionalformatframe.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
@@ -258,7 +260,8 @@ FORMS    += src/main/mainwindow.ui \
     src/main/listselectiondialog.ui \
     src/main/insertlinktabledialog.ui \
     src/main/searchdialog.ui \
-    src/main/componentselectiondialog.ui
+    src/main/componentselectiondialog.ui \
+    src/widgets/conditionalformatframe.ui
 
 OTHER_FILES += \
     TODO.txt

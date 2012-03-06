@@ -50,5 +50,9 @@
         <file>images/RightArrow.png</file>
         <file>images/Full.png</file>
         <file>images/StrikeOut.png</file>
+        <file>images/Remove.png</file>
+        <file>images/UpArrow.png</file>
+        <file>images/DownArrow.png</file>
+        <file>images/Add.png</file>
     </qresource>
 </RCC>

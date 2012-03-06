@@ -6,6 +6,7 @@
 #include "ui_columneditdialog.h"
 
 #include "src/widgets/unitedtable.h"
+#include "src/widgets/conditionalformatframe.h"
 #include "src/components/variableextendedlistframe.h"
 
 namespace Ui {
@@ -30,6 +31,10 @@ public:
     void applyChanges();
 
 private slots:
+    void delRequested(ConditionalFormatFrame *condition);
+    void upRequested(ConditionalFormatFrame *condition);
+    void downRequested(ConditionalFormatFrame *condition);
+
     void on_typeComboBox_currentIndexChanged(int index);
     void on_integerNumberSpinBox_valueChanged(int value);
     void on_integerAutoIncrementCheckBox_toggled(bool checked);
@@ -41,6 +46,7 @@ private slots:
     void on_functionButton_clicked();
     void on_leftButton_clicked();
     void on_rightButton_clicked();
+    void on_addToolButton_clicked();
 };
 
 #endif // COLUMNEDITDIALOG_H

@@ -1376,3 +1376,86 @@ void ColumnEditDialog::on_rightButton_clicked()
 
     startEditing();
 }
+
+void ColumnEditDialog::on_addToolButton_clicked()
+{
+    ConditionalFormatFrame *aCondition = new ConditionalFormatFrame(this);
+    aCondition->mTable=mTable;
+
+    ui->conditionsVerticalLayout->addWidget(aCondition);
+
+    aCondition->ui->downToolButton->setEnabled(false);
+    aCondition->ui->upToolButton->setEnabled(ui->conditionsVerticalLayout->count()>1);
+
+    if (aCondition->ui->upToolButton->isEnabled())
+    {
+        ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(ui->conditionsVerticalLayout->count()-2)->widget()))->ui->downToolButton->setEnabled(true);
+    }
+
+    connect(aCondition, SIGNAL(delRequested(ConditionalFormatFrame*)), this, SLOT(delRequested(ConditionalFormatFrame*)));
+    connect(aCondition, SIGNAL(upRequested(ConditionalFormatFrame*)), this, SLOT(upRequested(ConditionalFormatFrame*)));
+    connect(aCondition, SIGNAL(downRequested(ConditionalFormatFrame*)), this, SLOT(downRequested(ConditionalFormatFrame*)));
+}
+
+void ColumnEditDialog::delRequested(ConditionalFormatFrame *condition)
+{
+    int index=ui->conditionsVerticalLayout->indexOf(condition);
+
+    if (ui->conditionsVerticalLayout->count()>1)
+    {
+        if (index==0)
+        {
+            ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(1)->widget()))->ui->upToolButton->setEnabled(false);
+        }
+        else
+        if (index==ui->conditionsVerticalLayout->count()-1)
+        {
+            ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(ui->conditionsVerticalLayout->count()-2)->widget()))->ui->downToolButton->setEnabled(false);
+        }
+    }
+
+    ui->conditionsVerticalLayout->removeWidget(condition);
+    delete condition;
+}
+
+void ColumnEditDialog::upRequested(ConditionalFormatFrame *condition)
+{
+    int index=ui->conditionsVerticalLayout->indexOf(condition);
+
+    ConditionalFormatFrame *first = ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(index)->widget()));
+    ConditionalFormatFrame *second = ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(index-1)->widget()));
+
+    ui->conditionsVerticalLayout->removeWidget(first);
+    ui->conditionsVerticalLayout->insertWidget(index-1, first);
+
+    bool temp;
+
+    temp=first->ui->upToolButton->isEnabled();
+    first->ui->upToolButton->setEnabled(second->ui->upToolButton->isEnabled());
+    second->ui->upToolButton->setEnabled(temp);
+
+    temp=first->ui->downToolButton->isEnabled();
+    first->ui->downToolButton->setEnabled(second->ui->downToolButton->isEnabled());
+    second->ui->downToolButton->setEnabled(temp);
+}
+
+void ColumnEditDialog::downRequested(ConditionalFormatFrame *condition)
+{
+    int index=ui->conditionsVerticalLayout->indexOf(condition);
+
+    ConditionalFormatFrame *first = ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(index)->widget()));
+    ConditionalFormatFrame *second = ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(index+1)->widget()));
+
+    ui->conditionsVerticalLayout->removeWidget(first);
+    ui->conditionsVerticalLayout->insertWidget(index+1, first);
+
+    bool temp;
+
+    temp=first->ui->upToolButton->isEnabled();
+    first->ui->upToolButton->setEnabled(second->ui->upToolButton->isEnabled());
+    second->ui->upToolButton->setEnabled(temp);
+
+    temp=first->ui->downToolButton->isEnabled();
+    first->ui->downToolButton->setEnabled(second->ui->downToolButton->isEnabled());
+    second->ui->downToolButton->setEnabled(temp);
+}
