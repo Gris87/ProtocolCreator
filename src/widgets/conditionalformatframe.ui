@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>718</width>
+    <width>624</width>
     <height>34</height>
    </rect>
   </property>
@@ -64,11 +64,26 @@
    </item>
    <item>
     <widget class="QTableWidget" name="exampleTableWidget">
-     <property name="maximumSize">
+     <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>150</width>
        <height>30</height>
       </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -94,6 +109,9 @@
      <attribute name="horizontalHeaderVisible">
       <bool>false</bool>
      </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>150</number>
+     </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
@@ -101,7 +119,13 @@
      <column/>
      <item row="0" column="0">
       <property name="text">
-       <string>AaBbCcYyZz</string>
+       <string>AaBbYyZz</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+        <pointsize>12</pointsize>
+       </font>
       </property>
      </item>
     </widget>

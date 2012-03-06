@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>553</width>
-    <height>350</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -136,6 +136,20 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="generalLabel">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Основные настройки:</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="visibleCheckBox">
@@ -286,7 +300,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>0</height>
           </size>
          </property>
         </spacer>
@@ -732,6 +746,20 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="conditionalLabel">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Условное форматирование:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable">
       <bool>true</bool>
@@ -742,7 +770,7 @@
         <x>0</x>
         <y>0</y>
         <width>543</width>
-        <height>104</height>
+        <height>114</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -809,7 +837,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>113</height>
+           <height>0</height>
           </size>
          </property>
         </spacer>

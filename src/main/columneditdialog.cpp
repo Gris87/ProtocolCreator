@@ -223,6 +223,30 @@ void ColumnEditDialog::startEditing()
     ui->leftOffsetSpinBox->setValue(aColumn->leftOffset);
     ui->rightOffsetSpinBox->setValue(aColumn->rightOffset);
     ui->totalOffsetSpinBox->setValue(aColumn->totalOffset);
+
+    while (ui->conditionsVerticalLayout->count()>0)
+    {
+        QWidget *aWidget=ui->conditionsVerticalLayout->itemAt(0)->widget();
+        ui->conditionsVerticalLayout->removeWidget(aWidget);
+        delete aWidget;
+    }
+
+    for (int i=0; i<aColumn->conditions.length(); i++)
+    {
+        on_addToolButton_clicked();
+
+        QTableWidgetItem *aItem=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->exampleTableWidget->item(0, 0);
+
+        QFont aFont;
+        aFont.fromString(aColumn->conditions.at(i).fontString);
+        aItem->setFont(aFont);
+
+        aItem->setTextAlignment(aColumn->conditions.at(i).alignment);
+        aItem->setBackground(QBrush(QColor(aColumn->conditions.at(i).backgroundColorR, aColumn->conditions.at(i).backgroundColorG, aColumn->conditions.at(i).backgroundColorB)));
+        aItem->setTextColor(QColor(aColumn->conditions.at(i).textColorR, aColumn->conditions.at(i).textColorG, aColumn->conditions.at(i).textColorB));
+
+        ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->conditionEdit->setText(aColumn->conditions.at(i).condition);
+    }
 }
 
 void ColumnEditDialog::applyChanges()
@@ -338,6 +362,27 @@ void ColumnEditDialog::applyChanges()
         aColumn->leftOffset=ui->leftOffsetSpinBox->value();
         aColumn->rightOffset=ui->rightOffsetSpinBox->value();
         aColumn->totalOffset=ui->totalOffsetSpinBox->value();
+
+        aColumn->conditions.clear();
+
+        for (int i=0; i<ui->conditionsVerticalLayout->count(); i++)
+        {
+            QTableWidgetItem *aItem=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->exampleTableWidget->item(0, 0);
+
+            SConditionFormat aFormat;
+
+            aFormat.fontString=aItem->font().toString();
+            aFormat.alignment=aItem->textAlignment();
+            aFormat.backgroundColorR=aItem->background().color().red();
+            aFormat.backgroundColorG=aItem->background().color().green();
+            aFormat.backgroundColorB=aItem->background().color().blue();
+            aFormat.textColorR=aItem->textColor().red();
+            aFormat.textColorG=aItem->textColor().green();
+            aFormat.textColorB=aItem->textColor().blue();
+            aFormat.condition=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->conditionEdit->text();
+
+            aColumn->conditions.append(aFormat);
+        }
 
 
 
@@ -728,6 +773,25 @@ void ColumnEditDialog::applyChanges()
         aColumn.textColorG=0;
         aColumn.textColorB=0;
 
+        for (int i=0; i<ui->conditionsVerticalLayout->count(); i++)
+        {
+            QTableWidgetItem *aItem=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->exampleTableWidget->item(0, 0);
+
+            SConditionFormat aFormat;
+
+            aFormat.fontString=aItem->font().toString();
+            aFormat.alignment=aItem->textAlignment();
+            aFormat.backgroundColorR=aItem->background().color().red();
+            aFormat.backgroundColorG=aItem->background().color().green();
+            aFormat.backgroundColorB=aItem->background().color().blue();
+            aFormat.textColorR=aItem->textColor().red();
+            aFormat.textColorG=aItem->textColor().green();
+            aFormat.textColorB=aItem->textColor().blue();
+            aFormat.condition=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->conditionEdit->text();
+
+            aColumn.conditions.append(aFormat);
+        }
+
         mTable->typeColumns.insert(mColumnIndex, aColumn);
 
         mTableWidget->insertColumn(mColumnIndex);
@@ -745,12 +809,14 @@ void ColumnEditDialog::applyChanges()
 
         aItem=new QTableWidgetItem(aColumn.column->typeDescription());
         aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setFont(QFont("Times New Roman", 12));
         aItem->setBackground(aBrush);
 
         mTableWidget->setItem(0, mColumnIndex, aItem);
 
         aItem=new QTableWidgetItem("Промежуточная строка");
         aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setFont(QFont("Times New Roman", 12));
         aItem->setBackground(aBrush);
 
         mTableWidget->setItem(1, mColumnIndex, aItem);
@@ -1379,9 +1445,7 @@ void ColumnEditDialog::on_rightButton_clicked()
 
 void ColumnEditDialog::on_addToolButton_clicked()
 {
-    ConditionalFormatFrame *aCondition = new ConditionalFormatFrame(this);
-    aCondition->mTable=mTable;
-
+    ConditionalFormatFrame *aCondition = new ConditionalFormatFrame(mTable, this);
     ui->conditionsVerticalLayout->addWidget(aCondition);
 
     aCondition->ui->downToolButton->setEnabled(false);

@@ -214,6 +214,7 @@ void TableEditDialog::setItemsForRow(int row)
         QTableWidgetItem *aItem=new QTableWidgetItem();
         aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
         aItem->setBackground(aHeaderBrush);
+        aItem->setFont(QFont("Times New Roman", 12));
         ui->headerTableWidget->setItem(row, i, aItem);
     }
 }
@@ -227,6 +228,7 @@ void TableEditDialog::setItemsForColumn(int column)
         QTableWidgetItem *aItem=new QTableWidgetItem();
         aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
         aItem->setBackground(aHeaderBrush);
+        aItem->setFont(QFont("Times New Roman", 12));
         ui->headerTableWidget->setItem(i, column, aItem);
     }
 }

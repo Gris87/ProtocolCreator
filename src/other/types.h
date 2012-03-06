@@ -21,6 +21,19 @@ struct STableCell
     quint8 textColorB;
 };
 
+struct SConditionFormat
+{
+    QString fontString;
+    quint8 alignment;
+    quint8 backgroundColorR;
+    quint8 backgroundColorG;
+    quint8 backgroundColorB;
+    quint8 textColorR;
+    quint8 textColorG;
+    quint8 textColorB;
+    QString condition;
+};
+
 struct STableColumn
 {
     QString name;
@@ -37,6 +50,7 @@ struct STableColumn
     quint8 textColorR;
     quint8 textColorG;
     quint8 textColorB;
+    QList<SConditionFormat> conditions;
 };
 
 #endif // TYPES_H
