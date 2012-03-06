@@ -26,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     loadState();
 
-    on_actionNew_triggered();
-
     ui->progressBar->setMaximum(1);
     ui->progressBar->setValue(0);
 }
@@ -107,6 +105,8 @@ void MainWindow::on_actionNew_triggered()
     updateAdmin();
 
     resetAutoSaveTimer();
+
+    autoSaveTick();
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -264,6 +264,8 @@ void MainWindow::openFile(QString aFileName)
     updateAdmin();
 
     resetAutoSaveTimer();
+
+    autoSaveTick();
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -287,8 +289,13 @@ void MainWindow::on_actionSave_triggered()
         }
     }
 
-    if (currentName=="")
+    if (currentName=="" || (!autoSaveMode && currentName.startsWith(dir+"autosave/")))
     {
+        if (currentName!="")
+        {
+            QMessageBox::information(this, protocolCreatorVersion, "Пожалуйста, сохраните в другом месте. Сохранять в папке autosave запрещено");
+        }
+
         on_actionSaveAs_triggered();
     }
     else
@@ -304,7 +311,10 @@ void MainWindow::on_actionSave_triggered()
         aStream << QString("AdminPassword");
         aStream << adminPass;
 
-        globalDialog->saveToStream(aStream);
+        if (globalDialog)
+        {
+            globalDialog->saveToStream(aStream);
+        }
 
         aStream << QString("Pages");
 
@@ -2415,6 +2425,7 @@ void MainWindow::saveState()
 
     aSettings.beginGroup("States");
 
+    aSettings.setValue("Normal_State",true);
     aSettings.setValue("Geometry",saveGeometry());
     aSettings.setValue("Divider_state",dividerSplitter->saveState());
 
@@ -2425,6 +2436,25 @@ void MainWindow::loadState()
 {
     QSettings aSettings(dir+"data/Config.ini",QSettings::IniFormat);
     aSettings.beginGroup("States");
+
+    if (!aSettings.value("Normal_State", true).toBool())
+    {
+        QDir aDir(dir+"autosave/");
+        QFileInfoList aFiles=aDir.entryInfoList();
+
+        QDateTime aMaxDate(QDate(1900, 1, 1), QTime(0, 0, 0, 0));
+
+        for (int i=0; i<aFiles.length(); i++)
+        {
+            if (!aFiles.at(i).isDir() && aMaxDate<aFiles.at(i).lastModified())
+            {
+                aMaxDate=aFiles.at(i).lastModified();
+                mLastAutoSave=dir+"autosave/"+aFiles.at(i).fileName();
+            }
+        }
+    }
+
+    aSettings.setValue("Normal_State",false);
 
     restoreGeometry(aSettings.value("Geometry").toByteArray());
     dividerSplitter->restoreState(aSettings.value("Divider_state").toByteArray());

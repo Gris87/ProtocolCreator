@@ -30,6 +30,7 @@ public:
     bool errorHappened;
     bool autoSaveMode;
     QTimer autoSaveTimer;
+    QString mLastAutoSave;
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -54,6 +55,7 @@ public:
     inline void loadState();
 
 public slots:
+    void on_actionNew_triggered();
     void on_actionFindNext_triggered();
     void on_actionFindPrev_triggered();
 
@@ -66,7 +68,6 @@ private slots:
 
     void on_pagesTabWidget_tabCloseRequested(int index);
 
-    void on_actionNew_triggered();
     void on_actionOpen_triggered();
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();

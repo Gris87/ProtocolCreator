@@ -99,6 +99,20 @@ int main(int argc, char *argv[])
 
         mainWindow->openFile(arguments.last());
     }
+    else
+    {
+        if (mainWindow->mLastAutoSave=="")
+        {
+            mainWindow->on_actionNew_triggered();
+        }
+        else
+        {
+            mainWindow->openFile(mainWindow->mLastAutoSave);
+            QMessageBox::warning(mainWindow, protocolCreatorVersion, "ProtocolCreator восстановлен после сбоя");
+        }
+    }
+
+    mainWindow->ui->progressBar->repaint();
 
     RegEditThread aRegEditThread;
     aRegEditThread.start(QThread::IdlePriority);
