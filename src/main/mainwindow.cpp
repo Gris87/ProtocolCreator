@@ -204,6 +204,8 @@ void MainWindow::openFile(QString aFileName)
 
     ui->progressBar->setValue(0);
 
+    ui->pagesTabWidget->setTabsClosable(false);
+
     ui->progressBar->setMaximum(aArray.length());
 
     contentPage=0;
