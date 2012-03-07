@@ -694,6 +694,13 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
 
                                     aColumn.conditions.append(aFormat);
                                 }
+
+                                if (aCondCount>0)
+                                {
+                                    QFont aFont=ui->dataTableWidget->horizontalHeaderItem(i)->font();
+                                    aFont.setUnderline(true);
+                                    ui->dataTableWidget->horizontalHeaderItem(i)->setFont(aFont);
+                                }
                             }
                             else
                             if (aMagicWord=="TypeEnd")

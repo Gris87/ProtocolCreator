@@ -388,12 +388,21 @@ void ColumnEditDialog::applyChanges()
 
         mTableWidget->horizontalHeaderItem(mColumnIndex)->setText(aColumn->name);
         mTableWidget->horizontalHeaderItem(mColumnIndex)->setTextColor(aColumn->visible? QColor(0, 0, 0) : QColor(128, 128, 128));
+
+        QFont aFont=mTableWidget->horizontalHeaderItem(mColumnIndex)->font();
+        aFont.setUnderline(aColumn->conditions.length()>0);
+        mTableWidget->horizontalHeaderItem(mColumnIndex)->setFont(aFont);
+
         mTableWidget->item(0, mColumnIndex)->setText(aColumn->column->typeDescription());
 
 
 
         mTable->ui->dataTableWidget->horizontalHeaderItem(mColumnIndex)->setText(aColumn->name);
         mTable->ui->dataTableWidget->horizontalHeaderItem(mColumnIndex)->setTextColor(aColumn->visible? QColor(0, 0, 0) : QColor(128, 128, 128));
+
+        aFont=mTable->ui->dataTableWidget->horizontalHeaderItem(mColumnIndex)->font();
+        aFont.setUnderline(aColumn->conditions.length()>0);
+        mTable->ui->dataTableWidget->horizontalHeaderItem(mColumnIndex)->setFont(aFont);
 
         delete mTable->ui->dataTableWidget->itemDelegateForColumn(mColumnIndex);
 
@@ -801,6 +810,13 @@ void ColumnEditDialog::applyChanges()
         aItem=new QTableWidgetItem(aColumn.name);
         aItem->setTextColor(aColumn.visible? QColor(0, 0, 0) : QColor(128, 128, 128));
 
+        if (aColumn.conditions.length()>0)
+        {
+            QFont aFont=aItem->font();
+            aFont.setUnderline(true);
+            aItem->setFont(aFont);
+        }
+
         mTableWidget->setHorizontalHeaderItem(mColumnIndex, aItem);
 
 
@@ -855,6 +871,13 @@ void ColumnEditDialog::applyChanges()
 
         aItem=new QTableWidgetItem(aColumn.name);
         aItem->setTextColor(aColumn.visible? QColor(0, 0, 0) : QColor(128, 128, 128));
+
+        if (aColumn.conditions.length()>0)
+        {
+            QFont aFont=aItem->font();
+            aFont.setUnderline(true);
+            aItem->setFont(aFont);
+        }
 
         mTable->ui->dataTableWidget->setHorizontalHeaderItem(mColumnIndex, aItem);
 

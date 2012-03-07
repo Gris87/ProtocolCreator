@@ -76,6 +76,13 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         aItem=new QTableWidgetItem(aColumn->name);
         aItem->setTextColor(aColumn->visible? QColor(0, 0, 0) : QColor(128, 128, 128));
 
+        if (aColumn->conditions.length()>0)
+        {
+            QFont aFont=aItem->font();
+            aFont.setUnderline(true);
+            aItem->setFont(aFont);
+        }
+
         ui->structureTableWidget->setHorizontalHeaderItem(i, aItem);
 
 
