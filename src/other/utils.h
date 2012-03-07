@@ -18,7 +18,7 @@ void copyVariable(PageComponent *aComponent);
 void checkVarName(QString aName, QStringList &aErrorList);
 PageComponent* variableByName(QString aVariableName, PageComponent *aComponent);
 PageComponent* getVariableOrThrow(QString aVariableName, PageComponent *aComponent);
-QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableExtendedListFrame *inFrame=0, int tableRow=-1);
+QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageComponent *aComponent, VariableExtendedListFrame *inFrame=0, int tableRow=-1);
 void replaceLinksInText(QTextEdit *aTextEdit, PageComponent *aPage);
 QString variantToText(const QVariant &aVariant);
 

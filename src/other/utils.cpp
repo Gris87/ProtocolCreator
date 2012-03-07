@@ -395,7 +395,7 @@ PageComponent* getVariableOrThrow(QString aVariableName, PageComponent *aCompone
     return aVariable;
 }
 
-QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableExtendedListFrame *inFrame, int tableRow)
+QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageComponent *aComponent, VariableExtendedListFrame *inFrame, int tableRow)
 {
     aExpression=aExpression.trimmed();
 
@@ -649,7 +649,7 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
 
         if (aFunction=="Если")
         {
-            QVariant aCondition=calculatePart(aParameters.at(0), aComponent, inFrame, tableRow);
+            QVariant aCondition=calculatePart(aParameters.at(0), aErrorList, aComponent, inFrame, tableRow);
 
             if (aCondition.type()!=QVariant::Bool)
             {
@@ -659,11 +659,11 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
 
             if (aCondition.toBool())
             {
-                return calculatePart(aParameters.at(1), aComponent, inFrame, tableRow);
+                return calculatePart(aParameters.at(1), aErrorList, aComponent, inFrame, tableRow);
             }
             else
             {
-                return calculatePart(aParameters.at(2), aComponent, inFrame, tableRow);
+                return calculatePart(aParameters.at(2), aErrorList, aComponent, inFrame, tableRow);
             }
         }
         else
@@ -672,7 +672,7 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
 
             for (int i=0; i<aParameters.length(); i++)
             {
-                aResults.append(calculatePart(aParameters.at(i), aComponent, inFrame, tableRow));
+                aResults.append(calculatePart(aParameters.at(i), aErrorList, aComponent, inFrame, tableRow));
             }
 
             if (aFunction=="Сумма_чисел")
@@ -1991,7 +1991,7 @@ QVariant calculatePart(QString aExpression, PageComponent *aComponent, VariableE
 
             try
             {
-                varResult=aVariable->calculate();
+                varResult=aVariable->calculate(aErrorList);
             }
             catch (...)
             {

@@ -231,14 +231,14 @@ bool VariableListFrame::isEditable()
     return !ui->editButton->isFlat();
 }
 
-QVariant VariableListFrame::calculate()
+QVariant VariableListFrame::calculate(QStringList *aErrorList)
 {
     if (isWasCalculated)
     {
         return calculationResult;
     }
 
-    PageComponent::calculate();
+    PageComponent::calculate(aErrorList);
 
     calculationResult=ui->valueComboBox->currentText();
 

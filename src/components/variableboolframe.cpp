@@ -172,14 +172,14 @@ bool VariableBoolFrame::isEditable()
     return !ui->editButton->isFlat();
 }
 
-QVariant VariableBoolFrame::calculate()
+QVariant VariableBoolFrame::calculate(QStringList *aErrorList)
 {
     if (isWasCalculated)
     {
         return calculationResult;
     }
 
-    PageComponent::calculate();
+    PageComponent::calculate(aErrorList);
 
     calculationResult=ui->valueCheckBox->isChecked();
 

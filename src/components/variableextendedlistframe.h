@@ -58,7 +58,7 @@ public:
 
     void checkLink(QStringList &aErrorList, QString aLink);
     void checkForErrors(QStringList &aErrorList);
-    QVariant calculate();
+    QVariant calculate(QStringList *aErrorList=0);
 
     void getWidgetList(QList<QWidget*> &aList);
 

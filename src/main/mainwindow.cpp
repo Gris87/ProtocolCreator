@@ -706,12 +706,19 @@ void MainWindow::on_actionCheckDocument_triggered()
         {
             try
             {
-                globalDialog->variables.at(i)->calculate();
+                globalDialog->variables.at(i)->calculate(&aErrors);
             }
             catch(...)
             {
                 addError("Global."+globalDialog->variables.at(i)->variableName()+": "+globalDialog->variables.at(i)->calculationError);
             }
+
+            for (int j=0; j<aErrors.length(); j++)
+            {
+                addLog("Global."+globalDialog->variables.at(i)->variableName(), aErrors.at(j));
+            }
+
+            aErrors.clear();
 
             ui->progressBar->setValue(ui->progressBar->value()+1);
         }
@@ -724,12 +731,19 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 try
                 {
-                    aPage->variables.at(j)->calculate();
+                    aPage->variables.at(j)->calculate(&aErrors);
                 }
                 catch(...)
                 {
                     addError(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(j)->variableName()+": "+aPage->variables.at(j)->calculationError);
                 }
+
+                for (int k=0; k<aErrors.length(); k++)
+                {
+                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->variables.at(j)->variableName(), aErrors.at(k));
+                }
+
+                aErrors.clear();
 
                 ui->progressBar->setValue(ui->progressBar->value()+1);
             }
@@ -738,12 +752,19 @@ void MainWindow::on_actionCheckDocument_triggered()
             {
                 try
                 {
-                    aPage->components.at(j)->calculate();
+                    aPage->components.at(j)->calculate(&aErrors);
                 }
                 catch(...)
                 {
                     addError(aPage->ui->varNameEdit->text()+"."+aPage->components.at(j)->variableName()+": "+aPage->components.at(j)->calculationError);
                 }
+
+                for (int k=0; k<aErrors.length(); k++)
+                {
+                    addLog(aPage->ui->varNameEdit->text()+"."+aPage->components.at(j)->variableName(), aErrors.at(k));
+                }
+
+                aErrors.clear();
 
                 ui->progressBar->setValue(ui->progressBar->value()+1);
             }

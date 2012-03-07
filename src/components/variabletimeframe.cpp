@@ -172,14 +172,14 @@ bool VariableTimeFrame::isEditable()
     return !ui->editButton->isFlat();
 }
 
-QVariant VariableTimeFrame::calculate()
+QVariant VariableTimeFrame::calculate(QStringList *aErrorList)
 {
     if (isWasCalculated)
     {
         return calculationResult;
     }
 
-    PageComponent::calculate();
+    PageComponent::calculate(aErrorList);
 
     calculationResult=ui->valueEdit->time();
 

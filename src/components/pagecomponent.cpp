@@ -64,7 +64,7 @@ void PageComponent::resetCalculation()
     calculationResult=0;
 }
 
-QVariant PageComponent::calculate()
+QVariant PageComponent::calculate(QStringList *aErrorList)
 {
     if (isInCalculation)
     {

@@ -172,14 +172,14 @@ bool VariableStringFrame::isEditable()
     return !ui->editButton->isFlat();
 }
 
-QVariant VariableStringFrame::calculate()
+QVariant VariableStringFrame::calculate(QStringList *aErrorList)
 {
     if (isWasCalculated)
     {
         return calculationResult;
     }
 
-    PageComponent::calculate();
+    PageComponent::calculate(aErrorList);
 
     calculationResult=ui->valueEdit->text();
 

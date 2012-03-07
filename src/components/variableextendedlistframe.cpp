@@ -210,7 +210,7 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
             for (int j=0; j<condCount; j++)
             {
-                SConditionFormat *aFormat=&aColumn->conditions[i];
+                SConditionFormat *aFormat=&aColumn->conditions[j];
 
                 aStream << QString("Font");
                 aStream << aFormat->fontString;
@@ -672,6 +672,8 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                             aStream >> aFormat.backgroundColorR;
                                             aStream >> aFormat.backgroundColorG;
                                             aStream >> aFormat.backgroundColorB;
+
+                                            qDebug()<<aFormat.backgroundColorR;
                                         }
                                         else
                                         if (aMagicWord=="TextColor")
@@ -1190,14 +1192,14 @@ void VariableExtendedListFrame::checkForErrors(QStringList &aErrorList)
     }
 }
 
-QVariant VariableExtendedListFrame::calculate()
+QVariant VariableExtendedListFrame::calculate(QStringList *aErrorList)
 {
     if (isWasCalculated)
     {
         return calculationResult;
     }
 
-    PageComponent::calculate();
+    PageComponent::calculate(aErrorList);
 
     mCellResults.clear();
 
@@ -1377,7 +1379,7 @@ QVariant VariableExtendedListFrame::calculate()
                             }
                             else
                             {
-                                mCellResults[i][j]=calculatePart(ui->dataTableWidget->item(i,j)->text(), this, this, i);
+                                mCellResults[i][j]=calculatePart(ui->dataTableWidget->item(i,j)->text(), aErrorList, this, this, i);
                             }
                         }
                         catch(...)
@@ -1391,6 +1393,48 @@ QVariant VariableExtendedListFrame::calculate()
                 }
             }
         } while(true);
+    }
+
+//----------------------------------------------
+// Conditional format
+
+    for (int j=0; j<ui->dataTableWidget->columnCount(); j++)
+    {
+        for (int i=0; i<ui->dataTableWidget->rowCount(); i++)
+        {
+            for (int k=0; k<typeColumns.at(j).conditions.length(); k++)
+            {
+                SConditionFormat *aFormat=&typeColumns[j].conditions[k];
+
+                QVariant aConditionResult=calculatePart(aFormat->condition, aErrorList, this, this, i);
+
+                if (aConditionResult.type()==QVariant::Bool)
+                {
+                    if (aConditionResult.toBool())
+                    {
+                        QTableWidgetItem *aItem=ui->dataTableWidget->item(i, j);
+
+                        QFont aFont;
+                        aFont.fromString(aFormat->fontString);
+                        aItem->setFont(aFont);
+
+                        aItem->setTextAlignment(aFormat->alignment);
+                        aItem->setBackground(QBrush(QColor(aFormat->backgroundColorR, aFormat->backgroundColorG, aFormat->backgroundColorB)));
+                        aItem->setTextColor(QColor(aFormat->textColorR, aFormat->textColorG, aFormat->textColorB));
+
+                        aErrorList->append("Hint: Изменено форматирование для ячейки в "+QString::number(i+1)+"-й строке и в столбце \""+typeColumns.at(j).name+"\"");
+                        break;
+                    }
+                }
+                else
+                {
+                    if (aErrorList)
+                    {
+                        aErrorList->append("Hint: Условное форматирование \""+aFormat->condition+"\" должно иметь логическое значение");
+                    }
+                }
+            }
+        }
     }
 
 //----------------------------------------------

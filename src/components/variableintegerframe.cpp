@@ -190,14 +190,14 @@ bool VariableIntegerFrame::isEditable()
     return !ui->editButton->isFlat();
 }
 
-QVariant VariableIntegerFrame::calculate()
+QVariant VariableIntegerFrame::calculate(QStringList *aErrorList)
 {
     if (isWasCalculated)
     {
         return calculationResult;
     }
 
-    PageComponent::calculate();
+    PageComponent::calculate(aErrorList);
 
     calculationResult=ui->valueSpinBox->value();
 

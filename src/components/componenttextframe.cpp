@@ -242,14 +242,14 @@ void ComponentTextFrame::checkForErrors(QStringList &aErrorList)
     PageComponent::checkForErrors(aErrorList);
 }
 
-QVariant ComponentTextFrame::calculate()
+QVariant ComponentTextFrame::calculate(QStringList *aErrorList)
 {
     if (isWasCalculated)
     {
         return calculationResult;
     }
 
-    PageComponent::calculate();
+    PageComponent::calculate(aErrorList);
 
     return calculationResult;
 }

@@ -37,7 +37,7 @@ public:
     bool isEditable();
 
     void checkForErrors(QStringList &aErrorList);
-    QVariant calculate();
+    QVariant calculate(QStringList *aErrorList=0);
 
     void getWidgetList(QList<QWidget*> &aList);
 

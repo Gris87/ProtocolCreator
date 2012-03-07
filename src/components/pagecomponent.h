@@ -40,7 +40,7 @@ public:
 
     virtual void checkForErrors(QStringList &aErrorList);
     void resetCalculation();
-    virtual QVariant calculate();
+    virtual QVariant calculate(QStringList *aErrorList=0);
 
     virtual void getWidgetList(QList<QWidget*> &aList);
     void setWidgetCursor(QWidget* aWidget, bool isForward);

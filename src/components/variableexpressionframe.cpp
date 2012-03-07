@@ -185,16 +185,16 @@ void VariableExpressionFrame::on_functionButton_clicked()
     }
 }
 
-QVariant VariableExpressionFrame::calculate()
+QVariant VariableExpressionFrame::calculate(QStringList *aErrorList)
 {
     if (isWasCalculated)
     {
         return calculationResult;
     }
 
-    PageComponent::calculate();
+    PageComponent::calculate(aErrorList);
 
-    calculationResult=calculatePart(ui->valueEdit->text(), this);
+    calculationResult=calculatePart(ui->valueEdit->text(), aErrorList, this);
 
     isWasCalculated=true;
     isInCalculation=false;
