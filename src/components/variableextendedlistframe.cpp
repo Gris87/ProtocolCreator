@@ -201,6 +201,40 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
         aStream << aColumn->textColorG;
         aStream << aColumn->textColorB;
 
+        int condCount=aColumn->conditions.length();
+
+        if (condCount>0)
+        {
+            aStream << QString("Conditions");
+            aStream << condCount;
+
+            for (int j=0; j<condCount; j++)
+            {
+                SConditionFormat *aFormat=&aColumn->conditions[i];
+
+                aStream << QString("Font");
+                aStream << aFormat->fontString;
+
+                aStream << QString("Alignment");
+                aStream << aFormat->alignment;
+
+                aStream << QString("Background");
+                aStream << aFormat->backgroundColorR;
+                aStream << aFormat->backgroundColorG;
+                aStream << aFormat->backgroundColorB;
+
+                aStream << QString("TextColor");
+                aStream << aFormat->textColorR;
+                aStream << aFormat->textColorG;
+                aStream << aFormat->textColorB;
+
+                aStream << QString("Condition");
+                aStream << aFormat->condition;
+
+                aStream << QString("FormatEnd");
+            }
+        }
+
         aStream << QString("TypeEnd");
     }
 
@@ -608,6 +642,58 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                 aStream >> aColumn.textColorR;
                                 aStream >> aColumn.textColorG;
                                 aStream >> aColumn.textColorB;
+                            }
+                            else
+                            if (aMagicWord=="Conditions")
+                            {
+                                int aCondCount;
+                                aStream >> aCondCount;
+
+                                for (int j=0; j<aCondCount; j++)
+                                {
+                                    SConditionFormat aFormat;
+
+                                    while (!aStream.atEnd())
+                                    {
+                                        aStream >> aMagicWord;
+
+                                        if (aMagicWord=="Font")
+                                        {
+                                            aStream >> aFormat.fontString;
+                                        }
+                                        else
+                                        if (aMagicWord=="Alignment")
+                                        {
+                                            aStream >> aFormat.alignment;
+                                        }
+                                        else
+                                        if (aMagicWord=="Background")
+                                        {
+                                            aStream >> aFormat.backgroundColorR;
+                                            aStream >> aFormat.backgroundColorG;
+                                            aStream >> aFormat.backgroundColorB;
+                                        }
+                                        else
+                                        if (aMagicWord=="TextColor")
+                                        {
+                                            aStream >> aFormat.textColorR;
+                                            aStream >> aFormat.textColorG;
+                                            aStream >> aFormat.textColorB;
+                                        }
+                                        else
+                                        if (aMagicWord=="Condition")
+                                        {
+                                            aStream >> aFormat.condition;
+                                        }
+                                        else
+                                        if (aMagicWord=="FormatEnd")
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                    aColumn.conditions.append(aFormat);
+                                }
                             }
                             else
                             if (aMagicWord=="TypeEnd")
