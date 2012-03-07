@@ -787,7 +787,10 @@ void MainWindow::on_actionCheckDocument_triggered()
             dividerSplitter->setSizes(aSizes);
         }
 
-        QMessageBox::warning(this, protocolCreatorVersion, "Возникли проблемы при обработке документа.\nПожалуйста, проверьте логи");
+        if (errorHappened)
+        {
+            QMessageBox::warning(this, protocolCreatorVersion, "Возникли проблемы при обработке документа.\nПожалуйста, проверьте логи");
+        }
     }
 }
 
@@ -1657,6 +1660,8 @@ void MainWindow::exportToWord(bool isFull)
         }
     } while (true);
 
+    int logsBefore=ui->logListWidget->count();
+
     QString aTempPath=QDir::fromNativeSeparators(QString(getenv("Temp")));
 
     if (!aTempPath.endsWith("/"))
@@ -2034,7 +2039,7 @@ void MainWindow::exportToWord(bool isFull)
         }
     }
 
-    if (ui->logListWidget->count()>0)
+    if (ui->logListWidget->count()>logsBefore)
     {
         if (ui->logListWidget->height()==0)
         {
