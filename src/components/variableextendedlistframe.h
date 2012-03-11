@@ -28,6 +28,7 @@ public:
 
     QList<QList<STableCell> > headerCells;
     QList<int> headerColumnWidths;
+    bool cloneHeader;
 
     QList<STableColumn> typeColumns;
     QList<int> typeColumnWidths;

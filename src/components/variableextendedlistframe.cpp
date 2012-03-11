@@ -10,6 +10,7 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     ui->varNameEdit->setText("ExtendedList");
 
     mIsTable=false;
+    cloneHeader=true;
 
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
@@ -146,6 +147,9 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
             aStream << QString("CellEnd");
         }
     }
+
+    aStream << QString("CloneToPage");
+    aStream << cloneHeader;
 
     aStream << QString("HeaderEnd");
 
@@ -496,6 +500,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                             headerCells[i].append(aCell);
                         }
                     }
+                }
+                else
+                if (aMagicWord=="CloneToPage")
+                {
+                    aStream >> cloneHeader;
                 }
                 else
                 if (aMagicWord=="HeaderEnd")
@@ -2042,6 +2051,7 @@ void VariableExtendedListFrame::on_addFromAnotherButton_clicked()
     int index=aLink.indexOf(".");
 
     if (index>=0)
+
     {
         QString aSectionName=aLink.left(index);
         QString aVarName=aLink.mid(index+1);

@@ -418,6 +418,11 @@ void TableEditDialog::headerOffset()
     }
 }
 
+void TableEditDialog::headerCloneToPages()
+{
+    mTable->cloneHeader=!mTable->cloneHeader;
+}
+
 void TableEditDialog::tableFont()
 {
     QFontDialog dialog(activeContextTable->currentItem()->font(), this);
@@ -594,6 +599,7 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
     contextMenu->addSeparator();
     contextMenu->addAction("Ширина",                     this, SLOT(headerColumnSize()))->setEnabled(itemSelected);
     contextMenu->addAction("Сдвиг таблицы",              this, SLOT(headerOffset()));
+    contextMenu->addAction("Повторять на страницах",     this, SLOT(headerCloneToPages()))->setChecked(mTable->cloneHeader);
     contextMenu->addSeparator();
     contextMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
     contextMenu->addAction("Цвет ячейки",                this, SLOT(tableBackgroundColor()))->setEnabled(itemSelected);

@@ -7,6 +7,7 @@ class WordXMLTableRowProperties : public WordXMLBase
 {
 public:
     int height;
+    bool isHeader;
 
     explicit WordXMLTableRowProperties(WordXMLBase* aParent=0);
     ~WordXMLTableRowProperties();

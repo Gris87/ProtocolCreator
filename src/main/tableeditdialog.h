@@ -38,6 +38,7 @@ private slots:
     void headerInsertColAfter();
     void headerColumnSize();
     void headerOffset();
+    void headerCloneToPages();
     void tableFont();
     void tableBackgroundColor();
     void tableTextColor();
