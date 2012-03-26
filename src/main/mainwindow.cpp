@@ -1723,260 +1723,267 @@ void MainWindow::exportToWord(bool isFull)
                 replaceLinksInText(&aTextEdit, 0);
                 section->properties.addFooter()->insertFromText(aTextEdit.document()->rootFrame());
 
-                for (int i=0; i<aPage->components.length(); i++)
+                if (aPage==contentPage)
                 {
-                    if (aPage->components.at(i)->inherits("ComponentTextFrame"))
-                    {
-                        ComponentTextFrame *aComponent=(ComponentTextFrame*)aPage->components.at(i);
 
-                        if (aComponent->ui->useCheckBox->isChecked())
+                }
+                else
+                {
+                    for (int i=0; i<aPage->components.length(); i++)
+                    {
+                        if (aPage->components.at(i)->inherits("ComponentTextFrame"))
                         {
-                            aTextEdit.setHtml(aComponent->wordEdit->ui->valueEdit->toHtml());
-                            replaceLinksInText(&aTextEdit, aComponent);
-                            section->insertFromText(aTextEdit.document()->rootFrame());
+                            ComponentTextFrame *aComponent=(ComponentTextFrame*)aPage->components.at(i);
+
+                            if (aComponent->ui->useCheckBox->isChecked())
+                            {
+                                aTextEdit.setHtml(aComponent->wordEdit->ui->valueEdit->toHtml());
+                                replaceLinksInText(&aTextEdit, aComponent);
+                                section->insertFromText(aTextEdit.document()->rootFrame());
+                            }
                         }
-                    }
-                    else
-                    if (aPage->components.at(i)->inherits("VariableExtendedListFrame"))
-                    {
-                        VariableExtendedListFrame *aComponent=(VariableExtendedListFrame*)aPage->components.at(i);
-
-                        if (aComponent->ui->useCheckBox->isChecked())
+                        else
+                        if (aPage->components.at(i)->inherits("VariableExtendedListFrame"))
                         {
-                            WordXMLTable *aTable=section->addTable();
-                            aTable->properties.borders.setBorders(tbSingle);
+                            VariableExtendedListFrame *aComponent=(VariableExtendedListFrame*)aPage->components.at(i);
 
-                            if (aComponent->mTableAlignment==Qt::AlignLeft)
+                            if (aComponent->ui->useCheckBox->isChecked())
                             {
-                                aTable->properties.alignment=taLeft;
-                            }
-                            else
-                            if (aComponent->mTableAlignment==Qt::AlignHCenter || aComponent->mTableAlignment==Qt::AlignCenter)
-                            {
-                                aTable->properties.alignment=taCenter;
-                            }
-                            else
-                            if (aComponent->mTableAlignment==Qt::AlignRight)
-                            {
-                                aTable->properties.alignment=taRight;
-                            }
+                                WordXMLTable *aTable=section->addTable();
+                                aTable->properties.borders.setBorders(tbSingle);
 
-                            aTable->properties.indentation=aComponent->mTableOffset*CM_TO_TWIPS;
-
-                            for (int i=0; i<aComponent->headerCells.length(); i++)
-                            {
-                                WordXMLTableRow *aRow=aTable->addRow();
-
-                                for (int j=0; j<aComponent->headerCells.at(i).length(); j++)
+                                if (aComponent->mTableAlignment==Qt::AlignLeft)
                                 {
-                                    STableCell aTableCell=aComponent->headerCells.at(i).at(j);
-                                    WordXMLTableCell *aCell=aRow->addCell();
+                                    aTable->properties.alignment=taLeft;
+                                }
+                                else
+                                if (aComponent->mTableAlignment==Qt::AlignHCenter || aComponent->mTableAlignment==Qt::AlignCenter)
+                                {
+                                    aTable->properties.alignment=taCenter;
+                                }
+                                else
+                                if (aComponent->mTableAlignment==Qt::AlignRight)
+                                {
+                                    aTable->properties.alignment=taRight;
+                                }
 
-                                    aCell->properties.width=aComponent->headerColumnWidths.at(j);
-                                    aCell->properties.columnSpan=aTableCell.spanX;
+                                aTable->properties.indentation=aComponent->mTableOffset*CM_TO_TWIPS;
 
-                                    if (aTableCell.alignment & Qt::AlignTop)
+                                for (int i=0; i<aComponent->headerCells.length(); i++)
+                                {
+                                    WordXMLTableRow *aRow=aTable->addRow();
+
+                                    for (int j=0; j<aComponent->headerCells.at(i).length(); j++)
                                     {
-                                        aCell->properties.vAlign=caTop;
-                                    }
-                                    else
-                                    if (aTableCell.alignment & Qt::AlignVCenter)
-                                    {
-                                        aCell->properties.vAlign=caCenter;
-                                    }
-                                    else
-                                    if (aTableCell.alignment & Qt::AlignBottom)
-                                    {
-                                        aCell->properties.vAlign=caBottom;
-                                    }
+                                        STableCell aTableCell=aComponent->headerCells.at(i).at(j);
+                                        WordXMLTableCell *aCell=aRow->addCell();
 
-                                    aCell->properties.shading.pattern="pct-25";
-                                    aCell->properties.shading.setColor(QColor(aTableCell.backgroundColorR, aTableCell.backgroundColorG, aTableCell.backgroundColorB));
-                                    aCell->properties.shading.backgroundColor=aCell->properties.shading.color;
-                                    aCell->properties.shading.fillColor=aCell->properties.shading.color;
+                                        aCell->properties.width=aComponent->headerColumnWidths.at(j);
+                                        aCell->properties.columnSpan=aTableCell.spanX;
 
-                                    for (int k=1; k<aCell->properties.columnSpan; k++)
-                                    {
-                                        aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
-                                    }
-
-                                    aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
-
-                                    bool writeCell=true;
-
-                                    if (aTableCell.spanY>1)
-                                    {
-                                        bool needToContinue=false;
-
-                                        for (int k=0; k<=i; k++)
+                                        if (aTableCell.alignment & Qt::AlignTop)
                                         {
-                                            if (aComponent->headerCells.at(k).at(j).spanY>1)
-                                            {
-                                                needToContinue=(k<i) && (k+aComponent->headerCells.at(k).at(j).spanY>i);
-
-                                                if (needToContinue)
-                                                {
-                                                    break;
-                                                }
-
-                                                k+=aComponent->headerCells.at(k).at(j).spanY-1;
-                                            }
-                                        }
-
-                                        if (needToContinue)
-                                        {
-                                            aCell->properties.vMergeType=mtContinue;
+                                            aCell->properties.vAlign=caTop;
                                         }
                                         else
+                                        if (aTableCell.alignment & Qt::AlignVCenter)
                                         {
-                                            aCell->properties.vMergeType=mtRestart;
+                                            aCell->properties.vAlign=caCenter;
                                         }
-                                    }
-
-                                    if (writeCell)
-                                    {
-                                        QString aText=aTableCell.text;
-
-                                        do
+                                        else
+                                        if (aTableCell.alignment & Qt::AlignBottom)
                                         {
-                                            WordXMLParagraph *aParagraph=aCell->addParagraph();
-                                            WordXMLRun *aRun=aParagraph->addRun();
+                                            aCell->properties.vAlign=caBottom;
+                                        }
 
-                                            if (aTableCell.alignment & Qt::AlignLeft)
-                                            {
-                                                aParagraph->properties.alignment=paLeft;
-                                            }
-                                            else
-                                            if (aTableCell.alignment & Qt::AlignHCenter)
-                                            {
-                                                aParagraph->properties.alignment=paCenter;
-                                            }
-                                            else
-                                            if (aTableCell.alignment & Qt::AlignRight)
-                                            {
-                                                aParagraph->properties.alignment=paRight;
-                                            }
-
-                                            QFont aFont;
-                                            aFont.fromString(aTableCell.fontString);
-
-                                            aRun->properties.setFont(aFont);
-                                            aRun->properties.setColor(QColor(aTableCell.textColorR, aTableCell.textColorG, aTableCell.textColorB));
-
-                                            QString aTextPart=aText.left(aText.indexOf("\n"));
-                                            aText.remove(0, aTextPart.length()+1);
-
-                                            aRun->addText(aTextPart);
-                                        } while (aText!="");
-                                    }
-
-                                    if (aCell->properties.columnSpan>1)
-                                    {
-                                        j+=aCell->properties.columnSpan-1;
-                                    }
-                                }
-                            }
-
-                            QVariantList rowValue=aComponent->calculationResult.toList();
-
-                            for (int i=0; i<aComponent->ui->dataTableWidget->rowCount(); i++)
-                            {
-                                QVariantList colValues=rowValue.at(i).toList();
-
-                                WordXMLTableRow *aRow=aTable->addRow();
-
-                                for (int j=0; j<aComponent->typeColumns.length(); j++)
-                                {
-                                    if (!aComponent->typeColumns.at(j).visible)
-                                    {
-                                        continue;
-                                    }
-
-                                    WordXMLTableCell *aCell=aRow->addCell();
-
-                                    aCell->properties.width=aComponent->headerColumnWidths.at(j);
-                                    aCell->properties.columnSpan=aComponent->ui->dataTableWidget->columnSpan(i, j);
-
-                                    if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignTop)
-                                    {
-                                        aCell->properties.vAlign=caTop;
-                                    }
-                                    else
-                                    if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignVCenter)
-                                    {
-                                        aCell->properties.vAlign=caCenter;
-                                    }
-                                    else
-                                    if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignBottom)
-                                    {
-                                        aCell->properties.vAlign=caBottom;
-                                    }
-
-                                    if (aComponent->ui->dataTableWidget->item(i, j)->background().style()!=Qt::NoBrush)
-                                    {
                                         aCell->properties.shading.pattern="pct-25";
-                                        aCell->properties.shading.setColor(aComponent->ui->dataTableWidget->item(i, j)->background().color());
+                                        aCell->properties.shading.setColor(QColor(aTableCell.backgroundColorR, aTableCell.backgroundColorG, aTableCell.backgroundColorB));
                                         aCell->properties.shading.backgroundColor=aCell->properties.shading.color;
                                         aCell->properties.shading.fillColor=aCell->properties.shading.color;
-                                    }
 
-                                    int invisibleColumns=0;
-
-                                    for (int k=1; k<aCell->properties.columnSpan; k++)
-                                    {
-                                        if (aComponent->typeColumns.at(j+k).visible)
+                                        for (int k=1; k<aCell->properties.columnSpan; k++)
                                         {
                                             aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
                                         }
-                                        else
+
+                                        aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
+
+                                        bool writeCell=true;
+
+                                        if (aTableCell.spanY>1)
                                         {
-                                            invisibleColumns++;
+                                            bool needToContinue=false;
+
+                                            for (int k=0; k<=i; k++)
+                                            {
+                                                if (aComponent->headerCells.at(k).at(j).spanY>1)
+                                                {
+                                                    needToContinue=(k<i) && (k+aComponent->headerCells.at(k).at(j).spanY>i);
+
+                                                    if (needToContinue)
+                                                    {
+                                                        break;
+                                                    }
+
+                                                    k+=aComponent->headerCells.at(k).at(j).spanY-1;
+                                                }
+                                            }
+
+                                            if (needToContinue)
+                                            {
+                                                aCell->properties.vMergeType=mtContinue;
+                                            }
+                                            else
+                                            {
+                                                aCell->properties.vMergeType=mtRestart;
+                                            }
+                                        }
+
+                                        if (writeCell)
+                                        {
+                                            QString aText=aTableCell.text;
+
+                                            do
+                                            {
+                                                WordXMLParagraph *aParagraph=aCell->addParagraph();
+                                                WordXMLRun *aRun=aParagraph->addRun();
+
+                                                if (aTableCell.alignment & Qt::AlignLeft)
+                                                {
+                                                    aParagraph->properties.alignment=paLeft;
+                                                }
+                                                else
+                                                if (aTableCell.alignment & Qt::AlignHCenter)
+                                                {
+                                                    aParagraph->properties.alignment=paCenter;
+                                                }
+                                                else
+                                                if (aTableCell.alignment & Qt::AlignRight)
+                                                {
+                                                    aParagraph->properties.alignment=paRight;
+                                                }
+
+                                                QFont aFont;
+                                                aFont.fromString(aTableCell.fontString);
+
+                                                aRun->properties.setFont(aFont);
+                                                aRun->properties.setColor(QColor(aTableCell.textColorR, aTableCell.textColorG, aTableCell.textColorB));
+
+                                                QString aTextPart=aText.left(aText.indexOf("\n"));
+                                                aText.remove(0, aTextPart.length()+1);
+
+                                                aRun->addText(aTextPart);
+                                            } while (aText!="");
+                                        }
+
+                                        if (aCell->properties.columnSpan>1)
+                                        {
+                                            j+=aCell->properties.columnSpan-1;
                                         }
                                     }
+                                }
 
-                                    aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
+                                QVariantList rowValue=aComponent->calculationResult.toList();
 
-                                    bool writeCell=true;
+                                for (int i=0; i<aComponent->ui->dataTableWidget->rowCount(); i++)
+                                {
+                                    QVariantList colValues=rowValue.at(i).toList();
 
-                                    if (writeCell)
+                                    WordXMLTableRow *aRow=aTable->addRow();
+
+                                    for (int j=0; j<aComponent->typeColumns.length(); j++)
                                     {
-                                        QString aText=variantToText(colValues.at(j));
-
-                                        do
+                                        if (!aComponent->typeColumns.at(j).visible)
                                         {
-                                            WordXMLParagraph *aParagraph=aCell->addParagraph();
-                                            WordXMLRun *aRun=aParagraph->addRun();
+                                            continue;
+                                        }
 
-                                            if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignLeft)
+                                        WordXMLTableCell *aCell=aRow->addCell();
+
+                                        aCell->properties.width=aComponent->headerColumnWidths.at(j);
+                                        aCell->properties.columnSpan=aComponent->ui->dataTableWidget->columnSpan(i, j);
+
+                                        if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignTop)
+                                        {
+                                            aCell->properties.vAlign=caTop;
+                                        }
+                                        else
+                                        if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignVCenter)
+                                        {
+                                            aCell->properties.vAlign=caCenter;
+                                        }
+                                        else
+                                        if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignBottom)
+                                        {
+                                            aCell->properties.vAlign=caBottom;
+                                        }
+
+                                        if (aComponent->ui->dataTableWidget->item(i, j)->background().style()!=Qt::NoBrush)
+                                        {
+                                            aCell->properties.shading.pattern="pct-25";
+                                            aCell->properties.shading.setColor(aComponent->ui->dataTableWidget->item(i, j)->background().color());
+                                            aCell->properties.shading.backgroundColor=aCell->properties.shading.color;
+                                            aCell->properties.shading.fillColor=aCell->properties.shading.color;
+                                        }
+
+                                        int invisibleColumns=0;
+
+                                        for (int k=1; k<aCell->properties.columnSpan; k++)
+                                        {
+                                            if (aComponent->typeColumns.at(j+k).visible)
                                             {
-                                                aParagraph->properties.alignment=paLeft;
+                                                aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
                                             }
                                             else
-                                            if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignHCenter)
                                             {
-                                                aParagraph->properties.alignment=paCenter;
+                                                invisibleColumns++;
                                             }
-                                            else
-                                            if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignRight)
+                                        }
+
+                                        aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
+
+                                        bool writeCell=true;
+
+                                        if (writeCell)
+                                        {
+                                            QString aText=variantToText(colValues.at(j));
+
+                                            do
                                             {
-                                                aParagraph->properties.alignment=paRight;
-                                            }
+                                                WordXMLParagraph *aParagraph=aCell->addParagraph();
+                                                WordXMLRun *aRun=aParagraph->addRun();
 
-                                            aRun->properties.setFont(aComponent->ui->dataTableWidget->item(i, j)->font());
-                                            aRun->properties.setColor(aComponent->ui->dataTableWidget->item(i, j)->foreground().color());
+                                                if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignLeft)
+                                                {
+                                                    aParagraph->properties.alignment=paLeft;
+                                                }
+                                                else
+                                                if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignHCenter)
+                                                {
+                                                    aParagraph->properties.alignment=paCenter;
+                                                }
+                                                else
+                                                if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignRight)
+                                                {
+                                                    aParagraph->properties.alignment=paRight;
+                                                }
 
-                                            QString aTextPart=aText.left(aText.indexOf("\n"));
-                                            aText.remove(0, aTextPart.length()+1);
+                                                aRun->properties.setFont(aComponent->ui->dataTableWidget->item(i, j)->font());
+                                                aRun->properties.setColor(aComponent->ui->dataTableWidget->item(i, j)->foreground().color());
 
-                                            aRun->addText(aTextPart);
-                                        } while (aText!="");
-                                    }
+                                                QString aTextPart=aText.left(aText.indexOf("\n"));
+                                                aText.remove(0, aTextPart.length()+1);
 
-                                    if (aCell->properties.columnSpan>1)
-                                    {
-                                        j+=aCell->properties.columnSpan-1;
+                                                aRun->addText(aTextPart);
+                                            } while (aText!="");
+                                        }
 
-                                        aCell->properties.columnSpan-=invisibleColumns;
+                                        if (aCell->properties.columnSpan>1)
+                                        {
+                                            j+=aCell->properties.columnSpan-1;
+
+                                            aCell->properties.columnSpan-=invisibleColumns;
+                                        }
                                     }
                                 }
                             }
