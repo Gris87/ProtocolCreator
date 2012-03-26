@@ -1725,7 +1725,90 @@ void MainWindow::exportToWord(bool isFull)
 
                 if (aPage==contentPage)
                 {
+                    WordXMLTable *aTable=section->addTable();
+                    aTable->properties.borders.setBorders(tbSingle);
+                    aTable->properties.alignment=taCenter;
 
+                    QFont aFont;
+                    aFont.setFamily("Times New Roman");
+                    aFont.setPointSize(10);
+                    aFont.setBold(true);
+
+                    WordXMLTableRow *aRow;
+                    WordXMLTableCell *aCell;
+                    WordXMLParagraph *aParagraph;
+                    WordXMLRun *aRun;
+
+                    aRow=aTable->addRow();
+
+                    //---
+
+                    aCell=aRow->addCell();
+                    aCell->properties.width=100;
+                    aCell->properties.vAlign=caCenter;
+
+                    aParagraph=aCell->addParagraph();
+                    aRun=aParagraph->addRun();
+
+                    aParagraph->properties.alignment=paCenter;
+
+                    aRun->properties.setFont(aFont);
+
+                    aRun->addText("№");
+
+                    aParagraph=aCell->addParagraph();
+                    aRun=aParagraph->addRun();
+
+                    aParagraph->properties.alignment=paCenter;
+
+                    aRun->properties.setFont(aFont);
+
+                    aRun->addText("п/п");
+
+                    //---
+
+                    aCell=aRow->addCell();
+                    aCell->properties.width=200;
+                    aCell->properties.vAlign=caCenter;
+
+                    aParagraph=aCell->addParagraph();
+                    aRun=aParagraph->addRun();
+
+                    aParagraph->properties.alignment=paCenter;
+
+                    aRun->properties.setFont(aFont);
+
+                    aRun->addText("Наименование");
+
+                    //---
+
+                    aCell=aRow->addCell();
+                    aCell->properties.width=200;
+                    aCell->properties.vAlign=caCenter;
+
+                    aParagraph=aCell->addParagraph();
+                    aRun=aParagraph->addRun();
+
+                    aParagraph->properties.alignment=paCenter;
+
+                    aRun->properties.setFont(aFont);
+
+                    aRun->addText("Всего листов");
+
+                    //---
+
+                    aCell=aRow->addCell();
+                    aCell->properties.width=200;
+                    aCell->properties.vAlign=caCenter;
+
+                    aParagraph=aCell->addParagraph();
+                    aRun=aParagraph->addRun();
+
+                    aParagraph->properties.alignment=paCenter;
+
+                    aRun->properties.setFont(aFont);
+
+                    aRun->addText("Лист протокола");
                 }
                 else
                 {
