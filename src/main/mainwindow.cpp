@@ -1698,6 +1698,7 @@ void MainWindow::exportToWord(bool isFull)
 
             if (!isFull || aPage->ui->useCheckBox->isChecked())
             {
+                // Необходимо перекинуть настройки секции в настройки параграфа, чтобы создать новую секцию
                 if (section)
                 {
                     WordXMLParagraph *paragraph=section->addParagraph();
@@ -1826,7 +1827,6 @@ void MainWindow::exportToWord(bool isFull)
                     //---
 
                     int sectionNumber=0;
-                    aFont.setPointSize(9);
                     aFont.setBold(false);
 
                     for (int j=0; j<ui->pagesTabWidget->count(); j++)
@@ -1840,6 +1840,8 @@ void MainWindow::exportToWord(bool isFull)
                             aRow=aTable->addRow();
 
                             //---
+
+                            aFont.setPointSize(11);
 
                             aCell=aRow->addCell();
                             aCell->properties.width=459;
@@ -1855,6 +1857,8 @@ void MainWindow::exportToWord(bool isFull)
                             aRun->addText(QString::number(sectionNumber)+".");
 
                             //---
+
+                            aFont.setPointSize(9);
 
                             aCell=aRow->addCell();
                             aCell->properties.width=6975;
@@ -2220,16 +2224,63 @@ void MainWindow::exportToWord(bool isFull)
                 document->saveAs(aFileName, wordApp.defaultFileFormat());
             }
 
+            document->repaginate();
+
             if (isFull && contentIndex>=0)
             {
-                qDebug()<<document->sections()->count();
-
                 WordTable* table=document->sections()->item(contentIndex)->range()->tables()->item(0);
 
-                table->cell(1, 2)->range()->InsertAfter("BLAH");
+                QList<int> pageCounts;
+                int sectionNumber=0;
 
-                document->save();
+                for (int i=0; i<ui->pagesTabWidget->count(); i++)
+                {
+                    PageFrame* aPage=(PageFrame*)ui->pagesTabWidget->widget(i);
+
+                    if (aPage->ui->useCheckBox->isChecked())
+                    {
+                        pageCounts.append(document->sections()->item(sectionNumber)->range()->computeStatistics(wdStatisticPages));
+                        sectionNumber++;
+                    }
+                }
+
+                int curPage=1;
+
+                for (int i=0; i<pageCounts.length(); i++)
+                {
+                    // Не знаю почему, но для первых страниц количество страниц больше на 1
+                    // Возможно разрыв раздела тоже считается частью раздела
+                    if (i<pageCounts.length()-1)
+                    {
+                        pageCounts[i]--;
+                    }
+
+                    table->cell(i+1, 2)->range()->InsertAfter(QString::number(pageCounts.at(i)));
+
+                    if (pageCounts.at(i)==1)
+                    {
+                        table->cell(i+1, 3)->range()->InsertAfter(QString::number(curPage));
+                    }
+                    else
+                    if (pageCounts.at(i)==2)
+                    {
+                        table->cell(i+1, 3)->range()->InsertAfter(QString::number(curPage)+", "+QString::number(curPage+1));
+                    }
+                    else
+                    {
+                        table->cell(i+1, 3)->range()->InsertAfter(QString::number(curPage)+"-"+QString::number(curPage+pageCounts.at(i)-1));
+                    }
+
+                    curPage+=pageCounts.at(i);
+                }
             }
+
+            document->repaginate();
+
+            document->sections()->item(0)->querySubObject("Headers")->saveDocumentation("headers.html");
+            document->sections()->item(0)->querySubObject("Footers")->saveDocumentation("footers.html");
+
+            document->save();
         }
         catch(...)
         {

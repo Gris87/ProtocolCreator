@@ -73,6 +73,18 @@ int WordDocument::fileFormat()
     return 0;
 }
 
+void WordDocument::repaginate()
+{
+    try
+    {
+        base_ax_object->dynamicCall("Repaginate()");
+    }
+    catch (...)
+    {
+        qWarning()<<"WordDocument::repaginate(): Couldn't repaginate document";
+    }
+}
+
 void WordDocument::save()
 {
     try

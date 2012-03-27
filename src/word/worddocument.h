@@ -19,6 +19,7 @@ public:
     WordRange* range();
 
     int fileFormat();
+    void repaginate();
     void save();
     void saveAs(QString aFileName, int aFileFormat);
     void saveAs(QString aFileName);

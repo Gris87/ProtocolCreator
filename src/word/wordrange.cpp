@@ -23,6 +23,20 @@ WordTables* WordRange::tables()
     throw "WordRange::tables(): Couldn't get tables";
 }
 
+int WordRange::computeStatistics(WdStatistic Statistic)
+{
+    try
+    {
+        return base_ax_object->dynamicCall("ComputeStatistics(WdStatistic)", Statistic).toInt();
+    }
+    catch (...)
+    {
+        qWarning()<<"WordRange::ComputeStatistics(): Couldn't compute statistics for"<<Statistic;
+    }
+
+    return 0;
+}
+
 void WordRange::InsertAfter(QString aText)
 {
     try

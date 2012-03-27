@@ -116,9 +116,11 @@ void WordXMLParagraphProperties::writeToStream(QTextStream &aStream)
                         // Nothing
                     }
                 }
+
+                 aStream<<"\"";
             }
 
-            aStream<<"\"/>\r\n";
+            aStream<<"/>\r\n";
         }
 
         if (
