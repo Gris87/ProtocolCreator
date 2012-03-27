@@ -1753,6 +1753,8 @@ void MainWindow::exportToWord(bool isFull)
 
                     aRow=aTable->addRow();
 
+                    aRow->properties.isHeader=true;
+
                     //---
 
                     aCell=aRow->addCell();
@@ -1793,7 +1795,7 @@ void MainWindow::exportToWord(bool isFull)
                     //---
 
                     aCell=aRow->addCell();
-                    aCell->properties.width=1133;
+                    aCell->properties.width=850;
                     aCell->properties.vAlign=caCenter;
 
                     aParagraph=aCell->addParagraph();
@@ -1807,7 +1809,7 @@ void MainWindow::exportToWord(bool isFull)
                     //---
 
                     aCell=aRow->addCell();
-                    aCell->properties.width=459;
+                    aCell->properties.width=1133;
                     aCell->properties.vAlign=caCenter;
 
                     aParagraph=aCell->addParagraph();
@@ -1823,7 +1825,7 @@ void MainWindow::exportToWord(bool isFull)
                     int sectionNumber=0;
                     aFont.setBold(false);
 
-                    for (int j=0; j<=ui->pagesTabWidget->count(); j++)
+                    for (int j=0; j<ui->pagesTabWidget->count(); j++)
                     {
                         PageFrame* aPage2=(PageFrame*)ui->pagesTabWidget->widget(j);
 
@@ -1854,18 +1856,26 @@ void MainWindow::exportToWord(bool isFull)
                             aCell->properties.width=6975;
                             aCell->properties.vAlign=caCenter;
 
-                            aParagraph=aCell->addParagraph();
-                            aRun=aParagraph->addRun();
+                            QString aText=aPage2->ui->nameEdit->text();
 
-                            aParagraph->properties.alignment=paLeft;
-                            aRun->properties.setFont(aFont);
+                            do
+                            {
+                                QString aTextPart=aText.left(aText.indexOf("\n"));
+                                aText.remove(0, aTextPart.length()+1);
 
-                            aRun->addText(aPage2->ui->nameEdit->text());
+                                aParagraph=aCell->addParagraph();
+                                aRun=aParagraph->addRun();
+
+                                aParagraph->properties.alignment=paLeft;
+                                aRun->properties.setFont(aFont);
+
+                                aRun->addText(aTextPart);
+                            } while (aText!="");
 
                             //---
 
                             aCell=aRow->addCell();
-                            aCell->properties.width=1133;
+                            aCell->properties.width=850;
                             aCell->properties.vAlign=caCenter;
 
                             aParagraph=aCell->addParagraph();
@@ -1879,7 +1889,7 @@ void MainWindow::exportToWord(bool isFull)
                             //---
 
                             aCell=aRow->addCell();
-                            aCell->properties.width=459;
+                            aCell->properties.width=1133;
                             aCell->properties.vAlign=caCenter;
 
                             aParagraph=aCell->addParagraph();
@@ -1937,6 +1947,11 @@ void MainWindow::exportToWord(bool isFull)
                                 for (int i=0; i<aComponent->headerCells.length(); i++)
                                 {
                                     WordXMLTableRow *aRow=aTable->addRow();
+
+                                    if (aComponent->cloneHeader)
+                                    {
+                                        aRow->properties.isHeader=true;
+                                    }
 
                                     for (int j=0; j<aComponent->headerCells.at(i).length(); j++)
                                     {

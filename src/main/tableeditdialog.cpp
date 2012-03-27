@@ -599,7 +599,11 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
     contextMenu->addSeparator();
     contextMenu->addAction("Ширина",                     this, SLOT(headerColumnSize()))->setEnabled(itemSelected);
     contextMenu->addAction("Сдвиг таблицы",              this, SLOT(headerOffset()));
-    contextMenu->addAction("Повторять на страницах",     this, SLOT(headerCloneToPages()))->setChecked(mTable->cloneHeader);
+
+    aAction=contextMenu->addAction("Повторять на страницах",     this, SLOT(headerCloneToPages()));
+    aAction->setCheckable(true);
+    aAction->setChecked(mTable->cloneHeader);
+
     contextMenu->addSeparator();
     contextMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
     contextMenu->addAction("Цвет ячейки",                this, SLOT(tableBackgroundColor()))->setEnabled(itemSelected);
