@@ -1669,6 +1669,7 @@ void MainWindow::exportToWord(bool isFull)
         aTempPath.append("/");
     }
 
+    int contentIndex=-1;
     bool good=true;
 
     try
@@ -1725,6 +1726,8 @@ void MainWindow::exportToWord(bool isFull)
 
                 if (aPage==contentPage)
                 {
+                    contentIndex=word.sections.count()-1;
+
                     QFont aFont;
                     aFont.setFamily("Times New Roman");
                     aFont.setPointSize(11);
@@ -1823,6 +1826,7 @@ void MainWindow::exportToWord(bool isFull)
                     //---
 
                     int sectionNumber=0;
+                    aFont.setPointSize(9);
                     aFont.setBold(false);
 
                     for (int j=0; j<ui->pagesTabWidget->count(); j++)
@@ -1867,6 +1871,9 @@ void MainWindow::exportToWord(bool isFull)
                                 aRun=aParagraph->addRun();
 
                                 aParagraph->properties.alignment=paLeft;
+                                aParagraph->properties.spacingBefore=120;
+                                aParagraph->properties.spacingAfter=120;
+                                aParagraph->properties.indentLeft=280;
                                 aRun->properties.setFont(aFont);
 
                                 aRun->addText(aTextPart);
@@ -2027,6 +2034,7 @@ void MainWindow::exportToWord(bool isFull)
                                             {
                                                 WordXMLParagraph *aParagraph=aCell->addParagraph();
                                                 WordXMLRun *aRun=aParagraph->addRun();
+
 
                                                 if (aTableCell.alignment & Qt::AlignLeft)
                                                 {
@@ -2210,6 +2218,17 @@ void MainWindow::exportToWord(bool isFull)
                 }
 
                 document->saveAs(aFileName, wordApp.defaultFileFormat());
+            }
+
+            if (isFull && contentIndex>=0)
+            {
+                qDebug()<<document->sections()->count();
+
+                WordTable* table=document->sections()->item(contentIndex)->range()->tables()->item(0);
+
+                table->cell(1, 2)->range()->InsertAfter("BLAH");
+
+                document->save();
             }
         }
         catch(...)

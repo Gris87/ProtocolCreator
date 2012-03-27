@@ -64,25 +64,57 @@ void WordXMLParagraphProperties::writeToStream(QTextStream &aStream)
             aStream<<"\"/>\r\n";
         }
 
-        if (spacingLine>=0)
+        if (
+            spacingBefore>=0
+            ||
+            spacingAfter>=0
+            ||
+            spacingLine>=0
+            ||
+            spacingLineRule!=slrNone
+           )
         {
-            aStream<<space<<" <w:spacing w:line=\""+QString::number(spacingLine)+"\" w:line-rule=\"";
+            aStream<<space<<" <w:spacing";
 
-            switch(spacingLineRule)
+            if (spacingBefore>=0)
             {
-                case slrAuto:
+                aStream<<" w:before=\""+QString::number(spacingBefore)+"\"";
+            }
+
+            if (spacingAfter>=0)
+            {
+                aStream<<" w:after=\""+QString::number(spacingAfter)+"\"";
+            }
+
+            if (spacingLine>=0)
+            {
+                aStream<<" w:line=\""+QString::number(spacingLine)+"\"";
+            }
+
+            if (spacingLineRule!=slrNone)
+            {
+                aStream<<" w:line-rule=\"";
+
+                switch(spacingLineRule)
                 {
-                    aStream<<"left";
-                }
-                break;
-                case slrExact:
-                {
-                    aStream<<"exact";
-                }
-                break;
-                case slrAtLeast:
-                {
-                    aStream<<"at-least";
+                    case slrAuto:
+                    {
+                        aStream<<"left";
+                    }
+                    break;
+                    case slrExact:
+                    {
+                        aStream<<"exact";
+                    }
+                    break;
+                    case slrAtLeast:
+                    {
+                        aStream<<"at-least";
+                    }
+                    case slrNone:
+                    {
+                        // Nothing
+                    }
                 }
             }
 
@@ -140,8 +172,10 @@ void WordXMLParagraphProperties::reset()
 
     paragraphStyle="";
     alignment=paNone;
+    spacingBefore=-1;
+    spacingAfter=-1;
     spacingLine=-1;
-    spacingLineRule=slrAuto;
+    spacingLineRule=slrNone;
     indentLeft=0;
     indentRight=0;
     indentFirtsLine=0;
@@ -160,7 +194,13 @@ bool WordXMLParagraphProperties::isModified()
            ||
            alignment!=paNone
            ||
+           spacingBefore>=0
+           ||
+           spacingAfter>=0
+           ||
            spacingLine>=0
+           ||
+           spacingLineRule!=slrNone
            ||
            indentLeft!=0
            ||
@@ -229,6 +269,8 @@ WordXMLParagraphProperties& WordXMLParagraphProperties::operator=(const WordXMLP
 {
     paragraphStyle=another.paragraphStyle;
     alignment=another.alignment;
+    spacingBefore=another.spacingBefore;
+    spacingAfter=another.spacingAfter;
     spacingLine=another.spacingLine;
     spacingLineRule=another.spacingLineRule;
     indentLeft=another.indentLeft;

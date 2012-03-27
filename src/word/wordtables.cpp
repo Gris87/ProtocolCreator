@@ -45,7 +45,7 @@ WordTable* WordTables::item(int index)
 {
     for (int retry=0; retry<WORD_MAX_RETRIES; retry++)
     {
-        QAxObject *aObject=base_ax_object->querySubObject("Item(int)", index);
+        QAxObject *aObject=base_ax_object->querySubObject("Item(int)", index+1);
 
         if (aObject==0)
         {

@@ -5,6 +5,24 @@ WordDocument::WordDocument(QAxObject *aBaseObject, QObject *parent) :
 {
 }
 
+WordSections* WordDocument::sections()
+{
+    for (int retry=0; retry<WORD_MAX_RETRIES; retry++)
+    {
+        QAxObject *aObject=base_ax_object->querySubObject("Sections()");
+
+        if (aObject==0)
+        {
+            qWarning()<<"WordDocument::sections(): Retry #"+QString::number(retry+1)+" Couldn't get sections";
+            continue;
+        }
+
+        return new WordSections(aObject, this);
+    }
+
+    throw "WordDocument::sections(): Couldn't get sections";
+}
+
 WordTables* WordDocument::tables()
 {
     for (int retry=0; retry<WORD_MAX_RETRIES; retry++)
@@ -31,14 +49,14 @@ WordRange* WordDocument::range()
 
         if (aObject==0)
         {
-            qWarning()<<"WordDocument::add(): Retry #"+QString::number(retry+1)+" Couldn't get range";
+            qWarning()<<"WordDocument::range(): Retry #"+QString::number(retry+1)+" Couldn't get range";
             continue;
         }
 
         return new WordRange(aObject, this);
     }
 
-    throw "WordDocument::add(): Couldn't get range";
+    throw "WordDocument::range(): Couldn't get range";
 }
 
 int WordDocument::fileFormat()

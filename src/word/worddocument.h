@@ -2,6 +2,7 @@
 #define WORDDOCUMENT_H
 
 #include "wordworkbase.h"
+#include "wordsections.h"
 #include "wordtables.h"
 #include "wordrange.h"
 
@@ -11,9 +12,11 @@ class WordDocument : public WordWorkBase
 public:
     explicit WordDocument(QAxObject *aBaseObject, QObject *parent = 0);
 
+    WordSections* sections();
+
     WordTables* tables();
 
-    WordRange* range();    
+    WordRange* range();
 
     int fileFormat();
     void save();

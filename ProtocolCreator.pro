@@ -122,7 +122,9 @@ SOURCES += src/main.cpp\
     src/main/componentselectiondialog.cpp \
     src/other/regeditthread.cpp \
     src/widgets/autoupdateprogressbar.cpp \
-    src/widgets/conditionalformatframe.cpp
+    src/widgets/conditionalformatframe.cpp \
+    src/word/wordsections.cpp \
+    src/word/wordsection.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -233,7 +235,9 @@ HEADERS  += src/main/mainwindow.h \
     src/main/componentselectiondialog.h \
     src/other/regeditthread.h \
     src/widgets/autoupdateprogressbar.h \
-    src/widgets/conditionalformatframe.h
+    src/widgets/conditionalformatframe.h \
+    src/word/wordsections.h \
+    src/word/wordsection.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \

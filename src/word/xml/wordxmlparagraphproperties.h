@@ -20,6 +20,7 @@ enum EParagraphAlignment
 
 enum ESpacingLineRule
 {
+    slrNone,
     slrAuto,
     slrExact,
     slrAtLeast
@@ -30,6 +31,8 @@ class WordXMLParagraphProperties : public WordXMLBase
 public:
     QString paragraphStyle;
     EParagraphAlignment alignment;
+    int spacingBefore;
+    int spacingAfter;
     int spacingLine;
     ESpacingLineRule spacingLineRule;
     int indentLeft;

@@ -9,6 +9,8 @@
 #include "wordoptions.h"
 #include "worddocuments.h"
 #include "worddocument.h"
+#include "wordsections.h"
+#include "wordsection.h"
 #include "wordtables.h"
 #include "wordtable.h"
 #include "wordtablecell.h"
