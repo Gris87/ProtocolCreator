@@ -2224,8 +2224,6 @@ void MainWindow::exportToWord(bool isFull)
                 document->saveAs(aFileName, wordApp.defaultFileFormat());
             }
 
-            document->repaginate();
-
             if (isFull && contentIndex>=0)
             {
                 WordTable* table=document->sections()->item(contentIndex)->range()->tables()->item(0);
@@ -2274,11 +2272,6 @@ void MainWindow::exportToWord(bool isFull)
                     curPage+=pageCounts.at(i);
                 }
             }
-
-            document->repaginate();
-
-            document->sections()->item(0)->querySubObject("Headers")->saveDocumentation("headers.html");
-            document->sections()->item(0)->querySubObject("Footers")->saveDocumentation("footers.html");
 
             document->save();
         }
