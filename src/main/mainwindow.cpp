@@ -1725,13 +1725,9 @@ void MainWindow::exportToWord(bool isFull)
 
                 if (aPage==contentPage)
                 {
-                    WordXMLTable *aTable=section->addTable();
-                    aTable->properties.borders.setBorders(tbSingle);
-                    aTable->properties.alignment=taCenter;
-
                     QFont aFont;
                     aFont.setFamily("Times New Roman");
-                    aFont.setPointSize(10);
+                    aFont.setPointSize(11);
                     aFont.setBold(true);
 
                     WordXMLTableRow *aRow;
@@ -1739,12 +1735,28 @@ void MainWindow::exportToWord(bool isFull)
                     WordXMLParagraph *aParagraph;
                     WordXMLRun *aRun;
 
+                    aParagraph=section->addParagraph();
+                    aRun=aParagraph->addRun();
+
+                    aParagraph->properties.alignment=paCenter;
+                    aRun->properties.setFont(aFont);
+
+                    aRun->addText("СОДЕРЖАНИЕ");
+
+                    aParagraph=section->addParagraph();
+
+                    aFont.setPointSize(10);
+
+                    WordXMLTable *aTable=section->addTable();
+                    aTable->properties.borders.setBorders(tbSingle);
+                    aTable->properties.alignment=taCenter;
+
                     aRow=aTable->addRow();
 
                     //---
 
                     aCell=aRow->addCell();
-                    aCell->properties.width=100;
+                    aCell->properties.width=459;
                     aCell->properties.vAlign=caCenter;
 
                     aParagraph=aCell->addParagraph();
@@ -1760,7 +1772,6 @@ void MainWindow::exportToWord(bool isFull)
                     aRun=aParagraph->addRun();
 
                     aParagraph->properties.alignment=paCenter;
-
                     aRun->properties.setFont(aFont);
 
                     aRun->addText("п/п");
@@ -1768,14 +1779,13 @@ void MainWindow::exportToWord(bool isFull)
                     //---
 
                     aCell=aRow->addCell();
-                    aCell->properties.width=200;
+                    aCell->properties.width=6975;
                     aCell->properties.vAlign=caCenter;
 
                     aParagraph=aCell->addParagraph();
                     aRun=aParagraph->addRun();
 
                     aParagraph->properties.alignment=paCenter;
-
                     aRun->properties.setFont(aFont);
 
                     aRun->addText("Наименование");
@@ -1783,14 +1793,13 @@ void MainWindow::exportToWord(bool isFull)
                     //---
 
                     aCell=aRow->addCell();
-                    aCell->properties.width=200;
+                    aCell->properties.width=1133;
                     aCell->properties.vAlign=caCenter;
 
                     aParagraph=aCell->addParagraph();
                     aRun=aParagraph->addRun();
 
                     aParagraph->properties.alignment=paCenter;
-
                     aRun->properties.setFont(aFont);
 
                     aRun->addText("Всего листов");
@@ -1798,17 +1807,90 @@ void MainWindow::exportToWord(bool isFull)
                     //---
 
                     aCell=aRow->addCell();
-                    aCell->properties.width=200;
+                    aCell->properties.width=459;
                     aCell->properties.vAlign=caCenter;
 
                     aParagraph=aCell->addParagraph();
                     aRun=aParagraph->addRun();
 
                     aParagraph->properties.alignment=paCenter;
-
                     aRun->properties.setFont(aFont);
 
                     aRun->addText("Лист протокола");
+
+                    //---
+
+                    int sectionNumber=0;
+                    aFont.setBold(false);
+
+                    for (int j=0; j<=ui->pagesTabWidget->count(); j++)
+                    {
+                        PageFrame* aPage2=(PageFrame*)ui->pagesTabWidget->widget(j);
+
+                        if (aPage2->ui->useCheckBox->isChecked())
+                        {
+                            sectionNumber++;
+
+                            aRow=aTable->addRow();
+
+                            //---
+
+                            aCell=aRow->addCell();
+                            aCell->properties.width=459;
+                            aCell->properties.vAlign=caCenter;
+
+                            aParagraph=aCell->addParagraph();
+                            aRun=aParagraph->addRun();
+
+                            aParagraph->properties.alignment=paCenter;
+
+                            aRun->properties.setFont(aFont);
+
+                            aRun->addText(QString::number(sectionNumber)+".");
+
+                            //---
+
+                            aCell=aRow->addCell();
+                            aCell->properties.width=6975;
+                            aCell->properties.vAlign=caCenter;
+
+                            aParagraph=aCell->addParagraph();
+                            aRun=aParagraph->addRun();
+
+                            aParagraph->properties.alignment=paLeft;
+                            aRun->properties.setFont(aFont);
+
+                            aRun->addText(aPage2->ui->nameEdit->text());
+
+                            //---
+
+                            aCell=aRow->addCell();
+                            aCell->properties.width=1133;
+                            aCell->properties.vAlign=caCenter;
+
+                            aParagraph=aCell->addParagraph();
+                            aRun=aParagraph->addRun();
+
+                            aParagraph->properties.alignment=paCenter;
+                            aRun->properties.setFont(aFont);
+
+                            aRun->addText("");
+
+                            //---
+
+                            aCell=aRow->addCell();
+                            aCell->properties.width=459;
+                            aCell->properties.vAlign=caCenter;
+
+                            aParagraph=aCell->addParagraph();
+                            aRun=aParagraph->addRun();
+
+                            aParagraph->properties.alignment=paCenter;
+                            aRun->properties.setFont(aFont);
+
+                            aRun->addText("");
+                        }
+                    }
                 }
                 else
                 {
