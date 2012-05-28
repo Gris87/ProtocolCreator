@@ -40,6 +40,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Вырезать</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -69,6 +72,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Копировать</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -94,6 +100,9 @@
           <width>30</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Вставить</string>
         </property>
         <property name="text">
          <string/>
@@ -131,6 +140,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Отменить</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -159,6 +171,9 @@
           <width>30</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Повторить</string>
         </property>
         <property name="text">
          <string/>
@@ -193,6 +208,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Шрифт</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -220,6 +238,9 @@
       </item>
       <item>
        <widget class="QFontComboBox" name="fontComboBox">
+        <property name="toolTip">
+         <string>Шрифт</string>
+        </property>
         <property name="currentFont">
          <font>
           <family>Times New Roman</family>
@@ -230,6 +251,9 @@
       </item>
       <item>
        <widget class="QSpinBox" name="fontSizeSpinBox">
+        <property name="toolTip">
+         <string>Размер шрифта</string>
+        </property>
         <property name="maximum">
          <number>72</number>
         </property>
@@ -252,6 +276,9 @@
           <width>30</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Жирный</string>
         </property>
         <property name="text">
          <string/>
@@ -279,6 +306,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Курсив</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -305,6 +335,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Подчеркнутый</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -330,6 +363,9 @@
           <width>30</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Зачеркнутый</string>
         </property>
         <property name="text">
          <string/>
@@ -364,6 +400,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Слева</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -389,6 +428,9 @@
           <width>30</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>По центру</string>
         </property>
         <property name="text">
          <string/>
@@ -416,6 +458,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Справа</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -441,6 +486,9 @@
           <width>30</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>На всю ширину</string>
         </property>
         <property name="text">
          <string/>
@@ -487,6 +535,9 @@
           <height>26</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Цвет текста</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -515,6 +566,9 @@
           <height>26</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Цвет фона текста</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -542,6 +596,9 @@
           <width>26</width>
           <height>26</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Цвет фона</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>

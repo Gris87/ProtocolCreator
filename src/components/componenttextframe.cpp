@@ -172,6 +172,12 @@ void ComponentTextFrame::on_expandButton_clicked()
 
     fullDialog->setWindowTitle(ui->nameEdit->text());
 
+    fullDialog->addAction(mainWindow->ui->actionGlobalVars);
+    fullDialog->addAction(mainWindow->ui->actionExport);
+    fullDialog->addAction(mainWindow->ui->actionGenerateWord);
+    fullDialog->addAction(mainWindow->ui->actionSectionControl);
+    fullDialog->addAction(mainWindow->ui->actionSave);
+    fullDialog->addAction(mainWindow->ui->actionSaveAs);
     fullDialog->addAction(mainWindow->ui->actionFind);
     fullDialog->addAction(mainWindow->ui->actionReplace);
     fullDialog->addAction(mainWindow->ui->actionFindNext);
