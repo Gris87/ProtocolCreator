@@ -100,6 +100,7 @@ void VariableIntegerFrame::loadFromStream(QDataStream &aStream)
 
             aStream >> aLock;
             ui->valueSpinBox->setEnabled(!aLock);
+            ui->decimalsSpinBox->setEnabled(ui->valueSpinBox->isEnabled());
 
             updateLock();
         }
@@ -164,6 +165,7 @@ void VariableIntegerFrame::on_decimalsSpinBox_valueChanged(int aValue)
 void VariableIntegerFrame::on_lockButton_clicked()
 {
     ui->valueSpinBox->setEnabled(!ui->valueSpinBox->isEnabled());
+    ui->decimalsSpinBox->setEnabled(ui->valueSpinBox->isEnabled());
 
     updateLock();
 }
