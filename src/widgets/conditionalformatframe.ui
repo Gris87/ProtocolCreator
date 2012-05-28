@@ -144,6 +144,16 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QCheckBox" name="warningCheckBox">
+     <property name="text">
+      <string>WARNING</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources>

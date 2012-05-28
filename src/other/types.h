@@ -32,6 +32,7 @@ struct SConditionFormat
     quint8 textColorG;
     quint8 textColorB;
     QString condition;
+    bool needWarning;
 };
 
 struct STableColumn

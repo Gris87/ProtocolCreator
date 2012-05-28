@@ -1486,6 +1486,18 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                 return ok;
             }
             else
+            if (aFunction=="Это_дата")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                QDate aDateValue=QDate::fromString(aResults.at(0).toString(), "dd.MM.yyyy");
+                return aDateValue.isValid();
+            }
+            else
             if (aFunction=="Нули_слева")
             {
                 if (aResults.at(0).type()!=QVariant::String)
@@ -1802,6 +1814,23 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                 return ((double)aResults.at(0).toDate().year());
             }
             else
+            if (aFunction=="Дней_до")
+            {
+                if (aResults.at(0).type()!=QVariant::Date)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть дата";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::Date)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должна быть дата";
+                    throw "Wrong parameter";
+                }
+
+                return ((double)aResults.at(0).toDate().daysTo(aResults.at(1).toDate()));
+            }
+            else
             if (aFunction=="Сейчас")
             {
                 return QTime::currentTime();
@@ -1838,6 +1867,23 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                 }
 
                 return ((double)aResults.at(0).toTime().hour());
+            }
+            else
+            if (aFunction=="Секунд_до")
+            {
+                if (aResults.at(0).type()!=QVariant::Time)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должно быть время";
+                    throw "Wrong parameter";
+                }
+
+                if (aResults.at(1).type()!=QVariant::Time)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть время";
+                    throw "Wrong parameter";
+                }
+
+                return ((double)aResults.at(0).toTime().secsTo(aResults.at(1).toTime()));
             }
         }
     }

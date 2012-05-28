@@ -246,6 +246,7 @@ void ColumnEditDialog::startEditing()
         aItem->setTextColor(QColor(aColumn->conditions.at(i).textColorR, aColumn->conditions.at(i).textColorG, aColumn->conditions.at(i).textColorB));
 
         ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->conditionEdit->setText(aColumn->conditions.at(i).condition);
+        ((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->warningCheckBox->setChecked(aColumn->conditions.at(i).needWarning);
     }
 }
 
@@ -380,6 +381,7 @@ void ColumnEditDialog::applyChanges()
             aFormat.textColorG=aItem->textColor().green();
             aFormat.textColorB=aItem->textColor().blue();
             aFormat.condition=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->conditionEdit->text();
+            aFormat.needWarning=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->warningCheckBox->isChecked();
 
             aColumn->conditions.append(aFormat);
         }
@@ -797,6 +799,7 @@ void ColumnEditDialog::applyChanges()
             aFormat.textColorG=aItem->textColor().green();
             aFormat.textColorB=aItem->textColor().blue();
             aFormat.condition=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->conditionEdit->text();
+            aFormat.needWarning=((ConditionalFormatFrame *)(ui->conditionsVerticalLayout->itemAt(i)->widget()))->ui->warningCheckBox->isChecked();
 
             aColumn.conditions.append(aFormat);
         }

@@ -235,6 +235,9 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
                 aStream << QString("Condition");
                 aStream << aFormat->condition;
 
+                aStream << QString("Warning");
+                aStream << aFormat->needWarning;
+
                 aStream << QString("FormatEnd");
             }
         }
@@ -697,6 +700,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                             aStream >> aFormat.condition;
                                         }
                                         else
+                                        if (aMagicWord=="Warning")
+                                        {
+                                            aStream >> aFormat.needWarning;
+                                        }
+                                        else
                                         if (aMagicWord=="FormatEnd")
                                         {
                                             break;
@@ -1000,7 +1008,7 @@ bool VariableExtendedListFrame::isEditable()
     return !ui->editButton->isFlat();
 }
 
-void VariableExtendedListFrame::checkLink(QStringList &aErrorList, QString aLink)
+void VariableExtendedListFrame::checkLink(QStringList &aErrorList, QString aLink, bool needColumnIndex)
 {
     if (aLink!="")
     {
@@ -1038,7 +1046,11 @@ void VariableExtendedListFrame::checkLink(QStringList &aErrorList, QString aLink
                     if (globalDialog->variables.at(i)->variableName()==aVarName)
                     {
                         if (
-                            aColumnIndex!=""
+                            (
+                             !needColumnIndex
+                             ||
+                             aColumnIndex!=""
+                            )
                             &&
                             globalDialog->variables.at(i)->inherits("VariableExtendedListFrame")
                            )
@@ -1068,7 +1080,11 @@ void VariableExtendedListFrame::checkLink(QStringList &aErrorList, QString aLink
                             if (aPage->variables.at(j)->variableName()==aVarName)
                             {
                                 if (
-                                    aColumnIndex!=""
+                                    (
+                                     !needColumnIndex
+                                     ||
+                                     aColumnIndex!=""
+                                    )
                                     &&
                                     aPage->variables.at(j)->inherits("VariableExtendedListFrame")
                                    )
@@ -1090,7 +1106,11 @@ void VariableExtendedListFrame::checkLink(QStringList &aErrorList, QString aLink
                             if (aPage->components.at(j)->variableName()==aVarName)
                             {
                                 if (
-                                    aColumnIndex!=""
+                                    (
+                                     !needColumnIndex
+                                     ||
+                                     aColumnIndex!=""
+                                    )
                                     &&
                                     aPage->components.at(j)->inherits("VariableExtendedListFrame")
                                    )
@@ -1107,31 +1127,34 @@ void VariableExtendedListFrame::checkLink(QStringList &aErrorList, QString aLink
 
             if (aExtFrame)
             {
-                bool ok;
-                int aColumnID=aColumnIndex.toInt(&ok)-1;
-
-                if (!ok || aColumnID<0 || aColumnID>=aExtFrame->typeColumns.length())
+                if (needColumnIndex)
                 {
-                    if (ok)
+                    bool ok;
+                    int aColumnID=aColumnIndex.toInt(&ok)-1;
+
+                    if (!ok || aColumnID<0 || aColumnID>=aExtFrame->typeColumns.length())
                     {
-                        if (aSectionName=="Global")
+                        if (ok)
                         {
-                            aErrorList.append("Hint: »ндекс неправильный у глобальной переменной \""+aVarName+"\"");
+                            if (aSectionName=="Global")
+                            {
+                                aErrorList.append("Hint: »ндекс неправильный у глобальной переменной \""+aVarName+"\"");
+                            }
+                            else
+                            {
+                                aErrorList.append("Hint: »ндекс неправильный у переменной \""+aVarName+"\" в разделе \""+aSectionName+"\"");
+                            }
                         }
                         else
                         {
-                            aErrorList.append("Hint: »ндекс неправильный у переменной \""+aVarName+"\" в разделе \""+aSectionName+"\"");
-                        }
-                    }
-                    else
-                    {
-                        if (aSectionName=="Global")
-                        {
-                            aErrorList.append("Hint: »ндекс столбца не число у глобальной переменной \""+aVarName+"\"");
-                        }
-                        else
-                        {
-                            aErrorList.append("Hint: »ндекс столбца не число у переменной \""+aVarName+"\" в разделе \""+aSectionName+"\"");
+                            if (aSectionName=="Global")
+                            {
+                                aErrorList.append("Hint: »ндекс столбца не число у глобальной переменной \""+aVarName+"\"");
+                            }
+                            else
+                            {
+                                aErrorList.append("Hint: »ндекс столбца не число у переменной \""+aVarName+"\" в разделе \""+aSectionName+"\"");
+                            }
                         }
                     }
                 }
@@ -1178,8 +1201,8 @@ void VariableExtendedListFrame::checkForErrors(QStringList &aErrorList)
         }
     }
 
-    checkLink(aErrorList, mLinkForMiddleRow);
-    checkLink(aErrorList, mLinkForAnotherList);
+    checkLink(aErrorList, mLinkForMiddleRow, true);
+    checkLink(aErrorList, mLinkForAnotherList, false);
 
     for (int i=0; i<typeColumns.length(); i++)
     {
@@ -1197,7 +1220,7 @@ void VariableExtendedListFrame::checkForErrors(QStringList &aErrorList)
             aLink=((ExtendedListColumn*)aColumnType)->mLinkComponent;
         }
 
-        checkLink(aErrorList, aLink);
+        checkLink(aErrorList, aLink, true);
     }
 }
 
@@ -1431,7 +1454,11 @@ QVariant VariableExtendedListFrame::calculate(QStringList *aErrorList)
                         aItem->setBackground(QBrush(QColor(aFormat->backgroundColorR, aFormat->backgroundColorG, aFormat->backgroundColorB)));
                         aItem->setTextColor(QColor(aFormat->textColorR, aFormat->textColorG, aFormat->textColorB));
 
-                        aErrorList->append("Hint: »зменено форматирование дл€ €чейки в "+QString::number(i+1)+"-й строке и в столбце \""+typeColumns.at(j).name+"\"");
+                        if (aFormat->needWarning)
+                        {
+                            aErrorList->append("Hint: »зменено форматирование дл€ €чейки в "+QString::number(i+1)+"-й строке и в столбце \""+typeColumns.at(j).name+"\"");
+                        }
+
                         break;
                     }
                 }

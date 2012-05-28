@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
     functionsList.append("Время_в_Строку_2");
     functionsList.append("Список_в_Строку_2");
     functionsList.append("Это_число_1");
+    functionsList.append("Это_дата_1");
     functionsList.append("Нули_слева_2");
     functionsList.append("Случайный_2");
     functionsList.append("Округление_2");
@@ -78,10 +79,12 @@ int main(int argc, char *argv[])
     functionsList.append("День_1");
     functionsList.append("Месяц_1");
     functionsList.append("Год_1");
+    functionsList.append("Дней_до_2");
     functionsList.append("Сейчас_0");
     functionsList.append("Секунда_1");
     functionsList.append("Минута_1");
     functionsList.append("Час_1");
+    functionsList.append("Секунд_до_2");
     functionsList.append("Срок_Годности_Пришел_2");
     functionsList.append("Используемые_ГОСТы_2");
     functionsList.append("Найдена_строка_3");

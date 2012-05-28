@@ -57,7 +57,7 @@ public:
 
     bool isEditable();
 
-    void checkLink(QStringList &aErrorList, QString aLink);
+    void checkLink(QStringList &aErrorList, QString aLink, bool needColumnIndex);
     void checkForErrors(QStringList &aErrorList);
     QVariant calculate(QStringList *aErrorList=0);
 

@@ -82,6 +82,7 @@ QString IntegerColumn::typeDescription()
     }
 
     aTypeDescription.append(
+                            "; "+
                             QString::number(mDefaultValue)+"; "+
                             QString::number(mDecimals)+"; "+
                             "; \""+mPrefix+"\"; "+
