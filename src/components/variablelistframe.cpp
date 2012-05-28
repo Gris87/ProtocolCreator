@@ -35,6 +35,11 @@ void VariableListFrame::saveToStream(QDataStream &aStream)
     aStream << QString("VarName");
     aStream << ui->varNameEdit->text();
 
+    bool aUseSort=ui->sortCheckBox->isChecked();
+
+    aStream << QString("UseSort");
+    aStream << aUseSort;
+
     QString aItems="";
 
     for (int i=0; i<ui->valueComboBox->count(); i++)
@@ -86,6 +91,14 @@ void VariableListFrame::loadFromStream(QDataStream &aStream)
         {
             aStream >> aMagicWord;
             ui->varNameEdit->setText(aMagicWord);
+        }
+        else
+        if (aMagicWord=="UseSort")
+        {
+            bool aUseSort;
+
+            aStream >> aUseSort;
+            ui->sortCheckBox->setChecked(aUseSort);
         }
         else
         if (aMagicWord=="Items")
@@ -177,6 +190,11 @@ void VariableListFrame::on_nameEdit_textChanged(const QString &aName)
     ui->valueLabel->setText(aName);
 }
 
+void VariableListFrame::on_sortCheckBox_toggled(bool checked)
+{
+    on_linesTextEdit_textChanged();
+}
+
 void VariableListFrame::on_linesTextEdit_textChanged()
 {
     QString aValue=ui->valueComboBox->currentText();
@@ -185,7 +203,11 @@ void VariableListFrame::on_linesTextEdit_textChanged()
 
     aItems.removeDuplicates();
     aItems.removeOne("");
-    aItems.sort();
+
+    if (ui->sortCheckBox->isChecked())
+    {
+        aItems.sort();
+    }
 
     ui->valueComboBox->clear();
     ui->valueComboBox->addItems(aItems);
