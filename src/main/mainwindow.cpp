@@ -17,6 +17,13 @@ MainWindow::MainWindow(QWidget *parent) :
     dividerSplitter->addWidget(ui->pagesTabWidget);
     dividerSplitter->addWidget(ui->logListWidget);
 
+    QList<int> aSizes;
+
+    aSizes.append(1);
+    aSizes.append(0);
+
+    dividerSplitter->setSizes(aSizes);
+
     ui->dividerLayout->addWidget(dividerSplitter);
 
     connect(ui->pagesTabWidget->tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(pageMoved(int,int)));
