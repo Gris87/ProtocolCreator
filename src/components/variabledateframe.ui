@@ -106,6 +106,9 @@
             <bold>false</bold>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Вверх</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -140,6 +143,9 @@
             <weight>50</weight>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>Вниз</string>
           </property>
           <property name="text">
            <string/>
@@ -212,6 +218,9 @@
             <bold>false</bold>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Разрешить редактирование</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -240,6 +249,9 @@
             <weight>50</weight>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>Скопировать в ...</string>
           </property>
           <property name="text">
            <string/>
@@ -272,6 +284,9 @@
             <weight>50</weight>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>Удалить</string>
           </property>
           <property name="text">
            <string/>
