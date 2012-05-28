@@ -350,6 +350,9 @@
           <height>20</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Редактор функций</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -375,6 +378,9 @@
           <width>20</width>
           <height>20</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Заблокировать/Разблокировать</string>
         </property>
         <property name="text">
          <string/>

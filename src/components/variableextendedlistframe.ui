@@ -434,6 +434,9 @@
             <bold>false</bold>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Полноэкранный режим</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -466,6 +469,9 @@
             <bold>false</bold>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Настройки</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -485,6 +491,9 @@
             <width>20</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>Заблокировать/Разблокировать</string>
           </property>
           <property name="text">
            <string/>
