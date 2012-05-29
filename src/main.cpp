@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
     functionsList.append("Удалить_текст_3");
     functionsList.append("Вставить_текст_3");
     functionsList.append("Позиция_в_тексте_2");
+    functionsList.append("Пробелы_справа_2");
     functionsList.append("Если_3");
     functionsList.append("Сегодня_0");
     functionsList.append("День_1");

@@ -1776,6 +1776,33 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                 return ((double)aResults.at(1).toString().indexOf(aResults.at(0).toString()));
             }
             else
+            if (aFunction=="Пробелы_справа")
+            {
+                if (aResults.at(0).type()!=QVariant::String)
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должна быть строка";
+                    throw "Wrong parameter";
+                }
+
+                bool ok;
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                QString aRes=aResults.at(0).toString();
+
+                while (aRes.length()<aArg2)
+                {
+                    aRes.append(" ");
+                }
+
+                return aRes;
+            }
+            else
             if (aFunction=="Сегодня")
             {
                 return QDate::currentDate();

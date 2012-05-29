@@ -1,1 +1,3 @@
-ProtocolCreator.pro.user*
+*.pro.user*
+samples\*.doc*
+samples\*.xml

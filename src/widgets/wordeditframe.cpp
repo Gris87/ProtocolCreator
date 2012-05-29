@@ -10,6 +10,8 @@ WordEditFrame::WordEditFrame(QWidget *parent) :
     ui->backgroundColorArea->setColor(QColor(255, 255, 255));
     ui->frameColorArea->setColor(QColor(255, 255, 255));
 
+    ui->valueEdit->setTabStopWidth(50);
+
     connect(ui->valueEdit, SIGNAL(boldCombination()), this, SLOT(on_boldButton_clicked()));
     connect(ui->valueEdit, SIGNAL(italicCombination()), this, SLOT(on_italicButton_clicked()));
     connect(ui->valueEdit, SIGNAL(underlineCombination()), this, SLOT(on_underlineButton_clicked()));
