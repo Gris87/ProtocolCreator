@@ -311,7 +311,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>4</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QCheckBox" name="useCheckBox">
