@@ -9,6 +9,7 @@ class ExpressionColumn: public ColumnType
 {
 public:
     QString mDefaultValue;
+    bool mAllowModify;
 
     explicit ExpressionColumn();
 

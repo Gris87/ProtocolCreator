@@ -2,6 +2,7 @@
 
 ExpressionColumn::ExpressionColumn() : ColumnType()
 {
+    mAllowModify=false;
 }
 
 void ExpressionColumn::saveToStream(QDataStream &aStream)
@@ -10,6 +11,9 @@ void ExpressionColumn::saveToStream(QDataStream &aStream)
 
     aStream << QString("Default");
     aStream << mDefaultValue;
+
+    aStream << QString("Modify");
+    aStream << mAllowModify;
 
     aStream << QString("ColEnd");
 }
@@ -27,6 +31,11 @@ void ExpressionColumn::loadFromStream(QDataStream &aStream)
             aStream >> mDefaultValue;
         }
         else
+        if (aMagicWord=="Modify")
+        {
+            aStream >> mAllowModify;
+        }
+        else
         if (aMagicWord=="ColEnd")
         {
             break;
@@ -36,7 +45,25 @@ void ExpressionColumn::loadFromStream(QDataStream &aStream)
 
 QString ExpressionColumn::typeDescription()
 {
-    return "Выражение (\""+mDefaultValue+"\")";
+    QString aTypeDescription;
+
+    aTypeDescription="Выражение (";
+
+    if (mAllowModify)
+    {
+        aTypeDescription.append("X");
+    }
+    else
+    {
+        aTypeDescription.append("_");
+    }
+
+    aTypeDescription.append(
+                            "; "+
+                            mDefaultValue
+                           );
+
+    return aTypeDescription;
 }
 
 EColumnType ExpressionColumn::type()
