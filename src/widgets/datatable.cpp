@@ -22,7 +22,11 @@ void DataTable::commitData(QWidget *editor)
         (
          aTable->typeColumns.at(curCol).column->type()!=ctBool
          &&
-         aTable->typeColumns.at(curCol).column->type()!=ctExpression
+         (
+          aTable->typeColumns.at(curCol).column->type()!=ctExpression
+          ||
+          ((ExpressionColumn*)(aTable->typeColumns.at(curCol).column))->mAllowModify
+         )
          &&
          (
           aTable->typeColumns.at(curCol).column->type()!=ctInteger
@@ -371,7 +375,10 @@ void DataTable::pasteData()
                     break;
                     case ctExpression:
                     {
-                        // Nothing
+                        if (((ExpressionColumn*)(aTable->typeColumns.at(curCol+j).column))->mAllowModify)
+                        {
+                            aItem->setText(aText);
+                        }
                     }
                     break;
                     default:

@@ -890,7 +890,15 @@ bool PageComponent::find(bool isForward, int startX, int startY)
                                 {
                                     if (aTableWidget->item(curRow, curCol)->isSelected())
                                     {
-                                        if (isReplace && aTable->typeColumns.at(curCol).column->type()!=ctExpression)
+                                        if (
+                                            isReplace
+                                            &&
+                                            (
+                                             aTable->typeColumns.at(curCol).column->type()!=ctExpression
+                                             ||
+                                             ((ExpressionColumn*)(aTable->typeColumns.at(curCol).column))->mAllowModify
+                                            )
+                                           )
                                         {
                                             aText.replace(lastSearch, lastReplace, Qt::CaseInsensitive);
                                             aTableWidget->item(curRow, curCol)->setText(aText);

@@ -210,6 +210,7 @@ void ColumnEditDialog::startEditing()
         {
             ui->typeComboBox->setCurrentIndex(7);
 
+            ui->expressionModifyCheckBox->setChecked(((ExpressionColumn*)aColumn->column)->mAllowModify);
             ui->expressionEdit->setText(((ExpressionColumn*)aColumn->column)->mDefaultValue);
         }
         break;
@@ -348,6 +349,7 @@ void ColumnEditDialog::applyChanges()
             {
                 ExpressionColumn *aTypeColumn=new ExpressionColumn();
 
+                aTypeColumn->mAllowModify=ui->expressionModifyCheckBox->isChecked();
                 aTypeColumn->mDefaultValue=ui->expressionEdit->text();
 
                 aColumn->column=aTypeColumn;
@@ -760,6 +762,7 @@ void ColumnEditDialog::applyChanges()
             {
                 ExpressionColumn *aTypeColumn=new ExpressionColumn();
 
+                aTypeColumn->mAllowModify=ui->expressionModifyCheckBox->isChecked();
                 aTypeColumn->mDefaultValue=ui->expressionEdit->text();
 
                 aColumn.column=aTypeColumn;
