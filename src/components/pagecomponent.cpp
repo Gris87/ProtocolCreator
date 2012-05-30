@@ -33,6 +33,11 @@ void PageComponent::updateAdmin()
     // Nothing
 }
 
+void PageComponent::componentShown()
+{
+    // Nothing
+}
+
 void PageComponent::setUpDownEnabled(bool aUpEnabled, bool aDownEnabled)
 {
     // Nothing

@@ -66,6 +66,7 @@ private slots:
     void contentCheckBoxToggled(KnownCheckBox *aCheckBox, bool checked);
     void autoSaveTick();
 
+    void on_pagesTabWidget_currentChanged(int index);
     void on_pagesTabWidget_tabCloseRequested(int index);
 
     void on_actionOpen_triggered();

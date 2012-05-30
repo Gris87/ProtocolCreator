@@ -2583,6 +2583,24 @@ void MainWindow::autoSaveTick()
     autoSaveMode=false;
 }
 
+void MainWindow::on_pagesTabWidget_currentChanged(int index)
+{
+    if (ui->pagesTabWidget->widget(index) && ui->pagesTabWidget->widget(index)!=contentPage)
+    {
+        PageFrame *aPage=(PageFrame*)ui->pagesTabWidget->widget(index);
+
+        for (int j=0; j<aPage->variables.length(); j++)
+        {
+            aPage->variables.at(j)->componentShown();
+        }
+
+        for (int j=0; j<aPage->components.length(); j++)
+        {
+            aPage->components.at(j)->componentShown();
+        }
+    }
+}
+
 void MainWindow::on_pagesTabWidget_tabCloseRequested(int index)
 {
     if (ui->pagesTabWidget->widget(index)!=contentPage)

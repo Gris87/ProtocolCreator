@@ -62,6 +62,8 @@ TableEditDialog::TableEditDialog(VariableExtendedListFrame *aTable, QWidget *par
         }
     }
 
+    QTimer::singleShot(0, this, SLOT(updateHeaderHeights()));
+
     ui->structureTableWidget->setStyleSheet( "QTableView { gridline-color: black; }" );
 
     ui->structureTableWidget->setRowCount(2);
@@ -344,6 +346,11 @@ void TableEditDialog::on_headerDelColButton_clicked()
     {
         ui->headerTableWidget->removeColumn(aColumns.at(i));
     }
+}
+
+void TableEditDialog::updateHeaderHeights()
+{
+    ui->headerTableWidget->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
 }
 
 void TableEditDialog::headerInsertRowBefore()

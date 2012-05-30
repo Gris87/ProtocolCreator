@@ -26,6 +26,8 @@ public:
     QString mLinkForMiddleRow;
     QString mLinkForAnotherList;
 
+    bool needUpdateHeight;
+
     QList<QList<STableCell> > headerCells;
     QList<int> headerColumnWidths;
     bool cloneHeader;
@@ -50,6 +52,8 @@ public:
     void loadFromStream(QDataStream &aStream);
 
     void updateAdmin();
+
+    void componentShown();
 
     void setUpDownEnabled(bool aUpEnabled, bool aDownEnabled);
 

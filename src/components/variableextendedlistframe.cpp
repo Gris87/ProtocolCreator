@@ -12,6 +12,8 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     mIsTable=false;
     cloneHeader=true;
 
+    needUpdateHeight=false;
+
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
     middleRowFontString="";
@@ -692,8 +694,6 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                             aStream >> aFormat.backgroundColorR;
                                             aStream >> aFormat.backgroundColorG;
                                             aStream >> aFormat.backgroundColorB;
-
-                                            qDebug()<<aFormat.backgroundColorR;
                                         }
                                         else
                                         if (aMagicWord=="TextColor")
@@ -924,6 +924,8 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                     break;
                 }
             }
+
+            needUpdateHeight=true;
         }
         else
         if (aMagicWord=="VarEnd")
@@ -937,6 +939,16 @@ void VariableExtendedListFrame::updateAdmin()
 {
     ui->adminGroupBox->setVisible(isAdmin);
     on_useCheckBox_toggled(ui->useCheckBox->isChecked());
+}
+
+void VariableExtendedListFrame::componentShown()
+{
+    if (needUpdateHeight)
+    {
+        needUpdateHeight=false;
+
+        ui->dataTableWidget->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    }
 }
 
 void VariableExtendedListFrame::setUpDownEnabled(bool aUpEnabled, bool aDownEnabled)

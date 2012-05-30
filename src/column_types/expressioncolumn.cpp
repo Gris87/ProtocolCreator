@@ -59,8 +59,7 @@ QString ExpressionColumn::typeDescription()
     }
 
     aTypeDescription.append(
-                            "; "+
-                            "\""+mDefaultValue+"\")"
+                            "; \""+mDefaultValue+"\")"
                            );
 
     return aTypeDescription;

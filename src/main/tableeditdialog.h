@@ -32,6 +32,8 @@ public:
     void updateAdmin();
 
 private slots:
+    void updateHeaderHeights();
+
     void headerInsertRowBefore();
     void headerInsertRowAfter();
     void headerInsertColBefore();

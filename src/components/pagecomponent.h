@@ -32,6 +32,8 @@ public:
 
     virtual void updateAdmin();
 
+    virtual void componentShown();
+
     virtual void setUpDownEnabled(bool aUpEnabled, bool aDownEnabled);
 
     void createConnections(const QObject *receiver, const char *memberUp, const char *memberDown, const char *memberCopy, const char *memberDelete);
