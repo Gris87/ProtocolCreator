@@ -383,6 +383,11 @@ WordXMLParagraph* WordXMLMultiPart::addParagraph()
 
 WordXMLTable* WordXMLMultiPart::addTable()
 {
+    if (mList.length()>0 && mList.last()->getComponentType()==wxtTable)
+    {
+        addParagraph();
+    }
+
     WordXMLTable *aNewComponent=new WordXMLTable(this);
     mList.append(aNewComponent);
     return aNewComponent;
