@@ -949,6 +949,7 @@ void ColumnEditDialog::applyChanges()
             QTableWidgetItem *aItem=new QTableWidgetItem();
 
             aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+            aItem->setFont(QFont("Times New Roman", 12));
             aItem->setBackground(QBrush(QColor(255, 255, 255)));
 
             if (mTable->ui->dataTableWidget->itemDelegateForRow(i)==0)

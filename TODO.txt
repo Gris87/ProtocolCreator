@@ -1,2 +1,1 @@
 Special functions needs to add
-Ms Shell Dlg after inserting new column to table with data
