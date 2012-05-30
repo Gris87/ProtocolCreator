@@ -620,6 +620,52 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                 aTypeColumn->loadFromStream(aStream);
 
                                 aColumn.column=aTypeColumn;
+
+                                switch (aColumn.column->type())
+                                {
+                                    case ctInteger:
+                                    {
+                                        DoubleDelegate *delegate=new DoubleDelegate(this);
+
+                                        delegate->mDecimals=((IntegerColumn*)aColumn.column)->mDecimals;
+                                        delegate->mPrefix=((IntegerColumn*)aColumn.column)->mPrefix;
+                                        delegate->mPostfix=((IntegerColumn*)aColumn.column)->mPostfix;
+
+                                        ui->dataTableWidget->setItemDelegateForColumn(typeColumns.length(), delegate);
+                                    }
+                                    break;
+                                    case ctDate:
+                                    {
+                                        ui->dataTableWidget->setItemDelegateForColumn(typeColumns.length(), new DateDelegate(this));
+                                    }
+                                    break;
+                                    case ctTime:
+                                    {
+                                        ui->dataTableWidget->setItemDelegateForColumn(typeColumns.length(), new TimeDelegate(this));
+                                    }
+                                    break;
+                                    case ctList:
+                                    {
+                                        ui->dataTableWidget->setItemDelegateForColumn(typeColumns.length(), new ListDelegate(
+                                                                                                                             ((ListColumn*)aColumn.column)->mLinkComponent,
+                                                                                                                             this
+                                                                                                                            ));
+                                    }
+                                    break;
+                                    case ctExtendedList:
+                                    {
+                                        ui->dataTableWidget->setItemDelegateForColumn(typeColumns.length(), new ListDelegate(
+                                                                                                                             ((ExtendedListColumn*)aColumn.column)->mLinkComponent,
+                                                                                                                             this
+                                                                                                                            ));
+                                    }
+                                    break;
+                                    default:
+                                    {
+                                        ui->dataTableWidget->setItemDelegateForColumn(typeColumns.length(), new StringDelegate(this));
+                                    }
+                                    break;
+                                }
                             }
                             else
                             if (aMagicWord=="LeftMargin")
