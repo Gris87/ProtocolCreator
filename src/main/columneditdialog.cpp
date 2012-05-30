@@ -221,9 +221,10 @@ void ColumnEditDialog::startEditing()
         break;
     }
 
-    ui->leftOffsetSpinBox->setValue(aColumn->leftOffset);
-    ui->rightOffsetSpinBox->setValue(aColumn->rightOffset);
-    ui->totalOffsetSpinBox->setValue(aColumn->totalOffset);
+    ui->leftMarginSpinBox->setValue(aColumn->leftMargin);
+    ui->rightMarginSpinBox->setValue(aColumn->rightMargin);
+    ui->topMarginSpinBox->setValue(aColumn->topMargin);
+    ui->bottomMarginSpinBox->setValue(aColumn->bottomMargin);
 
     while (ui->conditionsVerticalLayout->count()>0)
     {
@@ -362,9 +363,10 @@ void ColumnEditDialog::applyChanges()
             break;
         }
 
-        aColumn->leftOffset=ui->leftOffsetSpinBox->value();
-        aColumn->rightOffset=ui->rightOffsetSpinBox->value();
-        aColumn->totalOffset=ui->totalOffsetSpinBox->value();
+        aColumn->leftMargin=ui->leftMarginSpinBox->value();
+        aColumn->rightMargin=ui->rightMarginSpinBox->value();
+        aColumn->topMargin=ui->topMarginSpinBox->value();
+        aColumn->bottomMargin=ui->bottomMarginSpinBox->value();
 
         aColumn->conditions.clear();
 
@@ -651,14 +653,17 @@ void ColumnEditDialog::applyChanges()
         else
         if (aNewColumnType==ctExpression)
         {
-            for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
+            if (!ui->expressionModifyCheckBox->isChecked())
             {
-                if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                for (int i=0; i<mTable->ui->dataTableWidget->rowCount(); i++)
                 {
-                    continue;
-                }
+                    if (mTable->ui->dataTableWidget->itemDelegateForRow(i))
+                    {
+                        continue;
+                    }
 
-                mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(ui->expressionEdit->text());
+                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(ui->expressionEdit->text());
+                }
             }
         }
         else
@@ -775,9 +780,10 @@ void ColumnEditDialog::applyChanges()
             break;
         }
 
-        aColumn.leftOffset=ui->leftOffsetSpinBox->value();
-        aColumn.rightOffset=ui->rightOffsetSpinBox->value();
-        aColumn.totalOffset=ui->totalOffsetSpinBox->value();
+        aColumn.leftMargin=ui->leftMarginSpinBox->value();
+        aColumn.rightMargin=ui->rightMarginSpinBox->value();
+        aColumn.topMargin=ui->topMarginSpinBox->value();
+        aColumn.bottomMargin=ui->bottomMarginSpinBox->value();
         aColumn.fontString="";
         aColumn.alignment=Qt::AlignTop | Qt::AlignLeft;
         aColumn.backgroundColorR=255;

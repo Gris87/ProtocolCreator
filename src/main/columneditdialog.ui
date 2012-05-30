@@ -856,7 +856,7 @@
    <item>
     <widget class="QGroupBox" name="offsetGroupBox">
      <property name="title">
-      <string>Сдвиги (см)</string>
+      <string>Отступы (см)</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <property name="margin">
@@ -866,34 +866,52 @@
        <number>4</number>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="leftOffsetLabel">
+       <widget class="QLabel" name="leftMarginLabel">
         <property name="text">
-         <string>Сдвиг слева:</string>
+         <string>Слева:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QDoubleSpinBox" name="leftOffsetSpinBox"/>
+       <widget class="QDoubleSpinBox" name="leftMarginSpinBox">
+        <property name="value">
+         <double>0.190000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="rightOffsetLabel">
+       <widget class="QLabel" name="rightMarginLabel">
         <property name="text">
-         <string>Сдвиг справа:</string>
+         <string>Справа:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="totalOffsetLabel">
+       <widget class="QLabel" name="topMarginLabel">
         <property name="text">
-         <string>Отступ:</string>
+         <string>Сверху:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="rightOffsetSpinBox"/>
+       <widget class="QDoubleSpinBox" name="rightMarginSpinBox">
+        <property name="value">
+         <double>0.190000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QDoubleSpinBox" name="totalOffsetSpinBox"/>
+       <widget class="QDoubleSpinBox" name="topMarginSpinBox"/>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="bottomMarginLabel">
+        <property name="text">
+         <string>Сверху:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QDoubleSpinBox" name="bottomMarginSpinBox"/>
       </item>
      </layout>
     </widget>

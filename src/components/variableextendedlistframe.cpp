@@ -180,14 +180,17 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
         aStream << QString("Column");
         aColumn->column->saveToStream(aStream);
 
-        aStream << QString("LeftOffset");
-        aStream << aColumn->leftOffset;
+        aStream << QString("LeftMargin");
+        aStream << aColumn->leftMargin;
 
-        aStream << QString("RightOffset");
-        aStream << aColumn->rightOffset;
+        aStream << QString("RightMargin");
+        aStream << aColumn->rightMargin;
 
-        aStream << QString("TotalOffset");
-        aStream << aColumn->totalOffset;
+        aStream << QString("TopMargin");
+        aStream << aColumn->topMargin;
+
+        aStream << QString("BottomMargin");
+        aStream << aColumn->bottomMargin;
 
         aStream << QString("Font");
         aStream << aColumn->fontString;
@@ -617,19 +620,24 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                 aColumn.column=aTypeColumn;
                             }
                             else
-                            if (aMagicWord=="LeftOffset")
+                            if (aMagicWord=="LeftMargin")
                             {
-                                aStream >> aColumn.leftOffset;
+                                aStream >> aColumn.leftMargin;
                             }
                             else
-                            if (aMagicWord=="RightOffset")
+                            if (aMagicWord=="RightMargin")
                             {
-                                aStream >> aColumn.rightOffset;
+                                aStream >> aColumn.rightMargin;
                             }
                             else
-                            if (aMagicWord=="TotalOffset")
+                            if (aMagicWord=="TopMargin")
                             {
-                                aStream >> aColumn.totalOffset;
+                                aStream >> aColumn.topMargin;
+                            }
+                            else
+                            if (aMagicWord=="BottomMargin")
+                            {
+                                aStream >> aColumn.bottomMargin;
                             }
                             else
                             if (aMagicWord=="Font")

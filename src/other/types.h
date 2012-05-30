@@ -40,9 +40,10 @@ struct STableColumn
     QString name;
     bool visible;
     ColumnType *column;
-    double leftOffset;
-    double rightOffset;
-    double totalOffset;
+    double leftMargin;
+    double rightMargin;
+    double topMargin;
+    double bottomMargin;
     QString fontString;
     quint8 alignment;
     quint8 backgroundColorR;
