@@ -156,6 +156,11 @@ void VariableIntegerFrame::on_nameEdit_textChanged(const QString &aName)
     ui->valueLabel->setText(aName);
 }
 
+void VariableIntegerFrame::on_varNameEdit_textChanged(const QString &aName)
+{
+    ui->valueLabel->setToolTip(aName);
+}
+
 void VariableIntegerFrame::on_decimalsSpinBox_valueChanged(int aValue)
 {
     ui->valueSpinBox->setDecimals(aValue);

@@ -43,6 +43,7 @@ private slots:
     void on_copyButton_clicked();
     void on_deleteButton_clicked();
     void on_nameEdit_textChanged(const QString &aName);
+    void on_varNameEdit_textChanged(const QString &aName);
     void on_decimalsSpinBox_valueChanged(int aValue);
     void on_lockButton_clicked();
     void on_editButton_clicked();

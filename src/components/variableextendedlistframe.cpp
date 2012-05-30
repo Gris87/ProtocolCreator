@@ -989,7 +989,7 @@ void VariableExtendedListFrame::updateAdmin()
 
 void VariableExtendedListFrame::componentShown()
 {
-    if (needUpdateHeight)
+    if (needUpdateHeight && ui->userWidget->isVisible())
     {
         needUpdateHeight=false;
 
@@ -1035,9 +1035,16 @@ void VariableExtendedListFrame::on_nameEdit_textChanged(const QString &aName)
     ui->titleLabel->setText(aName);
 }
 
+void VariableExtendedListFrame::on_varNameEdit_textChanged(const QString &aName)
+{
+    ui->useCheckBox->setToolTip(aName);
+    ui->titleLabel->setToolTip(aName);
+}
+
 void VariableExtendedListFrame::on_useCheckBox_toggled(bool checked)
 {
     ui->userWidget->setVisible(ui->userWidget->isEnabled() && checked && (isAdmin || isEditable()));
+    componentShown();
 }
 
 void VariableExtendedListFrame::on_lockButton_clicked()
@@ -1045,6 +1052,7 @@ void VariableExtendedListFrame::on_lockButton_clicked()
     ui->userWidget->setEnabled(!ui->userWidget->isEnabled());
 
     updateLock();
+    componentShown();
 }
 
 void VariableExtendedListFrame::updateLock()
@@ -1588,6 +1596,12 @@ void VariableExtendedListFrame::on_expandButton_clicked()
 
     fullDialog->setWindowTitle(ui->nameEdit->text());
 
+    fullDialog->addAction(mainWindow->ui->actionGlobalVars);
+    fullDialog->addAction(mainWindow->ui->actionExport);
+    fullDialog->addAction(mainWindow->ui->actionGenerateWord);
+    fullDialog->addAction(mainWindow->ui->actionSectionControl);
+    fullDialog->addAction(mainWindow->ui->actionSave);
+    fullDialog->addAction(mainWindow->ui->actionSaveAs);
     fullDialog->addAction(mainWindow->ui->actionFind);
     fullDialog->addAction(mainWindow->ui->actionReplace);
     fullDialog->addAction(mainWindow->ui->actionFindNext);

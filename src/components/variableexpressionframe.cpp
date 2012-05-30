@@ -143,6 +143,11 @@ void VariableExpressionFrame::on_nameEdit_textChanged(const QString &aName)
     ui->valueLabel->setText(aName);
 }
 
+void VariableExpressionFrame::on_varNameEdit_textChanged(const QString &aName)
+{
+    ui->valueLabel->setToolTip(aName);
+}
+
 void VariableExpressionFrame::on_lockButton_clicked()
 {
     ui->valueEdit->setEnabled(!ui->valueEdit->isEnabled());

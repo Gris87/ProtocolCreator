@@ -208,6 +208,11 @@ void VariableListFrame::on_nameEdit_textChanged(const QString &aName)
     ui->valueLabel->setText(aName);
 }
 
+void VariableListFrame::on_varNameEdit_textChanged(const QString &aName)
+{
+    ui->valueLabel->setToolTip(aName);
+}
+
 void VariableListFrame::on_sortCheckBox_toggled(bool checked)
 {
     on_linesTextEdit_textChanged();

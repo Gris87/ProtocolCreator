@@ -160,6 +160,11 @@ void ComponentTextFrame::on_nameEdit_textChanged(const QString &aName)
     ui->useCheckBox->setText(aName);
 }
 
+void ComponentTextFrame::on_varNameEdit_textChanged(const QString &aName)
+{
+    ui->useCheckBox->setToolTip(aName);
+}
+
 void ComponentTextFrame::on_useCheckBox_toggled(bool checked)
 {
     ui->userWidget->setVisible(ui->userWidget->isEnabled() && checked && (isAdmin || isEditable()));

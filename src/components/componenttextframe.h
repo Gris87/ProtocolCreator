@@ -47,6 +47,7 @@ private slots:
     void on_copyButton_clicked();
     void on_deleteButton_clicked();
     void on_nameEdit_textChanged(const QString &aName);
+    void on_varNameEdit_textChanged(const QString &aName);
     void on_useCheckBox_toggled(bool checked);
     void on_expandButton_clicked();
     void on_lockButton_clicked();

@@ -143,6 +143,11 @@ void VariableBoolFrame::on_nameEdit_textChanged(const QString &aName)
     ui->valueCheckBox->setText(aName);
 }
 
+void VariableBoolFrame::on_varNameEdit_textChanged(const QString &aName)
+{
+    ui->valueCheckBox->setToolTip(aName);
+}
+
 void VariableBoolFrame::on_lockButton_clicked()
 {
     ui->valueCheckBox->setEnabled(!ui->valueCheckBox->isEnabled());
