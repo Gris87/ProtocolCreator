@@ -1960,7 +1960,7 @@ void MainWindow::exportToWord(bool isFull)
                                     aTable->properties.alignment=taRight;
                                 }
 
-                                aTable->properties.indentation=aComponent->mTableOffset*CM_TO_TWIPS;
+                                aTable->properties.indentation=(int)(aComponent->mTableOffset*CM_TO_TWIPS);
 
                                 for (int i=0; i<aComponent->headerCells.length(); i++)
                                 {
@@ -2116,6 +2116,13 @@ void MainWindow::exportToWord(bool isFull)
                                         {
                                             aCell->properties.vAlign=caBottom;
                                         }
+
+                                        aCell->properties.cellMargin.setMargin(
+                                                                               (int)(aComponent->typeColumns.at(j).topMargin*CM_TO_TWIPS),
+                                                                               (int)(aComponent->typeColumns.at(j).leftMargin*CM_TO_TWIPS),
+                                                                               (int)(aComponent->typeColumns.at(j).bottomMargin*CM_TO_TWIPS),
+                                                                               (int)(aComponent->typeColumns.at(j).rightMargin*CM_TO_TWIPS)
+                                                                              );
 
                                         if (aComponent->ui->dataTableWidget->item(i, j)->background().style()!=Qt::NoBrush)
                                         {

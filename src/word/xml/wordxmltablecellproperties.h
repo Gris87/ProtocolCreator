@@ -3,6 +3,7 @@
 
 #include "wordxmlbase.h"
 
+#include "wordxmltablecellmargin.h"
 #include "wordxmlshading.h"
 
 enum EMergeType
@@ -27,6 +28,7 @@ public:
     EMergeType vMergeType;
     int columnSpan;
     ECellAlignment vAlign;
+    WordXMLTableCellMargin cellMargin;
     WordXMLShading shading;
 
     explicit WordXMLTableCellProperties(WordXMLBase* aParent=0);

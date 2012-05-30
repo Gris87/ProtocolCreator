@@ -4,6 +4,8 @@ WordXMLTableCellMargin::WordXMLTableCellMargin(WordXMLBase* aParent) : WordXMLBa
 {
     componentType=wxtTableCellMargin;
 
+    tagName="tblCellMar";
+
     reset();
 }
 
@@ -15,7 +17,7 @@ void WordXMLTableCellMargin::writeToStream(QTextStream &aStream)
 {
     if (isModified())
     {
-        aStream<<space<<"<w:tblCellMar>\r\n";
+        aStream<<space<<"<w:"+tagName+">\r\n";
 
         if (top>=0)
         {
@@ -37,7 +39,7 @@ void WordXMLTableCellMargin::writeToStream(QTextStream &aStream)
             aStream<<space<<" <w:right w:w=\""+QString::number(right)+"\" w:type=\"dxa\"/>\r\n";
         }
 
-        aStream<<space<<"</w:tblCellMar>\r\n";
+        aStream<<space<<"</w:"+tagName+">\r\n";
     }
 }
 

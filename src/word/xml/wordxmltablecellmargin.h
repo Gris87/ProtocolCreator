@@ -6,6 +6,8 @@
 class WordXMLTableCellMargin : public WordXMLBase
 {
 public:
+    QString tagName;
+
     double top;
     double left;
     double bottom;

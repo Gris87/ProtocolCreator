@@ -4,7 +4,10 @@ WordXMLTableCellProperties::WordXMLTableCellProperties(WordXMLBase* aParent) : W
 {
     componentType=wxtTableCellProperties;
 
+    cellMargin.parent=this;
     shading.parent=this;
+
+    cellMargin.tagName="tcMar";
 
     reset();
 }
@@ -86,6 +89,7 @@ void WordXMLTableCellProperties::writeToStream(QTextStream &aStream)
             aStream<<"\"/>\r\n";
         }
 
+        cellMargin.writeToStream(aStream);
         shading.writeToStream(aStream);
 
         aStream<<space<<"</w:tcPr>\r\n";
@@ -100,6 +104,7 @@ void WordXMLTableCellProperties::reset()
     vMergeType=mtNone;
     columnSpan=1;
     vAlign=caNone;
+    cellMargin.reset();
     shading.reset();
 }
 
@@ -114,6 +119,8 @@ bool WordXMLTableCellProperties::isModified()
             ||
             vAlign!=caNone
             ||
+            cellMargin.isModified()
+            ||
             shading.isModified()
            );
 }
@@ -124,6 +131,7 @@ WordXMLTableCellProperties& WordXMLTableCellProperties::operator=(const WordXMLT
     vMergeType=another.vMergeType;
     columnSpan=another.columnSpan;
     vAlign=another.vAlign;
+    cellMargin=another.cellMargin;
     shading=another.shading;
 
     return *this;
