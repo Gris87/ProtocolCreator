@@ -31,6 +31,8 @@
 #include "src/delegates/stringdelegate.h"
 #include "src/delegates/timedelegate.h"
 
+#include "src/dump/dumpcrashes.h"
+
 #include "src/main/columneditdialog.h"
 #include "src/main/columnsizedialog.h"
 #include "src/main/componentselectiondialog.h"

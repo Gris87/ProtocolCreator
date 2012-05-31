@@ -4,11 +4,20 @@
 
 int main(int argc, char *argv[])
 {
-    qInstallMsgHandler(myMessageOutput);
+    allowDumpCrashes();
+
+    installMsgHandler(myMessageOutput);
+
+    Q_INIT_RESOURCE(Resources);
 
     QApplication a(argc, argv);
 
-    Q_INIT_RESOURCE(Resources);
+    a.setApplicationName("Protocol creator");
+    a.setApplicationVersion(protocolCreatorVersion);
+
+    a.setOrganizationName("None");
+    a.setOrganizationDomain("None");
+
     dir=QCoreApplication::applicationDirPath()+"/";
 
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Windows-1251"));

@@ -42,6 +42,8 @@ InsertLinkTableDialog::InsertLinkTableDialog(VariableExtendedListFrame *aSourceT
         ui->beforeRadioButton->setEnabled(false);
         ui->afterRadioButton->setEnabled(false);
     }
+
+    ui->sourceTableWidget->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
 }
 
 InsertLinkTableDialog::~InsertLinkTableDialog()

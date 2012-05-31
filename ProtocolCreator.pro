@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+include("src/dump/dump.pri")
+
 QT       += core gui
 
 TARGET = ProtocolCreator

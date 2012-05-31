@@ -1,3 +1,3 @@
 *.pro.user*
-samples\*.doc*
-samples\*.xml
+*.doc*
+*.xml
