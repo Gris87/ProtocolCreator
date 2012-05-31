@@ -25,6 +25,8 @@ public:
     ~InsertLinkTableDialog();
 
 private slots:
+    void updateTableHeights();
+
     void on_closeButton_clicked();
     void on_addButton_clicked();
     void on_sourceTableWidget_doubleClicked(const QModelIndex &index);

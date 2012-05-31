@@ -307,6 +307,10 @@ void WordXMLMultiPart::insertByTextCursor(QTextCursor cursor, const int start, c
 
 void WordXMLMultiPart::putTextWithFormat(WordXMLParagraph *paragraph, WordXMLRun *run, QString aText, QTextCharFormat aFormat)
 {
+    aText.replace("&", "&amp;");
+    aText.replace("<", "&lt;");
+    aText.replace(">", "&gt;");
+
     do
     {
         int index=aText.indexOf("#");

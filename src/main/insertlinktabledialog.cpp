@@ -35,6 +35,7 @@ InsertLinkTableDialog::InsertLinkTableDialog(VariableExtendedListFrame *aSourceT
     for (int i=0; i<ui->sourceTableWidget->columnCount(); i++)
     {
         ui->sourceTableWidget->setHorizontalHeaderItem(i, mSourceTable->ui->dataTableWidget->horizontalHeaderItem(i)->clone());
+        ui->sourceTableWidget->setColumnWidth(i, mSourceTable->ui->dataTableWidget->columnWidth(i));
     }
 
     if (mDestTable->ui->dataTableWidget->currentRow()<0)
@@ -43,12 +44,17 @@ InsertLinkTableDialog::InsertLinkTableDialog(VariableExtendedListFrame *aSourceT
         ui->afterRadioButton->setEnabled(false);
     }
 
-    ui->sourceTableWidget->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    QTimer::singleShot(0, this, SLOT(updateTableHeights()));
 }
 
 InsertLinkTableDialog::~InsertLinkTableDialog()
 {
     delete ui;
+}
+
+void InsertLinkTableDialog::updateTableHeights()
+{
+    ui->sourceTableWidget->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
 }
 
 void InsertLinkTableDialog::on_closeButton_clicked()
