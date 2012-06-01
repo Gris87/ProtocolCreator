@@ -329,8 +329,15 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
                 if (aItem->text()!="")
                 {
-                    aStream << QString("Text");
-                    aStream << aItem->text();
+                    if (i>0 && aItem->text()==ui->dataTableWidget->item(i-1, j)->text())
+                    {
+                        aStream << QString("SameText");
+                    }
+                    else
+                    {
+                        aStream << QString("Text");
+                        aStream << aItem->text();
+                    }
                 }
 
                 if (!isMiddleRow && typeColumns.at(j).column->type()==ctBool)
@@ -932,6 +939,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                     aStream >> aValue;
 
                                     aItem->setText(aValue);
+                                }
+                                else
+                                if (aMagicWord=="SameText")
+                                {
+                                    aItem->setText(ui->dataTableWidget->item(i-1, j)->text());
                                 }
                                 else
                                 if (aMagicWord=="Checked")
