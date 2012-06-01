@@ -72,6 +72,7 @@ void ColumnEditDialog::startEditing()
             ui->integerDefaultSpinBox->setValue         (((IntegerColumn*)aColumn->column)->mDefaultValue);
             ui->integerNumberSpinBox->setValue          (((IntegerColumn*)aColumn->column)->mDecimals);
             ui->integerAutoIncrementCheckBox->setChecked(((IntegerColumn*)aColumn->column)->mIsAutoInc);
+            ui->integerSplitRowsCheckBox->setChecked    (((IntegerColumn*)aColumn->column)->mSplitRows);
             ui->integerPrefixEdit->setText              (((IntegerColumn*)aColumn->column)->mPrefix);
             ui->integerPostfixEdit->setText             (((IntegerColumn*)aColumn->column)->mPostfix);
         }
@@ -272,6 +273,7 @@ void ColumnEditDialog::applyChanges()
                 aTypeColumn->mDefaultValue=ui->integerDefaultSpinBox->value();
                 aTypeColumn->mDecimals=ui->integerNumberSpinBox->value();
                 aTypeColumn->mIsAutoInc=ui->integerAutoIncrementCheckBox->isChecked();
+                aTypeColumn->mSplitRows=ui->integerSplitRowsCheckBox->isChecked();
                 aTypeColumn->mPrefix=ui->integerPrefixEdit->text();
                 aTypeColumn->mPostfix=ui->integerPostfixEdit->text();
 
@@ -419,8 +421,16 @@ void ColumnEditDialog::applyChanges()
                 DoubleDelegate *delegate=new DoubleDelegate(mTable);
 
                 delegate->mDecimals=ui->integerNumberSpinBox->value();
-                delegate->mPrefix=ui->integerPrefixEdit->text();
-                delegate->mPostfix=ui->integerPostfixEdit->text();
+
+                if (
+                    !ui->integerAutoIncrementCheckBox->isChecked()
+                    &&
+                    !ui->integerSplitRowsCheckBox->isChecked()
+                   )
+                {
+                    delegate->mPrefix=ui->integerPrefixEdit->text();
+                    delegate->mPostfix=ui->integerPostfixEdit->text();
+                }
 
                 mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
             }
@@ -526,6 +536,8 @@ void ColumnEditDialog::applyChanges()
                     aOldColumnType==ctInteger
                     &&
                     !((IntegerColumn*)aOldTypeColumn)->mIsAutoInc
+                    &&
+                    !((IntegerColumn*)aOldTypeColumn)->mSplitRows
                    )
                 {
                     removeBefore=((IntegerColumn*)aOldTypeColumn)->mPrefix.length();
@@ -556,7 +568,14 @@ void ColumnEditDialog::applyChanges()
                         aText=QString::number(ui->integerDefaultSpinBox->value(), 'f', ui->integerNumberSpinBox->value());
                     }
 
-                    mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(ui->integerPrefixEdit->text()+aText+ui->integerPostfixEdit->text());
+                    if (ui->integerSplitRowsCheckBox->isChecked())
+                    {
+                        mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(aText);
+                    }
+                    else
+                    {
+                        mTable->ui->dataTableWidget->item(i, mColumnIndex)->setText(ui->integerPrefixEdit->text()+aText+ui->integerPostfixEdit->text());
+                    }
                 }
             }
         }
@@ -689,6 +708,7 @@ void ColumnEditDialog::applyChanges()
                 aTypeColumn->mDefaultValue=ui->integerDefaultSpinBox->value();
                 aTypeColumn->mDecimals=ui->integerNumberSpinBox->value();
                 aTypeColumn->mIsAutoInc=ui->integerAutoIncrementCheckBox->isChecked();
+                aTypeColumn->mSplitRows=ui->integerSplitRowsCheckBox->isChecked();
                 aTypeColumn->mPrefix=ui->integerPrefixEdit->text();
                 aTypeColumn->mPostfix=ui->integerPostfixEdit->text();
 
@@ -905,8 +925,16 @@ void ColumnEditDialog::applyChanges()
                 DoubleDelegate *delegate=new DoubleDelegate(mTable);
 
                 delegate->mDecimals=ui->integerNumberSpinBox->value();
-                delegate->mPrefix=ui->integerPrefixEdit->text();
-                delegate->mPostfix=ui->integerPostfixEdit->text();
+
+                if (
+                    !ui->integerAutoIncrementCheckBox->isChecked()
+                    &&
+                    !ui->integerSplitRowsCheckBox->isChecked()
+                   )
+                {
+                    delegate->mPrefix=ui->integerPrefixEdit->text();
+                    delegate->mPostfix=ui->integerPostfixEdit->text();
+                }
 
                 mTable->ui->dataTableWidget->setItemDelegateForColumn(mColumnIndex, delegate);
             }
@@ -971,6 +999,11 @@ void ColumnEditDialog::applyChanges()
                             }
 
                             aItem->setText(QString::number(id));
+                        }
+                        else
+                        if (((IntegerColumn*)aColumn.column)->mSplitRows)
+                        {
+                            aItem->setText(QString::number(((IntegerColumn*)aColumn.column)->mDefaultValue, 'f', ((IntegerColumn*)aColumn.column)->mDecimals));
                         }
                         else
                         {
@@ -1054,6 +1087,19 @@ void ColumnEditDialog::on_integerNumberSpinBox_valueChanged(int value)
 void ColumnEditDialog::on_integerAutoIncrementCheckBox_toggled(bool checked)
 {
     ui->autoIncWidget->setVisible(!checked);
+    ui->integerSplitRowsCheckBox->setEnabled(!checked);
+}
+
+void ColumnEditDialog::on_integerSplitRowsCheckBox_toggled(bool checked)
+{
+    if (checked)
+    {
+        ui->integerNumberSpinBox->setValue(0);
+    }
+
+    ui->integerAutoIncrementCheckBox->setEnabled(!checked);
+    ui->integerNumberLabel->setVisible(!checked);
+    ui->integerNumberSpinBox->setVisible(!checked);
 }
 
 void ColumnEditDialog::on_listLinkPagesListWidget_currentRowChanged(int currentRow)
@@ -1352,9 +1398,20 @@ void ColumnEditDialog::on_extListLinkColumnsListWidget_currentRowChanged(int cur
 
                 if (aColumnType==ctInteger)
                 {
-                    QString aPrefix=((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mPrefix;
-                    QString aPostfix=((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mPostfix;
                     int aDecimal=((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mDecimals;
+
+                    QString aPrefix;
+                    QString aPostfix;
+
+                    if (
+                        !((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mIsAutoInc
+                        &&
+                        !((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mSplitRows
+                       )
+                    {
+                        aPrefix=((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mPrefix;
+                        aPostfix=((IntegerColumn*)aFrame->typeColumns.at(currentRow).column)->mPostfix;
+                    }
 
                     QList<double> doubles;
 

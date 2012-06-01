@@ -11,6 +11,7 @@ public:
     double mDefaultValue;
     int mDecimals;
     bool mIsAutoInc;
+    bool mSplitRows;
     QString mPrefix;
     QString mPostfix;
 

@@ -628,8 +628,16 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                         DoubleDelegate *delegate=new DoubleDelegate(this);
 
                                         delegate->mDecimals=((IntegerColumn*)aColumn.column)->mDecimals;
-                                        delegate->mPrefix=((IntegerColumn*)aColumn.column)->mPrefix;
-                                        delegate->mPostfix=((IntegerColumn*)aColumn.column)->mPostfix;
+
+                                        if (
+                                            !((IntegerColumn*)aColumn.column)->mIsAutoInc
+                                            &&
+                                            !((IntegerColumn*)aColumn.column)->mSplitRows
+                                           )
+                                        {
+                                            delegate->mPrefix=((IntegerColumn*)aColumn.column)->mPrefix;
+                                            delegate->mPostfix=((IntegerColumn*)aColumn.column)->mPostfix;
+                                        }
 
                                         ui->dataTableWidget->setItemDelegateForColumn(typeColumns.length(), delegate);
                                     }
@@ -1335,7 +1343,11 @@ QVariant VariableExtendedListFrame::calculate(QStringList *aErrorList)
                     int removeBefore=0;
                     int removeAfter=0;
 
-                    if (!((IntegerColumn*)typeColumns.at(j).column)->mIsAutoInc)
+                    if (
+                        !((IntegerColumn*)typeColumns.at(j).column)->mIsAutoInc
+                        &&
+                        !((IntegerColumn*)typeColumns.at(j).column)->mSplitRows
+                       )
                     {
                         removeBefore=((IntegerColumn*)typeColumns.at(j).column)->mPrefix.length();
                         removeAfter=((IntegerColumn*)typeColumns.at(j).column)->mPostfix.length();
@@ -1690,6 +1702,11 @@ void VariableExtendedListFrame::setItemsForRow(int row)
                             ui->dataTableWidget->item(j, 0)->setText(QString::number(id));
                         }
                     }
+                }
+                else
+                if (((IntegerColumn*)typeColumns.at(i).column)->mSplitRows)
+                {
+                    aItem->setText(QString::number(((IntegerColumn*)typeColumns.at(i).column)->mDefaultValue, 'f', ((IntegerColumn*)typeColumns.at(i).column)->mDecimals));
                 }
                 else
                 {

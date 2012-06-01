@@ -17,6 +17,9 @@ void IntegerColumn::saveToStream(QDataStream &aStream)
     aStream << QString("AutoInc");
     aStream << mIsAutoInc;
 
+    aStream << QString("SplitRows");
+    aStream << mSplitRows;
+
     aStream << QString("Prefix");
     aStream << mPrefix;
 
@@ -49,6 +52,11 @@ void IntegerColumn::loadFromStream(QDataStream &aStream)
             aStream >> mIsAutoInc;
         }
         else
+        if (aMagicWord=="SplitRows")
+        {
+            aStream >> mSplitRows;
+        }
+        else
         if (aMagicWord=="Prefix")
         {
             aStream >> mPrefix;
@@ -74,7 +82,12 @@ QString IntegerColumn::typeDescription()
 
     if (mIsAutoInc)
     {
-        aTypeDescription.append("X");
+        aTypeDescription.append("A");
+    }
+    else
+    if (mSplitRows)
+    {
+        aTypeDescription.append("S");
     }
     else
     {

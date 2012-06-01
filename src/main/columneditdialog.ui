@@ -187,11 +187,22 @@
         <number>4</number>
        </property>
        <item>
-        <widget class="QCheckBox" name="integerAutoIncrementCheckBox">
-         <property name="text">
-          <string>Автоинкрементирование</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <widget class="QCheckBox" name="integerAutoIncrementCheckBox">
+           <property name="text">
+            <string>Автоинкрементирование</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="integerSplitRowsCheckBox">
+           <property name="text">
+            <string>Разбивать на подстроки</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QWidget" name="autoIncWidget" native="true">

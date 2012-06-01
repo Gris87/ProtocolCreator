@@ -38,6 +38,7 @@ private slots:
     void on_typeComboBox_currentIndexChanged(int index);
     void on_integerNumberSpinBox_valueChanged(int value);
     void on_integerAutoIncrementCheckBox_toggled(bool checked);
+    void on_integerSplitRowsCheckBox_toggled(bool checked);
     void on_listLinkPagesListWidget_currentRowChanged(int currentRow);
     void on_listLinkVariablesListWidget_currentRowChanged(int currentRow);
     void on_extListLinkPagesListWidget_currentRowChanged(int currentRow);

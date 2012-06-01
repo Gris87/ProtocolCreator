@@ -836,8 +836,14 @@ bool PageComponent::find(bool isForward, int startX, int startY)
                                 }
                                 else
                                 {
-                                    QString aPrefix=((IntegerColumn*)aTable->typeColumns.at(curCol).column)->mPrefix;
-                                    QString aPostfix=((IntegerColumn*)aTable->typeColumns.at(curCol).column)->mPostfix;
+                                    QString aPrefix;
+                                    QString aPostfix;
+
+                                    if (!((IntegerColumn*)aTable->typeColumns.at(curCol).column)->mSplitRows)
+                                    {
+                                        aPrefix=((IntegerColumn*)aTable->typeColumns.at(curCol).column)->mPrefix;
+                                        aPostfix=((IntegerColumn*)aTable->typeColumns.at(curCol).column)->mPostfix;
+                                    }
 
                                     aText.remove(aText.length()-aPostfix.length(), aPostfix.length());
                                     aText.remove(0, aPrefix.length());

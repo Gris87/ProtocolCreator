@@ -324,11 +324,18 @@ void DataTable::pasteData()
 
                             if (ok)
                             {
-                                aItem->setText(
-                                               ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mPrefix+
-                                               QString::number(aValue, 'f', ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mDecimals)+
-                                               ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mPostfix
-                                              );
+                                if (((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mSplitRows)
+                                {
+                                    aItem->setText(QString::number(aValue, 'f', ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mDecimals));
+                                }
+                                else
+                                {
+                                    aItem->setText(
+                                                   ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mPrefix+
+                                                   QString::number(aValue, 'f', ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mDecimals)+
+                                                   ((IntegerColumn*)(aTable->typeColumns.at(curCol+j).column))->mPostfix
+                                                  );
+                                }
                             }
                         }
                     }

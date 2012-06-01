@@ -144,18 +144,31 @@ void InsertLinkTableDialog::on_addButton_clicked()
                         {
                             QString aText=ui->sourceTableWidget->item(aSourceRow, j)->text();
 
-                            int removeBefore=((IntegerColumn*)mSourceTable->typeColumns.at(j).column)->mPrefix.length();
-                            int removeAfter=((IntegerColumn*)mSourceTable->typeColumns.at(j).column)->mPostfix.length();
+                            int removeBefore=0;
+                            int removeAfter=0;
+
+                            if (!((IntegerColumn*)mSourceTable->typeColumns.at(j).column)->mSplitRows)
+                            {
+                                removeBefore=((IntegerColumn*)mSourceTable->typeColumns.at(j).column)->mPrefix.length();
+                                removeAfter=((IntegerColumn*)mSourceTable->typeColumns.at(j).column)->mPostfix.length();
+                            }
 
                             aText.remove(aText.length()-removeAfter, removeAfter);
                             aText.remove(0, removeBefore);
 
                             double aValue=aText.toDouble();
 
-                            mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(
-                                                                                        ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPrefix+
-                                                                                        QString::number(aValue, 'f', ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mDecimals)+
-                                                                                        ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPostfix);
+                            if (((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mSplitRows)
+                            {
+                                mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(QString::number(aValue, 'f', ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mDecimals));
+                            }
+                            else
+                            {
+                                mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(
+                                                                                            ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPrefix+
+                                                                                            QString::number(aValue, 'f', ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mDecimals)+
+                                                                                            ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPostfix);
+                            }
                         }
                         else
                         {
@@ -180,10 +193,17 @@ void InsertLinkTableDialog::on_addButton_clicked()
 
                             if (ok)
                             {
-                                mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(
-                                                                                            ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPrefix+
-                                                                                            QString::number(aValue, 'f', ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mDecimals)+
-                                                                                            ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPostfix);
+                                if (((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mSplitRows)
+                                {
+                                    mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(QString::number(aValue, 'f', ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mDecimals));
+                                }
+                                else
+                                {
+                                    mDestTable->ui->dataTableWidget->item(aDestRow, j)->setText(
+                                                                                                ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPrefix+
+                                                                                                QString::number(aValue, 'f', ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mDecimals)+
+                                                                                                ((IntegerColumn*)mDestTable->typeColumns.at(j).column)->mPostfix);
+                                }
                             }
                         }
                     }

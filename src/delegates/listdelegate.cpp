@@ -138,8 +138,19 @@ QWidget *ListDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem 
 
                     if (aColumnType==ctInteger)
                     {
-                        QString aPrefix=((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mPrefix;
-                        QString aPostfix=((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mPostfix;
+                        QString aPrefix;
+                        QString aPostfix;
+
+                        if (
+                            !((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mIsAutoInc
+                            &&
+                            !((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mSplitRows
+                           )
+                        {
+                            aPrefix=((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mPrefix;
+                            aPostfix=((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mPostfix;
+                        }
+
                         int aDecimal=((IntegerColumn*)aExtFrame->typeColumns.at(aColumnID).column)->mDecimals;
 
                         QList<double> doubles;
