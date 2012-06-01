@@ -307,8 +307,15 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
             {
                 aItem=ui->dataTableWidget->item(i, j);
 
-                aStream << QString("Font");
-                aStream << aItem->font().toString();
+                if (i>0 && aItem->font()==ui->dataTableWidget->item(i-1, j)->font())
+                {
+                    aStream << QString("SameFont");
+                }
+                else
+                {
+                    aStream << QString("Font");
+                    aStream << aItem->font().toString();
+                }
 
                 aStream << QString("Alignment");
                 aStream << aItem->textAlignment();
@@ -900,6 +907,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                     aFont.fromString(fontString);
 
                                     aItem->setFont(aFont);
+                                }
+                                else
+                                if (aMagicWord=="SameFont")
+                                {
+                                    aItem->setFont(ui->dataTableWidget->item(i-1, j)->font());
                                 }
                                 else
                                 if (aMagicWord=="Alignment")
