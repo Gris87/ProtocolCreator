@@ -2148,41 +2148,36 @@ void MainWindow::exportToWord(bool isFull)
 
                                         aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
 
-                                        bool writeCell=true;
+                                        QString aText=variantToText(colValues.at(j));
 
-                                        if (writeCell)
+                                        do
                                         {
-                                            QString aText=variantToText(colValues.at(j));
+                                            WordXMLParagraph *aParagraph=aCell->addParagraph();
+                                            WordXMLRun *aRun=aParagraph->addRun();
 
-                                            do
+                                            if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignLeft)
                                             {
-                                                WordXMLParagraph *aParagraph=aCell->addParagraph();
-                                                WordXMLRun *aRun=aParagraph->addRun();
+                                                aParagraph->properties.alignment=paLeft;
+                                            }
+                                            else
+                                            if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignHCenter)
+                                            {
+                                                aParagraph->properties.alignment=paCenter;
+                                            }
+                                            else
+                                            if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignRight)
+                                            {
+                                                aParagraph->properties.alignment=paRight;
+                                            }
 
-                                                if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignLeft)
-                                                {
-                                                    aParagraph->properties.alignment=paLeft;
-                                                }
-                                                else
-                                                if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignHCenter)
-                                                {
-                                                    aParagraph->properties.alignment=paCenter;
-                                                }
-                                                else
-                                                if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignRight)
-                                                {
-                                                    aParagraph->properties.alignment=paRight;
-                                                }
+                                            aRun->properties.setFont(aComponent->ui->dataTableWidget->item(i, j)->font());
+                                            aRun->properties.setColor(aComponent->ui->dataTableWidget->item(i, j)->foreground().color());
 
-                                                aRun->properties.setFont(aComponent->ui->dataTableWidget->item(i, j)->font());
-                                                aRun->properties.setColor(aComponent->ui->dataTableWidget->item(i, j)->foreground().color());
+                                            QString aTextPart=aText.left(aText.indexOf("\n"));
+                                            aText.remove(0, aTextPart.length()+1);
 
-                                                QString aTextPart=aText.left(aText.indexOf("\n"));
-                                                aText.remove(0, aTextPart.length()+1);
-
-                                                aRun->addText(aTextPart);
-                                            } while (aText!="");
-                                        }
+                                            aRun->addText(aTextPart);
+                                        } while (aText!="");
 
                                         if (aCell->properties.columnSpan>1)
                                         {

@@ -18,9 +18,19 @@ void WordXMLTableCell::writeToStream(QTextStream &aStream)
     aStream<<space<<"<w:tc>\r\n";
 
     properties.writeToStream(aStream);
-    WordXMLMultiPart::writeToStream(aStream);
 
-    if (mList.length()==0 || mList.at(mList.length()-1)->getComponentType()!=wxtParagraph)
+    if (properties.vMergeType!=mtContinue)
+    {
+        WordXMLMultiPart::writeToStream(aStream);
+    }
+
+    if (
+        mList.length()==0
+        ||
+        mList.at(mList.length()-1)->getComponentType()!=wxtParagraph
+        ||
+        properties.vMergeType==mtContinue
+       )
     {
         WordXMLParagraph *aParagraph=new WordXMLParagraph(this);
         aParagraph->writeToStream(aStream);
