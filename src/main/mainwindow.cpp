@@ -2087,6 +2087,8 @@ void MainWindow::exportToWord(bool isFull)
                                 for (int i=0; i<aComponent->ui->dataTableWidget->rowCount(); i++)
                                 {
                                     QVariantList colValues=rowValue.at(i).toList();
+                                    QList<int> separations;
+                                    QList<int> separationsXMLColumn;
 
                                     WordXMLTableRow *aRow=aTable->addRow();
 
@@ -2150,6 +2152,25 @@ void MainWindow::exportToWord(bool isFull)
 
                                         QString aText=variantToText(colValues.at(j));
 
+                                        if (
+                                            aComponent->typeColumns.at(j).column->type()==ctInteger
+                                            &&
+                                            !((IntegerColumn*)aComponent->typeColumns.at(j).column)->mIsAutoInc
+                                           )
+                                        {
+                                            if (((IntegerColumn*)aComponent->typeColumns.at(j).column)->mSplitRows)
+                                            {
+                                                separations.append(j);
+                                                separationsXMLColumn.append(aRow->cellCount()-1);
+                                            }
+                                            else
+                                            {
+                                                aText=((IntegerColumn*)aComponent->typeColumns.at(j).column)->mPrefix+
+                                                      aText+
+                                                      ((IntegerColumn*)aComponent->typeColumns.at(j).column)->mPostfix;
+                                            }
+                                        }
+
                                         do
                                         {
                                             WordXMLParagraph *aParagraph=aCell->addParagraph();
@@ -2184,6 +2205,115 @@ void MainWindow::exportToWord(bool isFull)
                                             j+=aCell->properties.columnSpan-1;
 
                                             aCell->properties.columnSpan-=invisibleColumns;
+                                        }
+                                    }
+
+                                    if (separations.length()>0)
+                                    {
+                                        QList<WordXMLTableRow *> aNewRows;
+                                        aNewRows.append(aRow);
+
+                                        for (int j=separations.length()-1; j>=0; j--)
+                                        {
+                                            bool ok;
+
+                                            int aColumn=separations.at(j);
+                                            int xmlColumn=separationsXMLColumn.at(j);
+                                            int rowParts=(int)colValues.at(aColumn).toDouble(&ok);
+
+                                            if (ok && rowParts>1)
+                                            {
+                                                QList<WordXMLTableRow *> aNewRowsTemp=aNewRows;
+
+                                                for (int k=1; k<rowParts; k++)
+                                                {
+                                                    for (int g=0; g<aNewRowsTemp.length(); g++)
+                                                    {
+                                                        aRow=aTable->addRow();
+                                                        *aRow=*aNewRowsTemp.at(g);
+                                                        aNewRows.append(aRow);
+                                                    }
+                                                }
+
+                                                for (int k=0; k<aNewRows.length(); k++)
+                                                {
+                                                    aRow=aNewRows.at(k);
+
+                                                    WordXMLTableCell *aCell=aRow->getCell(xmlColumn);
+
+                                                    if (aCell->count()>0)
+                                                    {
+                                                        while (aCell->count()>1)
+                                                        {
+                                                            delete aCell->get(1);
+                                                            aCell->remove(1);
+                                                        }
+
+                                                        WordXMLParagraph *aParagraph=(WordXMLParagraph*)aCell->get(0);
+
+                                                        while (aParagraph->count()>1)
+                                                        {
+                                                            delete aParagraph->get(1);
+                                                            aParagraph->remove(1);
+                                                        }
+
+                                                        WordXMLRun *aRun=(WordXMLRun*)aParagraph->get(0);
+
+                                                        aRun->clear();
+                                                        aRun->addText(
+                                                                      ((IntegerColumn*)aComponent->typeColumns.at(aColumn).column)->mPrefix+
+                                                                      QString::number((k/aNewRowsTemp.length())+1)+
+                                                                      ((IntegerColumn*)aComponent->typeColumns.at(aColumn).column)->mPostfix
+                                                                     );
+
+                                                        if (k==0)
+                                                        {
+                                                            for (int g=0; g<xmlColumn; g++)
+                                                            {
+                                                                aRow->getCell(g)->properties.vMergeType=mtRestart;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            for (int g=0; g<xmlColumn; g++)
+                                                            {
+                                                                aRow->getCell(g)->properties.vMergeType=mtContinue;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                for (int k=0; k<aNewRows.length(); k++)
+                                                {
+                                                    aRow=aNewRows.at(k);
+
+                                                    WordXMLTableCell *aCell=aRow->getCell(xmlColumn);
+
+                                                    if (aCell->count()>0)
+                                                    {
+                                                        while (aCell->count()>1)
+                                                        {
+                                                            delete aCell->get(1);
+                                                            aCell->remove(1);
+                                                        }
+
+                                                        WordXMLParagraph *aParagraph=(WordXMLParagraph*)aCell->get(0);
+
+                                                        while (aParagraph->count()>1)
+                                                        {
+                                                            delete aParagraph->get(1);
+                                                            aParagraph->remove(1);
+                                                        }
+
+                                                        WordXMLRun *aRun=(WordXMLRun*)aParagraph->get(0);
+
+                                                        aRun->clear();
+                                                        aRun->addText("-");
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
