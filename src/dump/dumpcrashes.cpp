@@ -474,6 +474,12 @@ void logMessageHandler(QtMsgType type, const char *buf)
     {
         logs.removeFirst();
     }
+
+    if (type==QtFatalMsg)
+    {
+        int *a=0;
+        *a=0;
+    }
 }
 
 QtMsgHandler installMsgHandler(QtMsgHandler h, int maxLogCount)
