@@ -2103,16 +2103,32 @@ void MainWindow::exportToWord(bool isFull)
 
                                     WordXMLTableRow *aRow=aTable->addRow();
 
+                                    int headerI=-1;
+
                                     for (int j=0; j<aComponent->typeColumns.length(); j++)
                                     {
+                                        if (
+                                            aComponent->typeColumns.at(j).column->type()==ctInteger
+                                            &&
+                                            !((IntegerColumn*)aComponent->typeColumns.at(j).column)->mIsAutoInc
+                                            &&
+                                            ((IntegerColumn*)aComponent->typeColumns.at(j).column)->mSplitRows
+                                           )
+                                        {
+                                            separations.append(j);
+                                            separationsXMLColumn.append(aRow->cellCount());
+                                        }
+
                                         if (!aComponent->typeColumns.at(j).visible)
                                         {
                                             continue;
                                         }
 
+                                        headerI++;
+
                                         WordXMLTableCell *aCell=aRow->addCell();
 
-                                        aCell->properties.width=aComponent->headerColumnWidths.at(j);
+                                        aCell->properties.width=aComponent->headerColumnWidths.at(headerI);
                                         aCell->properties.columnSpan=aComponent->ui->dataTableWidget->columnSpan(i, j);
 
                                         if (aComponent->ui->dataTableWidget->item(i, j)->textAlignment() & Qt::AlignTop)
@@ -2147,11 +2163,11 @@ void MainWindow::exportToWord(bool isFull)
 
                                         int invisibleColumns=0;
 
-                                        for (int k=1; k<aCell->properties.columnSpan; k++)
+                                        for (int k=1; k<aCell->properties.columnSpan && headerI+k<aComponent->headerColumnWidths.length(); k++)
                                         {
                                             if (aComponent->typeColumns.at(j+k).visible)
                                             {
-                                                aCell->properties.width+=aComponent->headerColumnWidths.at(j+k);
+                                                aCell->properties.width+=aComponent->headerColumnWidths.at(headerI+k);
                                             }
                                             else
                                             {
@@ -2168,19 +2184,13 @@ void MainWindow::exportToWord(bool isFull)
                                             aComponent->typeColumns.at(j).column->type()==ctInteger
                                             &&
                                             !((IntegerColumn*)aComponent->typeColumns.at(j).column)->mIsAutoInc
+                                            &&
+                                            !((IntegerColumn*)aComponent->typeColumns.at(j).column)->mSplitRows
                                            )
                                         {
-                                            if (((IntegerColumn*)aComponent->typeColumns.at(j).column)->mSplitRows)
-                                            {
-                                                separations.append(j);
-                                                separationsXMLColumn.append(aRow->cellCount()-1);
-                                            }
-                                            else
-                                            {
-                                                aText=((IntegerColumn*)aComponent->typeColumns.at(j).column)->mPrefix+
-                                                      aText+
-                                                      ((IntegerColumn*)aComponent->typeColumns.at(j).column)->mPostfix;
-                                            }
+                                            aText=((IntegerColumn*)aComponent->typeColumns.at(j).column)->mPrefix+
+                                                  aText+
+                                                  ((IntegerColumn*)aComponent->typeColumns.at(j).column)->mPostfix;
                                         }
 
                                         do
@@ -2260,28 +2270,31 @@ void MainWindow::exportToWord(bool isFull)
 
                                                     if (aCell->count()>0)
                                                     {
-                                                        while (aCell->count()>1)
+                                                        if (aComponent->typeColumns.at(aColumn).visible)
                                                         {
-                                                            delete aCell->get(1);
-                                                            aCell->remove(1);
+                                                            while (aCell->count()>1)
+                                                            {
+                                                                delete aCell->get(1);
+                                                                aCell->remove(1);
+                                                            }
+
+                                                            WordXMLParagraph *aParagraph=(WordXMLParagraph*)aCell->get(0);
+
+                                                            while (aParagraph->count()>1)
+                                                            {
+                                                                delete aParagraph->get(1);
+                                                                aParagraph->remove(1);
+                                                            }
+
+                                                            WordXMLRun *aRun=(WordXMLRun*)aParagraph->get(0);
+
+                                                            aRun->clear();
+                                                            aRun->addText(
+                                                                          ((IntegerColumn*)aComponent->typeColumns.at(aColumn).column)->mPrefix+
+                                                                          QString::number((k/aNewRowsTemp.length())+1)+
+                                                                          ((IntegerColumn*)aComponent->typeColumns.at(aColumn).column)->mPostfix
+                                                                         );
                                                         }
-
-                                                        WordXMLParagraph *aParagraph=(WordXMLParagraph*)aCell->get(0);
-
-                                                        while (aParagraph->count()>1)
-                                                        {
-                                                            delete aParagraph->get(1);
-                                                            aParagraph->remove(1);
-                                                        }
-
-                                                        WordXMLRun *aRun=(WordXMLRun*)aParagraph->get(0);
-
-                                                        aRun->clear();
-                                                        aRun->addText(
-                                                                      ((IntegerColumn*)aComponent->typeColumns.at(aColumn).column)->mPrefix+
-                                                                      QString::number((k/aNewRowsTemp.length())+1)+
-                                                                      ((IntegerColumn*)aComponent->typeColumns.at(aColumn).column)->mPostfix
-                                                                     );
 
                                                         if (k==0)
                                                         {
@@ -2302,32 +2315,35 @@ void MainWindow::exportToWord(bool isFull)
                                             }
                                             else
                                             {
-                                                for (int k=0; k<aNewRows.length(); k++)
+                                                if (aComponent->typeColumns.at(aColumn).visible)
                                                 {
-                                                    aRow=aNewRows.at(k);
-
-                                                    WordXMLTableCell *aCell=aRow->getCell(xmlColumn);
-
-                                                    if (aCell->count()>0)
+                                                    for (int k=0; k<aNewRows.length(); k++)
                                                     {
-                                                        while (aCell->count()>1)
+                                                        aRow=aNewRows.at(k);
+
+                                                        WordXMLTableCell *aCell=aRow->getCell(xmlColumn);
+
+                                                        if (aCell->count()>0)
                                                         {
-                                                            delete aCell->get(1);
-                                                            aCell->remove(1);
+                                                            while (aCell->count()>1)
+                                                            {
+                                                                delete aCell->get(1);
+                                                                aCell->remove(1);
+                                                            }
+
+                                                            WordXMLParagraph *aParagraph=(WordXMLParagraph*)aCell->get(0);
+
+                                                            while (aParagraph->count()>1)
+                                                            {
+                                                                delete aParagraph->get(1);
+                                                                aParagraph->remove(1);
+                                                            }
+
+                                                            WordXMLRun *aRun=(WordXMLRun*)aParagraph->get(0);
+
+                                                            aRun->clear();
+                                                            aRun->addText("-");
                                                         }
-
-                                                        WordXMLParagraph *aParagraph=(WordXMLParagraph*)aCell->get(0);
-
-                                                        while (aParagraph->count()>1)
-                                                        {
-                                                            delete aParagraph->get(1);
-                                                            aParagraph->remove(1);
-                                                        }
-
-                                                        WordXMLRun *aRun=(WordXMLRun*)aParagraph->get(0);
-
-                                                        aRun->clear();
-                                                        aRun->addText("-");
                                                     }
                                                 }
                                             }
