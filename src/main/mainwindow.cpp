@@ -1600,13 +1600,6 @@ void MainWindow::on_actionSectionControl_triggered()
 
 void MainWindow::exportToWord(bool isFull)
 {
-    on_actionCheckDocument_triggered();
-
-    if (errorHappened)
-    {
-        return;
-    }
-
     QFileDialog dialog(this, QString(), QString(), "Word document (*.doc *.docx *.xml)");
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setWindowTitle("Сохранить документ Word");
@@ -1666,6 +1659,17 @@ void MainWindow::exportToWord(bool isFull)
             return;
         }
     } while (true);
+
+
+
+    on_actionCheckDocument_triggered();
+
+    if (errorHappened)
+    {
+        return;
+    }
+
+
 
     int logsBefore=ui->logListWidget->count();
 
