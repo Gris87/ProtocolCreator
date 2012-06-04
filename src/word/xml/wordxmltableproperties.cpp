@@ -30,6 +30,11 @@ void WordXMLTableProperties::writeToStream(QTextStream &aStream)
             aStream<<space<<" <w:tblInd w:w=\""+QString::number(indentation)+"\" w:type=\"dxa\"/>\r\n";
         }
 
+        if (width>=0)
+        {
+            aStream<<space<<" <w:tblW w:w=\""+QString::number(width)+"\" w:type=\"dxa\"/>\r\n";
+        }
+
         if (alignment!=taNone)
         {
             aStream<<space<<" <w:jc w:val=\"";
@@ -79,6 +84,7 @@ void WordXMLTableProperties::reset()
 
     tableStyle="";
     indentation=-1;
+    width=-1;
     alignment=taNone;
     borders.reset();
     cellMargin.reset();
@@ -89,6 +95,8 @@ bool WordXMLTableProperties::isModified()
     return tableStyle!=""
            ||
            indentation>=0
+           ||
+           width>=0
            ||
            alignment!=taNone
            ||
@@ -101,6 +109,7 @@ WordXMLTableProperties& WordXMLTableProperties::operator=(const WordXMLTableProp
 {
     tableStyle=another.tableStyle;
     indentation=another.indentation;
+    width=another.width;
     alignment=another.alignment;
     borders=another.borders;
     cellMargin=another.cellMargin;

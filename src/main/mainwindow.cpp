@@ -2084,8 +2084,12 @@ void MainWindow::exportToWord(bool isFull)
 
                                 QVariantList rowValue=aComponent->calculationResult.toList();
 
+                                aTable->properties.width=0;
+
                                 for (int i=0; i<aComponent->ui->dataTableWidget->rowCount(); i++)
                                 {
+                                    double rowWidth=0;
+
                                     QVariantList colValues=rowValue.at(i).toList();
                                     QList<int> separations;
                                     QList<int> separationsXMLColumn;
@@ -2149,6 +2153,7 @@ void MainWindow::exportToWord(bool isFull)
                                         }
 
                                         aCell->properties.width=aCell->properties.width*PIXELS_TO_TWIPS;
+                                        rowWidth+=aCell->properties.width;
 
                                         QString aText=variantToText(colValues.at(j));
 
@@ -2206,6 +2211,11 @@ void MainWindow::exportToWord(bool isFull)
 
                                             aCell->properties.columnSpan-=invisibleColumns;
                                         }
+                                    }
+
+                                    if (rowWidth>aTable->properties.width)
+                                    {
+                                        aTable->properties.width=rowWidth;
                                     }
 
                                     if (separations.length()>0)

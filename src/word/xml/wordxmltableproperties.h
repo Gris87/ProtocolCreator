@@ -20,6 +20,7 @@ class WordXMLTableProperties : public WordXMLBase
 public:
     QString tableStyle;
     double indentation;
+    double width;
     ETableAlignment alignment;
     WordXMLTableBorders borders;
     WordXMLTableCellMargin cellMargin;
