@@ -28,6 +28,7 @@ public:
     QSplitter *dividerSplitter;
     PageFrame *contentPage;
     bool errorHappened;
+    bool wantAutoSave;
     bool autoSaveMode;
     QTimer autoSaveTimer;
     QString mLastAutoSave;

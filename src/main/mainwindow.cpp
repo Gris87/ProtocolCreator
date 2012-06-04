@@ -4,6 +4,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    mainWindow=this;
+
     ui->setupUi(this);
 
     QRect frect = frameGeometry();
@@ -29,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pagesTabWidget->tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(pageMoved(int,int)));
     connect(&autoSaveTimer, SIGNAL(timeout()), this, SLOT(autoSaveTick()));
 
+    wantAutoSave=true;
     autoSaveMode=false;
 
     loadState();
@@ -2708,18 +2711,25 @@ void MainWindow::contentCheckBoxToggled(KnownCheckBox *aCheckBox, bool checked)
 
 void MainWindow::autoSaveTick()
 {
-    autoSaveMode=true;
-
-    try
+    if (wantAutoSave)
     {
-        on_actionSave_triggered();
-    }
-    catch(...)
-    {
-        QMessageBox::critical(this, protocolCreatorVersion, "¬озникла проблема при автосохранении документа");
-    }
+        autoSaveMode=true;
 
-    autoSaveMode=false;
+        try
+        {
+            on_actionSave_triggered();
+        }
+        catch(...)
+        {
+            QMessageBox::critical(this, protocolCreatorVersion, "¬озникла проблема при автосохранении документа");
+        }
+
+        autoSaveMode=false;
+    }
+    else
+    {
+        QTimer::singleShot(10000, this, SLOT(autoSaveTick()));
+    }
 }
 
 void MainWindow::on_pagesTabWidget_currentChanged(int index)

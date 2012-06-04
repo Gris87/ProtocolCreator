@@ -1682,8 +1682,12 @@ void VariableExtendedListFrame::on_expandButton_clicked()
 
 void VariableExtendedListFrame::on_configButton_clicked()
 {
+    mainWindow->wantAutoSave=false;
+
     TableEditDialog dialog(this, this);
     dialog.exec();
+
+    mainWindow->wantAutoSave=true;
 }
 
 void VariableExtendedListFrame::setItemsForRow(int row)
