@@ -79,6 +79,7 @@ private slots:
     void on_structureAdditionalButton_clicked();
 
     void structureTableHeaderMove(int logicalIndex, int oldVisualIndex, int newVisualIndex);
+    void on_structureTableWidget_cellDoubleClicked(int row, int column);
 };
 
 #endif // TABLEEDITDIALOG_H

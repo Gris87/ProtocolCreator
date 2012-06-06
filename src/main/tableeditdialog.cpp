@@ -997,6 +997,14 @@ void TableEditDialog::structureTableHeaderMove(int logicalIndex, int oldVisualIn
     connect(ui->structureTableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(structureTableHeaderMove(int,int,int)));
 }
 
+void TableEditDialog::on_structureTableWidget_cellDoubleClicked(int row, int column)
+{
+    if (row==0 && isAdmin)
+    {
+        ui->structureChangeColButton->click();
+    }
+}
+
 void TableEditDialog::updateAdmin()
 {
     ui->headerAdminWidget->setVisible(isAdmin);

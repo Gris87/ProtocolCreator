@@ -25,6 +25,8 @@ public:
     explicit FunctionDialog(VariableExtendedListFrame *aExtList=0, QWidget *parent = 0);
     ~FunctionDialog();
 
+    QString pageSection();
+
 private slots:
     void on_functionsListWidget_currentRowChanged(int currentRow);
     void on_functionsListWidget_itemDoubleClicked(QListWidgetItem *item);

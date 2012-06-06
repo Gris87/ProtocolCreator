@@ -1704,6 +1704,34 @@ void MainWindow::exportToWord(bool isFull)
             stop=start;
         }
 
+        int aCompCount=0;
+
+        for (int i=start; i<=stop; i++)
+        {
+            PageFrame* aPage=(PageFrame*)ui->pagesTabWidget->widget(i);
+
+            if (
+                aPage!=contentPage
+                &&
+                (
+                 !isFull
+                 ||
+                 aPage->ui->useCheckBox->isChecked()
+                )
+               )
+            {
+                aCompCount+=aPage->components.length();
+            }
+        }
+
+        if (aCompCount==0)
+        {
+            aCompCount=1;
+        }
+
+        ui->progressBar->setMaximum(aCompCount);
+        ui->progressBar->setValue(0);
+
         WordXMLSection *section=0;
 
         for (int i=start; i<=stop; i++)
@@ -2352,12 +2380,16 @@ void MainWindow::exportToWord(bool isFull)
                                 }
                             }
                         }
+
+                        ui->progressBar->setValue(ui->progressBar->value()+1);
                     }
                 }
             }
         }
 
         word.saveToFile(aTempPath+"TempFile.xml");
+
+        ui->progressBar->setValue(0);
     }
     catch(...)
     {

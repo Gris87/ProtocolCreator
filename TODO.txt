@@ -1,1 +1,3 @@
 Special functions needs to add
+0 font size in word edit
+Compressing progress

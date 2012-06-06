@@ -225,9 +225,29 @@ void FunctionDialog::on_variablesListWidget_currentRowChanged(int currentRow)
     }
 }
 
+QString FunctionDialog::pageSection()
+{
+    if (
+        ui->pagesListWidget->currentRow()==0
+        ||
+        (
+         !globalDialog->isVisible()
+         &&
+         ui->pagesListWidget->currentRow()==mainWindow->ui->pagesTabWidget->currentIndex()+1
+        )
+       )
+    {
+        return "";
+    }
+    else
+    {
+        return ui->pagesListWidget->currentItem()->text()+".";
+    }
+}
+
 void FunctionDialog::on_variablesListWidget_itemDoubleClicked(QListWidgetItem *item)
 {
-    ui->expressionEdit->insert(ui->pagesListWidget->currentItem()->text()+"."+item->text());
+    ui->expressionEdit->insert(pageSection()+item->text());
     ui->expressionEdit->setFocus();
 }
 
@@ -245,7 +265,7 @@ void FunctionDialog::on_columnListWidget_itemDoubleClicked(QListWidgetItem *item
     }
     else
     {
-        ui->expressionEdit->insert(ui->pagesListWidget->currentItem()->text()+"."+ui->variablesListWidget->currentItem()->text()+"["+QString::number(ui->columnListWidget->row(item)+1)+"]");
+        ui->expressionEdit->insert(pageSection()+ui->variablesListWidget->currentItem()->text()+"["+QString::number(ui->columnListWidget->row(item)+1)+"]");
     }
 
     ui->expressionEdit->setFocus();
