@@ -13,8 +13,14 @@ WordXMLText::~WordXMLText()
 
 void WordXMLText::writeToStream(QTextStream &aStream)
 {
+    QString aText=text;
+
+    aText.replace("&", "&amp;");
+    aText.replace("<", "&lt;");
+    aText.replace(">", "&gt;");
+
     aStream<<space<<"<w:t>";
-    aStream<<text+"</w:t>\r\n";
+    aStream<<aText+"</w:t>\r\n";
 }
 
 void WordXMLText::reset()
