@@ -98,7 +98,7 @@ QString IntegerColumn::typeDescription()
                             "; "+
                             QString::number(mDefaultValue)+"; "+
                             QString::number(mDecimals)+"; "+
-                            "; \""+mPrefix+"\"; "+
+                            "\""+mPrefix+"\"; "+
                             "\""+mPostfix+"\")"
                            );
 

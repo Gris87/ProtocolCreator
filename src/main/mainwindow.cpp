@@ -359,8 +359,7 @@ void MainWindow::on_actionSave_triggered()
         QFile aFile(currentName);
 
         // Backup existing file
-//        if (!autoSaveMode && aFile.exists())
-        if (aFile.exists()) // Temp
+        if (!autoSaveMode && aFile.exists())
         {
             QDir(dir).mkpath(dir+"backup");
 
