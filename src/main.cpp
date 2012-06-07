@@ -95,12 +95,7 @@ int main(int argc, char *argv[])
     functionsList.append("Минута_1");
     functionsList.append("Час_1");
     functionsList.append("Секунд_до_2");
-    functionsList.append("Срок_Годности_Пришел_2");
     functionsList.append("Используемые_ГОСТы_2");
-    functionsList.append("Найдена_строка_3");
-    functionsList.append("Значение_не_из_списка_3");
-    functionsList.append("Значения_вне_диапазона_4");
-    functionsList.append("Возможно_Пром_Строка_1");
 
     mainWindow=new MainWindow();
     globalDialog=new GlobalDialog(mainWindow);

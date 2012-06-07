@@ -1912,6 +1912,45 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                 return ((double)aResults.at(0).toTime().secsTo(aResults.at(1).toTime()));
             }
+            else
+            if (aFunction=="Используемые_ГОСТы")
+            {
+                PageComponent* aVariable=variableByName(aParameters.at(0), aComponent);
+
+                if (aVariable==0)
+                {
+                    aComponent->calculationError="Не найден компонент \""+aParameters.at(0)+"\", который используется первым параметром функции \""+aFunction+"\"";
+                    throw "Wrong parameter";
+                }
+
+                if (!aVariable->inherits("VariableExtendedListFrame"))
+                {
+                    aComponent->calculationError="Первым параметром функции \""+aFunction+"\" должен быть расширенный список";
+                    throw "Wrong parameter";
+                }
+
+                bool ok;
+                double aArg2=aResults.at(1).toDouble(&ok);
+
+                if (!ok)
+                {
+                    aComponent->calculationError="Вторым параметром функции \""+aFunction+"\" должно быть число";
+                    throw "Wrong parameter";
+                }
+
+                VariableExtendedListFrame *aFrame=(VariableExtendedListFrame*)aVariable;
+                int aColumn=(int)(aArg2-1);
+
+                if (aColumn<0 || aColumn>=aFrame->typeColumns.length())
+                {
+                    aComponent->calculationError="Не найден столбец №"+QString::number(aColumn+1)+" в расширенном списке \""+aParameters.at(0)+"\" в функции \""+aFunction+"\"";
+                    throw "Wrong parameter";
+                }
+
+                QString res="ТУТ ДОЛЖНЫ БЫТЬ ГОСТЫ!!!";
+
+                return res;
+            }
         }
     }
     else

@@ -2506,6 +2506,8 @@ void MainWindow::exportToWord(bool isFull)
 
         QMessageBox::warning(this, protocolCreatorVersion, "Возникли проблемы при сохранении документа Word.\nПожалуйста, проверьте логи");
     }
+
+    QApplication::alert(this);
 }
 
 void MainWindow::on_actionExport_triggered()
