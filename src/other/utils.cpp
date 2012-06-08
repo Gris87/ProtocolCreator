@@ -399,7 +399,193 @@ enum EGOSTDelimiter {gdPoint, gdMinus, gdMultiPoint, gdMultiMinus};
 
 void readGOST(PageComponent *aComponent, QString &aOneLine, QStringList &resList, QString aPrefix, QString aFormat, QString aLocation, QList<EGOSTDelimiter> aDelimiters)
 {
+    QString aOriginalLine=aOneLine;
+
     aFormat="Формат написания стандарта: "+aFormat;
+
+    QString aGOST=aPrefix;
+    aOneLine.remove(0, aPrefix.length());
+
+    if (aPrefix=="СО")
+    {
+        if (aOneLine.startsWith(" "))
+        {
+            aOneLine.remove(0, 1);
+        }
+
+        if (aOneLine.startsWith("-"))
+        {
+            aOneLine.remove(0, 1);
+        }
+
+        aGOST.append("-");
+    }
+    else
+    {
+        aGOST.append(" ");
+    }
+
+    if (aOneLine.startsWith(" "))
+    {
+        aOneLine.remove(0, 1);
+    }
+
+    if (aOneLine=="")
+    {
+        aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
+        throw "Wrong format";
+    }
+
+    for (int i=0; i<=aDelimiters.length(); i++)
+    {
+        QString aPart;
+
+        while (aOneLine.length()>0 && aOneLine.at(0).isDigit())
+        {
+            aPart.append(aOneLine.at(0));
+            aOneLine.remove(0, 1);
+        }
+
+        if (
+            aPart==""
+            &&
+            (
+             i==0
+             ||
+             (
+              aDelimiters.at(i-1)!=gdMultiPoint
+              &&
+              aDelimiters.at(i-1)!=gdMultiMinus
+             )
+            )
+           )
+        {
+            aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
+            throw "Wrong format";
+        }
+
+        if (aOneLine.startsWith(" "))
+        {
+            aOneLine.remove(0, 1);
+        }
+
+        aGOST.append(aPart);
+
+        if (i<aDelimiters.length())
+        {
+            if (aDelimiters.at(i)==gdPoint)
+            {
+                if (!aOneLine.startsWith("."))
+                {
+                    aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
+                    throw "Wrong format";
+                }
+
+                aGOST.append(".");
+                aOneLine.remove(0, 1);
+
+                if (aOneLine.startsWith(" "))
+                {
+                    aOneLine.remove(0, 1);
+                }
+            }
+            else
+            if (aDelimiters.at(i)==gdMinus)
+            {
+                if (!aOneLine.startsWith("-"))
+                {
+                    aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
+                    throw "Wrong format";
+                }
+
+                aGOST.append("-");
+                aOneLine.remove(0, 1);
+
+                if (aOneLine.startsWith(" "))
+                {
+                    aOneLine.remove(0, 1);
+                }
+            }
+            else
+            {
+                while (
+                       (
+                        aDelimiters.at(i)==gdMultiPoint
+                        &&
+                        aOneLine.startsWith(".")
+                       )
+                       ||
+                       (
+                        aDelimiters.at(i)==gdMultiMinus
+                        &&
+                        aOneLine.startsWith("-")
+                       )
+                      )
+                {
+                    aOneLine.remove(0, 1);
+
+                    if (aOneLine.startsWith(" "))
+                    {
+                        aOneLine.remove(0, 1);
+                    }
+
+                    aPart="";
+
+                    while (aOneLine.length()>0 && aOneLine.at(0).isDigit())
+                    {
+                        aPart.append(aOneLine.at(0));
+                        aOneLine.remove(0, 1);
+                    }
+
+                    if (aPart=="")
+                    {
+                        aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
+                        throw "Wrong format";
+                    }
+
+                    if (aOneLine.startsWith(" "))
+                    {
+                        aOneLine.remove(0, 1);
+                    }
+
+                    if (aDelimiters.at(i)==gdMultiPoint)
+                    {
+                        aGOST.append(".");
+                    }
+                    else
+                    {
+                        aGOST.append("-");
+                    }
+
+                    aGOST.append(aPart);
+                }
+            }
+        }
+    }
+
+    if (!resList.contains(aGOST))
+    {
+        resList.append(aGOST);
+    }
+
+    while (
+           aOneLine!=""
+           &&
+           !aOneLine.startsWith("ПУЭ")
+           &&
+           !aOneLine.startsWith("ГОСТ")
+           &&
+           !aOneLine.startsWith("РД")
+           &&
+           !aOneLine.startsWith("СО")
+           &&
+           !aOneLine.startsWith("СП")
+           &&
+           !aOneLine.startsWith("ТСН")
+          )
+    {
+        aOneLine.remove(0, 1);
+    }
 }
 
 QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageComponent *aComponent, VariableExtendedListFrame *inFrame, int tableRow)
@@ -1978,6 +2164,8 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                             break;
                         }
 
+                        QString aOriginalLine=aOneLine;
+
                         if (aOneLine.startsWith("ПУЭ"))
                         {
                             QString aFormat="Формат написания стандарта: ПУЭ [:] {X.X.Z [-X.X.Z] ,}";
@@ -2001,7 +2189,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                             if (aOneLine=="")
                             {
-                                aComponent->calculationError=aFormat+" "+aLocation;
+                                aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                 throw "Wrong format";
                             }
 
@@ -2036,7 +2224,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                 if (aPart1=="")
                                 {
-                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                     throw "Wrong format";
                                 }
 
@@ -2047,7 +2235,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                 if (!aOneLine.startsWith("."))
                                 {
-                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                     throw "Wrong format";
                                 }
 
@@ -2068,7 +2256,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                 if (aPart2=="")
                                 {
-                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                     throw "Wrong format";
                                 }
 
@@ -2079,7 +2267,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                 if (!aOneLine.startsWith("."))
                                 {
-                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                     throw "Wrong format";
                                 }
 
@@ -2100,7 +2288,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                 if (aPart3=="")
                                 {
-                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                     throw "Wrong format";
                                 }
 
@@ -2132,7 +2320,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                     if (aBracketCount>0)
                                     {
-                                        aComponent->calculationError="Неверное количество скобок. "+aFormat+" "+aLocation;
+                                        aComponent->calculationError="Неверное количество скобок. "+aFormat+" "+aLocation+" => "+aOriginalLine;
                                         throw "Wrong format";
                                     }
 
@@ -2161,7 +2349,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                     if (aPart4=="")
                                     {
-                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                         throw "Wrong format";
                                     }
 
@@ -2172,7 +2360,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                     if (!aOneLine.startsWith("."))
                                     {
-                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                         throw "Wrong format";
                                     }
 
@@ -2193,7 +2381,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                     if (aPart5=="")
                                     {
-                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                         throw "Wrong format";
                                     }
 
@@ -2204,7 +2392,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                     if (!aOneLine.startsWith("."))
                                     {
-                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                         throw "Wrong format";
                                     }
 
@@ -2225,7 +2413,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                     if (aPart6=="")
                                     {
-                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        aComponent->calculationError=aFormat+" "+aLocation+" => "+aOriginalLine;
                                         throw "Wrong format";
                                     }
 
@@ -2257,7 +2445,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                         if (aBracketCount>0)
                                         {
-                                            aComponent->calculationError="Неверное количество скобок. "+aFormat+" "+aLocation;
+                                            aComponent->calculationError="Неверное количество скобок. "+aFormat+" "+aLocation+" => "+aOriginalLine;
                                             throw "Wrong format";
                                         }
 
@@ -2272,7 +2460,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                                     if (aPart1!=aPart4 || aStart>aEnd)
                                     {
-                                        aComponent->calculationError="Неверный диапазон ("+aPart1+"."+aPart2+"."+aPart3+"-"+aPart4+"."+aPart5+"."+aPart6+"). "+aFormat+" "+aLocation;
+                                        aComponent->calculationError="Неверный диапазон ("+aPart1+"."+aPart2+"."+aPart3+"-"+aPart4+"."+aPart5+"."+aPart6+"). "+aFormat+" "+aLocation+" => "+aOriginalLine;
                                         throw "Wrong format";
                                     }
 
@@ -2377,21 +2565,82 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
 
                 if (
                     aPUEList.length()>0
-                    &&
+                    ||
                     aGOSTList.length()>0
-                    &&
+                    ||
                     aGOSTRList.length()>0
-                    &&
+                    ||
                     aRDList.length()>0
-                    &&
+                    ||
                     aSOList.length()>0
-                    &&
+                    ||
                     aSPList.length()>0
-                    &&
+                    ||
                     aTSNList.length()>0
                    )
                 {
                     res="";
+
+                    aGOSTList.sort();
+                    aGOSTRList.sort();
+                    aRDList.sort();
+                    aSOList.sort();
+                    aSPList.sort();
+                    aTSNList.sort();
+
+                    if (aPUEList.length()>0)
+                    {
+                        aPUEList.sort();
+                        res.append("ПУЭ: ");
+                        res.append(aPUEList.join(", "));
+                    }
+
+                    if (res!="" && !res.endsWith(";\n"))
+                    {
+                        res.append(";\n");
+                    }
+
+                    res.append(aGOSTList.join(", "));
+
+                    if (res!="" && !res.endsWith(";\n"))
+                    {
+                        res.append(";\n");
+                    }
+
+                    res.append(aGOSTRList.join(", "));
+
+                    if (res!="" && !res.endsWith(";\n"))
+                    {
+                        res.append(";\n");
+                    }
+
+                    res.append(aRDList.join(", "));
+
+                    if (res!="" && !res.endsWith(";\n"))
+                    {
+                        res.append(";\n");
+                    }
+
+                    res.append(aSOList.join(", "));
+
+                    if (res!="" && !res.endsWith(";\n"))
+                    {
+                        res.append(";\n");
+                    }
+
+                    res.append(aSPList.join(", "));
+
+                    if (res!="" && !res.endsWith(";\n"))
+                    {
+                        res.append(";\n");
+                    }
+
+                    res.append(aTSNList.join(", "));
+
+                    if (res.endsWith(";\n"))
+                    {
+                        res.remove(res.length()-2, 2);
+                    }
                 }
 
                 return res;
