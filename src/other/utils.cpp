@@ -395,6 +395,13 @@ PageComponent* getVariableOrThrow(QString aVariableName, PageComponent *aCompone
     return aVariable;
 }
 
+enum EGOSTDelimiter {gdPoint, gdMinus, gdMultiPoint, gdMultiMinus};
+
+void readGOST(PageComponent *aComponent, QString &aOneLine, QStringList &resList, QString aPrefix, QString aFormat, QString aLocation, QList<EGOSTDelimiter> aDelimiters)
+{
+    aFormat="Формат написания стандарта: "+aFormat;
+}
+
 QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageComponent *aComponent, VariableExtendedListFrame *inFrame, int tableRow)
 {
     aExpression=aExpression.trimmed();
@@ -1947,7 +1954,445 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                     throw "Wrong parameter";
                 }
 
-                QString res="ТУТ ДОЛЖНЫ БЫТЬ ГОСТЫ!!!";
+                QString res="!!! ТУТ СПИСОК СТАНДАРТОВ !!!";
+
+                QStringList aPUEList;
+                QStringList aGOSTList;
+                QStringList aGOSTRList;
+                QStringList aRDList;
+                QStringList aSOList;
+                QStringList aSPList;
+                QStringList aTSNList;
+
+                QVariantList rowValues=aResults.at(0).toList();
+
+                for (int i=0; i<rowValues.length(); i++)
+                {
+                    QString aOneLine=rowValues.at(i).toList().at(aColumn).toString().simplified();
+                    QString aLocation="строка № "+QString::number(i+1)+", столбец № "+QString::number(aColumn+1)+" в таблице \""+aFrame->name()+"\"";
+
+                    do
+                    {
+                        if (aOneLine=="")
+                        {
+                            break;
+                        }
+
+                        if (aOneLine.startsWith("ПУЭ"))
+                        {
+                            QString aFormat="Формат написания стандарта: ПУЭ [:] {X.X.Z [-X.X.Z] ,}";
+
+                            aOneLine.remove(0, 3);
+
+                            if (aOneLine.startsWith(" "))
+                            {
+                                aOneLine.remove(0, 1);
+                            }
+
+                            if (aOneLine.startsWith(":"))
+                            {
+                                aOneLine.remove(0, 1);
+                            }
+
+                            if (aOneLine.startsWith(" "))
+                            {
+                                aOneLine.remove(0, 1);
+                            }
+
+                            if (aOneLine=="")
+                            {
+                                aComponent->calculationError=aFormat+" "+aLocation;
+                                throw "Wrong format";
+                            }
+
+                            do
+                            {
+                                if (
+                                    aOneLine==""
+                                    ||
+                                    aOneLine.startsWith("ПУЭ")
+                                    ||
+                                    aOneLine.startsWith("ГОСТ")
+                                    ||
+                                    aOneLine.startsWith("РД")
+                                    ||
+                                    aOneLine.startsWith("СО")
+                                    ||
+                                    aOneLine.startsWith("СП")
+                                    ||
+                                    aOneLine.startsWith("ТСН")
+                                   )
+                                {
+                                    break;
+                                }
+
+                                QString aPart1;
+
+                                while (aOneLine.length()>0 && aOneLine.at(0).isDigit())
+                                {
+                                    aPart1.append(aOneLine.at(0));
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                if (aPart1=="")
+                                {
+                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    throw "Wrong format";
+                                }
+
+                                if (aOneLine.startsWith(" "))
+                                {
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                if (!aOneLine.startsWith("."))
+                                {
+                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    throw "Wrong format";
+                                }
+
+                                aOneLine.remove(0, 1);
+
+                                if (aOneLine.startsWith(" "))
+                                {
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                QString aPart2;
+
+                                while (aOneLine.length()>0 && aOneLine.at(0).isDigit())
+                                {
+                                    aPart2.append(aOneLine.at(0));
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                if (aPart2=="")
+                                {
+                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    throw "Wrong format";
+                                }
+
+                                if (aOneLine.startsWith(" "))
+                                {
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                if (!aOneLine.startsWith("."))
+                                {
+                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    throw "Wrong format";
+                                }
+
+                                aOneLine.remove(0, 1);
+
+                                if (aOneLine.startsWith(" "))
+                                {
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                QString aPart3;
+
+                                while (aOneLine.length()>0 && aOneLine.at(0).isDigit())
+                                {
+                                    aPart3.append(aOneLine.at(0));
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                if (aPart3=="")
+                                {
+                                    aComponent->calculationError=aFormat+" "+aLocation;
+                                    throw "Wrong format";
+                                }
+
+                                if (aOneLine.startsWith(" "))
+                                {
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                if (aOneLine.startsWith("("))
+                                {
+                                    aOneLine.remove(0, 1);
+
+                                    int aBracketCount=1;
+
+                                    while (aOneLine.length()>0 && aBracketCount>0)
+                                    {
+                                        if (aOneLine.startsWith("("))
+                                        {
+                                            aBracketCount++;
+                                        }
+                                        else
+                                        if (aOneLine.startsWith(")"))
+                                        {
+                                            aBracketCount--;
+                                        }
+
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    if (aBracketCount>0)
+                                    {
+                                        aComponent->calculationError="Неверное количество скобок. "+aFormat+" "+aLocation;
+                                        throw "Wrong format";
+                                    }
+
+                                    if (aOneLine.startsWith(" "))
+                                    {
+                                        aOneLine.remove(0, 1);
+                                    }
+                                }
+
+                                if (aOneLine.startsWith("-"))
+                                {
+                                    aOneLine.remove(0, 1);
+
+                                    if (aOneLine.startsWith(" "))
+                                    {
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    QString aPart4;
+
+                                    while (aOneLine.length()>0 && aOneLine.at(0).isDigit())
+                                    {
+                                        aPart4.append(aOneLine.at(0));
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    if (aPart4=="")
+                                    {
+                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        throw "Wrong format";
+                                    }
+
+                                    if (aOneLine.startsWith(" "))
+                                    {
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    if (!aOneLine.startsWith("."))
+                                    {
+                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        throw "Wrong format";
+                                    }
+
+                                    aOneLine.remove(0, 1);
+
+                                    if (aOneLine.startsWith(" "))
+                                    {
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    QString aPart5;
+
+                                    while (aOneLine.length()>0 && aOneLine.at(0).isDigit())
+                                    {
+                                        aPart5.append(aOneLine.at(0));
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    if (aPart5=="")
+                                    {
+                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        throw "Wrong format";
+                                    }
+
+                                    if (aOneLine.startsWith(" "))
+                                    {
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    if (!aOneLine.startsWith("."))
+                                    {
+                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        throw "Wrong format";
+                                    }
+
+                                    aOneLine.remove(0, 1);
+
+                                    if (aOneLine.startsWith(" "))
+                                    {
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    QString aPart6;
+
+                                    while (aOneLine.length()>0 && aOneLine.at(0).isDigit())
+                                    {
+                                        aPart6.append(aOneLine.at(0));
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    if (aPart6=="")
+                                    {
+                                        aComponent->calculationError=aFormat+" "+aLocation;
+                                        throw "Wrong format";
+                                    }
+
+                                    if (aOneLine.startsWith(" "))
+                                    {
+                                        aOneLine.remove(0, 1);
+                                    }
+
+                                    if (aOneLine.startsWith("("))
+                                    {
+                                        aOneLine.remove(0, 1);
+
+                                        int aBracketCount=1;
+
+                                        while (aOneLine.length()>0 && aBracketCount>0)
+                                        {
+                                            if (aOneLine.startsWith("("))
+                                            {
+                                                aBracketCount++;
+                                            }
+                                            else
+                                            if (aOneLine.startsWith(")"))
+                                            {
+                                                aBracketCount--;
+                                            }
+
+                                            aOneLine.remove(0, 1);
+                                        }
+
+                                        if (aBracketCount>0)
+                                        {
+                                            aComponent->calculationError="Неверное количество скобок. "+aFormat+" "+aLocation;
+                                            throw "Wrong format";
+                                        }
+
+                                        if (aOneLine.startsWith(" "))
+                                        {
+                                            aOneLine.remove(0, 1);
+                                        }
+                                    }
+
+                                    int aStart=aPart2.toInt();
+                                    int aEnd=aPart5.toInt();
+
+                                    if (aPart1!=aPart4 || aStart>aEnd)
+                                    {
+                                        aComponent->calculationError="Неверный диапазон ("+aPart1+"."+aPart2+"."+aPart3+"-"+aPart4+"."+aPart5+"."+aPart6+"). "+aFormat+" "+aLocation;
+                                        throw "Wrong format";
+                                    }
+
+                                    for (int j=aStart; j<=aEnd; j++)
+                                    {
+                                        if (!aPUEList.contains(aPart1+"."+QString::number(j)))
+                                        {
+                                            aPUEList.append(aPart1+"."+QString::number(j));
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (!aPUEList.contains(aPart1+"."+aPart2))
+                                    {
+                                        aPUEList.append(aPart1+"."+aPart2);
+                                    }
+                                }
+
+                                if (aOneLine.startsWith(",") || aOneLine.startsWith("."))
+                                {
+                                    aOneLine.remove(0, 1);
+                                }
+
+                                if (aOneLine.startsWith(" "))
+                                {
+                                    aOneLine.remove(0, 1);
+                                }
+                            } while (true);
+                        }
+                        else
+                        if (aOneLine.startsWith("ГОСТ Р"))
+                        {
+                            QList<EGOSTDelimiter> delimiters;
+
+                            delimiters.append(gdMultiPoint);
+                            delimiters.append(gdMinus);
+
+                            readGOST(aComponent, aOneLine, aGOSTRList, "ГОСТ Р", "ГОСТ Р X [{.X}] - X", aLocation, delimiters);
+                        }
+                        else
+                        if (aOneLine.startsWith("ГОСТ"))
+                        {
+                            QList<EGOSTDelimiter> delimiters;
+
+                            delimiters.append(gdMultiPoint);
+                            delimiters.append(gdMinus);
+
+                            readGOST(aComponent, aOneLine, aGOSTList, "ГОСТ", "ГОСТ X [{.X}] - X", aLocation, delimiters);
+                        }
+                        else
+                        if (aOneLine.startsWith("РД"))
+                        {
+                            QList<EGOSTDelimiter> delimiters;
+
+                            delimiters.append(gdPoint);
+                            delimiters.append(gdPoint);
+                            delimiters.append(gdMinus);
+
+                            readGOST(aComponent, aOneLine, aRDList, "РД", "РД X.X.X-X", aLocation, delimiters);
+                        }
+                        else
+                        if (aOneLine.startsWith("СО"))
+                        {
+                            QList<EGOSTDelimiter> delimiters;
+
+                            delimiters.append(gdMinus);
+                            delimiters.append(gdPoint);
+                            delimiters.append(gdPoint);
+                            delimiters.append(gdMinus);
+
+                            readGOST(aComponent, aOneLine, aSOList, "СО", "СО X-X.X.X-X", aLocation, delimiters);
+                        }
+                        else
+                        if (aOneLine.startsWith("СП"))
+                        {
+                            QList<EGOSTDelimiter> delimiters;
+
+                            delimiters.append(gdMinus);
+                            delimiters.append(gdMinus);
+
+                            readGOST(aComponent, aOneLine, aSPList, "СП", "СП X-X-X", aLocation, delimiters);
+                        }
+                        else
+                        if (aOneLine.startsWith("ТСН"))
+                        {
+                            QList<EGOSTDelimiter> delimiters;
+
+                            delimiters.append(gdMinus);
+                            delimiters.append(gdMinus);
+
+                            readGOST(aComponent, aOneLine, aTSNList, "ТСН", "ТСН X-X-X", aLocation, delimiters);
+                        }
+                        else
+                        {
+                            aComponent->calculationError="Неизвестный стандарт \""+aOneLine+"\". "+aLocation;
+                            throw "Wrong format";
+                        }
+                    } while (true);
+                }
+
+
+                if (
+                    aPUEList.length()>0
+                    &&
+                    aGOSTList.length()>0
+                    &&
+                    aGOSTRList.length()>0
+                    &&
+                    aRDList.length()>0
+                    &&
+                    aSOList.length()>0
+                    &&
+                    aSPList.length()>0
+                    &&
+                    aTSNList.length()>0
+                   )
+                {
+                    res="";
+                }
 
                 return res;
             }
