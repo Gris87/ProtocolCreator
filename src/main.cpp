@@ -4,10 +4,6 @@
 
 int main(int argc, char *argv[])
 {
-    allowDumpCrashes();
-
-    installMsgHandler(myMessageOutput);
-
     Q_INIT_RESOURCE(Resources);
 
     QApplication a(argc, argv);
@@ -17,6 +13,9 @@ int main(int argc, char *argv[])
 
     a.setOrganizationName("None");
     a.setOrganizationDomain("None");
+
+    allowDumpCrashes();
+    installMsgHandler(myMessageOutput);
 
     dir=QCoreApplication::applicationDirPath()+"/";
 
