@@ -1,22 +1,5 @@
 #include "dumpcrashes.h"
 
-/**
-  THIS MODULE ALLOW YOU TO HANDLE CRASHES IN QT APPLICATIONS
-
-  How to use:
-    - append these files to your application
-         1. crashdialog.cpp
-         2. crashdialog.h
-         3. crashdialog.ui
-         4. dumpcrashes.cpp
-         5. dumpcrashes.h
-         6. exceptionobject.cpp
-         7. exceptionobject.h
-    - include "dumpcrashes.h" at the main module
-    - call allowDumpCrashes(); at the first line of your application
-    - use StackTracer library with result application
-*/
-
 QtMsgHandler secondHandler=0;
 QStringList logs;
 int logsMaximum=INT_MAX;
