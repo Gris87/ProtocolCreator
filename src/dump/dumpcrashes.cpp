@@ -394,6 +394,12 @@ LONG WINAPI exceptionFilter(struct _EXCEPTION_POINTERS *pExceptionInfo)
 }
 #endif
 
+void unexpectedException()
+{
+    int *a=0;
+    *a=0;
+}
+
 void allowDumpCrashes()
 {
     installMsgHandler();
@@ -401,6 +407,8 @@ void allowDumpCrashes()
 #ifdef Q_OS_WIN
     SetUnhandledExceptionFilter(exceptionFilter);
 #endif
+
+    std::set_terminate(unexpectedException);
 }
 
 void logMessageHandler(QtMsgType type, const char *buf)
