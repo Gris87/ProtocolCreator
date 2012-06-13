@@ -2491,14 +2491,14 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                             } while (true);
                         }
                         else
-                        if (aOneLine.startsWith("√Œ—“"))
+                        if (aOneLine.startsWith("√Œ—“ – Ã› "))
                         {
                             QList<EGOSTDelimiter> delimiters;
 
                             delimiters.append(gdMultiPoint);
-                            delimiters.append(gdMinus);
+                            delimiters.append(gdMultiMinus);
 
-                            readGOST(aComponent, aOneLine, aGOSTList, "√Œ—“", "√Œ—“ X [{.X}] -X", aLocation, delimiters);
+                            readGOST(aComponent, aOneLine, aGOSTList, "√Œ—“ – Ã› ", "√Œ—“ – Ã›  X [{.X}] [{-X}]", aLocation, delimiters);
                         }
                         else
                         if (aOneLine.startsWith("√Œ—“ –"))
@@ -2511,15 +2511,14 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                             readGOST(aComponent, aOneLine, aGOSTList, "√Œ—“ –", "√Œ—“ – X [{.X}] -X", aLocation, delimiters);
                         }
                         else
-                        if (aOneLine.startsWith("√Œ—“ – Ã› "))
+                        if (aOneLine.startsWith("√Œ—“"))
                         {
                             QList<EGOSTDelimiter> delimiters;
 
                             delimiters.append(gdMultiPoint);
                             delimiters.append(gdMinus);
-                            delimiters.append(gdMinus);
 
-                            readGOST(aComponent, aOneLine, aGOSTList, "√Œ—“ – Ã› ", "√Œ—“ – Ã›  X [{.X}] -X-X", aLocation, delimiters);
+                            readGOST(aComponent, aOneLine, aGOSTList, "√Œ—“", "√Œ—“ X [{.X}] -X", aLocation, delimiters);
                         }
                         else
                         if (aOneLine.startsWith("–ƒ"))
