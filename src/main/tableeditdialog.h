@@ -76,6 +76,8 @@ private slots:
     void structureDelinkForMiddleRow();
     void structureLinkForAnotherList();
     void structureDelinkForAnotherList();
+    void structureLinkForCopyingAnotherList();
+    void structureDelinkForCopyingAnotherList();
     void on_structureAdditionalButton_clicked();
 
     void structureTableHeaderMove(int logicalIndex, int oldVisualIndex, int newVisualIndex);

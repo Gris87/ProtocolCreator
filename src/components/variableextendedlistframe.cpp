@@ -99,6 +99,9 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
     aStream << QString("LinkForAnotherList");
     aStream << mLinkForAnotherList;
 
+    aStream << QString("LinkForCopyingAnotherList");
+    aStream << mLinkForCopyingAnotherList;
+
     int headerRowCount=headerCells.length();
     int headerColCount=headerRowCount==0? 0 : headerCells.at(0).length();
 
@@ -432,6 +435,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
         if (aMagicWord=="LinkForAnotherList")
         {
             aStream >> mLinkForAnotherList;
+        }
+        else
+        if (aMagicWord=="LinkForCopyingAnotherList")
+        {
+            aStream >> mLinkForCopyingAnotherList;
         }
         else
         if (aMagicWord=="Header")
@@ -1309,6 +1317,7 @@ void VariableExtendedListFrame::checkForErrors(QStringList &aErrorList)
 
     checkLink(aErrorList, mLinkForMiddleRow, true);
     checkLink(aErrorList, mLinkForAnotherList, false);
+    checkLink(aErrorList, mLinkForCopyingAnotherList, false);
 
     for (int i=0; i<typeColumns.length(); i++)
     {

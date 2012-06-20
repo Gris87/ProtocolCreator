@@ -821,11 +821,14 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
 
         QMenu *linkMenu=contextMenu->addMenu("Привязка");
 
-        linkMenu->addAction("Привязать промежуточные строки к списку",      this, SLOT(structureLinkForMiddleRow()));
-        linkMenu->addAction("Убрать привязку промежуточных строк",          this, SLOT(structureDelinkForMiddleRow()))->setEnabled(mTable->mLinkForMiddleRow!="");
+        linkMenu->addAction("Привязать промежуточные строки к списку",                    this, SLOT(structureLinkForMiddleRow()));
+        linkMenu->addAction("Убрать привязку промежуточных строк",                        this, SLOT(structureDelinkForMiddleRow()))->setEnabled(mTable->mLinkForMiddleRow!="");
         linkMenu->addSeparator();
-        linkMenu->addAction("Привязать к другому расширенному списку",      this, SLOT(structureLinkForAnotherList()));
-        linkMenu->addAction("Убрать привязку с другим расширенным списком", this, SLOT(structureDelinkForAnotherList()))->setEnabled(mTable->mLinkForAnotherList!="");
+        linkMenu->addAction("Привязать к другому расширенному списку",                    this, SLOT(structureLinkForAnotherList()));
+        linkMenu->addAction("Убрать привязку с другим расширенным списком",               this, SLOT(structureDelinkForAnotherList()))->setEnabled(mTable->mLinkForAnotherList!="");
+        linkMenu->addSeparator();
+        linkMenu->addAction("Привязать к копированию из другого расширенного списка",     this, SLOT(structureLinkForCopyingAnotherList()));
+        linkMenu->addAction("Убрать привязку копирования из другого расширенного списка", this, SLOT(structureDelinkForCopyingAnotherList()))->setEnabled(mTable->mLinkForCopyingAnotherList!="");
 
         contextMenu->addSeparator();
     }
@@ -922,15 +925,33 @@ void TableEditDialog::structureDelinkForAnotherList()
     mTable->mLinkForAnotherList="";
 }
 
+void TableEditDialog::structureLinkForCopyingAnotherList()
+{
+    ListSelectionDialog dialog(true, mTable->mLinkForCopyingAnotherList, this);
+
+    if (dialog.exec())
+    {
+        mTable->mLinkForCopyingAnotherList=dialog.mResult;
+    }
+}
+
+void TableEditDialog::structureDelinkForCopyingAnotherList()
+{
+    mTable->mLinkForCopyingAnotherList="";
+}
+
 void TableEditDialog::on_structureAdditionalButton_clicked()
 {
     QMenu *contextMenu=new QMenu;
 
-    contextMenu->addAction("Привязать промежуточные строки к списку",      this, SLOT(structureLinkForMiddleRow()));
-    contextMenu->addAction("Убрать привязку промежуточных строк",          this, SLOT(structureDelinkForMiddleRow()))->setEnabled(mTable->mLinkForMiddleRow!="");
+    contextMenu->addAction("Привязать промежуточные строки к списку",                    this, SLOT(structureLinkForMiddleRow()));
+    contextMenu->addAction("Убрать привязку промежуточных строк",                        this, SLOT(structureDelinkForMiddleRow()))->setEnabled(mTable->mLinkForMiddleRow!="");
     contextMenu->addSeparator();
-    contextMenu->addAction("Привязать к другому расширенному списку",      this, SLOT(structureLinkForAnotherList()));
-    contextMenu->addAction("Убрать привязку с другим расширенным списком", this, SLOT(structureDelinkForAnotherList()))->setEnabled(mTable->mLinkForAnotherList!="");
+    contextMenu->addAction("Привязать к другому расширенному списку",                    this, SLOT(structureLinkForAnotherList()));
+    contextMenu->addAction("Убрать привязку с другим расширенным списком",               this, SLOT(structureDelinkForAnotherList()))->setEnabled(mTable->mLinkForAnotherList!="");
+    contextMenu->addSeparator();
+    contextMenu->addAction("Привязать к копированию из другого расширенного списка",     this, SLOT(structureLinkForCopyingAnotherList()));
+    contextMenu->addAction("Убрать привязку копирования из другого расширенного списка", this, SLOT(structureDelinkForCopyingAnotherList()))->setEnabled(mTable->mLinkForCopyingAnotherList!="");
 
     setGeometryInDesktop(contextMenu,
                          cursor().pos().x(),

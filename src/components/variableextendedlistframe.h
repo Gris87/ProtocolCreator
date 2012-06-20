@@ -25,6 +25,7 @@ public:
     double mTableOffset;
     QString mLinkForMiddleRow;
     QString mLinkForAnotherList;
+    QString mLinkForCopyingAnotherList;
 
     bool needUpdateHeight;
 
