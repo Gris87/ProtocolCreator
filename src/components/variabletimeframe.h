@@ -19,6 +19,8 @@ public:
     explicit VariableTimeFrame(QWidget *parent = 0);
     ~VariableTimeFrame();
 
+    void init();
+
     QString name();
     QString variableName();
 
