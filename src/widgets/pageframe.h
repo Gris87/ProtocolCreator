@@ -31,6 +31,8 @@ public:
     explicit PageFrame(QWidget *parent = 0);
     ~PageFrame();
 
+    void init();
+
     void removeVariable(PageComponent* aComponent);
     void removeComponent(PageComponent* aComponent);
 

@@ -6,6 +6,35 @@ PageFrame::PageFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    init();
+}
+
+PageFrame::~PageFrame()
+{
+    delete ui;
+}
+
+void PageFrame::init()
+{
+    ui->nameEdit->setText("");
+    ui->varNameEdit->setText("");
+
+    ui->variableWidget->setVisible(true);
+    updateHideButton();
+
+    for (int i=0; i<variables.length(); ++i)
+    {
+        delete variables.at(i);
+    }
+
+    for (int i=0; i<components.length(); ++i)
+    {
+        delete components.at(i);
+    }
+
+    variables.clear();
+    components.clear();
+
     headerText="";
     footerText="";
     isPortaitOrientation=true;
@@ -13,11 +42,6 @@ PageFrame::PageFrame(QWidget *parent) :
     topLimit=2;
     rightLimit=1.5;
     bottomLimit=2;
-}
-
-PageFrame::~PageFrame()
-{
-    delete ui;
 }
 
 void PageFrame::variableSwitch(VariableExtendedListFrame* aComponent)
@@ -357,31 +381,60 @@ void PageFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("Page");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
+    if (ui->nameEdit->text()!="")
+    {
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
+    }
 
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
+    if (ui->varNameEdit->text()!="")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
 
-    aStream << QString("Header");
-    aStream << headerText;
+    if (headerText!="")
+    {
+        aStream << QString("Header");
+        aStream << headerText;
+    }
 
-    aStream << QString("Footer");
-    aStream << footerText;
+    if (footerText!="")
+    {
+        aStream << QString("Footer");
+        aStream << footerText;
+    }
 
-    aStream << QString("Portait");
-    aStream << isPortaitOrientation;
+    if (!isPortaitOrientation)
+    {
+        aStream << QString("Portait");
+        aStream << isPortaitOrientation;
+    }
 
-    aStream << QString("Limits");
-    aStream << leftLimit;
-    aStream << topLimit;
-    aStream << rightLimit;
-    aStream << bottomLimit;
+    if (
+        leftLimit!=3
+        ||
+        topLimit!=2
+        ||
+        rightLimit!=1.5
+        ||
+        bottomLimit!=2
+       )
+    {
+        aStream << QString("Limits");
+        aStream << leftLimit;
+        aStream << topLimit;
+        aStream << rightLimit;
+        aStream << bottomLimit;
+    }
 
-    bool aHideVars=!ui->variableWidget->isVisible();
+    if (!ui->variableWidget->isVisible())
+    {
+        bool aHideVars=true;
 
-    aStream << QString("HideVars");
-    aStream << aHideVars;
+        aStream << QString("HideVars");
+        aStream << aHideVars;
+    }
 
     if (variables.length()>0)
     {
@@ -412,6 +465,8 @@ void PageFrame::saveToStream(QDataStream &aStream)
 
 void PageFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
