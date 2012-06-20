@@ -258,28 +258,17 @@ void DataTable::pasteData()
             QString aText=cells.at(i).at(0);
             aText.remove(0, 5);
 
-            QTableWidgetItem *aItem=item(curRow+i, 0);
-
-            for (int j=1; j<totalCol; j++)
+            if (itemDelegateForRow(curRow+i)==0)
             {
-                item(curRow+i, j)->setFont(aItem->font());
-                item(curRow+i, j)->setBackground(aItem->background());
-                item(curRow+i, j)->setTextColor(aItem->textColor());
-                item(curRow+i, j)->setTextAlignment(aItem->textAlignment());
-                item(curRow+i, j)->setText("");
+                for (int j=0; j<totalCol; j++)
+                {
+                    delete item(curRow+i, j);
+                }
+
+                aTable->setItemsForMiddleRow(curRow+i);
             }
 
-            setSpan(curRow+i, 0, 1, totalCol);
-            aItem->setText(aText);
-
-            if (aTable->mLinkForMiddleRow=="")
-            {
-                setItemDelegateForRow(curRow+i, new StringDelegate(aTable));
-            }
-            else
-            {
-                setItemDelegateForRow(curRow+i, new ListDelegate(aTable->mLinkForMiddleRow, aTable));
-            }
+            item(curRow+i, 0)->setText(aText);
         }
         else
         {

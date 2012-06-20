@@ -512,6 +512,12 @@ void TableEditDialog::headerLocationRight()
 
 void TableEditDialog::tableAlignmentShow()
 {
+    setGeometryInDesktop(mCellAlignmentWidget,
+                         cursor().pos().x()+5,
+                         cursor().pos().y()+5,
+                         mCellAlignmentWidget->width(),
+                         mCellAlignmentWidget->height());
+
     mCellAlignmentWidget->show();
 }
 
@@ -588,7 +594,7 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
     bool itemSelected=activeContextTable->selectedItems().length()>0;
 
     QAction *aAction;
-    QMenu *contextMenu=new QMenu;
+    QMenu *contextMenu=new QMenu(this);
 
     if (isAdmin)
     {
@@ -601,8 +607,10 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
         contextMenu->addSeparator();
     }
 
-    contextMenu->addAction("Объединить ячейки",          activeContextTable, SLOT(uniteSelection()))->setEnabled(itemSelected);
-    contextMenu->addAction("Разъеденить ячейки",         activeContextTable, SLOT(separateSelection()))->setEnabled(itemSelected);
+    QMenu *unionMenu=contextMenu->addMenu("Объединение");
+    unionMenu->addAction("Объединить ячейки",  activeContextTable, SLOT(uniteSelection()))->setEnabled(itemSelected);
+    unionMenu->addAction("Разъеденить ячейки", activeContextTable, SLOT(separateSelection()))->setEnabled(itemSelected);
+
     contextMenu->addSeparator();
     contextMenu->addAction("Ширина",                     this, SLOT(headerColumnSize()))->setEnabled(itemSelected);
     contextMenu->addAction("Сдвиг таблицы",              this, SLOT(headerOffset()));
@@ -612,12 +620,14 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
     aAction->setChecked(mTable->cloneHeader);
 
     contextMenu->addSeparator();
-    contextMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
-    contextMenu->addAction("Цвет ячейки",                this, SLOT(tableBackgroundColor()))->setEnabled(itemSelected);
-    contextMenu->addAction("Цвет текста",                this, SLOT(tableTextColor()))->setEnabled(itemSelected);
-    contextMenu->addSeparator();
 
-    QMenu *tableAlignMenu=contextMenu->addMenu("Положение таблицы в тексте");
+    QMenu *formatMenu=contextMenu->addMenu("Формат");
+    formatMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
+    formatMenu->addAction("Цвет ячейки",                this, SLOT(tableBackgroundColor()))->setEnabled(itemSelected);
+    formatMenu->addAction("Цвет текста",                this, SLOT(tableTextColor()))->setEnabled(itemSelected);
+    formatMenu->addSeparator();
+
+    QMenu *tableAlignMenu=formatMenu->addMenu("Положение таблицы в тексте");
 
     aAction=tableAlignMenu->addAction("Слева",      this, SLOT(headerLocationLeft()));
     aAction->setCheckable(true);
@@ -631,7 +641,7 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
     aAction->setCheckable(true);
     aAction->setChecked(mTable->mTableAlignment==Qt::AlignRight);
 
-    QMenu *cellAlignMenu=contextMenu->addMenu("Положение в ячейке");
+    QMenu *cellAlignMenu=formatMenu->addMenu("Положение в ячейке");
 
     if (itemSelected)
     {
@@ -646,12 +656,6 @@ void TableEditDialog::on_headerTableWidget_customContextMenuRequested(const QPoi
         mCellAlignmentWidget->ui->bottomLeftButton ->setIcon(aTextAlignment==65  ? QIcon(":/images/CellBottomLeftSelected.png")  : QIcon(":/images/CellBottomLeft.png"));
         mCellAlignmentWidget->ui->bottomButton     ->setIcon(aTextAlignment==68  ? QIcon(":/images/CellBottomSelected.png")      : QIcon(":/images/CellBottom.png"));
         mCellAlignmentWidget->ui->bottomRightButton->setIcon(aTextAlignment==66  ? QIcon(":/images/CellBottomRightSelected.png") : QIcon(":/images/CellBottomRight.png"));
-
-        setGeometryInDesktop(mCellAlignmentWidget,
-                             cursor().pos().x()+contextMenu->sizeHint().width()-10,
-                             cursor().pos().y()+contextMenu->sizeHint().height()-15,
-                             mCellAlignmentWidget->width(),
-                             mCellAlignmentWidget->height());
 
         connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(tableAlignmentShow()));
         connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(tableAlignmentHide()));
@@ -810,7 +814,7 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
 
     bool itemSelected=activeContextTable->selectedItems().length()>0;
 
-    QMenu *contextMenu=new QMenu;
+    QMenu *contextMenu=new QMenu(this);
 
     if (isAdmin)
     {
@@ -833,12 +837,14 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
         contextMenu->addSeparator();
     }
 
-    contextMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
-    contextMenu->addAction("Цвет ячейки",                this, SLOT(tableBackgroundColor()))->setEnabled(itemSelected);
-    contextMenu->addAction("Цвет текста",                this, SLOT(tableTextColor()))->setEnabled(itemSelected);
-    contextMenu->addSeparator();
+    QMenu *formatMenu=contextMenu->addMenu("Формат");
 
-    QMenu *cellAlignMenu=contextMenu->addMenu("Положение в ячейке");
+    formatMenu->addAction("Шрифт",                      this, SLOT(tableFont()))->setEnabled(itemSelected);
+    formatMenu->addAction("Цвет ячейки",                this, SLOT(tableBackgroundColor()))->setEnabled(itemSelected);
+    formatMenu->addAction("Цвет текста",                this, SLOT(tableTextColor()))->setEnabled(itemSelected);
+    formatMenu->addSeparator();
+
+    QMenu *cellAlignMenu=formatMenu->addMenu("Положение в ячейке");
 
     if (itemSelected)
     {
@@ -853,12 +859,6 @@ void TableEditDialog::on_structureTableWidget_customContextMenuRequested(const Q
         mCellAlignmentWidget->ui->bottomLeftButton ->setIcon(aTextAlignment==65  ? QIcon(":/images/CellBottomLeftSelected.png")  : QIcon(":/images/CellBottomLeft.png"));
         mCellAlignmentWidget->ui->bottomButton     ->setIcon(aTextAlignment==68  ? QIcon(":/images/CellBottomSelected.png")      : QIcon(":/images/CellBottom.png"));
         mCellAlignmentWidget->ui->bottomRightButton->setIcon(aTextAlignment==66  ? QIcon(":/images/CellBottomRightSelected.png") : QIcon(":/images/CellBottomRight.png"));
-
-        setGeometryInDesktop(mCellAlignmentWidget,
-                             cursor().pos().x()+contextMenu->sizeHint().width()-10,
-                             cursor().pos().y()+contextMenu->sizeHint().height()-15,
-                             mCellAlignmentWidget->width(),
-                             mCellAlignmentWidget->height());
 
         connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(tableAlignmentShow()));
         connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(tableAlignmentHide()));
@@ -948,7 +948,7 @@ void TableEditDialog::structureDelinkForCopyingAnotherList()
 
 void TableEditDialog::on_structureAdditionalButton_clicked()
 {
-    QMenu *contextMenu=new QMenu;
+    QMenu *contextMenu=new QMenu(this);
 
     contextMenu->addAction("Привязать промежуточные строки к списку",                    this, SLOT(structureLinkForMiddleRow()));
     contextMenu->addAction("Убрать привязку промежуточных строк",                        this, SLOT(structureDelinkForMiddleRow()))->setEnabled(mTable->mLinkForMiddleRow!="");

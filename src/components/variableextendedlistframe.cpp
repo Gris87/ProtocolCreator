@@ -2329,7 +2329,232 @@ void VariableExtendedListFrame::on_addFromAnotherButton_clicked()
 
 void VariableExtendedListFrame::on_copyFromAnotherTableButton_clicked()
 {
+    VariableExtendedListFrame *aFrame=0;
 
+    QString aLink=mLinkForCopyingAnotherList;
+
+    int index=aLink.indexOf(".");
+
+    if (index>=0)
+
+    {
+        QString aSectionName=aLink.left(index);
+        QString aVarName=aLink.mid(index+1);
+
+        if (aSectionName=="Global")
+        {
+            for (int i=0; i<globalDialog->variables.length(); i++)
+            {
+                if (globalDialog->variables.at(i)->variableName()==aVarName)
+                {
+                    if (globalDialog->variables.at(i)->inherits("VariableExtendedListFrame"))
+                    {
+                        aFrame=(VariableExtendedListFrame*)globalDialog->variables[i];
+                    }
+
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (int i=0; i<mainWindow->ui->pagesTabWidget->count(); i++)
+            {
+                if(((PageFrame*)mainWindow->ui->pagesTabWidget->widget(i))->ui->varNameEdit->text()==aSectionName)
+                {
+                    PageFrame *aPage=(PageFrame*)mainWindow->ui->pagesTabWidget->widget(i);
+
+                    for (int j=0; j<aPage->variables.length(); j++)
+                    {
+                        if (aPage->variables.at(j)->variableName()==aVarName)
+                        {
+                            if (aPage->variables.at(j)->inherits("VariableExtendedListFrame"))
+                            {
+                                aFrame=(VariableExtendedListFrame*)aPage->variables[j];
+                            }
+
+                            break;
+                        }
+                    }
+
+                    for (int j=0; j<aPage->components.length(); j++)
+                    {
+                        if (aPage->components.at(j)->variableName()==aVarName)
+                        {
+                            if (aPage->components.at(j)->inherits("VariableExtendedListFrame"))
+                            {
+                                aFrame=(VariableExtendedListFrame*)aPage->components[j];
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (aFrame)
+    {
+        DataTable *aSrcTable=aFrame->ui->dataTableWidget;
+
+        if (ui->dataTableWidget->columnCount()==0)
+        {
+            QMessageBox::information(this, "Копирование из расширенного списка", "Нет столбцов в исходном расширенном списке");
+            return;
+        }
+
+        if (aSrcTable->rowCount()==0 || aSrcTable->columnCount()==0)
+        {
+            QMessageBox::information(this, "Копирование из расширенного списка", "Нет данных в связанной таблице");
+            return;
+        }
+
+        /////////////////////////////////
+        //      START COPYING TABLE
+        /////////////////////////////////
+
+        if (mCopyColumnCount<1)
+        {
+            mCopyColumnCount=1;
+        }
+        else
+        if (mCopyColumnCount>aSrcTable->columnCount())
+        {
+            mCopyColumnCount=aSrcTable->columnCount();
+        }
+
+        for (int i=0; i<aSrcTable->rowCount(); ++i)
+        {
+            if (aSrcTable->itemDelegateForRow(i))
+            {
+                if (mCopyMiddleRow)
+                {
+                    on_addMiddleRowButton_clicked();
+
+                    ui->dataTableWidget->item(ui->dataTableWidget->rowCount()-1, 0)->setText(aSrcTable->item(i,0)->text());
+                }
+            }
+            else
+            {
+                on_addRowButton_clicked();
+
+                for (int j=0; j<mCopyColumnCount; ++j)
+                {
+                    QString aText=aSrcTable->item(i, j)->text();
+                    QTableWidgetItem *aItem=ui->dataTableWidget->item(i, j);
+
+                    switch (typeColumns.at(j).column->type())
+                    {
+                        case ctInteger:
+                        {
+                            if (!((IntegerColumn*)(typeColumns.at(j).column))->mIsAutoInc)
+                            {
+                                while (aText.length()>0 && !aText.at(aText.length()-1).isNumber())
+                                {
+                                    aText.remove(aText.length()-1, 1);
+                                }
+
+                                while (aText.length()>0 && !aText.at(0).isNumber())
+                                {
+                                    aText.remove(0, 1);
+                                }
+
+                                bool ok;
+                                double aValue=aText.toDouble(&ok);
+
+                                if (ok)
+                                {
+                                    if (((IntegerColumn*)(typeColumns.at(j).column))->mSplitRows)
+                                    {
+                                        aItem->setText(QString::number(aValue, 'f', ((IntegerColumn*)(typeColumns.at(j).column))->mDecimals));
+                                    }
+                                    else
+                                    {
+                                        aItem->setText(
+                                                       ((IntegerColumn*)(typeColumns.at(j).column))->mPrefix+
+                                                       QString::number(aValue, 'f', ((IntegerColumn*)(typeColumns.at(j).column))->mDecimals)+
+                                                       ((IntegerColumn*)(typeColumns.at(j).column))->mPostfix
+                                                      );
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                        case ctString:
+                        case ctList:
+                        case ctExtendedList:
+                        {
+                            aItem->setText(aText);
+                        }
+                        break;
+                        case ctBool:
+                        {
+                            if (aText=="1")
+                            {
+                                aItem->setCheckState(Qt::Checked);
+                            }
+                            else
+                            if (aText=="0")
+                            {
+                                aItem->setCheckState(Qt::Unchecked);
+                            }
+                        }
+                        break;
+                        case ctDate:
+                        {
+                            QDate aDate=QDate::fromString(aText, "dd.MM.yyyy");
+
+                            if (aDate.isValid())
+                            {
+                                aItem->setText(aText);
+                            }
+                        }
+                        break;
+                        case ctTime:
+                        {
+                            QTime aTime=QTime::fromString(aText, "h:mm:ss");
+
+                            if (aTime.isValid())
+                            {
+                                aItem->setText(aTime.toString("hh:mm:ss"));
+                            }
+                        }
+                        break;
+                        case ctExpression:
+                        {
+                            if (((ExpressionColumn*)(typeColumns.at(j).column))->mAllowModify)
+                            {
+                                aItem->setText(aText);
+                            }
+                        }
+                        break;
+                        default:
+                        {
+                            throw "Unknown column type";
+                        }
+                    }
+                }
+            }
+        }
+
+        /////////////////////////////////
+        //       END COPYING TABLE
+        /////////////////////////////////
+
+        QMessageBox::information(this, "Копирование из расширенного списка", "Успешно завершнено копирование из \""+mLinkForCopyingAnotherList+"\"");
+    }
+    else
+    {
+        if (mLinkForCopyingAnotherList=="")
+        {
+            QMessageBox::information(this, "Копирование из расширенного списка", "Отсуствует привязка к расширенному списку");
+        }
+        else
+        {
+            QMessageBox::information(this, "Копирование из расширенного списка", "Не найдена привязка к расширенному списку \""+mLinkForCopyingAnotherList+"\"");
+        }
+    }
 }
 
 void VariableExtendedListFrame::dataTableFont()

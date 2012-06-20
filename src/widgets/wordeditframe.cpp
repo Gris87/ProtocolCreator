@@ -289,7 +289,7 @@ void WordEditFrame::insertLink()
 
 void WordEditFrame::on_contextButton_clicked()
 {
-    QMenu *contextMenu=new QMenu;
+    QMenu *contextMenu=new QMenu(this);
 
     QMenu *autoTextMenu=contextMenu->addMenu("Вставить авто-текст");
 

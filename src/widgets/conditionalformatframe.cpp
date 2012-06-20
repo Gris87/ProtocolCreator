@@ -149,7 +149,7 @@ void ConditionalFormatFrame::tableCellAlignBottomRight()
 
 void ConditionalFormatFrame::on_exampleTableWidget_customContextMenuRequested(const QPoint &pos)
 {
-    QMenu *contextMenu=new QMenu;
+    QMenu *contextMenu=new QMenu(this);
 
     contextMenu->addAction("״נטפע",       this, SLOT(tableFont()));
     contextMenu->addAction("ײגוע ÿקויךט", this, SLOT(tableBackgroundColor()));
