@@ -929,9 +929,15 @@ void TableEditDialog::structureLinkForCopyingAnotherList()
 {
     ListSelectionDialog dialog(true, mTable->mLinkForCopyingAnotherList, this);
 
+    dialog.ui->copyWidget->setVisible(true);
+    dialog.ui->columnCountSpinBox->setValue(mTable->mCopyColumnCount);
+    dialog.ui->copyMiddleRowsCheckBox->setChecked(mTable->mCopyMiddleRow);
+
     if (dialog.exec())
     {
         mTable->mLinkForCopyingAnotherList=dialog.mResult;
+        mTable->mCopyColumnCount=dialog.ui->columnCountSpinBox->value();
+        mTable->mCopyMiddleRow=dialog.ui->copyMiddleRowsCheckBox->isChecked();
     }
 }
 

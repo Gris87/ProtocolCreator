@@ -61,6 +61,8 @@ ListSelectionDialog::ListSelectionDialog(bool aExtListOnly, QString aBaseList, Q
 
     ui->pagesListWidget->setCurrentRow(globalDialog->isVisible()? 0 : mainWindow->ui->pagesTabWidget->currentIndex()+1);
 
+    ui->copyWidget->setVisible(false);
+
     if (aBaseList!="")
     {
         int index=aBaseList.indexOf(".");

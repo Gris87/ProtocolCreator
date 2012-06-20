@@ -26,6 +26,8 @@ public:
     QString mLinkForMiddleRow;
     QString mLinkForAnotherList;
     QString mLinkForCopyingAnotherList;
+    quint8 mCopyColumnCount;
+    bool mCopyMiddleRow;
 
     bool needUpdateHeight;
 

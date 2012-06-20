@@ -16,6 +16,8 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
 
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
+    mCopyColumnCount=1;
+    mCopyMiddleRow=true;
     middleRowFontString="";
     middleRowAlignment=Qt::AlignTop | Qt::AlignLeft;
     middleRowBackgroundColor=QColor(255, 255, 255);
@@ -101,6 +103,12 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
     aStream << QString("LinkForCopyingAnotherList");
     aStream << mLinkForCopyingAnotherList;
+
+    aStream << QString("CopyColumnCount");
+    aStream << mCopyColumnCount;
+
+    aStream << QString("CopyMiddleRow");
+    aStream << mCopyMiddleRow;
 
     int headerRowCount=headerCells.length();
     int headerColCount=headerRowCount==0? 0 : headerCells.at(0).length();
@@ -440,6 +448,16 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
         if (aMagicWord=="LinkForCopyingAnotherList")
         {
             aStream >> mLinkForCopyingAnotherList;
+        }
+        else
+        if (aMagicWord=="CopyColumnCount")
+        {
+            aStream >> mCopyColumnCount;
+        }
+        else
+        if (aMagicWord=="CopyMiddleRow")
+        {
+            aStream >> mCopyMiddleRow;
         }
         else
         if (aMagicWord=="Header")
