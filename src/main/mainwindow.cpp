@@ -261,12 +261,9 @@ void MainWindow::openFile(QString aFileName)
 
             aStream >> pageIndex;
 
-            if (pageIndex>0)
-            {
-                ui->pagesTabWidget->tabBar()->moveTab(0, pageIndex);
-                ui->pagesTabWidget->setCurrentIndex(0);
-                ui->pagesTabWidget->setCurrentIndex(pageIndex);
-            }
+            ui->pagesTabWidget->tabBar()->moveTab(0, pageIndex);
+            ui->pagesTabWidget->setCurrentIndex(0);
+            ui->pagesTabWidget->setCurrentIndex(pageIndex);
         }
     }
 
@@ -320,8 +317,11 @@ void MainWindow::on_actionSave_triggered()
         aStream << QString("DocumentPassword");
         aStream << docPass;
 
-        aStream << QString("AdminPassword");
-        aStream << adminPass;
+        if (adminPass!="")
+        {
+            aStream << QString("AdminPassword");
+            aStream << adminPass;
+        }
 
         if (globalDialog)
         {
@@ -350,8 +350,11 @@ void MainWindow::on_actionSave_triggered()
 
         aStream << QString("Stop");
 
-        aStream << QString("ContentIndex");
-        aStream << pageIndex;
+        if (pageIndex>0)
+        {
+            aStream << QString("ContentIndex");
+            aStream << pageIndex;
+        }
 
         EncryptStream(aArray, "Thunderbolt");
 
