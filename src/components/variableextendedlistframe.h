@@ -96,7 +96,9 @@ private slots:
     void dataTablePasteBefore();
     void dataTablePasteAfter();
     void on_deleteRowButton_clicked();
+    void on_clearButton_clicked();
     void on_addFromAnotherButton_clicked();
+    void on_copyFromAnotherTableButton_clicked();
     void dataTableFont();
     void dataTableBackgroundColor();
     void dataTableTextColor();

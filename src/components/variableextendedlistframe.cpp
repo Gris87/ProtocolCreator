@@ -2194,6 +2194,15 @@ void VariableExtendedListFrame::on_deleteRowButton_clicked()
     }
 }
 
+void VariableExtendedListFrame::on_clearButton_clicked()
+{
+    if (QMessageBox::question(this, protocolCreatorVersion, "Вы уверены, что хотите очистить таблицу?", QMessageBox::Yes | QMessageBox::Default, QMessageBox::No | QMessageBox::Escape)==QMessageBox::Yes)
+    {
+        ui->dataTableWidget->clearContents();
+        ui->dataTableWidget->setRowCount(0);
+    }
+}
+
 void VariableExtendedListFrame::on_addFromAnotherButton_clicked()
 {
     VariableExtendedListFrame *aFrame=0;
@@ -2291,6 +2300,11 @@ void VariableExtendedListFrame::on_addFromAnotherButton_clicked()
     }
 }
 
+void VariableExtendedListFrame::on_copyFromAnotherTableButton_clicked()
+{
+
+}
+
 void VariableExtendedListFrame::dataTableFont()
 {
     QFontDialog dialog(ui->dataTableWidget->currentItem()->font(), this);
@@ -2358,6 +2372,12 @@ void VariableExtendedListFrame::dataTableTextColor()
 
 void VariableExtendedListFrame::tableAlignmentShow()
 {
+    setGeometryInDesktop(mCellAlignmentWidget,
+                         cursor().pos().x()+5,
+                         cursor().pos().y()+5,
+                         mCellAlignmentWidget->width(),
+                         mCellAlignmentWidget->height());
+
     mCellAlignmentWidget->show();
 }
 
@@ -2432,25 +2452,30 @@ void VariableExtendedListFrame::on_dataTableWidget_customContextMenuRequested(co
     bool itemSelected=ui->dataTableWidget->selectedItems().length()>0;
     QString aClipboard=QApplication::clipboard()->text().replace("\r","");
 
-    QMenu *contextMenu=new QMenu;
+    QMenu *contextMenu=new QMenu(this);
 
     contextMenu->addAction("Вставить строки перед текущей",               this, SLOT(dataTableInsertRowBefore()))->setEnabled(itemSelected);
     contextMenu->addAction("Вставить строки после текущей",               this, SLOT(dataTableInsertRowAfter()))->setEnabled(itemSelected);
     contextMenu->addAction("Вставить промежуточные строки перед текущей", this, SLOT(dataTableInsertMiddleRowBefore()))->setEnabled(itemSelected);
     contextMenu->addAction("Вставить промежуточные строки после текущей", this, SLOT(dataTableInsertMiddleRowAfter()))->setEnabled(itemSelected);
     contextMenu->addSeparator();
-    contextMenu->addAction("Копировать строки в буфер",                   this, SLOT(dataTableCopyRows()))->setEnabled(itemSelected);
-    contextMenu->addAction("Вставить строки из буфера перед текущей",     this, SLOT(dataTablePasteBefore()))->setEnabled(itemSelected && aClipboard!="");
-    contextMenu->addAction("Вставить строки из буфера после текущей",     this, SLOT(dataTablePasteAfter()))->setEnabled(itemSelected && aClipboard!="");
+
+    QMenu *copyMenu=contextMenu->addMenu("Копирование");
+    copyMenu->addAction("Копировать строки в буфер",                   this, SLOT(dataTableCopyRows()))->setEnabled(itemSelected);
+    copyMenu->addAction("Вставить строки из буфера перед текущей",     this, SLOT(dataTablePasteBefore()))->setEnabled(itemSelected && aClipboard!="");
+    copyMenu->addAction("Вставить строки из буфера после текущей",     this, SLOT(dataTablePasteAfter()))->setEnabled(itemSelected && aClipboard!="");
+
     contextMenu->addSeparator();
     contextMenu->addAction("Удалить строку(и)",                           this, SLOT(on_deleteRowButton_clicked()))->setEnabled(itemSelected);
     contextMenu->addSeparator();
-    contextMenu->addAction("Шрифт",                                       this, SLOT(dataTableFont()))->setEnabled(itemSelected);
-    contextMenu->addAction("Цвет ячейки",                                 this, SLOT(dataTableBackgroundColor()))->setEnabled(itemSelected);
-    contextMenu->addAction("Цвет текста",                                 this, SLOT(dataTableTextColor()))->setEnabled(itemSelected);
-    contextMenu->addSeparator();
 
-    QMenu *cellAlignMenu=contextMenu->addMenu("Положение в ячейке");
+    QMenu *formatMenu=contextMenu->addMenu("Формат");
+    formatMenu->addAction("Шрифт",                                       this, SLOT(dataTableFont()))->setEnabled(itemSelected);
+    formatMenu->addAction("Цвет ячейки",                                 this, SLOT(dataTableBackgroundColor()))->setEnabled(itemSelected);
+    formatMenu->addAction("Цвет текста",                                 this, SLOT(dataTableTextColor()))->setEnabled(itemSelected);
+    formatMenu->addSeparator();
+
+    QMenu *cellAlignMenu=formatMenu->addMenu("Положение в ячейке");
 
     if (itemSelected)
     {
@@ -2465,12 +2490,6 @@ void VariableExtendedListFrame::on_dataTableWidget_customContextMenuRequested(co
         mCellAlignmentWidget->ui->bottomLeftButton ->setIcon(aTextAlignment==65  ? QIcon(":/images/CellBottomLeftSelected.png")  : QIcon(":/images/CellBottomLeft.png"));
         mCellAlignmentWidget->ui->bottomButton     ->setIcon(aTextAlignment==68  ? QIcon(":/images/CellBottomSelected.png")      : QIcon(":/images/CellBottom.png"));
         mCellAlignmentWidget->ui->bottomRightButton->setIcon(aTextAlignment==66  ? QIcon(":/images/CellBottomRightSelected.png") : QIcon(":/images/CellBottomRight.png"));
-
-        setGeometryInDesktop(mCellAlignmentWidget,
-                             cursor().pos().x()+contextMenu->sizeHint().width()-10,
-                             cursor().pos().y()+contextMenu->sizeHint().height()-15,
-                             mCellAlignmentWidget->width(),
-                             mCellAlignmentWidget->height());
 
         connect(cellAlignMenu, SIGNAL(aboutToShow()), this, SLOT(tableAlignmentShow()));
         connect(cellAlignMenu, SIGNAL(aboutToHide()), this, SLOT(tableAlignmentHide()));

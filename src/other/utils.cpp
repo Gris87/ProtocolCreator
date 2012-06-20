@@ -1764,7 +1764,7 @@ QVariant calculatePart(QString aExpression, QStringList *aErrorList, PageCompone
                     aArg1*=10;
                 }
 
-                aArg1=floor(aArg1);
+                aArg1=round(aArg1);
 
                 for (int i=0; i<aArg2; i++)
                 {
