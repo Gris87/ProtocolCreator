@@ -2,23 +2,38 @@
 
 ListColumn::ListColumn() : ColumnType()
 {
+    init();
+}
+
+void ListColumn::init()
+{
+    mDefaultValue="";
+    mLinkComponent="";
 }
 
 void ListColumn::saveToStream(QDataStream &aStream)
 {
     aStream << QString("ColList");
 
-    aStream << QString("Default");
-    aStream << mDefaultValue;
+    if (mDefaultValue!="")
+    {
+        aStream << QString("Default");
+        aStream << mDefaultValue;
+    }
 
-    aStream << QString("Link");
-    aStream << mLinkComponent;
+    if (mLinkComponent!="")
+    {
+        aStream << QString("Link");
+        aStream << mLinkComponent;
+    }
 
     aStream << QString("ColEnd");
 }
 
 void ListColumn::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
