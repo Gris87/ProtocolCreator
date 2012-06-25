@@ -29,6 +29,9 @@ private slots:
     void on_variablesListWidget_currentRowChanged(int currentRow);
     void on_okButton_clicked();
     void on_cancelButton_clicked();
+    void on_allRowsRadioButton_toggled(bool checked);
+    void on_rowsWithTextRadioButton_toggled(bool checked);
+    void on_rowsWithoutTextRadioButton_toggled(bool checked);
 };
 
 #endif // LISTSELECTIONDIALOG_H

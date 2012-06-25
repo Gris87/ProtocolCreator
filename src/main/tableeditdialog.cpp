@@ -933,11 +933,69 @@ void TableEditDialog::structureLinkForCopyingAnotherList()
     dialog.ui->columnCountSpinBox->setValue(mTable->mCopyColumnCount);
     dialog.ui->copyMiddleRowsCheckBox->setChecked(mTable->mCopyMiddleRow);
 
+    if (mTable->mCopyRules==crAll)
+    {
+        dialog.ui->allRowsRadioButton->setChecked(true);
+    }
+    else
+    if (mTable->mCopyRules==crWithText)
+    {
+        dialog.ui->rowsWithTextRadioButton->setChecked(true);
+    }
+    else
+    {
+        dialog.ui->rowsWithoutTextRadioButton->setChecked(true);
+    }
+
+    dialog.ui->inColumnSpinBox->setValue(mTable->mRulesColumn);
+
+    QString aItems="";
+
+    for (int i=0; i<mTable->mRulesText.length(); i++)
+    {
+        if (i>0)
+        {
+            aItems.append("\n");
+        }
+
+        QString aOneLine=mTable->mRulesText.at(i);
+        aOneLine.replace("\n", "|");
+        aItems.append(aOneLine);
+    }
+
+    dialog.ui->rulesTextEdit->setPlainText(aItems);
+
     if (dialog.exec())
     {
         mTable->mLinkForCopyingAnotherList=dialog.mResult;
         mTable->mCopyColumnCount=dialog.ui->columnCountSpinBox->value();
         mTable->mCopyMiddleRow=dialog.ui->copyMiddleRowsCheckBox->isChecked();
+
+        if (dialog.ui->allRowsRadioButton->isChecked())
+        {
+            mTable->mCopyRules=crAll;
+        }
+        else
+        if (dialog.ui->rowsWithTextRadioButton->isChecked())
+        {
+            mTable->mCopyRules=crWithText;
+        }
+        else
+        {
+            mTable->mCopyRules=crWithoutText;
+        }
+
+        mTable->mRulesColumn=dialog.ui->inColumnSpinBox->value();
+
+        mTable->mRulesText=dialog.ui->rulesTextEdit->toPlainText().split("\n");
+        mTable->mRulesText.removeDuplicates();
+        mTable->mRulesText.removeOne("");
+        mTable->mRulesText.sort();
+
+        for (int i=0; i<mTable->mRulesText.length(); i++)
+        {
+            mTable->mRulesText[i].replace("|", "\n");
+        }
     }
 }
 

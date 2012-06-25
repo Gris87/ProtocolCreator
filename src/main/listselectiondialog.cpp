@@ -124,6 +124,8 @@ ListSelectionDialog::ListSelectionDialog(bool aExtListOnly, QString aBaseList, Q
             }
         }
     }
+
+    on_allRowsRadioButton_toggled(true);
 }
 
 ListSelectionDialog::~ListSelectionDialog()
@@ -357,4 +359,22 @@ void ListSelectionDialog::on_okButton_clicked()
 void ListSelectionDialog::on_cancelButton_clicked()
 {
     reject();
+}
+
+void ListSelectionDialog::on_allRowsRadioButton_toggled(bool checked)
+{
+    ui->rulesTextEdit->setEnabled(!checked);
+    ui->inColumnSpinBox->setEnabled(!checked);
+}
+
+void ListSelectionDialog::on_rowsWithTextRadioButton_toggled(bool checked)
+{
+    ui->rulesTextEdit->setEnabled(checked);
+    ui->inColumnSpinBox->setEnabled(checked);
+}
+
+void ListSelectionDialog::on_rowsWithoutTextRadioButton_toggled(bool checked)
+{
+    ui->rulesTextEdit->setEnabled(checked);
+    ui->inColumnSpinBox->setEnabled(checked);
 }
