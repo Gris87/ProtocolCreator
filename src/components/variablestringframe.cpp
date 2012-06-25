@@ -6,13 +6,25 @@ VariableStringFrame::VariableStringFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->nameEdit->setText("Строка");
-    ui->varNameEdit->setText("String");
+    init();
 }
 
 VariableStringFrame::~VariableStringFrame()
 {
     delete ui;
+}
+
+void VariableStringFrame::init()
+{
+    ui->nameEdit->setText("Строка");
+    ui->varNameEdit->setText("String");
+
+    ui->editButton->setFlat(false);
+
+    ui->valueEdit->setEnabled(true);
+    updateLock();
+
+    ui->valueEdit->setText("");
 }
 
 QString VariableStringFrame::name()
@@ -29,32 +41,49 @@ void VariableStringFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarString");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
+    if (ui->nameEdit->text()!="Строка")
+    {
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
+    }
 
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
+    if (ui->varNameEdit->text()!="String")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
 
-    bool aEdit=isEditable();
+    if (!isEditable())
+    {
+        bool aEdit=false;
 
-    aStream << QString("Edit");
-    aStream << aEdit;
+        aStream << QString("Edit");
+        aStream << aEdit;
+    }
 
-    bool aLock=!ui->valueEdit->isEnabled();
+    if (!ui->valueEdit->isEnabled())
+    {
+        bool aLock=true;
 
-    aStream << QString("Lock");
-    aStream << aLock;
+        aStream << QString("Lock");
+        aStream << aLock;
+    }
 
-    QString aValue=ui->valueEdit->text();
+    if (ui->valueEdit->text()!="")
+    {
+        QString aValue=ui->valueEdit->text();
 
-    aStream << QString("Value");
-    aStream << aValue;
+        aStream << QString("Value");
+        aStream << aValue;
+    }
 
     aStream << QString("VarEnd");
 }
 
 void VariableStringFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
