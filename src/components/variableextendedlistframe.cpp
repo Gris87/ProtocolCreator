@@ -70,8 +70,12 @@ void VariableExtendedListFrame::init()
     typeColumns.clear();
     typeColumnWidths.clear();
 
-    middleRowFontString="";
-    middleRowAlignment=Qt::AlignTop | Qt::AlignLeft;
+    ui->dataTableWidget->clearContents();
+    ui->dataTableWidget->setRowCount(0);
+    ui->dataTableWidget->setColumnCount(0);
+
+    middleRowFontString="Times New Roman,12,-1,5,50,0,0,0,0,0";
+    middleRowAlignment=Qt::AlignCenter;
     middleRowBackgroundColor=QColor(255, 255, 255);
     middleRowTextColor=QColor(0, 0, 0);
 }
@@ -288,118 +292,206 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
         aStream << QString("HeaderEnd");
     }
 
-    aStream << QString("ColTypes");
-
     int typesCount=typeColumns.length();
-    aStream << typesCount;
 
-    aStream << QString("ColumnWidth");
-
-    for (int i=0; i<typesCount; i++)
+    if (typesCount>0)
     {
-        aStream << typeColumnWidths.at(i);
-    }
+        aStream << QString("ColTypes");
 
-    aStream << QString("Types");
+        aStream << typesCount;
 
-    for (int i=0; i<typesCount; i++)
-    {
-        STableColumn *aColumn=&typeColumns[i];
+        aStream << QString("ColumnWidth");
 
-        aStream << QString("Name");
-        aStream << aColumn->name;
-
-        aStream << QString("Visible");
-        aStream << aColumn->visible;
-
-        aStream << QString("Column");
-        aColumn->column->saveToStream(aStream);
-
-        aStream << QString("LeftMargin");
-        aStream << aColumn->leftMargin;
-
-        aStream << QString("RightMargin");
-        aStream << aColumn->rightMargin;
-
-        aStream << QString("TopMargin");
-        aStream << aColumn->topMargin;
-
-        aStream << QString("BottomMargin");
-        aStream << aColumn->bottomMargin;
-
-        aStream << QString("Font");
-        aStream << aColumn->fontString;
-
-        aStream << QString("Alignment");
-        aStream << aColumn->alignment;
-
-        aStream << QString("Background");
-        aStream << aColumn->backgroundColorR;
-        aStream << aColumn->backgroundColorG;
-        aStream << aColumn->backgroundColorB;
-
-        aStream << QString("TextColor");
-        aStream << aColumn->textColorR;
-        aStream << aColumn->textColorG;
-        aStream << aColumn->textColorB;
-
-        int condCount=aColumn->conditions.length();
-
-        if (condCount>0)
+        for (int i=0; i<typesCount; i++)
         {
-            aStream << QString("Conditions");
-            aStream << condCount;
-
-            for (int j=0; j<condCount; j++)
-            {
-                SConditionFormat *aFormat=&aColumn->conditions[j];
-
-                aStream << QString("Font");
-                aStream << aFormat->fontString;
-
-                aStream << QString("Alignment");
-                aStream << aFormat->alignment;
-
-                aStream << QString("Background");
-                aStream << aFormat->backgroundColorR;
-                aStream << aFormat->backgroundColorG;
-                aStream << aFormat->backgroundColorB;
-
-                aStream << QString("TextColor");
-                aStream << aFormat->textColorR;
-                aStream << aFormat->textColorG;
-                aStream << aFormat->textColorB;
-
-                aStream << QString("Condition");
-                aStream << aFormat->condition;
-
-                aStream << QString("Warning");
-                aStream << aFormat->needWarning;
-
-                aStream << QString("FormatEnd");
-            }
+            aStream << typeColumnWidths.at(i);
         }
 
-        aStream << QString("TypeEnd");
+        aStream << QString("Types");
+
+        for (int i=0; i<typesCount; i++)
+        {
+            STableColumn *aColumn=&typeColumns[i];
+
+            if (aColumn->name!="")
+            {
+                aStream << QString("Name");
+                aStream << aColumn->name;
+            }
+
+            if (!aColumn->visible)
+            {
+                aStream << QString("Visible");
+                aStream << aColumn->visible;
+            }
+
+            aStream << QString("Column");
+            aColumn->column->saveToStream(aStream);
+
+            if (aColumn->leftMargin!=0.19)
+            {
+                aStream << QString("LeftMargin");
+                aStream << aColumn->leftMargin;
+            }
+
+            if (aColumn->rightMargin!=0.19)
+            {
+                aStream << QString("RightMargin");
+                aStream << aColumn->rightMargin;
+            }
+
+            if (aColumn->topMargin!=0)
+            {
+                aStream << QString("TopMargin");
+                aStream << aColumn->topMargin;
+            }
+
+            if (aColumn->bottomMargin!=0)
+            {
+                aStream << QString("BottomMargin");
+                aStream << aColumn->bottomMargin;
+            }
+
+            if (aColumn->fontString!="Times New Roman,12,-1,5,50,0,0,0,0,0")
+            {
+                aStream << QString("Font");
+                aStream << aColumn->fontString;
+            }
+
+            if (aColumn->alignment!=(Qt::AlignVCenter | Qt::AlignLeft))
+            {
+                aStream << QString("Alignment");
+                aStream << aColumn->alignment;
+            }
+
+            if (
+                aColumn->backgroundColorR!=255
+                ||
+                aColumn->backgroundColorG!=255
+                ||
+                aColumn->backgroundColorB!=255
+               )
+            {
+                aStream << QString("Background");
+                aStream << aColumn->backgroundColorR;
+                aStream << aColumn->backgroundColorG;
+                aStream << aColumn->backgroundColorB;
+            }
+
+            if (
+                aColumn->textColorR!=0
+                ||
+                aColumn->textColorG!=0
+                ||
+                aColumn->textColorB!=0
+               )
+            {
+                aStream << QString("TextColor");
+                aStream << aColumn->textColorR;
+                aStream << aColumn->textColorG;
+                aStream << aColumn->textColorB;
+            }
+
+            int condCount=aColumn->conditions.length();
+
+            if (condCount>0)
+            {
+                aStream << QString("Conditions");
+                aStream << condCount;
+
+                for (int j=0; j<condCount; j++)
+                {
+                    SConditionFormat *aFormat=&aColumn->conditions[j];
+
+                    if (aFormat->fontString!="Times New Roman,12,-1,5,50,0,0,0,0,0")
+                    {
+                        aStream << QString("Font");
+                        aStream << aFormat->fontString;
+                    }
+
+                    if (aFormat->alignment!=(Qt::AlignVCenter | Qt::AlignLeft))
+                    {
+                        aStream << QString("Alignment");
+                        aStream << aFormat->alignment;
+                    }
+
+                    if (
+                        aFormat->backgroundColorR!=255
+                        ||
+                        aFormat->backgroundColorG!=255
+                        ||
+                        aFormat->backgroundColorB!=255
+                       )
+                    {
+                        aStream << QString("Background");
+                        aStream << aFormat->backgroundColorR;
+                        aStream << aFormat->backgroundColorG;
+                        aStream << aFormat->backgroundColorB;
+                    }
+
+                    if (
+                        aFormat->textColorR!=0
+                        ||
+                        aFormat->textColorG!=0
+                        ||
+                        aFormat->textColorB!=0
+                       )
+                    {
+                        aStream << QString("TextColor");
+                        aStream << aFormat->textColorR;
+                        aStream << aFormat->textColorG;
+                        aStream << aFormat->textColorB;
+                    }
+
+                    if (aFormat->condition!="")
+                    {
+                        aStream << QString("Condition");
+                        aStream << aFormat->condition;
+                    }
+
+                    if (!aFormat->needWarning)
+                    {
+                        aStream << QString("Warning");
+                        aStream << aFormat->needWarning;
+                    }
+
+                    aStream << QString("FormatEnd");
+                }
+            }
+
+            aStream << QString("TypeEnd");
+        }
+
+        aStream << QString("ColTypesEnd");
     }
 
-    aStream << QString("ColTypesEnd");
+    if (middleRowFontString!="Times New Roman,12,-1,5,50,0,0,0,0,0")
+    {
+        aStream << QString("MiddleFont");
+        aStream << middleRowFontString;
+    }
 
-    aStream << QString("MiddleFont");
-    aStream << middleRowFontString;
+    if (middleRowAlignment!=Qt::AlignCenter)
+    {
+        aStream << QString("MiddleAlignment");
+        aStream << middleRowAlignment;
+    }
 
-    aStream << QString("MiddleAlignment");
-    aStream << middleRowAlignment;
+    if (middleRowBackgroundColor!=QColor(255, 255, 255))
+    {
+        aStream << QString("MiddleBackground");
+        aStream << (quint8)middleRowBackgroundColor.red();
+        aStream << (quint8)middleRowBackgroundColor.green();
+        aStream << (quint8)middleRowBackgroundColor.blue();
+    }
 
-    aStream << QString("MiddleBackground");
-    aStream << (quint8)middleRowBackgroundColor.red();
-    aStream << (quint8)middleRowBackgroundColor.green();
-    aStream << (quint8)middleRowBackgroundColor.blue();
-
-    aStream << QString("MiddleTextColor");
-    aStream << (quint8)middleRowTextColor.red();
-    aStream << (quint8)middleRowTextColor.green();
-    aStream << (quint8)middleRowTextColor.blue();
+    if (middleRowTextColor!=QColor(0, 0, 0))
+    {
+        aStream << QString("MiddleTextColor");
+        aStream << (quint8)middleRowTextColor.red();
+        aStream << (quint8)middleRowTextColor.green();
+        aStream << (quint8)middleRowTextColor.blue();
+    }
 
     if (typesCount>0)
     {
@@ -731,6 +823,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
 
             ui->dataTableWidget->setColumnCount(aColumnCount);
 
+            for (int i=0; i<aColumnCount; i++)
+            {
+                ui->dataTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(""));
+            }
+
             while (!aStream.atEnd())
             {
                 aStream >> aMagicWord;
@@ -753,6 +850,21 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                     {
                         STableColumn aColumn;
 
+                        aColumn.name="";
+                        aColumn.visible=true;
+                        aColumn.leftMargin=0.19;
+                        aColumn.rightMargin=0.19;
+                        aColumn.topMargin=0;
+                        aColumn.bottomMargin=0;
+                        aColumn.fontString="Times New Roman,12,-1,5,50,0,0,0,0,0";
+                        aColumn.alignment=Qt::AlignVCenter | Qt::AlignLeft;
+                        aColumn.backgroundColorR=255;
+                        aColumn.backgroundColorG=255;
+                        aColumn.backgroundColorB=255;
+                        aColumn.textColorR=0;
+                        aColumn.textColorG=0;
+                        aColumn.textColorB=0;
+
                         while (!aStream.atEnd())
                         {
                             aStream >> aMagicWord;
@@ -760,7 +872,7 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                             if (aMagicWord=="Name")
                             {
                                 aStream >> aColumn.name;
-                                ui->dataTableWidget->setHorizontalHeaderItem(i, new QTableWidgetItem(aColumn.name));
+                                ui->dataTableWidget->horizontalHeaderItem(i)->setText(aColumn.name);
                             }
                             else
                             if (aMagicWord=="Visible")
@@ -930,6 +1042,17 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                                 for (int j=0; j<aCondCount; j++)
                                 {
                                     SConditionFormat aFormat;
+
+                                    aFormat.fontString="Times New Roman,12,-1,5,50,0,0,0,0,0";
+                                    aFormat.alignment=Qt::AlignVCenter | Qt::AlignLeft;
+                                    aFormat.backgroundColorR=255;
+                                    aFormat.backgroundColorG=255;
+                                    aFormat.backgroundColorB=255;
+                                    aFormat.textColorR=0;
+                                    aFormat.textColorG=0;
+                                    aFormat.textColorB=0;
+                                    aFormat.condition="";
+                                    aFormat.needWarning=true;
 
                                     while (!aStream.atEnd())
                                     {
