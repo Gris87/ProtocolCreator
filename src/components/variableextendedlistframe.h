@@ -12,6 +12,8 @@ namespace Ui {
     class VariableExtendedListFrame;
 }
 
+enum ECopyRules{crAll, crWithText, crWithoutText};
+
 class VariableExtendedListFrame : public PageComponent
 {
     Q_OBJECT
@@ -28,6 +30,9 @@ public:
     QString mLinkForCopyingAnotherList;
     quint8 mCopyColumnCount;
     bool mCopyMiddleRow;
+    ECopyRules mCopyRules;
+    QStringList mRulesText;
+    quint8 mRulesColumn;
 
     bool needUpdateHeight;
 

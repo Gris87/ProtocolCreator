@@ -18,6 +18,9 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     mTableOffset=0;
     mCopyColumnCount=1;
     mCopyMiddleRow=true;
+    mCopyRules=crAll;
+    mRulesText.clear();
+    mRulesColumn=0;
     middleRowFontString="";
     middleRowAlignment=Qt::AlignTop | Qt::AlignLeft;
     middleRowBackgroundColor=QColor(255, 255, 255);
@@ -109,6 +112,26 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
     aStream << QString("CopyMiddleRow");
     aStream << mCopyMiddleRow;
+
+    quint8 aCopyRules=(quint8)mCopyRules;
+    aStream << QString("CopyRules");
+    aStream << aCopyRules;
+
+    int rulesCount=mRulesText.length();
+
+    if (rulesCount>0)
+    {
+        aStream << QString("RulesText");
+        aStream << rulesCount;
+
+        for (int i=0; i<rulesCount; ++i)
+        {
+            aStream << mRulesText.at(i);
+        }
+    }
+
+    aStream << QString("RulesColumn");
+    aStream << mRulesColumn;
 
     int headerRowCount=headerCells.length();
     int headerColCount=headerRowCount==0? 0 : headerCells.at(0).length();
@@ -458,6 +481,32 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
         if (aMagicWord=="CopyMiddleRow")
         {
             aStream >> mCopyMiddleRow;
+        }
+        else
+        if (aMagicWord=="CopyRules")
+        {
+            quint8 aCopyRules;
+            aStream >> aCopyRules;
+            mCopyRules=(ECopyRules)aCopyRules;
+        }
+        else
+        if (aMagicWord=="RulesText")
+        {
+            int rulesCount;
+            aStream >> rulesCount;
+
+            for (int i=0; i<rulesCount; ++i)
+            {
+                QString st;
+                aStream >> st;
+
+                mRulesText.append(st);
+            }
+        }
+        else
+        if (aMagicWord=="RulesColumn")
+        {
+            aStream >> mRulesColumn;
         }
         else
         if (aMagicWord=="Header")
