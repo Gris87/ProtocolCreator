@@ -19,6 +19,8 @@ public:
     explicit VariableExpressionFrame(QWidget *parent = 0);
     ~VariableExpressionFrame();
 
+    void init();
+
     QString name();
     QString variableName();
 

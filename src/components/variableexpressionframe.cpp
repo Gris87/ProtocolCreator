@@ -6,13 +6,25 @@ VariableExpressionFrame::VariableExpressionFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->nameEdit->setText("Выражение");
-    ui->varNameEdit->setText("Expression");
+    init();
 }
 
 VariableExpressionFrame::~VariableExpressionFrame()
 {
     delete ui;
+}
+
+void VariableExpressionFrame::init()
+{
+    ui->nameEdit->setText("Выражение");
+    ui->varNameEdit->setText("Expression");
+
+    ui->editButton->setFlat(true);
+
+    ui->valueEdit->setEnabled(true);
+    updateLock();
+
+    ui->valueEdit->setText("");
 }
 
 QString VariableExpressionFrame::name()
@@ -29,32 +41,49 @@ void VariableExpressionFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarExpression");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
+    if (ui->nameEdit->text()!="Выражение")
+    {
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
+    }
 
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
+    if (ui->varNameEdit->text()!="Expression")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
 
-    bool aEdit=isEditable();
+    if (isEditable())
+    {
+        bool aEdit=true;
 
-    aStream << QString("Edit");
-    aStream << aEdit;
+        aStream << QString("Edit");
+        aStream << aEdit;
+    }
 
-    bool aLock=!ui->valueEdit->isEnabled();
+    if (!ui->valueEdit->isEnabled())
+    {
+        bool aLock=true;
 
-    aStream << QString("Lock");
-    aStream << aLock;
+        aStream << QString("Lock");
+        aStream << aLock;
+    }
 
-    QString aValue=ui->valueEdit->text();
+    if (ui->valueEdit->text()!="")
+    {
+        QString aValue=ui->valueEdit->text();
 
-    aStream << QString("Value");
-    aStream << aValue;
+        aStream << QString("Value");
+        aStream << aValue;
+    }
 
     aStream << QString("VarEnd");
 }
 
 void VariableExpressionFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
