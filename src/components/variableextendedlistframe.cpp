@@ -504,82 +504,99 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
             aStream << ui->dataTableWidget->columnWidth(i);
         }
 
-        aStream << QString("Rows");
-
         int rowsCount=ui->dataTableWidget->rowCount();
-        aStream << rowsCount;
 
-        QTableWidgetItem *aItem;
-        QColor aColor;
-
-        for (int i=0; i<rowsCount; i++)
+        if (rowsCount>0)
         {
-            bool isMiddleRow=ui->dataTableWidget->itemDelegateForRow(i)!=0;
-            int stop;
+            aStream << QString("Rows");
 
-            if (isMiddleRow)
-            {
-                aStream << QString("MiddleRow");
-                stop=1;
-            }
-            else
-            {
-                aStream << QString("Row");
-                stop=typesCount;
-            }
+            aStream << rowsCount;
 
-            for (int j=0; j<stop; j++)
-            {
-                aItem=ui->dataTableWidget->item(i, j);
+            QTableWidgetItem *aItem;
+            QColor aColor;
+            QFont defaultFont("Times New Roman", 12);
 
-                if (i>0 && aItem->font()==ui->dataTableWidget->item(i-1, j)->font())
+            for (int i=0; i<rowsCount; i++)
+            {
+                bool isMiddleRow=ui->dataTableWidget->itemDelegateForRow(i)!=0;
+                int stop;
+
+                if (isMiddleRow)
                 {
-                    aStream << QString("SameFont");
+                    aStream << QString("MiddleRow");
+                    stop=1;
                 }
                 else
                 {
-                    aStream << QString("Font");
-                    aStream << aItem->font().toString();
+                    aStream << QString("Row");
+                    stop=typesCount;
                 }
 
-                aStream << QString("Alignment");
-                aStream << aItem->textAlignment();
-
-                aColor=aItem->background().color();
-
-                aStream << QString("Background");
-                aStream << (quint8)aColor.red();
-                aStream << (quint8)aColor.green();
-                aStream << (quint8)aColor.blue();
-
-                aColor=aItem->textColor();
-
-                aStream << QString("TextColor");
-                aStream << (quint8)aColor.red();
-                aStream << (quint8)aColor.green();
-                aStream << (quint8)aColor.blue();
-
-                if (aItem->text()!="")
+                for (int j=0; j<stop; j++)
                 {
-                    if (i>0 && aItem->text()==ui->dataTableWidget->item(i-1, j)->text())
-                    {
-                        aStream << QString("SameText");
-                    }
-                    else
-                    {
-                        aStream << QString("Text");
-                        aStream << aItem->text();
-                    }
-                }
+                    aItem=ui->dataTableWidget->item(i, j);
 
-                if (!isMiddleRow && typeColumns.at(j).column->type()==ctBool)
-                {
-                    aStream << QString("Checked");
-                    bool isChecked=aItem->checkState()==Qt::Checked;
-                    aStream << isChecked;
-                }
+                    if (aItem->font()!=defaultFont)
+                    {
+                        if (i>0 && aItem->font()==ui->dataTableWidget->item(i-1, j)->font())
+                        {
+                            aStream << QString("SameFont");
+                        }
+                        else
+                        {
+                            aStream << QString("Font");
+                            aStream << aItem->font().toString();
+                        }
+                    }
 
-                aStream << QString("CellEnd");
+                    if (aItem->textAlignment()!=(Qt::AlignVCenter | Qt::AlignLeft))
+                    {
+                        aStream << QString("Alignment");
+                        aStream << aItem->textAlignment();
+                    }
+
+                    aColor=aItem->background().color();
+
+                    if (aColor!=QColor(255, 255, 255))
+                    {
+                        aStream << QString("Background");
+                        aStream << (quint8)aColor.red();
+                        aStream << (quint8)aColor.green();
+                        aStream << (quint8)aColor.blue();
+                    }
+
+                    aColor=aItem->textColor();
+
+                    if (aColor!=QColor(0, 0, 0))
+                    {
+                        aStream << QString("TextColor");
+                        aStream << (quint8)aColor.red();
+                        aStream << (quint8)aColor.green();
+                        aStream << (quint8)aColor.blue();
+                    }
+
+                    if (aItem->text()!="")
+                    {
+                        if (i>0 && aItem->text()==ui->dataTableWidget->item(i-1, j)->text())
+                        {
+                            aStream << QString("SameText");
+                        }
+                        else
+                        {
+                            aStream << QString("Text");
+                            aStream << aItem->text();
+                        }
+                    }
+
+                    if (!isMiddleRow && typeColumns.at(j).column->type()==ctBool)
+                    {
+                        aStream << QString("Checked");
+                        bool isChecked=aItem->checkState()==Qt::Checked;
+                        aStream << isChecked;
+                    }
+
+                    aStream << QString("CellEnd");
+                }
             }
         }
 
@@ -1185,6 +1202,7 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
 
                     QTableWidgetItem *aItem=0;
                     QString isMiddleRow;
+                    QFont defaultFont("Times New Roman", 12);
 
                     for (int i=0; i<aRowCount; i++)
                     {
@@ -1204,6 +1222,11 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                         for (int j=0; j<stop; j++)
                         {
                             aItem=new QTableWidgetItem();
+
+                            aItem->setFont(defaultFont);
+                            aItem->setTextAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+                            aItem->setBackground(QBrush(QColor(255, 255, 255)));
+                            aItem->setTextColor(QColor(0, 0, 0));
 
                             while (!aStream.atEnd())
                             {
