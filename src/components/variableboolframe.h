@@ -19,6 +19,8 @@ public:
     explicit VariableBoolFrame(QWidget *parent = 0);
     ~VariableBoolFrame();
 
+    void init();
+
     QString name();
     QString variableName();
 

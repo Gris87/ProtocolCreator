@@ -6,13 +6,25 @@ VariableBoolFrame::VariableBoolFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->nameEdit->setText("Логическое значение");
-    ui->varNameEdit->setText("Boolean");
+    init();
 }
 
 VariableBoolFrame::~VariableBoolFrame()
 {
     delete ui;
+}
+
+void VariableBoolFrame::init()
+{
+    ui->nameEdit->setText("Логическое значение");
+    ui->varNameEdit->setText("Boolean");
+
+    ui->editButton->setFlat(false);
+
+    ui->valueCheckBox->setEnabled(true);
+    updateLock();
+
+    ui->valueCheckBox->setChecked(false);
 }
 
 QString VariableBoolFrame::name()
@@ -29,32 +41,49 @@ void VariableBoolFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarBoolean");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
+    if (ui->nameEdit->text()!="Логическое значение")
+    {
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
+    }
 
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
+    if (ui->varNameEdit->text()!="Boolean")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
 
-    bool aEdit=isEditable();
+    if (!isEditable())
+    {
+        bool aEdit=false;
 
-    aStream << QString("Edit");
-    aStream << aEdit;
+        aStream << QString("Edit");
+        aStream << aEdit;
+    }
 
-    bool aLock=!ui->valueCheckBox->isEnabled();
+    if (!ui->valueCheckBox->isEnabled())
+    {
+        bool aLock=true;
 
-    aStream << QString("Lock");
-    aStream << aLock;
+        aStream << QString("Lock");
+        aStream << aLock;
+    }
 
-    bool aValue=ui->valueCheckBox->isChecked();
+    if (ui->valueCheckBox->isChecked())
+    {
+        bool aValue=true;
 
-    aStream << QString("Value");
-    aStream << aValue;
+        aStream << QString("Value");
+        aStream << aValue;
+    }
 
     aStream << QString("VarEnd");
 }
 
 void VariableBoolFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
