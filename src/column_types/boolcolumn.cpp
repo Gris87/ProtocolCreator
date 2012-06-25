@@ -2,20 +2,31 @@
 
 BoolColumn::BoolColumn() : ColumnType()
 {
+    init();
+}
+
+void BoolColumn::init()
+{
+    mDefaultValue=false;
 }
 
 void BoolColumn::saveToStream(QDataStream &aStream)
 {
     aStream << QString("ColBool");
 
-    aStream << QString("Default");
-    aStream << mDefaultValue;
+    if (mDefaultValue)
+    {
+        aStream << QString("Default");
+        aStream << mDefaultValue;
+    }
 
     aStream << QString("ColEnd");
 }
 
 void BoolColumn::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
