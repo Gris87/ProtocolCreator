@@ -159,6 +159,8 @@ void ComponentTextFrame::loadFromStream(QDataStream &aStream)
 void ComponentTextFrame::updateAdmin()
 {
     ui->adminGroupBox->setVisible(isAdmin);
+    wordEdit->ui->valueEdit->setReadOnly(!isAdmin && !isEditable());
+    wordEdit->ui->toolbarWidget->setVisible(!wordEdit->ui->valueEdit->isReadOnly());
     on_useCheckBox_toggled(ui->useCheckBox->isChecked());
 }
 
@@ -201,7 +203,7 @@ void ComponentTextFrame::on_varNameEdit_textChanged(const QString &aName)
 
 void ComponentTextFrame::on_useCheckBox_toggled(bool checked)
 {
-    ui->userWidget->setVisible(ui->userWidget->isEnabled() && checked && (isAdmin || isEditable()));
+    ui->userWidget->setVisible(ui->userWidget->isEnabled() && checked);
 }
 
 void ComponentTextFrame::on_expandButton_clicked()
@@ -269,7 +271,7 @@ void ComponentTextFrame::updateLock()
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
 
-    ui->userWidget->setVisible(ui->userWidget->isEnabled() && ui->useCheckBox->isChecked() && (isAdmin || isEditable()));
+    ui->userWidget->setVisible(ui->userWidget->isEnabled() && ui->useCheckBox->isChecked());
 }
 
 void ComponentTextFrame::on_editButton_clicked()

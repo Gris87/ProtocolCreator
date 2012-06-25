@@ -7,20 +7,23 @@ WordTextEdit::WordTextEdit(QWidget *parent) :
 
 void WordTextEdit::keyPressEvent(QKeyEvent *e)
 {
-    if (e==QKeySequence::Bold)
+    if (!isReadOnly())
     {
-        emit boldCombination();
-        return;
-    }
-    if (e==QKeySequence::Italic)
-    {
-        emit italicCombination();
-        return;
-    }
-    if (e==QKeySequence::Underline)
-    {
-        emit underlineCombination();
-        return;
+        if (e==QKeySequence::Bold)
+        {
+            emit boldCombination();
+            return;
+        }
+        if (e==QKeySequence::Italic)
+        {
+            emit italicCombination();
+            return;
+        }
+        if (e==QKeySequence::Underline)
+        {
+            emit underlineCombination();
+            return;
+        }
     }
 
     QTextEdit::keyPressEvent(e);
