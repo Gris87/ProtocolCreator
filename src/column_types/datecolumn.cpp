@@ -2,20 +2,31 @@
 
 DateColumn::DateColumn() : ColumnType()
 {
+    init();
+}
+
+void DateColumn::init()
+{
+    mDefaultValue=QDate(2000, 1, 1);
 }
 
 void DateColumn::saveToStream(QDataStream &aStream)
 {
     aStream << QString("ColDate");
 
-    aStream << QString("Default");
-    aStream << mDefaultValue;
+    if (mDefaultValue!=QDate(2000, 1, 1))
+    {
+        aStream << QString("Default");
+        aStream << mDefaultValue;
+    }
 
     aStream << QString("ColEnd");
 }
 
 void DateColumn::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())

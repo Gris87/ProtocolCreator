@@ -14,6 +14,8 @@ public:
 
     explicit DateColumn();
 
+    void init();
+
     void saveToStream(QDataStream &aStream);
     void loadFromStream(QDataStream &aStream);
 
