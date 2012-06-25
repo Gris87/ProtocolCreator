@@ -105,7 +105,7 @@ void VariableListFrame::saveToStream(QDataStream &aStream)
         aStream << aEdit;
     }
 
-    if (!ui->valueEdit->isEnabled())
+    if (!ui->valueComboBox->isEnabled())
     {
         bool aLock=true;
 

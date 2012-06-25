@@ -71,7 +71,7 @@ void VariableIntegerFrame::saveToStream(QDataStream &aStream)
         aStream << aEdit;
     }
 
-    if (!ui->valueEdit->isEnabled())
+    if (!ui->valueSpinBox->isEnabled())
     {
         bool aLock=true;
 
