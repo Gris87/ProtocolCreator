@@ -2,6 +2,12 @@
 
 ExpressionColumn::ExpressionColumn() : ColumnType()
 {
+    init();
+}
+
+void ExpressionColumn::init()
+{
+    mDefaultValue="";
     mAllowModify=false;
 }
 
@@ -9,17 +15,25 @@ void ExpressionColumn::saveToStream(QDataStream &aStream)
 {
     aStream << QString("ColExpression");
 
-    aStream << QString("Default");
-    aStream << mDefaultValue;
+    if (mDefaultValue!="")
+    {
+        aStream << QString("Default");
+        aStream << mDefaultValue;
+    }
 
-    aStream << QString("Modify");
-    aStream << mAllowModify;
+    if (mAllowModify)
+    {
+        aStream << QString("Modify");
+        aStream << mAllowModify;
+    }
 
     aStream << QString("ColEnd");
 }
 
 void ExpressionColumn::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
