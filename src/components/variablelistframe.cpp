@@ -6,16 +6,33 @@ VariableListFrame::VariableListFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->nameEdit->setText("Список");
-    ui->varNameEdit->setText("List");
-
-    ui->editLinesWidget->setVisible(false);
-    ui->valueFillWidget->setVisible(false);
+    init();
 }
 
 VariableListFrame::~VariableListFrame()
 {
     delete ui;
+}
+
+void VariableListFrame::init()
+{
+    ui->nameEdit->setText("Список");
+    ui->varNameEdit->setText("List");
+
+    ui->editLinesWidget->setVisible(false);
+    ui->valueFillWidget->setVisible(false);
+
+    ui->sortCheckBox->setChecked(true);
+    ui->selectLineCheckBox->setChecked(true);
+
+    ui->linesTextEdit->setPlainText("");
+
+    ui->editButton->setFlat(false);
+
+    ui->valueComboBox->setEnabled(true);
+    updateLock();
+
+    ui->valueComboBox->setEditText("");
 }
 
 QString VariableListFrame::name()
@@ -32,21 +49,33 @@ void VariableListFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarList");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
+    if (ui->nameEdit->text()!="Список")
+    {
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
+    }
 
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
+    if (ui->varNameEdit->text()!="List")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
 
-    bool aUseSort=ui->sortCheckBox->isChecked();
+    if (!ui->sortCheckBox->isChecked())
+    {
+        bool aUseSort=false;
 
-    aStream << QString("UseSort");
-    aStream << aUseSort;
+        aStream << QString("UseSort");
+        aStream << aUseSort;
+    }
 
-    bool aOnlySelect=ui->selectLineCheckBox->isChecked();
+    if (!ui->selectLineCheckBox->isChecked())
+    {
+        bool aOnlySelect=false;
 
-    aStream << QString("OnlySelect");
-    aStream << aOnlySelect;
+        aStream << QString("OnlySelect");
+        aStream << aOnlySelect;
+    }
 
     QString aItems="";
 
@@ -62,29 +91,43 @@ void VariableListFrame::saveToStream(QDataStream &aStream)
         aItems.append(aOneLine);
     }
 
-    aStream << QString("Items");
-    aStream << aItems;
+    if (aItems!="")
+    {
+        aStream << QString("Items");
+        aStream << aItems;
+    }
 
-    bool aEdit=isEditable();
+    if (!isEditable())
+    {
+        bool aEdit=false;
 
-    aStream << QString("Edit");
-    aStream << aEdit;
+        aStream << QString("Edit");
+        aStream << aEdit;
+    }
 
-    bool aLock=!ui->valueComboBox->isEnabled();
+    if (!ui->valueEdit->isEnabled())
+    {
+        bool aLock=true;
 
-    aStream << QString("Lock");
-    aStream << aLock;
+        aStream << QString("Lock");
+        aStream << aLock;
+    }
 
-    QString aValue=ui->valueComboBox->currentText();
+    if (ui->valueComboBox->currentText()!="")
+    {
+        QString aValue=ui->valueComboBox->currentText();
 
-    aStream << QString("Value");
-    aStream << aValue;
+        aStream << QString("Value");
+        aStream << aValue;
+    }
 
     aStream << QString("VarEnd");
 }
 
 void VariableListFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())

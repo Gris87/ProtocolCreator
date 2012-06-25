@@ -20,6 +20,8 @@ public:
     explicit VariableListFrame(QWidget *parent = 0);
     ~VariableListFrame();
 
+    void init();
+
     QString name();
     QString variableName();
 
