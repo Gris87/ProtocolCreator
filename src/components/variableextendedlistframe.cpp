@@ -45,15 +45,21 @@ void VariableExtendedListFrame::init()
     ui->nameEdit->setText("Расширенный список");
     ui->varNameEdit->setText("ExtendedList");
 
-    cloneHeader=true;
+    ui->useCheckBox->setChecked(true);
 
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
+    mLinkForMiddleRow="";
+    mLinkForAnotherList="";
+    mLinkForCopyingAnotherList="";
     mCopyColumnCount=1;
     mCopyMiddleRow=true;
     mCopyRules=crAll;
     mRulesText.clear();
     mRulesColumn=0;
+
+    cloneHeader=true;
+
     middleRowFontString="";
     middleRowAlignment=Qt::AlignTop | Qt::AlignLeft;
     middleRowBackgroundColor=QColor(255, 255, 255);
@@ -74,69 +80,111 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarExtendedList");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
-
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
-
-    bool aUsed=ui->useCheckBox->isChecked();
-
-    aStream << QString("Used");
-    aStream << aUsed;
-
-    bool aEdit=isEditable();
-
-    aStream << QString("Edit");
-    aStream << aEdit;
-
-    bool aLock=!ui->userWidget->isEnabled();
-
-    aStream << QString("Lock");
-    aStream << aLock;
-
-    int intTableAlignment=(int)mTableAlignment;
-
-    aStream << QString("TableAlignment");
-    aStream << intTableAlignment;
-
-    aStream << QString("TableOffset");
-    aStream << mTableOffset;
-
-    aStream << QString("LinkForMiddleRow");
-    aStream << mLinkForMiddleRow;
-
-    aStream << QString("LinkForAnotherList");
-    aStream << mLinkForAnotherList;
-
-    aStream << QString("LinkForCopyingAnotherList");
-    aStream << mLinkForCopyingAnotherList;
-
-    aStream << QString("CopyColumnCount");
-    aStream << mCopyColumnCount;
-
-    aStream << QString("CopyMiddleRow");
-    aStream << mCopyMiddleRow;
-
-    quint8 aCopyRules=(quint8)mCopyRules;
-    aStream << QString("CopyRules");
-    aStream << aCopyRules;
-
-    int rulesCount=mRulesText.length();
-
-    if (rulesCount>0)
+    if (ui->nameEdit->text()!="Расширенный список")
     {
-        aStream << QString("RulesText");
-        aStream << rulesCount;
-
-        for (int i=0; i<rulesCount; ++i)
-        {
-            aStream << mRulesText.at(i);
-        }
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
     }
 
-    aStream << QString("RulesColumn");
-    aStream << mRulesColumn;
+    if (ui->varNameEdit->text()!="ExtendedList")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
+
+    if (!ui->useCheckBox->isChecked())
+    {
+        bool aUsed=false;
+
+        aStream << QString("Used");
+        aStream << aUsed;
+    }
+
+    if (!isEditable())
+    {
+        bool aEdit=false;
+
+        aStream << QString("Edit");
+        aStream << aEdit;
+    }
+
+    if (!ui->userWidget->isEnabled())
+    {
+        bool aLock=true;
+
+        aStream << QString("Lock");
+        aStream << aLock;
+    }
+
+    if (mTableAlignment!=Qt::AlignCenter)
+    {
+        int intTableAlignment=(int)mTableAlignment;
+
+        aStream << QString("TableAlignment");
+        aStream << intTableAlignment;
+    }
+
+    if (mTableOffset!=0)
+    {
+        aStream << QString("TableOffset");
+        aStream << mTableOffset;
+    }
+
+    if (mLinkForMiddleRow!="")
+    {
+        aStream << QString("LinkForMiddleRow");
+        aStream << mLinkForMiddleRow;
+    }
+
+    if (mLinkForAnotherList!="")
+    {
+        aStream << QString("LinkForAnotherList");
+        aStream << mLinkForAnotherList;
+    }
+
+    if (mLinkForCopyingAnotherList!="")
+    {
+        aStream << QString("LinkForCopyingAnotherList");
+        aStream << mLinkForCopyingAnotherList;
+
+        if (mCopyColumnCount>1)
+        {
+            aStream << QString("CopyColumnCount");
+            aStream << mCopyColumnCount;
+        }
+
+        if (!mCopyMiddleRow)
+        {
+            aStream << QString("CopyMiddleRow");
+            aStream << mCopyMiddleRow;
+        }
+
+        if (mCopyRules!=crAll)
+        {
+            quint8 aCopyRules=(quint8)mCopyRules;
+            aStream << QString("CopyRules");
+            aStream << aCopyRules;
+        }
+
+        int rulesCount=mRulesText.length();
+
+        if (rulesCount>0)
+        {
+            aStream << QString("RulesText");
+            aStream << rulesCount;
+
+            for (int i=0; i<rulesCount; ++i)
+            {
+                aStream << mRulesText.at(i);
+            }
+        }
+
+        if (mRulesColumn>0)
+        {
+            aStream << QString("RulesColumn");
+            aStream << mRulesColumn;
+        }
+    }
 
     int headerRowCount=headerCells.length();
     int headerColCount=headerRowCount==0? 0 : headerCells.at(0).length();
