@@ -2,23 +2,38 @@
 
 ExtendedListColumn::ExtendedListColumn() : ColumnType()
 {
+    init();
+}
+
+void ExtendedListColumn::init()
+{
+    mDefaultValue="";
+    mLinkComponent="";
 }
 
 void ExtendedListColumn::saveToStream(QDataStream &aStream)
 {
     aStream << QString("ColExtList");
 
-    aStream << QString("Default");
-    aStream << mDefaultValue;
+    if (mDefaultValue!="")
+    {
+        aStream << QString("Default");
+        aStream << mDefaultValue;
+    }
 
-    aStream << QString("Link");
-    aStream << mLinkComponent;
+    if (mLinkComponent!="")
+    {
+        aStream << QString("Link");
+        aStream << mLinkComponent;
+    }
 
     aStream << QString("ColEnd");
 }
 
 void ExtendedListColumn::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
