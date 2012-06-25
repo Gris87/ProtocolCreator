@@ -16,7 +16,7 @@ QString                    adminPass="";
 QString                    dir="";
 QStringList                functionsList;
 
-QString                    protocolCreatorVersion="Protocol Creator v 1.0";
+QString                    protocolCreatorVersion="Protocol Creator v 1.01";
 
 QString                    lastSearch="";
 QString                    lastReplace="";
