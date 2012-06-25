@@ -2486,101 +2486,170 @@ void VariableExtendedListFrame::on_copyFromAnotherTableButton_clicked()
             }
             else
             {
-                on_addRowButton_clicked();
+                bool needAddRow=true;
 
-                for (int j=0; j<mCopyColumnCount; ++j)
+                if (mCopyRules==crWithText)
                 {
-                    QString aText=aSrcTable->item(i, j)->text();
-                    QTableWidgetItem *aItem=ui->dataTableWidget->item(i, j);
+                    needAddRow=false;
 
-                    switch (typeColumns.at(j).column->type())
+                    for (int j=qMax(0, mRulesColumn-1); j<aSrcTable->columnCount(); ++j)
                     {
-                        case ctInteger:
+                        if (
+                            mRulesColumn==0
+                            ||
+                            j==(mRulesColumn-1)
+                           )
                         {
-                            if (!((IntegerColumn*)(typeColumns.at(j).column))->mIsAutoInc)
+                            for (int k=0; k<mRulesText.length(); ++k)
                             {
-                                while (aText.length()>0 && !aText.at(aText.length()-1).isNumber())
+                                if (aSrcTable->item(i, j)->text().contains(mRulesText.at(k), Qt::CaseInsensitive))
                                 {
-                                    aText.remove(aText.length()-1, 1);
+                                    needAddRow=true;
+                                    break;
                                 }
+                            }
 
-                                while (aText.length()>0 && !aText.at(0).isNumber())
+                            if (needAddRow)
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                if (mCopyRules==crWithoutText)
+                {
+                    for (int j=qMax(0, mRulesColumn-1); j<aSrcTable->columnCount(); ++j)
+                    {
+                        if (
+                            mRulesColumn==0
+                            ||
+                            j==(mRulesColumn-1)
+                           )
+                        {
+                            for (int k=0; k<mRulesText.length(); ++k)
+                            {
+                                if (aSrcTable->item(i, j)->text().contains(mRulesText.at(k), Qt::CaseInsensitive))
                                 {
-                                    aText.remove(0, 1);
+                                    needAddRow=false;
+                                    break;
                                 }
+                            }
 
-                                bool ok;
-                                double aValue=aText.toDouble(&ok);
+                            if (!needAddRow)
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
 
-                                if (ok)
+                if (needAddRow)
+                {
+                    on_addRowButton_clicked();
+
+                    for (int j=0; j<mCopyColumnCount; ++j)
+                    {
+                        QString aText=aSrcTable->item(i, j)->text();
+                        QTableWidgetItem *aItem=ui->dataTableWidget->item(ui->dataTableWidget->rowCount()-1, j);
+
+                        switch (typeColumns.at(j).column->type())
+                        {
+                            case ctInteger:
+                            {
+                                if (!((IntegerColumn*)(typeColumns.at(j).column))->mIsAutoInc)
                                 {
-                                    if (((IntegerColumn*)(typeColumns.at(j).column))->mSplitRows)
+                                    while (aText.length()>0 && !aText.at(aText.length()-1).isNumber())
                                     {
-                                        aItem->setText(QString::number(aValue, 'f', ((IntegerColumn*)(typeColumns.at(j).column))->mDecimals));
+                                        aText.remove(aText.length()-1, 1);
                                     }
-                                    else
+
+                                    while (aText.length()>0 && !aText.at(0).isNumber())
                                     {
-                                        aItem->setText(
-                                                       ((IntegerColumn*)(typeColumns.at(j).column))->mPrefix+
-                                                       QString::number(aValue, 'f', ((IntegerColumn*)(typeColumns.at(j).column))->mDecimals)+
-                                                       ((IntegerColumn*)(typeColumns.at(j).column))->mPostfix
-                                                      );
+                                        aText.remove(0, 1);
+                                    }
+
+                                    bool ok;
+                                    double aValue=aText.toDouble(&ok);
+
+                                    if (ok)
+                                    {
+                                        if (((IntegerColumn*)(typeColumns.at(j).column))->mSplitRows)
+                                        {
+                                            aItem->setText(QString::number(aValue, 'f', ((IntegerColumn*)(typeColumns.at(j).column))->mDecimals));
+                                        }
+                                        else
+                                        {
+                                            aItem->setText(
+                                                           ((IntegerColumn*)(typeColumns.at(j).column))->mPrefix+
+                                                           QString::number(aValue, 'f', ((IntegerColumn*)(typeColumns.at(j).column))->mDecimals)+
+                                                           ((IntegerColumn*)(typeColumns.at(j).column))->mPostfix
+                                                          );
+                                        }
                                     }
                                 }
                             }
-                        }
-                        break;
-                        case ctString:
-                        case ctList:
-                        case ctExtendedList:
-                        {
-                            aItem->setText(aText);
-                        }
-                        break;
-                        case ctBool:
-                        {
-                            if (aText=="1")
-                            {
-                                aItem->setCheckState(Qt::Checked);
-                            }
-                            else
-                            if (aText=="0")
-                            {
-                                aItem->setCheckState(Qt::Unchecked);
-                            }
-                        }
-                        break;
-                        case ctDate:
-                        {
-                            QDate aDate=QDate::fromString(aText, "dd.MM.yyyy");
-
-                            if (aDate.isValid())
+                            break;
+                            case ctString:
+                            case ctList:
+                            case ctExtendedList:
                             {
                                 aItem->setText(aText);
                             }
-                        }
-                        break;
-                        case ctTime:
-                        {
-                            QTime aTime=QTime::fromString(aText, "h:mm:ss");
+                            break;
+                            case ctBool:
+                            {
+                                if (aText=="1")
+                                {
+                                    aItem->setCheckState(Qt::Checked);
+                                }
+                                else
+                                if (aText=="0")
+                                {
+                                    aItem->setCheckState(Qt::Unchecked);
+                                }
+                            }
+                            break;
+                            case ctDate:
+                            {
+                                QDate aDate=QDate::fromString(aText, "dd.MM.yyyy");
 
-                            if (aTime.isValid())
-                            {
-                                aItem->setText(aTime.toString("hh:mm:ss"));
+                                if (aDate.isValid())
+                                {
+                                    aItem->setText(aText);
+                                }
                             }
-                        }
-                        break;
-                        case ctExpression:
-                        {
-                            if (((ExpressionColumn*)(typeColumns.at(j).column))->mAllowModify)
+                            break;
+                            case ctTime:
                             {
-                                aItem->setText(aText);
+                                QTime aTime=QTime::fromString(aText, "h:mm:ss");
+
+                                if (aTime.isValid())
+                                {
+                                    aItem->setText(aTime.toString("hh:mm:ss"));
+                                }
                             }
-                        }
-                        break;
-                        default:
-                        {
-                            throw "Unknown column type";
+                            break;
+                            case ctExpression:
+                            {
+                                if (((ExpressionColumn*)(typeColumns.at(j).column))->mAllowModify)
+                                {
+                                    aItem->setText(aText);
+                                }
+                            }
+                            break;
+                            default:
+                            {
+                                throw "Unknown column type";
+                            }
                         }
                     }
                 }
