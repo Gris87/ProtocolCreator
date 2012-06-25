@@ -19,6 +19,14 @@ void PageFrame::init()
     ui->nameEdit->setText("");
     ui->varNameEdit->setText("");
 
+    headerText="";
+    footerText="";
+    isPortaitOrientation=true;
+    leftLimit=3;
+    topLimit=2;
+    rightLimit=1.5;
+    bottomLimit=2;
+
     ui->variableWidget->setVisible(true);
     updateHideButton();
 
@@ -34,14 +42,6 @@ void PageFrame::init()
 
     variables.clear();
     components.clear();
-
-    headerText="";
-    footerText="";
-    isPortaitOrientation=true;
-    leftLimit=3;
-    topLimit=2;
-    rightLimit=1.5;
-    bottomLimit=2;
 }
 
 void PageFrame::variableSwitch(VariableExtendedListFrame* aComponent)
