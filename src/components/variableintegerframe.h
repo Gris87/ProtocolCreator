@@ -19,6 +19,8 @@ public:
     explicit VariableIntegerFrame(QWidget *parent = 0);
     ~VariableIntegerFrame();
 
+    void init();
+
     QString name();
     QString variableName();
 

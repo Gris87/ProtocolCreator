@@ -6,13 +6,27 @@ VariableIntegerFrame::VariableIntegerFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->nameEdit->setText("Число");
-    ui->varNameEdit->setText("Number");
+    init();
 }
 
 VariableIntegerFrame::~VariableIntegerFrame()
 {
     delete ui;
+}
+
+void VariableIntegerFrame::init()
+{
+    ui->nameEdit->setText("Число");
+    ui->varNameEdit->setText("Number");
+
+    ui->decimalsSpinBox->setValue(0);
+
+    ui->editButton->setFlat(false);
+
+    ui->valueSpinBox->setEnabled(true);
+    updateLock();
+
+    ui->valueSpinBox->setValue(0);
 }
 
 QString VariableIntegerFrame::name()
@@ -29,37 +43,57 @@ void VariableIntegerFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarInteger");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
+    if (ui->nameEdit->text()!="Число")
+    {
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
+    }
 
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
+    if (ui->varNameEdit->text()!="Number")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
 
-    quint8 aDecimals=ui->valueSpinBox->decimals();
+    if (ui->decimalsSpinBox->value()!=0)
+    {
+        quint8 aDecimals=ui->decimalsSpinBox->value();
 
-    aStream << QString("Decimals");
-    aStream << aDecimals;
+        aStream << QString("Decimals");
+        aStream << aDecimals;
+    }
 
-    bool aEdit=isEditable();
+    if (!isEditable())
+    {
+        bool aEdit=false;
 
-    aStream << QString("Edit");
-    aStream << aEdit;
+        aStream << QString("Edit");
+        aStream << aEdit;
+    }
 
-    bool aLock=!ui->valueSpinBox->isEnabled();
+    if (!ui->valueEdit->isEnabled())
+    {
+        bool aLock=true;
 
-    aStream << QString("Lock");
-    aStream << aLock;
+        aStream << QString("Lock");
+        aStream << aLock;
+    }
 
-    double aValue=ui->valueSpinBox->value();
+    if (ui->valueSpinBox->value()!=0)
+    {
+        double aValue=ui->valueSpinBox->value();
 
-    aStream << QString("Value");
-    aStream << aValue;
+        aStream << QString("Value");
+        aStream << aValue;
+    }
 
     aStream << QString("VarEnd");
 }
 
 void VariableIntegerFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
