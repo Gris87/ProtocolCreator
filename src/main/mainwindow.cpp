@@ -140,6 +140,15 @@ void MainWindow::openFile(QString aFileName)
 
     DecryptStream(aArray, "Thunderbolt");
 
+    {
+        QByteArray aArray2=qUncompress(aArray);
+
+        if (aArray2.length()>0)
+        {
+            aArray=aArray2;
+        }
+    }
+
     QDataStream aStream(&aArray, QIODevice::ReadOnly);
 
     QString aMagicWord;
@@ -356,6 +365,7 @@ void MainWindow::on_actionSave_triggered()
             aStream << pageIndex;
         }
 
+        aArray=qCompress(aArray, 9);
         EncryptStream(aArray, "Thunderbolt");
 
         // Save result
