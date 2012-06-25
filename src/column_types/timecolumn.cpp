@@ -2,20 +2,31 @@
 
 TimeColumn::TimeColumn() : ColumnType()
 {
+    init();
+}
+
+void TimeColumn::init()
+{
+    mDefaultValue=QTime(0, 0);
 }
 
 void TimeColumn::saveToStream(QDataStream &aStream)
 {
     aStream << QString("ColTime");
 
-    aStream << QString("Default");
-    aStream << mDefaultValue;
+    if (mDefaultValue!=QTime(0, 0))
+    {
+        aStream << QString("Default");
+        aStream << mDefaultValue;
+    }
 
     aStream << QString("ColEnd");
 }
 
 void TimeColumn::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
