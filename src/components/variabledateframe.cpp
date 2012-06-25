@@ -6,13 +6,25 @@ VariableDateFrame::VariableDateFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->nameEdit->setText("Дата");
-    ui->varNameEdit->setText("Date");
+    init();
 }
 
 VariableDateFrame::~VariableDateFrame()
 {
     delete ui;
+}
+
+void VariableDateFrame::init()
+{
+    ui->nameEdit->setText("Дата");
+    ui->varNameEdit->setText("Date");
+
+    ui->editButton->setFlat(false);
+
+    ui->valueEdit->setEnabled(true);
+    updateLock();
+
+    ui->valueEdit->setDate(QDate(2000, 1, 1));
 }
 
 QString VariableDateFrame::name()
@@ -29,32 +41,49 @@ void VariableDateFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("VarDate");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
+    if (ui->nameEdit->text()!="Дата")
+    {
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
+    }
 
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
+    if (ui->varNameEdit->text()!="Date")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
 
-    bool aEdit=isEditable();
+    if (!isEditable())
+    {
+        bool aEdit=false;
 
-    aStream << QString("Edit");
-    aStream << aEdit;
+        aStream << QString("Edit");
+        aStream << aEdit;
+    }
 
-    bool aLock=!ui->valueEdit->isEnabled();
+    if (!ui->valueEdit->isEnabled())
+    {
+        bool aLock=true;
 
-    aStream << QString("Lock");
-    aStream << aLock;
+        aStream << QString("Lock");
+        aStream << aLock;
+    }
 
-    QDate aValue=ui->valueEdit->date();
+    if (ui->valueEdit->date()!=QDate(2000, 1, 1))
+    {
+        QDate aValue=ui->valueEdit->date();
 
-    aStream << QString("Value");
-    aStream << aValue;
+        aStream << QString("Value");
+        aStream << aValue;
+    }
 
     aStream << QString("VarEnd");
 }
 
 void VariableDateFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
