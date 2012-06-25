@@ -58,7 +58,17 @@ void VariableExtendedListFrame::init()
     mRulesText.clear();
     mRulesColumn=0;
 
+    headerCells.clear();
+    headerColumnWidths.clear();
     cloneHeader=true;
+
+    for (int i=0; i<typeColumns.length(); i++)
+    {
+        delete typeColumns.at(i).column;
+    }
+
+    typeColumns.clear();
+    typeColumnWidths.clear();
 
     middleRowFontString="";
     middleRowAlignment=Qt::AlignTop | Qt::AlignLeft;
@@ -189,58 +199,94 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
     int headerRowCount=headerCells.length();
     int headerColCount=headerRowCount==0? 0 : headerCells.at(0).length();
 
-    aStream << QString("Header");
-    aStream << headerRowCount;
-    aStream << headerColCount;
-
-    aStream << QString("ColumnWidth");
-
-    for (int i=0; i<headerColCount; i++)
+    if (headerColCount>0)
     {
-        aStream << headerColumnWidths.at(i);
-    }
+        aStream << QString("Header");
+        aStream << headerRowCount;
+        aStream << headerColCount;
 
-    aStream << QString("Cells");
+        aStream << QString("ColumnWidth");
 
-    for (int i=0; i<headerRowCount; i++)
-    {
-        for (int j=0; j<headerColCount; j++)
+        for (int i=0; i<headerColCount; i++)
         {
-            STableCell *aCell=&headerCells[i][j];
-
-            aStream << QString("SpanX");
-            aStream << aCell->spanX;
-
-            aStream << QString("SpanY");
-            aStream << aCell->spanY;
-
-            aStream << QString("Font");
-            aStream << aCell->fontString;
-
-            aStream << QString("Text");
-            aStream << aCell->text;
-
-            aStream << QString("Alignment");
-            aStream << aCell->alignment;
-
-            aStream << QString("Background");
-            aStream << aCell->backgroundColorR;
-            aStream << aCell->backgroundColorG;
-            aStream << aCell->backgroundColorB;
-
-            aStream << QString("TextColor");
-            aStream << aCell->textColorR;
-            aStream << aCell->textColorG;
-            aStream << aCell->textColorB;
-
-            aStream << QString("CellEnd");
+            aStream << headerColumnWidths.at(i);
         }
+
+        aStream << QString("Cells");
+
+        for (int i=0; i<headerRowCount; i++)
+        {
+            for (int j=0; j<headerColCount; j++)
+            {
+                STableCell *aCell=&headerCells[i][j];
+
+                if (aCell->spanX>1)
+                {
+                    aStream << QString("SpanX");
+                    aStream << aCell->spanX;
+                }
+
+                if (aCell->spanY>1)
+                {
+                    aStream << QString("SpanY");
+                    aStream << aCell->spanY;
+                }
+
+                if (aCell->fontString!="Times New Roman,12,-1,5,50,0,0,0,0,0")
+                {
+                    aStream << QString("Font");
+                    aStream << aCell->fontString;
+                }
+
+                if (aCell->text!="")
+                {
+                    aStream << QString("Text");
+                    aStream << aCell->text;
+                }
+
+                if (aCell->alignment!=Qt::AlignCenter)
+                {
+                    aStream << QString("Alignment");
+                    aStream << aCell->alignment;
+                }
+
+                if (
+                    aCell->backgroundColorR!=255
+                    ||
+                    aCell->backgroundColorG!=255
+                    ||
+                    aCell->backgroundColorB!=255
+                   )
+                {
+                    aStream << QString("Background");
+                    aStream << aCell->backgroundColorR;
+                    aStream << aCell->backgroundColorG;
+                    aStream << aCell->backgroundColorB;
+                }
+
+                if (
+                    aCell->textColorR!=0
+                    ||
+                    aCell->textColorG!=0
+                    ||
+                    aCell->textColorB!=0
+                   )
+                {
+                    aStream << QString("TextColor");
+                    aStream << aCell->textColorR;
+                    aStream << aCell->textColorG;
+                    aStream << aCell->textColorB;
+                }
+
+                aStream << QString("CellEnd");
+            }
+        }
+
+        aStream << QString("CloneToPage");
+        aStream << cloneHeader;
+
+        aStream << QString("HeaderEnd");
     }
-
-    aStream << QString("CloneToPage");
-    aStream << cloneHeader;
-
-    aStream << QString("HeaderEnd");
 
     aStream << QString("ColTypes");
 
@@ -599,6 +645,18 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
                         for (int j=0; j<headerColCount; j++)
                         {
                             STableCell aCell;
+
+                            aCell.spanX=1;
+                            aCell.spanY=1;
+                            aCell.fontString="Times New Roman,12,-1,5,50,0,0,0,0,0";
+                            aCell.text="";
+                            aCell.alignment=Qt::AlignCenter;
+                            aCell.backgroundColorR=255;
+                            aCell.backgroundColorG=255;
+                            aCell.backgroundColorB=255;
+                            aCell.textColorR=0;
+                            aCell.textColorG=0;
+                            aCell.textColorB=0;
 
                             while (!aStream.atEnd())
                             {

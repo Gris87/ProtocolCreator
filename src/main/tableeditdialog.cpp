@@ -221,7 +221,7 @@ void TableEditDialog::setItemsForRow(int row)
     for (int i=0; i<ui->headerTableWidget->columnCount(); i++)
     {
         QTableWidgetItem *aItem=new QTableWidgetItem();
-        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setTextAlignment(Qt::AlignCenter);
         aItem->setBackground(aHeaderBrush);
         aItem->setFont(QFont("Times New Roman", 12));
         ui->headerTableWidget->setItem(row, i, aItem);
@@ -235,7 +235,7 @@ void TableEditDialog::setItemsForColumn(int column)
     for (int i=0; i<ui->headerTableWidget->rowCount(); i++)
     {
         QTableWidgetItem *aItem=new QTableWidgetItem();
-        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setTextAlignment(Qt::AlignCenter);
         aItem->setBackground(aHeaderBrush);
         aItem->setFont(QFont("Times New Roman", 12));
         ui->headerTableWidget->setItem(i, column, aItem);

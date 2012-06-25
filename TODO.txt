@@ -1,3 +1,4 @@
 0 font size in word edit
 Reduce file size by conditions and initialization on loadStream
 Disable buttons if link is absent
+Alignment int to quint8
