@@ -53,6 +53,8 @@ public:
     explicit VariableExtendedListFrame(QWidget *parent = 0);
     ~VariableExtendedListFrame();
 
+    void init();
+
     QString name();
     QString variableName();
 

@@ -6,25 +6,8 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->nameEdit->setText("Расширенный список");
-    ui->varNameEdit->setText("ExtendedList");
-
     mIsTable=false;
-    cloneHeader=true;
-
     needUpdateHeight=false;
-
-    mTableAlignment=Qt::AlignCenter;
-    mTableOffset=0;
-    mCopyColumnCount=1;
-    mCopyMiddleRow=true;
-    mCopyRules=crAll;
-    mRulesText.clear();
-    mRulesColumn=0;
-    middleRowFontString="";
-    middleRowAlignment=Qt::AlignTop | Qt::AlignLeft;
-    middleRowBackgroundColor=QColor(255, 255, 255);
-    middleRowTextColor=QColor(0, 0, 0);
 
     mCellAlignmentWidget=new CellAlignmentWidget(this);
     mCellAlignmentWidget->setWindowFlags(Qt::Popup);
@@ -43,6 +26,8 @@ VariableExtendedListFrame::VariableExtendedListFrame(QWidget *parent) :
     ui->dataTableWidget->mTable=this;
 
     connect(ui->dataTableWidget->verticalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(dataTableHeaderMove(int,int,int)));
+
+    init();
 }
 
 VariableExtendedListFrame::~VariableExtendedListFrame()
@@ -53,6 +38,26 @@ VariableExtendedListFrame::~VariableExtendedListFrame()
     }
 
     delete ui;
+}
+
+void VariableExtendedListFrame::init()
+{
+    ui->nameEdit->setText("Расширенный список");
+    ui->varNameEdit->setText("ExtendedList");
+
+    cloneHeader=true;
+
+    mTableAlignment=Qt::AlignCenter;
+    mTableOffset=0;
+    mCopyColumnCount=1;
+    mCopyMiddleRow=true;
+    mCopyRules=crAll;
+    mRulesText.clear();
+    mRulesColumn=0;
+    middleRowFontString="";
+    middleRowAlignment=Qt::AlignTop | Qt::AlignLeft;
+    middleRowBackgroundColor=QColor(255, 255, 255);
+    middleRowTextColor=QColor(0, 0, 0);
 }
 
 QString VariableExtendedListFrame::name()
@@ -400,6 +405,8 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
 
 void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
