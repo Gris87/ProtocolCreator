@@ -2,35 +2,70 @@
 
 IntegerColumn::IntegerColumn() : ColumnType()
 {
+    init();
+}
+
+void IntegerColumn::init()
+{
+    mDefaultValue=0;
+    mDecimals=2;
+    mIsAutoInc=false;
+    mSplitRows=false;
+    mPrefix="";
+    mPostfix="";
 }
 
 void IntegerColumn::saveToStream(QDataStream &aStream)
 {
     aStream << QString("ColInteger");
 
-    aStream << QString("Default");
-    aStream << mDefaultValue;
+    if (mIsAutoInc)
+    {
+        aStream << QString("AutoInc");
+        aStream << mIsAutoInc;
+    }
+    else
+    {
+        if (mSplitRows)
+        {
+            aStream << QString("SplitRows");
+            aStream << mSplitRows;
+        }
+        else
+        {
+            if (mDecimals!=2)
+            {
+                aStream << QString("Decimals");
+                aStream << mDecimals;
+            }
+        }
 
-    aStream << QString("Decimals");
-    aStream << mDecimals;
+        if (mDefaultValue!=0)
+        {
+            aStream << QString("Default");
+            aStream << mDefaultValue;
+        }
 
-    aStream << QString("AutoInc");
-    aStream << mIsAutoInc;
+        if (mPrefix!="")
+        {
+            aStream << QString("Prefix");
+            aStream << mPrefix;
+        }
 
-    aStream << QString("SplitRows");
-    aStream << mSplitRows;
-
-    aStream << QString("Prefix");
-    aStream << mPrefix;
-
-    aStream << QString("Postfix");
-    aStream << mPostfix;
+        if (mPostfix!="")
+        {
+            aStream << QString("Postfix");
+            aStream << mPostfix;
+        }
+    }
 
     aStream << QString("ColEnd");
 }
 
 void IntegerColumn::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())
