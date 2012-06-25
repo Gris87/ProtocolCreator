@@ -6,16 +6,30 @@ ComponentTextFrame::ComponentTextFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->nameEdit->setText("Текст");
-    ui->varNameEdit->setText("Text");
-
     wordEdit=new WordEditFrame(this);
     ui->userLayout->addWidget(wordEdit);
+
+    init();
 }
 
 ComponentTextFrame::~ComponentTextFrame()
 {
     delete ui;
+}
+
+void ComponentTextFrame::init()
+{
+    ui->nameEdit->setText("Текст");
+    ui->varNameEdit->setText("Text");
+
+    ui->useCheckBox->setChecked(true);
+
+    ui->editButton->setFlat(false);
+
+    ui->userWidget->setEnabled(true);
+    updateLock();
+
+    wordEdit->ui->valueEdit->setHtml("");
 }
 
 QString ComponentTextFrame::name()
@@ -32,37 +46,57 @@ void ComponentTextFrame::saveToStream(QDataStream &aStream)
 {
     aStream << QString("ComponentText");
 
-    aStream << QString("Name");
-    aStream << ui->nameEdit->text();
+    if (ui->nameEdit->text()!="Текст")
+    {
+        aStream << QString("Name");
+        aStream << ui->nameEdit->text();
+    }
 
-    aStream << QString("VarName");
-    aStream << ui->varNameEdit->text();
+    if (ui->varNameEdit->text()!="Text")
+    {
+        aStream << QString("VarName");
+        aStream << ui->varNameEdit->text();
+    }
 
-    bool aUsed=ui->useCheckBox->isChecked();
+    if (!ui->useCheckBox->isChecked())
+    {
+        bool aUsed=false;
 
-    aStream << QString("Used");
-    aStream << aUsed;
+        aStream << QString("Used");
+        aStream << aUsed;
+    }
 
-    bool aEdit=isEditable();
+    if (!isEditable())
+    {
+        bool aEdit=false;
 
-    aStream << QString("Edit");
-    aStream << aEdit;
+        aStream << QString("Edit");
+        aStream << aEdit;
+    }
 
-    bool aLock=!ui->userWidget->isEnabled();
+    if (!ui->userWidget->isEnabled())
+    {
+        bool aLock=true;
 
-    aStream << QString("Lock");
-    aStream << aLock;
+        aStream << QString("Lock");
+        aStream << aLock;
+    }
 
     QString aValue=wordEdit->ui->valueEdit->toHtml();
 
-    aStream << QString("Value");
-    aStream << aValue;
+    if (aValue!="")
+    {
+        aStream << QString("Value");
+        aStream << aValue;
+    }
 
     aStream << QString("VarEnd");
 }
 
 void ComponentTextFrame::loadFromStream(QDataStream &aStream)
 {
+    init();
+
     QString aMagicWord;
 
     while (!aStream.atEnd())

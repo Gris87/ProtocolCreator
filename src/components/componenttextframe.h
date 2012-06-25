@@ -22,6 +22,8 @@ public:
     explicit ComponentTextFrame(QWidget *parent = 0);
     ~ComponentTextFrame();
 
+    void init();
+
     QString name();
     QString variableName();
 
