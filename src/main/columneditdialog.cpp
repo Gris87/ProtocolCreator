@@ -856,14 +856,14 @@ void ColumnEditDialog::applyChanges()
         QBrush aBrush(QColor(255, 255, 255));
 
         aItem=new QTableWidgetItem(aColumn.column->typeDescription());
-        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setTextAlignment(Qt::AlignVCenter | Qt::AlignLeft);
         aItem->setFont(QFont("Times New Roman", 12));
         aItem->setBackground(aBrush);
 
         mTableWidget->setItem(0, mColumnIndex, aItem);
 
         aItem=new QTableWidgetItem("Промежуточная строка");
-        aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+        aItem->setTextAlignment(Qt::AlignCenter);
         aItem->setFont(QFont("Times New Roman", 12));
         aItem->setBackground(aBrush);
 
@@ -976,7 +976,7 @@ void ColumnEditDialog::applyChanges()
         {
             QTableWidgetItem *aItem=new QTableWidgetItem();
 
-            aItem->setTextAlignment(Qt::AlignTop | Qt::AlignLeft);
+            aItem->setTextAlignment(Qt::AlignVCenter | Qt::AlignLeft);
             aItem->setFont(QFont("Times New Roman", 12));
             aItem->setBackground(QBrush(QColor(255, 255, 255)));
 
