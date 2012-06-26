@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-DUMP_SRC = src/dump
+# Write here relative path from your PRO file ("." - if path the same)
+DUMP_SRC = $$PWD
 
 win32-msvc* {
     QMAKE_CXXFLAGS_RELEASE += -Zi
