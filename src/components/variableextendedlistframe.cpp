@@ -50,6 +50,9 @@ void VariableExtendedListFrame::init()
     ui->addFromAnotherButton->setEnabled(false);
     ui->copyFromAnotherTableButton->setEnabled(false);
 
+    ui->addFromAnotherButton->setVisible(false);
+    ui->copyFromAnotherTableButton->setVisible(false);
+
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
     mLinkForMiddleRow="";
@@ -683,12 +686,18 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
         {
             aStream >> mLinkForAnotherList;
             ui->addFromAnotherButton->setEnabled(mLinkForAnotherList!="");
+
+            ui->addFromAnotherButton->setVisible(ui->addFromAnotherButton->isEnabled() || ui->copyFromAnotherTableButton->isEnabled());
+            ui->copyFromAnotherTableButton->setVisible(ui->addFromAnotherButton->isVisible());
         }
         else
         if (aMagicWord=="LinkForCopyingAnotherList")
         {
             aStream >> mLinkForCopyingAnotherList;
             ui->copyFromAnotherTableButton->setEnabled(mLinkForCopyingAnotherList!="");
+
+            ui->addFromAnotherButton->setVisible(ui->addFromAnotherButton->isEnabled() || ui->copyFromAnotherTableButton->isEnabled());
+            ui->copyFromAnotherTableButton->setVisible(ui->addFromAnotherButton->isVisible());
         }
         else
         if (aMagicWord=="CopyColumnCount")

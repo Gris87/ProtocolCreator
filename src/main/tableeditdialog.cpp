@@ -918,6 +918,9 @@ void TableEditDialog::structureLinkForAnotherList()
     {
         mTable->mLinkForAnotherList=dialog.mResult;
         mTable->ui->addFromAnotherButton->setEnabled(mTable->mLinkForAnotherList!="");
+
+        mTable->ui->addFromAnotherButton->setVisible(mTable->ui->addFromAnotherButton->isEnabled() || mTable->ui->copyFromAnotherTableButton->isEnabled());
+        mTable->ui->copyFromAnotherTableButton->setVisible(mTable->ui->addFromAnotherButton->isVisible());
     }
 }
 
@@ -925,6 +928,9 @@ void TableEditDialog::structureDelinkForAnotherList()
 {
     mTable->mLinkForAnotherList="";
     mTable->ui->addFromAnotherButton->setEnabled(false);
+
+    mTable->ui->addFromAnotherButton->setVisible(mTable->ui->copyFromAnotherTableButton->isEnabled());
+    mTable->ui->copyFromAnotherTableButton->setVisible(mTable->ui->addFromAnotherButton->isVisible());
 }
 
 void TableEditDialog::structureLinkForCopyingAnotherList()
@@ -1000,6 +1006,9 @@ void TableEditDialog::structureLinkForCopyingAnotherList()
         }
 
         mTable->ui->copyFromAnotherTableButton->setEnabled(mTable->mLinkForCopyingAnotherList!="");
+
+        mTable->ui->addFromAnotherButton->setVisible(mTable->ui->addFromAnotherButton->isEnabled() || mTable->ui->copyFromAnotherTableButton->isEnabled());
+        mTable->ui->copyFromAnotherTableButton->setVisible(mTable->ui->addFromAnotherButton->isVisible());
     }
 }
 
@@ -1007,6 +1016,9 @@ void TableEditDialog::structureDelinkForCopyingAnotherList()
 {
     mTable->mLinkForCopyingAnotherList="";
     mTable->ui->copyFromAnotherTableButton->setEnabled(false);
+
+    mTable->ui->addFromAnotherButton->setVisible(mTable->ui->addFromAnotherButton->isEnabled());
+    mTable->ui->copyFromAnotherTableButton->setVisible(mTable->ui->addFromAnotherButton->isVisible());
 }
 
 void TableEditDialog::on_structureAdditionalButton_clicked()
