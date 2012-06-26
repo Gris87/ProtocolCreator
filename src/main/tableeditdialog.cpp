@@ -917,12 +917,14 @@ void TableEditDialog::structureLinkForAnotherList()
     if (dialog.exec())
     {
         mTable->mLinkForAnotherList=dialog.mResult;
+        mTable->ui->addFromAnotherButton->setEnabled(mTable->mLinkForAnotherList!="");
     }
 }
 
 void TableEditDialog::structureDelinkForAnotherList()
 {
     mTable->mLinkForAnotherList="";
+    mTable->ui->addFromAnotherButton->setEnabled(false);
 }
 
 void TableEditDialog::structureLinkForCopyingAnotherList()
@@ -996,12 +998,15 @@ void TableEditDialog::structureLinkForCopyingAnotherList()
         {
             mTable->mRulesText[i].replace("|", "\n");
         }
+
+        mTable->ui->copyFromAnotherTableButton->setEnabled(mTable->mLinkForCopyingAnotherList!="");
     }
 }
 
 void TableEditDialog::structureDelinkForCopyingAnotherList()
 {
     mTable->mLinkForCopyingAnotherList="";
+    mTable->ui->copyFromAnotherTableButton->setEnabled(false);
 }
 
 void TableEditDialog::on_structureAdditionalButton_clicked()

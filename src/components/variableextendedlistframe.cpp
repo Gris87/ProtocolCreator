@@ -47,6 +47,9 @@ void VariableExtendedListFrame::init()
 
     ui->useCheckBox->setChecked(true);
 
+    ui->addFromAnotherButton->setEnabled(false);
+    ui->copyFromAnotherTableButton->setEnabled(false);
+
     mTableAlignment=Qt::AlignCenter;
     mTableOffset=0;
     mLinkForMiddleRow="";
@@ -286,8 +289,11 @@ void VariableExtendedListFrame::saveToStream(QDataStream &aStream)
             }
         }
 
-        aStream << QString("CloneToPage");
-        aStream << cloneHeader;
+        if (!cloneHeader)
+        {
+            aStream << QString("CloneToPage");
+            aStream << cloneHeader;
+        }
 
         aStream << QString("HeaderEnd");
     }
@@ -676,11 +682,13 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
         if (aMagicWord=="LinkForAnotherList")
         {
             aStream >> mLinkForAnotherList;
+            ui->addFromAnotherButton->setEnabled(mLinkForAnotherList!="");
         }
         else
         if (aMagicWord=="LinkForCopyingAnotherList")
         {
             aStream >> mLinkForCopyingAnotherList;
+            ui->copyFromAnotherTableButton->setEnabled(mLinkForCopyingAnotherList!="");
         }
         else
         if (aMagicWord=="CopyColumnCount")
