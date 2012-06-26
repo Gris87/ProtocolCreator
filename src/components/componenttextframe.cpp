@@ -161,7 +161,6 @@ void ComponentTextFrame::updateAdmin()
     ui->adminGroupBox->setVisible(isAdmin);
     wordEdit->ui->valueEdit->setReadOnly(!isAdmin && !isEditable());
     wordEdit->ui->toolbarWidget->setVisible(!wordEdit->ui->valueEdit->isReadOnly());
-    on_useCheckBox_toggled(ui->useCheckBox->isChecked());
 }
 
 void ComponentTextFrame::setUpDownEnabled(bool aUpEnabled, bool aDownEnabled)

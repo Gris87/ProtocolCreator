@@ -164,6 +164,11 @@ void DataTable::keyPressEvent(QKeyEvent *event)
     else
     if (event==QKeySequence::Delete)
     {
+        if (editTriggers()==NoEditTriggers)
+        {
+            return;
+        }
+
         QList<QTableWidgetSelectionRange> aRanges=selectedRanges();
 
         QList<int> aRows;
@@ -214,6 +219,11 @@ void DataTable::keyPressEvent(QKeyEvent *event)
 
 void DataTable::pasteData()
 {
+    if (editTriggers()==NoEditTriggers)
+    {
+        return;
+    }
+
     int curRow=currentRow();
 
     if (curRow<0)

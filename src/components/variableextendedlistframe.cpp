@@ -1358,7 +1358,17 @@ void VariableExtendedListFrame::loadFromStream(QDataStream &aStream)
 void VariableExtendedListFrame::updateAdmin()
 {
     ui->adminGroupBox->setVisible(isAdmin);
-    on_useCheckBox_toggled(ui->useCheckBox->isChecked());
+
+    ui->controlWidget->setVisible(isAdmin || isEditable());
+
+    if (ui->controlWidget->isVisible())
+    {
+        ui->dataTableWidget->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed | QAbstractItemView::AnyKeyPressed);
+    }
+    else
+    {
+        ui->dataTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    }
 }
 
 void VariableExtendedListFrame::componentShown()
@@ -1417,7 +1427,7 @@ void VariableExtendedListFrame::on_varNameEdit_textChanged(const QString &aName)
 
 void VariableExtendedListFrame::on_useCheckBox_toggled(bool checked)
 {
-    ui->userWidget->setVisible(ui->userWidget->isEnabled() && checked && (isAdmin || isEditable()));
+    ui->userWidget->setVisible(ui->userWidget->isEnabled() && checked);
     componentShown();
 }
 
@@ -1443,7 +1453,7 @@ void VariableExtendedListFrame::updateLock()
         ui->lockButton->setIcon(QIcon(":/images/Lock.png"));
     }
 
-    ui->userWidget->setVisible(ui->userWidget->isEnabled() && ui->useCheckBox->isChecked() && (isAdmin || isEditable()));
+    ui->userWidget->setVisible(ui->userWidget->isEnabled() && ui->useCheckBox->isChecked());
 }
 
 void VariableExtendedListFrame::on_editButton_clicked()
@@ -3086,6 +3096,11 @@ void VariableExtendedListFrame::tableCellAlignBottomRight()
 
 void VariableExtendedListFrame::on_dataTableWidget_customContextMenuRequested(const QPoint &pos)
 {
+    if (!ui->controlWidget->isVisible())
+    {
+        return;
+    }
+
     bool itemSelected=ui->dataTableWidget->selectedItems().length()>0;
     QString aClipboard=QApplication::clipboard()->text().replace("\r","");
 

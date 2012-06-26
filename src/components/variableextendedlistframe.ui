@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>467</width>
+    <width>684</width>
     <height>667</height>
    </rect>
   </property>
@@ -538,59 +538,64 @@
           </widget>
          </item>
          <item>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <property name="spacing">
-            <number>4</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="addRowButton">
-             <property name="text">
-              <string>Добавить строку</string>
-             </property>
-             <property name="autoDefault">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="addMiddleRowButton">
-             <property name="text">
-              <string>Добавить промежуточную строку</string>
-             </property>
-             <property name="autoDefault">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QPushButton" name="deleteRowButton">
-             <property name="text">
-              <string>Удалить строку</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="addFromAnotherButton">
-             <property name="text">
-              <string>Вставить строки из связанного расширенного списка</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QPushButton" name="clearButton">
-             <property name="text">
-              <string>Очистить таблицу</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="copyFromAnotherTableButton">
-             <property name="text">
-              <string>Скопировать строки из другой таблицы</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QWidget" name="controlWidget" native="true">
+           <layout class="QGridLayout" name="gridLayout_2">
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="addRowButton">
+              <property name="text">
+               <string>Добавить строку</string>
+              </property>
+              <property name="autoDefault">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="addMiddleRowButton">
+              <property name="text">
+               <string>Добавить промежуточную строку</string>
+              </property>
+              <property name="autoDefault">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="deleteRowButton">
+              <property name="text">
+               <string>Удалить строку</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="addFromAnotherButton">
+              <property name="text">
+               <string>Вставить строки из связанного расширенного списка</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="clearButton">
+              <property name="text">
+               <string>Очистить таблицу</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="copyFromAnotherTableButton">
+              <property name="text">
+               <string>Скопировать строки из другой таблицы</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
        </widget>
