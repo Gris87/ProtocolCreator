@@ -14,6 +14,8 @@
 #include "wordtables.h"
 #include "wordtable.h"
 #include "wordtablecell.h"
+#include "wordtablecolumns.h"
+#include "wordtablerows.h"
 #include "wordrange.h"
 #include "wordutils.h"
 

@@ -138,7 +138,9 @@ SOURCES += src/main.cpp\
     src/widgets/autoupdateprogressbar.cpp \
     src/widgets/conditionalformatframe.cpp \
     src/word/wordsections.cpp \
-    src/word/wordsection.cpp
+    src/word/wordsection.cpp \
+    src/word/wordtablecolumns.cpp \
+    src/word/wordtablerows.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/other/global.h \
@@ -251,7 +253,9 @@ HEADERS  += src/main/mainwindow.h \
     src/widgets/autoupdateprogressbar.h \
     src/widgets/conditionalformatframe.h \
     src/word/wordsections.h \
-    src/word/wordsection.h
+    src/word/wordsection.h \
+    src/word/wordtablerows.h \
+    src/word/wordtablecolumns.h
 
 FORMS    += src/main/mainwindow.ui \
     src/widgets/pageframe.ui \
