@@ -48,3 +48,17 @@ void WordRange::InsertAfter(QString aText)
         qWarning()<<"WordRange::InsertAfter(): Couldn't insert text";
     }
 }
+
+QString WordRange::text()
+{
+    try
+    {
+        return base_ax_object->dynamicCall("Text()").toString();
+    }
+    catch (...)
+    {
+        qWarning()<<"WordRange::text(): Couldn't receive text";
+    }
+
+    return "";
+}

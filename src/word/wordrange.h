@@ -27,6 +27,8 @@ public:
     int computeStatistics(WdStatistic Statistic);
 
     void InsertAfter(QString aText);
+
+    QString text();
 };
 
 #endif // WORDRANGE_H
