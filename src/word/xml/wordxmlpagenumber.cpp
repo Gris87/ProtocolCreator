@@ -16,7 +16,7 @@ void WordXMLPageNumber::writeToStream(QTextStream &aStream)
     aStream<<space<<"<w:pgNum/>\r\n";
 }
 
-WordXMLPageNumber& WordXMLPageNumber::operator=(const WordXMLPageNumber &another)
+WordXMLPageNumber& WordXMLPageNumber::operator=(const WordXMLPageNumber &/*another*/)
 {
     return *this;
 }

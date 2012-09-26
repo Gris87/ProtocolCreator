@@ -81,7 +81,7 @@ void WordXMLProperties::reset()
 
     title="";
     subject="";
-    author=QString(getenv("USERNAME"));
+    author=QString::fromUtf8(qgetenv("USERNAME"));
     keywords="";
     description="";
     lastAuthor=author;
@@ -99,7 +99,7 @@ bool WordXMLProperties::isModified()
            ||
            subject!=""
            ||
-           author!=QString(getenv("USERNAME"))
+           author!=QString::fromUtf8(qgetenv("USERNAME"))
            ||
            keywords!=""
            ||

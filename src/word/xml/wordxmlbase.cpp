@@ -12,7 +12,7 @@ WordXMLBase::~WordXMLBase()
     // Nothing
 }
 
-void WordXMLBase::writeToStream(QTextStream &aStream)
+void WordXMLBase::writeToStream(QTextStream &/*aStream*/)
 {
     // Nothing
 }

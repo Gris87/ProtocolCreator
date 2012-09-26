@@ -16,7 +16,7 @@ void WordXMLContinuationSeparator::writeToStream(QTextStream &aStream)
     aStream<<space<<"<w:continuationSeparator/>\r\n";
 }
 
-WordXMLContinuationSeparator& WordXMLContinuationSeparator::operator=(const WordXMLContinuationSeparator &another)
+WordXMLContinuationSeparator& WordXMLContinuationSeparator::operator=(const WordXMLContinuationSeparator &/*another*/)
 {
     return *this;
 }

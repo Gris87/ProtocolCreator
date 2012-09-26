@@ -16,7 +16,7 @@ void WordXMLTabChar::writeToStream(QTextStream &aStream)
     aStream<<space<<"<w:tab/>\r\n";
 }
 
-WordXMLTabChar& WordXMLTabChar::operator=(const WordXMLTabChar &another)
+WordXMLTabChar& WordXMLTabChar::operator=(const WordXMLTabChar &/*another*/)
 {
     return *this;
 }

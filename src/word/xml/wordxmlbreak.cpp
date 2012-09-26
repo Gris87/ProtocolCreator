@@ -16,7 +16,7 @@ void WordXMLBreak::writeToStream(QTextStream &aStream)
     aStream<<space<<"<w:br/>\r\n";
 }
 
-WordXMLBreak& WordXMLBreak::operator=(const WordXMLBreak &another)
+WordXMLBreak& WordXMLBreak::operator=(const WordXMLBreak &/*another*/)
 {
     return *this;
 }
