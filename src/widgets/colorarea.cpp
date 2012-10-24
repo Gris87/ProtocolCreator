@@ -60,8 +60,9 @@ void ColorArea::mousePressEvent(QMouseEvent *event)
         int aY=cursor().pos().y();
 
         QDesktopWidget *desktop = QApplication::desktop();
-        int aWidth = desktop->width();
-        int aHeight = desktop->height();
+        QRect aScreenRect=desktop->screenGeometry();
+        int aWidth = aScreenRect.right();
+        int aHeight = aScreenRect.bottom();
 
         if (aX+aWidthSize>aWidth)
         {
