@@ -37,6 +37,7 @@ private slots:
 
 signals:
     void clicked(ColorArea *aArea);
+    void rightClicked(ColorArea *aArea);
     void colorChanged(const QColor &aColor);
 };
 

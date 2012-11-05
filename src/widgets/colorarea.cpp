@@ -49,64 +49,71 @@ void ColorArea::mousePressEvent(QMouseEvent *event)
         }
     }
     else
-    if (popupAllowed && event->button()==Qt::RightButton)
+    if (event->button()==Qt::RightButton)
     {
-        aPopupWidget=new QWidget(this, Qt::Popup);
-
-        int aWidthSize=popupCellSize*popupCount*popupCount+4;
-        int aHeightSize=popupCellSize*popupCount+4;
-
-        int aX=cursor().pos().x();
-        int aY=cursor().pos().y();
-
-        QDesktopWidget *desktop = QApplication::desktop();
-        QRect aScreenRect=desktop->screenGeometry();
-        int aWidth = aScreenRect.right();
-        int aHeight = aScreenRect.bottom();
-
-        if (aX+aWidthSize>aWidth)
+        if (popupAllowed)
         {
-            aX=aWidth-aWidthSize;
-        }
+            aPopupWidget=new QWidget(this, Qt::Popup);
 
-        if (aY+aHeightSize>aHeight)
-        {
-            aY=aHeight-aHeightSize;
-        }
+            int aWidthSize=popupCellSize*popupCount*popupCount+4;
+            int aHeightSize=popupCellSize*popupCount+4;
 
-        aPopupWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
+            int aX=cursor().pos().x();
+            int aY=cursor().pos().y();
 
-        QGridLayout *aLayout=new QGridLayout(aPopupWidget);
-        aLayout->setHorizontalSpacing(0);
-        aLayout->setVerticalSpacing(0);
-        aLayout->setContentsMargins(2, 2, 2, 2);
+            QDesktopWidget *desktop = QApplication::desktop();
+            QRect aScreenRect=desktop->screenGeometry();
+            int aWidth = aScreenRect.right();
+            int aHeight = aScreenRect.bottom();
 
-        quint16 aDiffY=255/(popupCount-1);
-        quint32 aDiffX=65535/(popupCount*popupCount-1);
-
-        for (int i=0; i<popupCount; i++)
-        {
-            for (int j=0; j<popupCount*popupCount; j++)
+            if (aX+aWidthSize>aWidth)
             {
-                ColorArea *aArea=new ColorArea(this);
-
-                aArea->popupAllowed=false;
-                aArea->selectAllowed=false;
-                aArea->needDrawFrame=false;
-
-                aArea->setColor(QColor(aDiffY*i, aDiffX*j>>8, aDiffX*j & 0xFF));
-
-                connect(aArea, SIGNAL(clicked(ColorArea*)), this, SLOT(cellClicked(ColorArea*)));
-
-                aLayout->addWidget(aArea, i, j);
+                aX=aWidth-aWidthSize;
             }
-        }
 
-        aPopupWidget->show();
+            if (aY+aHeightSize>aHeight)
+            {
+                aY=aHeight-aHeightSize;
+            }
+
+            aPopupWidget->setGeometry(aX, aY, aWidthSize, aHeightSize);
+
+            QGridLayout *aLayout=new QGridLayout(aPopupWidget);
+            aLayout->setHorizontalSpacing(0);
+            aLayout->setVerticalSpacing(0);
+            aLayout->setContentsMargins(2, 2, 2, 2);
+
+            quint16 aDiffY=255/(popupCount-1);
+            quint32 aDiffX=65535/(popupCount*popupCount-1);
+
+            for (int i=0; i<popupCount; i++)
+            {
+                for (int j=0; j<popupCount*popupCount; j++)
+                {
+                    ColorArea *aArea=new ColorArea(this);
+
+                    aArea->popupAllowed=false;
+                    aArea->selectAllowed=false;
+                    aArea->needDrawFrame=false;
+
+                    aArea->setColor(QColor(aDiffY*i, aDiffX*j>>8, aDiffX*j & 0xFF));
+
+                    connect(aArea, SIGNAL(clicked(ColorArea*)), this, SLOT(cellClicked(ColorArea*)));
+
+                    aLayout->addWidget(aArea, i, j);
+                }
+            }
+
+            aPopupWidget->show();
+        }
+        else
+        {
+            emit rightClicked(this);
+        }
     }
 }
 
-void ColorArea::paintEvent(QPaintEvent *event)
+void ColorArea::paintEvent(QPaintEvent * /*event*/)
 {
     QPainter paint(this);
     paint.setBrush(QBrush(color()));
